@@ -18,4 +18,20 @@
 [![Contributors](https://img.shields.io/github/contributors/deepghs/imgutils)](https://github.com/deepghs/imgutils/graphs/contributors)
 [![GitHub license](https://img.shields.io/github/license/deepghs/imgutils)](https://github.com/deepghs/imgutils/blob/master/LICENSE)
 
-Utilties for Images
+Utilities for Images
+
+
+## How to check truncated image
+
+```python
+from imgutils.validate import is_truncated_file
+
+if __name__ == '__main__':
+    filename = 'test_jpg.jpg'
+    if is_truncated_file(filename):
+        print('This image is truncated, you\'d better '
+              'remove this shit from your dataset.')
+    else:
+        print('This image is okay!')
+
+```

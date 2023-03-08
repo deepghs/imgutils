@@ -1213,3 +1213,4 @@ fabric.properties
 /extra
 /resource/yolort/*
 !/resource/yolort/Makefile
+!/test/testfile/**/*
