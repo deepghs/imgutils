@@ -8,7 +8,7 @@ _LOCK = Lock()
 
 @contextmanager
 def _mock_load_truncated_images(value: bool):
-    with Lock():
+    with _LOCK:
         _load = ImageFile.LOAD_TRUNCATED_IMAGES
         ImageFile.LOAD_TRUNCATED_IMAGES = value
         try:
