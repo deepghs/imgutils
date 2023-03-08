@@ -6,7 +6,7 @@ from distutils.core import setup
 from setuptools import find_packages
 
 _MODULE_NAME = "imgutils"
-_PACKAGE_NAME = 'imgutils'
+_PACKAGE_NAME = 'dghs-imgutils'
 
 here = os.path.abspath(os.path.dirname(__file__))
 meta = {}

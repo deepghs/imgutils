@@ -35,7 +35,6 @@ jobs:
           pip install --upgrade build
       - name: Build packages
         run: |
-          make download
           python -m build --sdist --wheel --outdir dist/
       - name: Publish distribution 📦 to real PyPI
         uses: pypa/gh-action-pypi-publish@master

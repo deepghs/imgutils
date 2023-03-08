@@ -35,7 +35,6 @@ jobs:
           pip install --upgrade build
       - name: Build packages
         run: |
-          make download
           make package
           ls -al dist
       - name: Upload packed files to artifacts

@@ -1,7 +1,7 @@
 # imgutils
 
-[![PyPI](https://img.shields.io/pypi/v/imgutils)](https://pypi.org/project/imgutils/)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/imgutils)
+[![PyPI](https://img.shields.io/pypi/v/dghs-imgutils)](https://pypi.org/project/dghs-imgutils/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/dghs-imgutils)
 ![Loc](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/deepghs/8bfaa96eaa25cc9dac54debbf22d363d/raw/loc.json)
 ![Comments](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/deepghs/8bfaa96eaa25cc9dac54debbf22d363d/raw/comments.json)
 
