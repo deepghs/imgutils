@@ -1,0 +1,5 @@
+include README.md
+include MANIFEST.in
+include requirements.txt
+include requirements-*.txt
+recursive-include imgutils *.json *.yml *.yaml

@@ -1,0 +1,46 @@
+name: Release Test
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  source_release:
+    name: Try package the source
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - 'ubuntu-20.04'
+        python-version:
+          - '3.8'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 20
+      - name: Set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set up python dependences
+        run: |
+          pip install --upgrade pip
+          pip install --upgrade flake8 setuptools wheel twine
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f requirements-build.txt ]; then pip install -r requirements-build.txt; fi
+          if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
+          pip install -r requirements-crawl.txt
+          pip install --upgrade build
+      - name: Build packages
+        run: |
+          make download
+          make package
+          ls -al dist
+      - name: Upload packed files to artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts-source-pack
+          path: ./dist/*
