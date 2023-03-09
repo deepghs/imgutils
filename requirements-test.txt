@@ -14,3 +14,4 @@ testtools>=2
 where>=1.0.2
 responses>=0.20.0
 pytest-image-diff
+git+https://github.com/HansBug/pytest-image-diff.git@fix/win
