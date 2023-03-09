@@ -2,8 +2,8 @@
 
 [![PyPI](https://img.shields.io/pypi/v/dghs-imgutils)](https://pypi.org/project/dghs-imgutils/)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/dghs-imgutils)
-![Loc](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/deepghs/8bfaa96eaa25cc9dac54debbf22d363d/raw/loc.json)
-![Comments](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/deepghs/8bfaa96eaa25cc9dac54debbf22d363d/raw/comments.json)
+![Loc](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/narugo1992/8bfaa96eaa25cc9dac54debbf22d363d/raw/loc.json)
+![Comments](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/narugo1992/8bfaa96eaa25cc9dac54debbf22d363d/raw/comments.json)
 
 [![Code Test](https://github.com/deepghs/imgutils/workflows/Code%20Test/badge.svg)](https://github.com/deepghs/imgutils/actions?query=workflow%3A%22Code+Test%22)
 [![Package Release](https://github.com/deepghs/imgutils/workflows/Package%20Release/badge.svg)](https://github.com/deepghs/imgutils/actions?query=workflow%3A%22Package+Release%22)
