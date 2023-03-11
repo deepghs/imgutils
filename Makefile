@@ -8,6 +8,7 @@ BUILD_DIR     := ${PROJ_DIR}/build
 DIST_DIR      := ${PROJ_DIR}/dist
 TEST_DIR      := ${PROJ_DIR}/test
 TESTFILE_DIR  := ${TEST_DIR}/testfile
+DATASET_DIR   := ${TESTFILE_DIR}/dataset
 SRC_DIR       := ${PROJ_DIR}/imgutils
 TEMPLATES_DIR := ${PROJ_DIR}/templates
 RESOURCE_DIR  := ${PROJ_DIR}/resource
@@ -45,3 +46,9 @@ docs:
 	$(MAKE) -C "${DOC_DIR}" build
 pdocs:
 	$(MAKE) -C "${DOC_DIR}" prod
+
+dataset:
+	mkdir -p ${DATASET_DIR}
+	if [ ! -d ${DATASET_DIR}/chafen_arknights ]; then \
+		git clone https://${HF_NARUGO_USERNAME}:${HF_NARUGO_PASSWORD}@huggingface.co/datasets/deepghs/chafen_arknights.git ${DATASET_DIR}/chafen_arknights; \
+	fi

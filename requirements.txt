@@ -3,3 +3,5 @@ pillow
 numpy
 opencv-python
 scikit-learn
+huggingface_hub
+tqdm

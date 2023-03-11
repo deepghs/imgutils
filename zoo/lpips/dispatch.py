@@ -37,10 +37,10 @@ class LPIPSSimilarityDetection:
     @torch.no_grad()
     def cluster(self, images: List[Image.Image]) -> List[int]:
         n = len(images)
-        img_list = [_TRANSFORM(img.convert('RGB')).unsqueeze(0) for img in tqdm(images, leave=True)]
-        feat_list = [self._get_feat(img) for img in tqdm(img_list, leave=True)]
+        img_list = [_TRANSFORM(img.convert('RGB')).unsqueeze(0) for img in tqdm(images, leave=False)]
+        feat_list = [self._get_feat(img) for img in tqdm(img_list, leave=False)]
 
-        progress = tqdm(total=n * (n + 1) // 2, leave=True)
+        progress = tqdm(total=n * (n + 1) // 2, leave=False)
 
         @lru_cache(maxsize=n * (n + 1) // 2)
         def _cached_metric(x, y):
@@ -54,4 +54,5 @@ class LPIPSSimilarityDetection:
 
         samples = np.array(range(n)).reshape(-1, 1)
         clustering = DBSCAN(eps=self.thr, min_samples=2, metric=img_sim_metric).fit(samples)
+        progress.close()
         return clustering.labels_

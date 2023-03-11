@@ -1215,3 +1215,5 @@ fabric.properties
 !/resource/yolort/Makefile
 !/test/testfile/**/*
 !/zoo/testfile/**/*
+/test/testfile/dataset
+/zoo/testfile/dataset
