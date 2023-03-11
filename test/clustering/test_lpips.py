@@ -56,7 +56,7 @@ class TestClusteringLpips:
     @pytest.mark.parametrize(*tmatrix({
         'seed': [0, 1, 2, 3, 4],
     }))
-    def test_fuck(self, seed):
+    def test_lpips_clustering(self, seed):
         files, answer = sampling_from_dataset(seed)
         with disable_output():
             data = lpips_clustering(files, threshold=0.45)
