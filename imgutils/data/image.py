@@ -3,6 +3,11 @@ from typing import Union, BinaryIO, List, Tuple
 
 from PIL import Image
 
+__all__ = [
+    'ImageTyping', 'load_image',
+    'MultiImagesTyping', 'load_images',
+]
+
 
 def _is_readable(obj):
     return hasattr(obj, 'read') and hasattr(obj, 'seek')

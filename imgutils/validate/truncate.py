@@ -3,6 +3,10 @@ from threading import Lock
 
 from PIL import Image, ImageFile
 
+__all__ = [
+    'is_truncated_file',
+]
+
 _LOCK = Lock()
 
 

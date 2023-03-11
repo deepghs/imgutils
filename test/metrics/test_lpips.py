@@ -8,7 +8,7 @@ from hbutils.random import keep_global_state, global_seed
 from hbutils.testing import tmatrix, disable_output
 from sklearn.metrics import adjusted_rand_score
 
-from imgutils.clustering.lpips import lpips_difference, lpips_clustering
+from imgutils.metrics import lpips_difference, lpips_clustering
 from ..testings import get_testfile
 
 
