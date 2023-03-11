@@ -1,0 +1,89 @@
+name: Onnx Model Export
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  onnx_export:
+    name: Onnx Export
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - 'ubuntu-20.04'
+        python-version:
+          - '3.8'
+        model-name:
+          - 'lpips'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 20
+      - name: Set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set up python dependences
+        run: |
+          pip install --upgrade pip
+          pip install --upgrade flake8 setuptools wheel twine
+          pip install -r requirements-build.txt
+          pip install -r requirements.txt
+          pip install -r requirements-zoo.txt
+      - name: Transform models to onnx format
+        env:
+          DIST_DIR: dist
+          CKPT_NAME: ${{ matrix.ckpt-name }}
+        run: |
+          python -m zoo.${{ matrix.model-name }} export -O ./${{ matrix.model-name }} 
+          ls -al ./${{ matrix.model-name }}
+      - name: Upload the character databases
+        uses: actions/upload-artifact@v3
+        with:
+          name: onnx-models
+          path: ${{ matrix.model-name }}/*
+
+  data_upload:
+    name: Data Upload
+    runs-on: ${{ matrix.os }}
+    needs:
+      - onnx_export
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - 'ubuntu-latest'
+        python-version:
+          - '3.8'
+
+    steps:
+      - name: Prepare the repository
+        shell: bash
+        run: |
+          sudo apt-get install -y tree
+          git lfs install
+          git clone https://huggingface.co/deepghs/imgutils-models
+          ls -al imgutils-models
+      - name: Download from artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: onnx-models
+          path: imgutils-models
+      - name: See what is in this path
+        shell: bash
+        run: |
+          tree .
+      - name: Push models to hugging face repostory
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          cd imgutils-models
+          git config user.name 'narugo1992'
+          git config user.email 'narugo@126.com'
+          git add -A
+          git diff-index --quiet HEAD || git commit -a -m "dev(narugo): model publish $(date -R)"
+          git push https://narugo:$HF_TOKEN@huggingface.co/deepghs/imgutils-models main
