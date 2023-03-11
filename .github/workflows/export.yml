@@ -37,11 +37,12 @@ jobs:
         run: |
           python -m zoo.${{ matrix.model-name }} export -O ./${{ matrix.model-name }} 
           ls -al ./${{ matrix.model-name }}
+          zip -r ${{ matrix.model-name }}.zip ${{ matrix.model-name }}
       - name: Upload the character databases
         uses: actions/upload-artifact@v3
         with:
           name: onnx-models
-          path: ${{ matrix.model-name }}/*
+          path: ${{ matrix.model-name }}.zip
 
   data_upload:
     name: Data Upload
@@ -72,6 +73,9 @@ jobs:
       - name: See what is in this path
         shell: bash
         run: |
+          cd imgutils-models
+          for zfile in *.zip; do unzip -o $zfile; done
+          rm -rf *.zip
           tree .
       - name: Push models to hugging face repostory
         env:
