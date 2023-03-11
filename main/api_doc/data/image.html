@@ -9,7 +9,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>imgutils.config.meta &mdash; imgutils 0.0.1 documentation</title>
+  <title>imgutils.data.image &mdash; imgutils 0.0.1 documentation</title>
   
 
   
@@ -38,8 +38,7 @@
   <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="imgutils.data" href="../data/index.html" />
-    <link rel="prev" title="imgutils.config" href="index.html" /> 
+    <link rel="prev" title="imgutils.data.decode" href="decode.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,18 +93,17 @@
 </ul>
 <p><span class="caption-text">API Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.config</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.config.meta</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#title">__TITLE__</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#version">__VERSION__</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#description">__DESCRIPTION__</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#author">__AUTHOR__</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#author-email">__AUTHOR_EMAIL__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.data</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="encode.html">imgutils.data.encode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decode.html">imgutils.data.decode</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.data.image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#load-image">load_image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-images">load_images</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
 </ul>
 
             
@@ -151,15 +149,15 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">imgutils.config</a> &raquo;</li>
+          <li><a href="index.html">imgutils.data</a> &raquo;</li>
         
-      <li>imgutils.config.meta</li>
+      <li>imgutils.data.image</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/api_doc/config/meta.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/api_doc/data/image.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -174,55 +172,22 @@
             
     
     
-  <section id="module-imgutils.config.meta">
-<span id="imgutils-config-meta"></span><h1>imgutils.config.meta<a class="headerlink" href="#module-imgutils.config.meta" title="Permalink to this headline">¶</a></h1>
-<dl class="simple">
-<dt>Overview:</dt><dd><p>Meta information for imgutils package.</p>
-</dd>
-</dl>
-<section id="title">
-<h2>__TITLE__<a class="headerlink" href="#title" title="Permalink to this headline">¶</a></h2>
-<dl class="py data">
-<dt id="imgutils.config.meta.__TITLE__">
-<code class="sig-prename descclassname">imgutils.config.meta.</code><code class="sig-name descname">__TITLE__</code><a class="headerlink" href="#imgutils.config.meta.__TITLE__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Title of this project (should be <cite>imgutils</cite>).</p>
-</dd></dl>
+  <section id="module-imgutils.data.image">
+<span id="imgutils-data-image"></span><h1>imgutils.data.image<a class="headerlink" href="#module-imgutils.data.image" title="Permalink to this headline">¶</a></h1>
+<section id="load-image">
+<h2>load_image<a class="headerlink" href="#load-image" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.data.image.load_image">
+<code class="sig-prename descclassname">imgutils.data.image.</code><code class="sig-name descname">load_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/data/image.html#load_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.data.image.load_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
-<section id="version">
-<h2>__VERSION__<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h2>
-<dl class="py data">
-<dt id="imgutils.config.meta.__VERSION__">
-<code class="sig-prename descclassname">imgutils.config.meta.</code><code class="sig-name descname">__VERSION__</code><a class="headerlink" href="#imgutils.config.meta.__VERSION__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Version of this project.</p>
-</dd></dl>
-
-</section>
-<section id="description">
-<h2>__DESCRIPTION__<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<dl class="py data">
-<dt id="imgutils.config.meta.__DESCRIPTION__">
-<code class="sig-prename descclassname">imgutils.config.meta.</code><code class="sig-name descname">__DESCRIPTION__</code><a class="headerlink" href="#imgutils.config.meta.__DESCRIPTION__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Short description of the project, will be included in <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</p>
-</dd></dl>
-
-</section>
-<section id="author">
-<h2>__AUTHOR__<a class="headerlink" href="#author" title="Permalink to this headline">¶</a></h2>
-<dl class="py data">
-<dt id="imgutils.config.meta.__AUTHOR__">
-<code class="sig-prename descclassname">imgutils.config.meta.</code><code class="sig-name descname">__AUTHOR__</code><a class="headerlink" href="#imgutils.config.meta.__AUTHOR__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Author of this project.</p>
-</dd></dl>
-
-</section>
-<section id="author-email">
-<h2>__AUTHOR_EMAIL__<a class="headerlink" href="#author-email" title="Permalink to this headline">¶</a></h2>
-<dl class="py data">
-<dt id="imgutils.config.meta.__AUTHOR_EMAIL__">
-<code class="sig-prename descclassname">imgutils.config.meta.</code><code class="sig-name descname">__AUTHOR_EMAIL__</code><a class="headerlink" href="#imgutils.config.meta.__AUTHOR_EMAIL__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Email of the authors’.</p>
-</dd></dl>
+<section id="load-images">
+<h2>load_images<a class="headerlink" href="#load-images" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.data.image.load_images">
+<code class="sig-prename descclassname">imgutils.data.image.</code><code class="sig-name descname">load_images</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span><span class="p">]</span><span class="p">, </span>Tuple<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span><span class="p">, </span><span class="p">…</span><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>PIL.Image.Image<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/data/image.html#load_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.data.image.load_images" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
@@ -236,10 +201,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../data/index.html" class="btn btn-neutral float-right" title="imgutils.data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="index.html" class="btn btn-neutral float-left" title="imgutils.config" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="decode.html" class="btn btn-neutral float-left" title="imgutils.data.decode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -272,7 +235,7 @@
         <div class="rst-other-versions">
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="meta.html">main</a></dd>
+                        <dd><a href="image.html">main</a></dd>
                 </dl>
         </div>
     </div>
