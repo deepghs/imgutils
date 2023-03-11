@@ -97,12 +97,18 @@ jobs:
           cloc imgutils
           cloc test
       - name: Prepare dataset
-        shell: bash
+        uses: nick-fields/retry@v2
         env:
+          CI: 'true'
           HF_NARUGO_USERNAME: ${{ secrets.HF_NARUGO_USERNAME }}
           HF_NARUGO_PASSWORD: ${{ secrets.HF_NARUGO_PASSWORD }}
-        run: |
-          make dataset
+        with:
+          shell: bash
+          timeout_minutes: 20
+          max_attempts: 5
+          retry_on: any
+          command: |
+            make dataset
       - name: Run unittest
         env:
           CI: 'true'
