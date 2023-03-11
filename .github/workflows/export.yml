@@ -31,13 +31,9 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install --upgrade flake8 setuptools wheel twine
-          pip install -r requirements-build.txt
           pip install -r requirements.txt
           pip install -r requirements-zoo.txt
       - name: Transform models to onnx format
-        env:
-          DIST_DIR: dist
-          CKPT_NAME: ${{ matrix.ckpt-name }}
         run: |
           python -m zoo.${{ matrix.model-name }} export -O ./${{ matrix.model-name }} 
           ls -al ./${{ matrix.model-name }}
