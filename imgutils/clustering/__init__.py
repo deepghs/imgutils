@@ -1,1 +1,1 @@
-from .lpips import extract_feature, lpips_difference, batch_lpips_difference
+from .lpips import lpips_extract_feature, lpips_difference
