@@ -2,15 +2,13 @@ import glob
 import os.path
 import random
 
-import numpy as np
 import pytest
 from PIL import Image
 from hbutils.random import keep_global_state, global_seed
 from hbutils.testing import tmatrix, disable_output
 from sklearn.metrics import adjusted_rand_score
 
-from imgutils.clustering.lpips import _image_encode, lpips_difference, lpips_clustering
-from zoo.lpips.dispatch import _TRANSFORM
+from imgutils.clustering.lpips import lpips_difference, lpips_clustering
 from ..testings import get_testfile
 
 
@@ -41,12 +39,6 @@ def sampling_from_dataset(seed):
 
 @pytest.mark.unittest
 class TestClusteringLpips:
-    @pytest.mark.parametrize(*tmatrix({
-        'filename': ['6124220.jpg', '6125785.png', '6125901.jpg'],
-    }))
-    def test_image_encode(self, filename):
-        image = Image.open(get_testfile(filename))
-        assert np.isclose(_image_encode(image), _TRANSFORM(image).numpy()).all()
 
     @pytest.mark.parametrize(*tmatrix({
         'f1': ['6124220.jpg', '6125785.png', '6125901.jpg'],

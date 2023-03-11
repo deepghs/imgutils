@@ -87,7 +87,6 @@ jobs:
           pip install --upgrade flake8 setuptools wheel twine
           pip install -r requirements.txt
           pip install -r requirements-test.txt
-          pip install -r requirements-zoo.txt
       - name: Test the basic environment
         shell: bash
         run: |
