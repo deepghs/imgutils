@@ -52,3 +52,6 @@ dataset:
 	if [ ! -d ${DATASET_DIR}/chafen_arknights ]; then \
 		git clone https://${HF_NARUGO_USERNAME}:${HF_NARUGO_PASSWORD}@huggingface.co/datasets/deepghs/chafen_arknights.git ${DATASET_DIR}/chafen_arknights; \
 	fi
+	if [ ! -d ${DATASET_DIR}/monochrome_danbooru ]; then \
+		git clone https://${HF_NARUGO_USERNAME}:${HF_NARUGO_PASSWORD}@huggingface.co/datasets/deepghs/monochrome_danbooru.git ${DATASET_DIR}/monochrome_danbooru; \
+	fi
