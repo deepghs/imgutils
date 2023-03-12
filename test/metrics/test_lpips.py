@@ -15,8 +15,11 @@ from ..testings import get_testfile
 @keep_global_state()
 def sampling_from_dataset(seed):
     global_seed(seed)
-    files = sorted([file for file in glob.glob(os.path.join(get_testfile('dataset'), '**', '*'), recursive=True)
-                    if os.path.isfile(file) and file.endswith('.jpg')])
+    files = sorted([
+        file for file in
+        glob.glob(os.path.join(get_testfile('dataset'), 'chafen_arknights', '**', '*'), recursive=True)
+        if os.path.isfile(file) and file.endswith('.jpg')
+    ])
 
     sample = random.sample(files, 50)
     t_exists = {}
