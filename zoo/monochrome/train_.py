@@ -88,7 +88,7 @@ def train(dataset_dir: str, from_ckpt: Optional[str] = None, train_ratio: float 
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-    for epoch in range(previous_epoch + 1, max_epochs + 1):
+    for epoch in tqdm(range(previous_epoch + 1, max_epochs + 1)):
         running_loss = 0.0
         for i, (inputs, labels) in enumerate(tqdm(train_dataloader)):
             inputs = inputs.float()
