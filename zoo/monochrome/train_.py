@@ -53,6 +53,11 @@ def train(dataset_dir: str, from_ckpt: Optional[str] = None, train_ratio: float 
     os.makedirs(_LOG_DIR, exist_ok=True)
     os.makedirs(_CKPT_DIR, exist_ok=True)
     writer = SummaryWriter(_LOG_DIR)
+    writer.add_custom_scalars({
+        "general": {
+            "accuracy": ["Multiline", ["train/accuracy", "test/accuracy"]],
+        },
+    })
 
     # Initialize dataset
     full_dataset = MonochromeDataset(dataset_dir, bins=feature_bins)
