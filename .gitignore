@@ -1217,3 +1217,4 @@ fabric.properties
 !/zoo/testfile/**/*
 /test/testfile/dataset
 /zoo/testfile/dataset
+/.train
