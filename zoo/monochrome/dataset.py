@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 import torch
 from PIL import Image
@@ -13,16 +14,17 @@ TRANSFORM = transforms.Compose([
     transforms.RandomRotation((-180, 180)),
     transforms.RandomHorizontalFlip(),
     transforms.RandomVerticalFlip(),
-    transforms.ColorJitter(0.25, 0.25, 0.15, 0.3),
+    transforms.ColorJitter(0.10, 0.10, 0.10, 0.10),
     transforms.Resize(450),
 ])
 
 
 class ImageDirectoryDataset(Dataset):
-    def __init__(self, root_dir, label: int = 1, bins: int = 200, transform=TRANSFORM):
+    def __init__(self, root_dir, label: int = 1, bins: int = 200, fc: Optional[int] = 50, transform=TRANSFORM):
         self.root_dir = root_dir
         self.label = label
         self.bins = bins
+        self.fc = fc
         self.transform = transform
         self.samples = []
         for file_name in os.listdir(root_dir):
@@ -37,13 +39,13 @@ class ImageDirectoryDataset(Dataset):
         image = Image.open(file_path).convert('HSV')
         if self.transform:
             image = self.transform(image)
-        return image_encode(image, bins=self.bins, normalize=True), torch.tensor(self.label)
+        return image_encode(image, bins=self.bins, fc=self.fc, normalize=True), torch.tensor(self.label)
 
 
 class MonochromeDataset(Dataset):
-    def __init__(self, root_dir: str, bins: int = 200, transform=TRANSFORM):
-        self.monochrome = ImageDirectoryDataset(os.path.join(root_dir, 'monochrome'), 1, bins, transform)
-        self.normal = ImageDirectoryDataset(os.path.join(root_dir, 'normal'), 0, bins, transform)
+    def __init__(self, root_dir: str, bins: int = 200, fc: Optional[int] = 50, transform=TRANSFORM):
+        self.monochrome = ImageDirectoryDataset(os.path.join(root_dir, 'monochrome'), 1, bins, fc, transform)
+        self.normal = ImageDirectoryDataset(os.path.join(root_dir, 'normal'), 0, bins, fc, transform)
 
     def __len__(self):
         return len(self.monochrome) + len(self.normal)
