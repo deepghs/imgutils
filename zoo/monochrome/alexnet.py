@@ -3,6 +3,8 @@ import torch.nn as nn
 
 
 class MonochromeAlexNet(nn.Module):
+    __model_name__ = 'alexnet'
+
     def __init__(self, input_channels: int = 3, num_classes=2):
         super(MonochromeAlexNet, self).__init__()
         self.features = nn.Sequential(

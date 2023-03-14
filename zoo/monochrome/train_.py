@@ -1,6 +1,7 @@
 import os.path
 import re
-from typing import Optional
+from functools import partial
+from typing import Optional, Type
 
 import torch
 from ditk import logging
@@ -11,21 +12,39 @@ from tqdm.auto import tqdm
 
 from .alexnet import MonochromeAlexNet
 from .dataset import MonochromeDataset
+from .resnet import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
+from .transformer import SigTransformer
 from ..base import _TRAIN_DIR as _GLOBAL_TRAIN_DIR
 
 _TRAIN_DIR = os.path.join(_GLOBAL_TRAIN_DIR, 'monochrome')
 _LOG_DIR = os.path.join(_TRAIN_DIR, 'logs')
 _CKPT_DIR = os.path.join(_TRAIN_DIR, 'ckpts')
 
-_CKPT_PATTERN = re.compile(r'^monochrome-(?P<epoch>\d+)\.ckpt$')
+_CKPT_PATTERN = re.compile(r'^monochrome-(?P<name>[a-zA-Z\d_\-]+)-(?P<epoch>\d+)\.ckpt$')
+
+_KNOWN_MODELS = {}
 
 
-def _find_latest_ckpt() -> Optional[str]:
+def _register_model(cls: Type[nn.Module], *args, name=None, **kwargs):
+    name = name or cls.__model_name__
+    _KNOWN_MODELS[name] = partial(cls, *args, **kwargs)
+
+
+_register_model(MonochromeAlexNet)
+_register_model(ResNet18)
+_register_model(ResNet34)
+_register_model(ResNet50)
+_register_model(ResNet101)
+_register_model(ResNet152)
+_register_model(SigTransformer)
+
+
+def _find_latest_ckpt(name: str) -> Optional[str]:
     if os.path.exists(_CKPT_DIR):
         ckpts = []
         for filename in os.listdir(_CKPT_DIR):
             matching = _CKPT_PATTERN.fullmatch(os.path.basename(filename))
-            if matching:
+            if matching and matching.group('name') == name:
                 ckpts.append((int(matching.group('epoch')), os.path.join(_CKPT_DIR, filename)))
 
         ckpts = sorted(ckpts)
@@ -50,10 +69,11 @@ def _ckpt_epoch(filename: Optional[str]) -> Optional[int]:
 
 def train(dataset_dir: str, from_ckpt: Optional[str] = None, train_ratio: float = 0.8,
           batch_size: int = 4, feature_bins: int = 400, max_epochs: int = 500, learning_rate: float = 0.001,
-          save_per_epoch: int = 10):
-    os.makedirs(_LOG_DIR, exist_ok=True)
+          save_per_epoch: int = 10, model_name: str = 'alexnet'):
+    _log_dir = os.path.join(_LOG_DIR, model_name)
+    os.makedirs(_log_dir, exist_ok=True)
     os.makedirs(_CKPT_DIR, exist_ok=True)
-    writer = SummaryWriter(_LOG_DIR)
+    writer = SummaryWriter(_log_dir)
     writer.add_custom_scalars({
         "general": {
             "accuracy": ["Multiline", ["train/accuracy", "test/accuracy"]],
@@ -72,9 +92,10 @@ def train(dataset_dir: str, from_ckpt: Optional[str] = None, train_ratio: float 
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
 
     # Load previous epoch
-    model = MonochromeAlexNet().float()
+    model = _KNOWN_MODELS[model_name]().float()
+    # model = MonochromeAlexNet().float()
     if from_ckpt is None:
-        from_ckpt = _find_latest_ckpt()
+        from_ckpt = _find_latest_ckpt(model_name)
     previous_epoch = _ckpt_epoch(from_ckpt) or 0
     if from_ckpt:
         logging.info(f'Load checkpoint from {from_ckpt!r}.')
@@ -138,6 +159,6 @@ def train(dataset_dir: str, from_ckpt: Optional[str] = None, train_ratio: float 
             writer.add_scalar('test/accuracy', test_accuracy, epoch)
 
         if epoch % save_per_epoch == 0:
-            current_ckpt_file = os.path.join(_CKPT_DIR, f'monochrome-{epoch}.ckpt')
+            current_ckpt_file = os.path.join(_CKPT_DIR, f'monochrome-{model_name}-{epoch}.ckpt')
             torch.save(model.state_dict(), current_ckpt_file)
             logging.info(f'Saved to {current_ckpt_file!r}.')
