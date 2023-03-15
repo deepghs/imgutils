@@ -15,6 +15,7 @@ from .dataset import MonochromeDataset
 from .resnet import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
 from .transformer import SigTransformer
 from ..base import _TRAIN_DIR as _GLOBAL_TRAIN_DIR
+from ..utils import LRTyping, get_init_lr, get_dynamic_lr_scheduler
 
 _TRAIN_DIR = os.path.join(_GLOBAL_TRAIN_DIR, 'monochrome')
 _LOG_DIR = os.path.join(_TRAIN_DIR, 'logs')
@@ -69,7 +70,7 @@ def _ckpt_epoch(filename: Optional[str]) -> Optional[int]:
 
 def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optional[str] = None,
           train_ratio: float = 0.8, batch_size: int = 4, feature_bins: int = 256, fc: Optional[int] = 100,
-          max_epochs: int = 500, learning_rate: float = 0.001,
+          max_epochs: int = 500, learning_rate: LRTyping = 0.001,
           save_per_epoch: int = 10, model_name: str = 'alexnet'):
     session_name = session_name or model_name
     _log_dir = os.path.join(_LOG_DIR, session_name)
@@ -110,7 +111,9 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         model = model.cuda()
 
     loss_fn = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    initial_lr = get_init_lr(learning_rate)
+    optimizer = torch.optim.Adam([{'params': model.parameters(), 'initial_lr': initial_lr}], lr=initial_lr)
+    scheduler = get_dynamic_lr_scheduler(optimizer, lr=learning_rate, last_epoch=previous_epoch)
 
     for epoch in tqdm(range(previous_epoch + 1, max_epochs + 1)):
         running_loss = 0.0
@@ -128,7 +131,8 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
             running_loss += loss.item() * inputs.size(0)
 
         epoch_loss = running_loss / len(train_dataset)
-        logging.info(f'Epoch {epoch} loss: {epoch_loss:.4f}')
+        logging.info(f'Epoch {epoch} loss: {epoch_loss:.4f}, with learning rate: {scheduler.get_last_lr()[0]:.6f}')
+        scheduler.step()
         writer.add_scalar('train/loss', epoch_loss, epoch)
 
         with torch.no_grad():
