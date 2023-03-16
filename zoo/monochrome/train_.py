@@ -8,6 +8,7 @@ from ditk import logging
 from torch import nn
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
+from torch.optim import lr_scheduler
 from tqdm.auto import tqdm
 
 from .alexnet import MonochromeAlexNet
@@ -70,7 +71,7 @@ def _ckpt_epoch(filename: Optional[str]) -> Optional[int]:
 
 def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optional[str] = None,
           train_ratio: float = 0.8, batch_size: int = 4, feature_bins: int = 256, fc: Optional[int] = 100,
-          max_epochs: int = 500, learning_rate: LRTyping = 0.001,
+          max_epochs: int = 500, learning_rate: LRTyping = 0.001, num_workers=8,
           save_per_epoch: int = 10, model_name: str = 'alexnet'):
     session_name = session_name or model_name
     _log_dir = os.path.join(_LOG_DIR, session_name)
@@ -91,8 +92,8 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
 
     # 使用 random_split 函数拆分数据集
     train_dataset, test_dataset = torch.utils.data.random_split(full_dataset, [train_size, test_size])
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+    test_dataloader = DataLoader(test_dataset, batch_size=batch_size, num_workers=num_workers)
 
     # Load previous epoch
     model = _KNOWN_MODELS[model_name]().float()
@@ -112,10 +113,13 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
 
     loss_fn = nn.CrossEntropyLoss()
     initial_lr = get_init_lr(learning_rate)
-    optimizer = torch.optim.Adam([{'params': model.parameters(), 'initial_lr': initial_lr}], lr=initial_lr)
-    scheduler = get_dynamic_lr_scheduler(optimizer, lr=learning_rate, last_epoch=previous_epoch)
+    optimizer = torch.optim.AdamW([{'params': model.parameters(), 'initial_lr': initial_lr}], lr=initial_lr, weight_decay=1e-2)
+    #scheduler = get_dynamic_lr_scheduler(optimizer, lr=learning_rate, last_epoch=previous_epoch)
+    scheduler = lr_scheduler.OneCycleLR(optimizer, max_lr=learning_rate,
+                            steps_per_epoch=len(train_dataloader), epochs=max_epochs,
+                            pct_start=0.15)
 
-    for epoch in tqdm(range(previous_epoch + 1, max_epochs + 1)):
+    for epoch in range(previous_epoch + 1, max_epochs + 1):
         running_loss = 0.0
         for i, (inputs, labels) in enumerate(tqdm(train_dataloader)):
             inputs = inputs.float()
@@ -131,7 +135,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
             running_loss += loss.item() * inputs.size(0)
 
         epoch_loss = running_loss / len(train_dataset)
-        logging.info(f'Epoch {epoch} loss: {epoch_loss:.4f}, with learning rate: {scheduler.get_last_lr()[0]:.6f}')
+        logging.info(f'Epoch [{epoch}/{max_epochs+1}] loss: {epoch_loss:.4f}, with learning rate: {scheduler.get_last_lr()[0]:.6f}')
         scheduler.step()
         writer.add_scalar('train/loss', epoch_loss, epoch)
 

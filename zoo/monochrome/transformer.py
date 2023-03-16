@@ -48,6 +48,7 @@ class SigTransformer(nn.Module):
         self.head = CNNHead(in_ch, hidden)
         #self.pos_encoder = PositionalEncoding(hidden, dropout)
         self.pos_embedding = nn.Parameter(torch.randn(seq_len + 1, 1, hidden))
+        self.pos_drop = nn.Dropout(p=dropout)
 
         self.cls_token = nn.Parameter(torch.randn(1, 1, hidden) * 0.02)
 
@@ -65,6 +66,7 @@ class SigTransformer(nn.Module):
         src = torch.cat((cls_tokens, src), dim=0)
         #src = self.pos_encoder(src)
         src += self.pos_embedding
+        src=self.pos_drop(src)
 
         output = self.encoder(src).transpose(0, 1)  # [B,N,emb]
         output = self.mlp_head(output[:, 0, :])
