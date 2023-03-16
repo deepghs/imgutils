@@ -26,10 +26,10 @@ class CNNHead(nn.Module):
     def __init__(self, in_chans=1, embed_dim=768):
         super().__init__()
         self.proj = nn.Sequential(
-            #nn.Conv1d(in_chans, embed_dim // 2, kernel_size=7, stride=2),
-            #nn.BatchNorm1d(embed_dim // 2),
-            #nn.SiLU(),
-            #nn.Conv1d(embed_dim // 2, embed_dim, kernel_size=5, stride=2),
+            # nn.Conv1d(in_chans, embed_dim // 2, kernel_size=7, stride=2),
+            # nn.BatchNorm1d(embed_dim // 2),
+            # nn.SiLU(),
+            # nn.Conv1d(embed_dim // 2, embed_dim, kernel_size=5, stride=2),
             nn.Conv1d(in_chans, embed_dim, kernel_size=2, stride=2),
         )
 
@@ -46,7 +46,7 @@ class SigTransformer(nn.Module):
         nhead = hidden // 64
 
         self.head = CNNHead(in_ch, hidden)
-        #self.pos_encoder = PositionalEncoding(hidden, dropout)
+        # self.pos_encoder = PositionalEncoding(hidden, dropout)
         self.pos_embedding = nn.Parameter(torch.randn(seq_len + 1, 1, hidden))
         self.pos_drop = nn.Dropout(p=dropout)
 
@@ -64,9 +64,9 @@ class SigTransformer(nn.Module):
         src = self.head(src)  # [N,B,emb]
         cls_tokens = self.cls_token.expand(-1, src.shape[1], -1)
         src = torch.cat((cls_tokens, src), dim=0)
-        #src = self.pos_encoder(src)
+        # src = self.pos_encoder(src)
         src += self.pos_embedding
-        src=self.pos_drop(src)
+        src = self.pos_drop(src)
 
         output = self.encoder(src).transpose(0, 1)  # [B,N,emb]
         output = self.mlp_head(output[:, 0, :])
