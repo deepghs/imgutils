@@ -70,7 +70,8 @@ def _ckpt_epoch(filename: Optional[str]) -> Optional[int]:
 
 def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optional[str] = None,
           train_ratio: float = 0.8, batch_size: int = 4, feature_bins: int = 256, fc: Optional[int] = 100,
-          max_epochs: int = 500, learning_rate: LRTyping = 0.001, num_workers: Optional[int] = None,
+          max_epochs: int = 500, learning_rate: LRTyping = 0.001,
+          weight_decay: float = 1e-4, num_workers: Optional[int] = None,
           device: Optional[str] = None, save_per_epoch: int = 10, model_name: str = 'alexnet'):
     session_name = session_name or model_name
     _log_dir = os.path.join(_LOG_DIR, session_name)
@@ -116,7 +117,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
     initial_lr = get_init_lr(learning_rate)
     optimizer = torch.optim.AdamW(
         [{'params': model.parameters(), 'initial_lr': initial_lr}],
-        lr=initial_lr, weight_decay=1e-2,
+        lr=initial_lr, weight_decay=weight_decay,
     )
     scheduler = get_dynamic_lr_scheduler(optimizer, lr=learning_rate, last_epoch=previous_epoch)
 
