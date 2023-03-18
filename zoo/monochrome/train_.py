@@ -113,11 +113,11 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
 
     loss_fn = nn.CrossEntropyLoss()
     initial_lr = get_init_lr(learning_rate)
-    optimizer = torch.optim.AdamW([{'params': model.parameters(), 'initial_lr': initial_lr}], lr=initial_lr, weight_decay=1e-2)
+    optimizer = torch.optim.AdamW([{'params': model.parameters(), 'initial_lr': initial_lr}], lr=initial_lr, weight_decay=1e-3)
     #scheduler = get_dynamic_lr_scheduler(optimizer, lr=learning_rate, last_epoch=previous_epoch)
     scheduler = lr_scheduler.OneCycleLR(optimizer, max_lr=learning_rate,
                             steps_per_epoch=len(train_dataloader), epochs=max_epochs,
-                            pct_start=0.15)
+                            pct_start=0.15, final_div_factor=20.)
 
     for epoch in range(previous_epoch + 1, max_epochs + 1):
         running_loss = 0.0
