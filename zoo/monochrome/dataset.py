@@ -36,13 +36,7 @@ class ImageDirectoryDataset(Dataset):
 
     def __getitem__(self, idx):
         file_path = self.samples[idx]
-        # ATTENTION: DO NOT REMOVE THIS CONVERT, THIS IS IMPORTANT!!!
-        # In torchvision.transforms.functional.pad, the RGB mode will be used when your input image
-        # have 3 channels (no matter RGB, LAB or HSV), so the transformed image which actually passed into
-        # model should be processed like this:
-        # image = Image.fromarray(np.asarray(image.convert("HSV")), mode='RGB')
-        # and then use `image_encode` to encode.
-        image = Image.open(file_path).convert('HSV')
+        image = Image.open(file_path).convert('RGB')  # image must be rgb
         if self.transform:
             image = self.transform(image)
         return image_encode(image, bins=self.bins, fc=self.fc, normalize=True), torch.tensor(self.label)
