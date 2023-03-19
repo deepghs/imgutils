@@ -36,10 +36,9 @@ class ImageDirectoryDataset(Dataset):
 
     def __getitem__(self, idx):
         file_path = self.samples[idx]
-        image = Image.open(file_path)
+        image = Image.open(file_path).convert('RGB')  # image must be rgb
         if self.transform:
             image = self.transform(image)
-        image = image.convert('HSV')
         return image_encode(image, bins=self.bins, fc=self.fc, normalize=True), torch.tensor(self.label)
 
 

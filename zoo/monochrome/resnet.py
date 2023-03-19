@@ -71,7 +71,7 @@ class Bottleneck(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, block, num_blocks, num_classes, avgpool_size: int = 6):
+    def __init__(self, block, num_blocks, num_classes, avgpool_size: int = 8):
         super(ResNet, self).__init__()
         self.in_planes = 64
 
