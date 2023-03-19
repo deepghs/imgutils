@@ -36,9 +36,10 @@ class ImageDirectoryDataset(Dataset):
 
     def __getitem__(self, idx):
         file_path = self.samples[idx]
-        image = Image.open(file_path).convert('HSV')
+        image = Image.open(file_path)
         if self.transform:
             image = self.transform(image)
+        image = image.convert('HSV')
         return image_encode(image, bins=self.bins, fc=self.fc, normalize=True), torch.tensor(self.label)
 
 
