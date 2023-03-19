@@ -1,6 +1,8 @@
 import math
 
 import torch
+from einops import repeat, rearrange
+from einops.layers.torch import Rearrange
 from torch import nn
 
 
@@ -31,23 +33,26 @@ class CNNHead(nn.Module):
             # nn.SiLU(),
             # nn.Conv1d(embed_dim // 2, embed_dim, kernel_size=5, stride=2),
             nn.Conv1d(in_chans, embed_dim, kernel_size=2, stride=2),
+            Rearrange('b h n -> n b h'),
+            nn.LayerNorm(embed_dim),
         )
 
     def forward(self, x):  # x:[B,ch,N_seq]
-        x = self.proj(x).permute(2, 0, 1)
+        x = self.proj(x)
         return x
 
 
 class SigTransformer(nn.Module):
     __model_name__ = 'transformer'
 
-    def __init__(self, in_ch=3, n_cls=2, hidden=512, nlayers=5, dropout=0.1, seq_len=128):
+    def __init__(self, in_ch=3, n_cls=2, hidden=512, nlayers=12, dropout=0.1, seq_len=90):
         super(SigTransformer, self).__init__()
         nhead = hidden // 64
 
         self.head = CNNHead(in_ch, hidden)
         # self.pos_encoder = PositionalEncoding(hidden, dropout)
-        self.pos_embedding = nn.Parameter(torch.randn(seq_len + 1, 1, hidden))
+        self.pos_embedding = nn.Parameter(torch.randn(seq_len + 1, 1, hidden) * 0.02)
+        self.pos_drop = nn.Dropout(p=dropout)
 
         self.cls_token = nn.Parameter(torch.randn(1, 1, hidden) * 0.02)
 
@@ -60,13 +65,14 @@ class SigTransformer(nn.Module):
         )
 
     def forward(self, src):
-        src = self.head(src)  # [N,B,emb]
-        cls_tokens = self.cls_token.expand(-1, src.shape[1], -1)
+        src = self.head(src)  # [N,B,h]
+        cls_tokens = repeat(self.cls_token, '1 1 h -> 1 b h', b=src.shape[1])
         src = torch.cat((cls_tokens, src), dim=0)
         # src = self.pos_encoder(src)
         src += self.pos_embedding
+        src = self.pos_drop(src)
 
-        output = self.encoder(src).transpose(0, 1)  # [B,N,emb]
+        output = rearrange(self.encoder(src), 'n b h -> b n h')
         output = self.mlp_head(output[:, 0, :])
 
         return output
@@ -74,7 +80,6 @@ class SigTransformer(nn.Module):
 
 if __name__ == '__main__':
     transformer = SigTransformer()
-    x = torch.randn(8, 3, 256)
+    x = torch.randn(8, 3, 180)
     y = transformer(x)
-    print(y)
     print(y.shape)
