@@ -71,7 +71,7 @@ def _ckpt_epoch(filename: Optional[str]) -> Optional[int]:
 def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optional[str] = None,
           train_ratio: float = 0.8, batch_size: int = 4, feature_bins: int = 256, fc: Optional[int] = 100,
           max_epochs: int = 500, learning_rate: LRTyping = 0.001,
-          weight_decay: float = 1e-4, num_workers: Optional[int] = None,
+          weight_decay: float = 1e-2, num_workers: Optional[int] = None,
           device: Optional[str] = None, save_per_epoch: int = 10, model_name: str = 'alexnet'):
     session_name = session_name or model_name
     _log_dir = os.path.join(_LOG_DIR, session_name)
@@ -104,7 +104,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
     previous_epoch = _ckpt_epoch(from_ckpt) or 0
     if from_ckpt:
         logging.info(f'Load checkpoint from {from_ckpt!r}.')
-        model.load_state_dict(torch.load(from_ckpt))
+        model.load_state_dict(torch.load(from_ckpt, map_location='cpu'))
     else:
         logging.info(f'No checkpoint found, new model will be used.')
 
@@ -142,11 +142,8 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         with torch.no_grad():
             train_correct = 0
             for i, (inputs, labels) in enumerate(tqdm(train_dataloader)):
-                inputs = inputs.float()
-                if torch.cuda.is_available():
-                    inputs = inputs.cuda()
-                    labels = labels.cuda()
-
+                inputs = inputs.float().to(device)
+                labels = labels.to(device)
                 outputs = model(inputs)
                 train_correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
 
@@ -156,11 +153,8 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
 
             test_correct = 0
             for i, (inputs, labels) in enumerate(tqdm(test_dataloader)):
-                inputs = inputs.float()
-                if torch.cuda.is_available():
-                    inputs = inputs.cuda()
-                    labels = labels.cuda()
-
+                inputs = inputs.float().to(device)
+                labels = labels.to(device)
                 outputs = model(inputs)
                 test_correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
 

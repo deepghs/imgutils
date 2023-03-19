@@ -12,7 +12,7 @@ from .train_ import _KNOWN_MODELS
 from ..utils import GLOBAL_CONTEXT_SETTINGS
 from ..utils import print_version as _origin_print_version
 
-print_version = partial(_origin_print_version, 'zoo.lpips')
+print_version = partial(_origin_print_version, 'zoo.monochrome')
 
 
 @click.group(context_settings={**GLOBAL_CONTEXT_SETTINGS})
@@ -41,6 +41,7 @@ def export_one(output: str, feature_bins: int, ckpt: str, model_name: str):
 
 _KNOWN_CKPTS: List[Tuple[str, str, int]] = [
     ('monochrome-alexnet_plus-320.ckpt', 'alexnet', 256),
+    ('monochrome-alexnet_plus-500.ckpt', 'alexnet', 256),
 ]
 
 
