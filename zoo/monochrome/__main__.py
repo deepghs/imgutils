@@ -40,8 +40,8 @@ def export_one(output: str, feature_bins: int, ckpt: str, model_name: str):
 
 
 _KNOWN_CKPTS: List[Tuple[str, str, int]] = [
-    ('monochrome-alexnet_plus-320.ckpt', 'alexnet', 256),
-    ('monochrome-alexnet_plus-500.ckpt', 'alexnet', 256),
+    ('monochrome-alexnet-480.ckpt', 'alexnet', 180),
+    ('monochrome-resnet18-480.ckpt', 'resnet18', 180),
 ]
 
 
