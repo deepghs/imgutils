@@ -118,7 +118,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         loss_weight = torch.as_tensor([torch.e, 1.0]) ** -preference
     else:
         loss_weight = torch.as_tensor([1.0, torch.e]) ** preference
-    loss_fn = nn.CrossEntropyLoss(weight=loss_weight)
+    loss_fn = nn.CrossEntropyLoss(weight=loss_weight).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     scheduler = lr_scheduler.OneCycleLR(
         optimizer, max_lr=learning_rate,
