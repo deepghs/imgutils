@@ -28,10 +28,10 @@ class CNNHead(nn.Module):
     def __init__(self, in_chans=1, embed_dim=768):
         super().__init__()
         self.proj = nn.Sequential(
-            #nn.Conv1d(in_chans, embed_dim // 2, kernel_size=7, stride=2),
-            #nn.BatchNorm1d(embed_dim // 2),
-            #nn.SiLU(),
-            #nn.Conv1d(embed_dim // 2, embed_dim, kernel_size=5, stride=2),
+            # nn.Conv1d(in_chans, embed_dim // 2, kernel_size=7, stride=2),
+            # nn.BatchNorm1d(embed_dim // 2),
+            # nn.SiLU(),
+            # nn.Conv1d(embed_dim // 2, embed_dim, kernel_size=5, stride=2),
             nn.Conv1d(in_chans, embed_dim, kernel_size=1, stride=1),
             Rearrange('b h n -> n b h'),
             nn.LayerNorm(embed_dim),

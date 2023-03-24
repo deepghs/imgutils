@@ -39,3 +39,14 @@ class MonochromeAlexNet(nn.Module):
         x = torch.flatten(x, 1)
         x = self.classifier(x)
         return x
+
+
+if __name__ == '__main__':
+    from thop import profile
+
+    net = MonochromeAlexNet()
+    x = torch.randn(1, 3, 180)
+
+    flops, params = profile(net, (x,))
+    print('FLOPs = ' + str(flops / 1000 ** 3) + 'G')
+    print('Params = ' + str(params / 1000 ** 2) + 'M')

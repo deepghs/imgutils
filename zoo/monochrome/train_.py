@@ -4,12 +4,12 @@ from functools import partial
 from typing import Optional, Type
 
 import torch
+from accelerate import Accelerator
 from ditk import logging
 from torch import nn
 from torch.optim import lr_scheduler
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-from torchvision.ops import sigmoid_focal_loss
 from tqdm.auto import tqdm
 
 from .alexnet import MonochromeAlexNet
@@ -17,9 +17,6 @@ from .dataset import MonochromeDataset, random_split_dataset
 from .resnet import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
 from .transformer import SigTransformer
 from ..base import _TRAIN_DIR as _GLOBAL_TRAIN_DIR
-
-
-from accelerate import Accelerator
 
 _TRAIN_DIR = os.path.join(_GLOBAL_TRAIN_DIR, 'monochrome')
 _LOG_DIR = os.path.join(_TRAIN_DIR, 'logs')
@@ -76,7 +73,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
           train_ratio: float = 0.8, batch_size: int = 4, feature_bins: int = 180, fc: Optional[int] = 75,
           max_epochs: int = 500, learning_rate: float = 0.001, weight_decay: float = 1e-3,
           num_workers: Optional[int] = None, device: Optional[str] = None,
-          save_per_epoch: int = 10, eval_epoch: int=5, model_name: str = 'alexnet'):
+          save_per_epoch: int = 10, eval_epoch: int = 5, model_name: str = 'alexnet'):
     accelerator = Accelerator(
         # mixed_precision=self.cfgs.mixed_precision,
         step_scheduler_with_optimizer=False,
@@ -94,6 +91,8 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
                 "accuracy": ["Multiline", ["train/accuracy", "test/accuracy"]],
             },
         })
+    else:
+        writer = None
 
     # Initialize dataset
     full_dataset = MonochromeDataset(dataset_dir, bins=feature_bins, fc=fc)
@@ -103,7 +102,8 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
 
     # 使用 random_split 函数拆分数据集
     train_dataset, test_dataset = random_split_dataset(full_dataset, train_size, test_size)
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, drop_last=True)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers,
+                                  drop_last=True)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, num_workers=num_workers)
 
     # Load previous epoch
@@ -118,11 +118,11 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         logging.info(f'No checkpoint found, new model will be used.')
 
     # Try use cude
-    #if torch.cuda.is_available():
+    # if torch.cuda.is_available():
     #    model = model.cuda()
 
     loss_fn = nn.CrossEntropyLoss()
-    #loss_fn = lambda inputs, targets: sigmoid_focal_loss(inputs, targets, reduction='mean')
+    # loss_fn = lambda inputs, targets: sigmoid_focal_loss(inputs, targets, reduction='mean')
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     scheduler = lr_scheduler.OneCycleLR(
         optimizer, max_lr=learning_rate,
@@ -130,7 +130,9 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         pct_start=0.15, final_div_factor=20.
     )
 
-    model, optimizer, train_dataloader, test_dataloader, scheduler=accelerator.prepare(model, optimizer, train_dataloader, test_dataloader, scheduler)
+    model, optimizer, train_dataloader, test_dataloader, scheduler = accelerator.prepare(model, optimizer,
+                                                                                         train_dataloader,
+                                                                                         test_dataloader, scheduler)
 
     for epoch in range(previous_epoch + 1, max_epochs + 1):
         running_loss = 0.0
@@ -145,7 +147,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
             train_correct += (torch.argmax(outputs, dim=1) == labels).sum().detach().item()
 
             loss = loss_fn(outputs, labels)
-            #loss.backward()
+            # loss.backward()
             accelerator.backward(loss)
             optimizer.step()
             running_loss += loss.item() * inputs.size(0)
@@ -157,8 +159,12 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
 
         if accelerator.is_local_main_process:
             epoch_loss = epoch_loss.item()
-            logging.info(f'Epoch [{epoch}/{max_epochs+1}] loss: {epoch_loss:.4f}, with learning rate: {scheduler.get_last_lr()[0]:.6f}')
-            writer.add_scalar('train/loss', epoch_loss, epoch)
+            logging.info(
+                f'Epoch [{epoch}/{max_epochs + 1}] loss: {epoch_loss:.4f}, '
+                f'with learning rate: {scheduler.get_last_lr()[0]:.6f}'
+            )
+            if writer:
+                writer.add_scalar('train/loss', epoch_loss, epoch)
 
         train_accuracy = train_correct / len(train_dataset)
         train_accuracy = torch.tensor(train_accuracy).to(accelerator.device)
@@ -167,9 +173,10 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         if accelerator.is_local_main_process:
             train_accuracy = train_accuracy.item()
             logging.info(f'Epoch {epoch} train accuracy: {train_accuracy:.4f}')
-            writer.add_scalar('train/accuracy', train_accuracy, epoch)
+            if writer:
+                writer.add_scalar('train/accuracy', train_accuracy, epoch)
 
-        if epoch%eval_epoch == 0:
+        if epoch % eval_epoch == 0:
             with torch.no_grad():
                 test_correct = 0
                 for i, (inputs, labels) in enumerate(tqdm(test_dataloader)):
@@ -187,7 +194,8 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
                 if accelerator.is_local_main_process:
                     test_accuracy = test_accuracy.item()
                     logging.info(f'Epoch {epoch} test accuracy: {test_accuracy:.4f}')
-                    writer.add_scalar('test/accuracy', test_accuracy, epoch)
+                    if writer:
+                        writer.add_scalar('test/accuracy', test_accuracy, epoch)
 
         if accelerator.is_local_main_process and epoch % save_per_epoch == 0:
             current_ckpt_file = os.path.join(_CKPT_DIR, f'monochrome-{session_name}-{epoch}.ckpt')

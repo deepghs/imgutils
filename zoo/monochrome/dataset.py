@@ -1,13 +1,12 @@
 import os
+import random
+from copy import deepcopy
 from typing import Optional
 
-import torch
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.transforms import transforms
-from copy import deepcopy
 from tqdm.auto import tqdm
-import random
 
 from .encode import image_encode
 
@@ -21,12 +20,13 @@ TRANSFORM = transforms.Compose([
     transforms.Resize(450),
 ])
 
-TRANSFORM_val = transforms.Compose([
+TRANSFORM_VAL = transforms.Compose([
     transforms.Resize(450),
 ])
 
+
 class MonochromeDataset(Dataset):
-    def __init__(self, root_dir: str, bins: int = 200, fc: Optional[int] = 50, transform=TRANSFORM):
+    def __init__(self, root_dir: str, bins: int = 180, fc: Optional[int] = 75, transform=TRANSFORM):
         self.root_dir = root_dir
         self.bins = bins
         self.fc = fc
@@ -61,19 +61,20 @@ class MonochromeDataset(Dataset):
         else:
             return self.get_hist(sample), label
 
-def random_split_dataset(dataset:MonochromeDataset, train_size, test_size):
+
+def random_split_dataset(dataset: MonochromeDataset, train_size, test_size):
     train_data = deepcopy(dataset)
     random.shuffle(train_data.samples)
     all_samples = train_data.samples
     train_data.samples = train_data.samples[:train_size]
 
     test_data = dataset
-    test_data.transform = TRANSFORM_val
+    test_data.transform = TRANSFORM_VAL
     samples_build = []
-    print('pre-build testset')
-    for sample, label in tqdm(all_samples[train_size:train_size+test_size]):
+    # print('pre-build testset')
+    for sample, label in tqdm(all_samples[train_size:train_size + test_size]):
         samples_build.append((test_data.get_hist(sample), label))
     test_data.samples = samples_build
-    test_data.pre_build=True
+    test_data.pre_build = True
 
     return train_data, test_data
