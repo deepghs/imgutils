@@ -1,4 +1,4 @@
-torch
+torch<2
 lpips
 matplotlib
 torchvision
@@ -12,3 +12,4 @@ di-toolkit
 tensorboard
 einops
 thop
+accelerate
