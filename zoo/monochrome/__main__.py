@@ -32,7 +32,10 @@ def cli():
               help='Feature bins of input.', show_default=True)
 @click.option('--verbose', '-V', 'verbose', is_flag=True, type=bool, default=False,
               help='Show verbose information.', show_default=True)
-def onnx_check(model: Optional[str] = None, feature_bins: int = 180, verbose: bool = False):
+@click.option('--output_dir', '-O', 'output_dir', type=click.Path(file_okay=False), default=None,
+              help='Output directory of all models.', show_default=True)
+def onnx_check(model: Optional[str] = None, feature_bins: int = 180, verbose: bool = False,
+               output_dir: Optional[str] = None):
     if model:
         models = [model]
     else:
@@ -42,7 +45,7 @@ def onnx_check(model: Optional[str] = None, feature_bins: int = 180, verbose: bo
         for _model in models:
             click.echo(click.style(f'Try exporting {_model} to onnx ...'), nl=False)
             _torch_model = _KNOWN_MODELS[_model]().float()
-            onnx_filename = os.path.join(td, f'{_model}.onnx')
+            onnx_filename = os.path.join(output_dir or td, f'{_model}.onnx')
             try:
                 if verbose:
                     export_model_to_onnx(_torch_model, onnx_filename, verbose=verbose, feature_bins=feature_bins)
