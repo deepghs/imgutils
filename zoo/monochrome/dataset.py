@@ -5,6 +5,9 @@ import torch
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.transforms import transforms
+from copy import deepcopy
+from tqdm.auto import tqdm
+import random
 
 from .encode import image_encode
 
@@ -18,41 +21,59 @@ TRANSFORM = transforms.Compose([
     transforms.Resize(450),
 ])
 
+TRANSFORM_val = transforms.Compose([
+    transforms.Resize(450),
+])
 
-class ImageDirectoryDataset(Dataset):
-    def __init__(self, root_dir, label: int = 1, bins: int = 200, fc: Optional[int] = 50, transform=TRANSFORM):
+class MonochromeDataset(Dataset):
+    def __init__(self, root_dir: str, bins: int = 200, fc: Optional[int] = 50, transform=TRANSFORM):
         self.root_dir = root_dir
-        self.label = label
         self.bins = bins
         self.fc = fc
         self.transform = transform
         self.samples = []
-        for file_name in os.listdir(root_dir):
-            file_path = os.path.join(root_dir, file_name)
-            self.samples.append(file_path)
+        self.pre_build = False
+
+        mono_dir = os.path.join(root_dir, 'monochrome')
+        for file_name in os.listdir(mono_dir):
+            file_path = os.path.join(mono_dir, file_name)
+            self.samples.append((file_path, 1))
+
+        normal_dir = os.path.join(root_dir, 'normal')
+        for file_name in os.listdir(normal_dir):
+            file_path = os.path.join(normal_dir, file_name)
+            self.samples.append((file_path, 0))
 
     def __len__(self):
         return len(self.samples)
 
-    def __getitem__(self, idx):
-        file_path = self.samples[idx]
-        image = Image.open(file_path)
+    def get_hist(self, sample):
+        image = Image.open(sample)
         if self.transform:
             image = self.transform(image)
         image = image.convert('HSV')
-        return image_encode(image, bins=self.bins, fc=self.fc, normalize=True), torch.tensor(self.label)
-
-
-class MonochromeDataset(Dataset):
-    def __init__(self, root_dir: str, bins: int = 200, fc: Optional[int] = 50, transform=TRANSFORM):
-        self.monochrome = ImageDirectoryDataset(os.path.join(root_dir, 'monochrome'), 1, bins, fc, transform)
-        self.normal = ImageDirectoryDataset(os.path.join(root_dir, 'normal'), 0, bins, fc, transform)
-
-    def __len__(self):
-        return len(self.monochrome) + len(self.normal)
+        return image_encode(image, bins=self.bins, fc=self.fc, normalize=True)
 
     def __getitem__(self, idx):
-        if idx < len(self.monochrome):
-            return self.monochrome[idx]
+        sample, label = self.samples[idx]
+        if self.pre_build:
+            return sample, label
         else:
-            return self.normal[idx - len(self.monochrome)]
+            return self.get_hist(sample), label
+
+def random_split_dataset(dataset:MonochromeDataset, train_size, test_size):
+    train_data = deepcopy(dataset)
+    random.shuffle(train_data.samples)
+    all_samples = train_data.samples
+    train_data.samples = train_data.samples[:train_size]
+
+    test_data = dataset
+    test_data.transform = TRANSFORM_val
+    samples_build = []
+    print('pre-build testset')
+    for sample, label in tqdm(all_samples[train_size:train_size+test_size]):
+        samples_build.append((test_data.get_hist(sample), label))
+    test_data.samples = samples_build
+    test_data.pre_build=True
+
+    return train_data, test_data

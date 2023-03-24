@@ -31,7 +31,7 @@ class CNNHead(nn.Module):
             #nn.BatchNorm1d(embed_dim // 2),
             #nn.SiLU(),
             #nn.Conv1d(embed_dim // 2, embed_dim, kernel_size=5, stride=2),
-            nn.Conv1d(in_chans, embed_dim, kernel_size=2, stride=2),
+            nn.Conv1d(in_chans, embed_dim, kernel_size=1, stride=1),
             Rearrange('b h n -> n b h'),
             nn.LayerNorm(embed_dim),
         )
@@ -44,7 +44,7 @@ class CNNHead(nn.Module):
 class SigTransformer(nn.Module):
     __model_name__ = 'transformer'
 
-    def __init__(self, in_ch=3, n_cls=2, hidden=512, nlayers=12, dropout=0.1, seq_len=128):
+    def __init__(self, in_ch=3, n_cls=2, hidden=512, nlayers=16, dropout=0.1, seq_len=180):
         super(SigTransformer, self).__init__()
         nhead = hidden // 64
 
@@ -78,7 +78,11 @@ class SigTransformer(nn.Module):
 
 
 if __name__ == '__main__':
+    from thop import profile
+
     transformer = SigTransformer()
-    x = torch.randn(8, 3, 400)
-    y = transformer(x)
-    print(y.shape)
+    x = torch.randn(1, 3, 180)
+
+    flops, params = profile(transformer, (x,))
+    print('FLOPs = ' + str(flops / 1000 ** 3) + 'G')
+    print('Params = ' + str(params / 1000 ** 2) + 'M')

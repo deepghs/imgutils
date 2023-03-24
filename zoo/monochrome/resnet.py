@@ -141,6 +141,11 @@ class ResNet152(ResNet):
 
 
 if __name__ == '__main__':
+    from thop import profile
+
     net = ResNet50(2)
-    y = net(torch.randn(10, 3, 400))
-    print(y.shape)
+    x = torch.randn(1, 3, 180)
+
+    flops, params = profile(net, (x,))
+    print('FLOPs = ' + str(flops / 1000 ** 3) + 'G')
+    print('Params = ' + str(params / 1000 ** 2) + 'M')
