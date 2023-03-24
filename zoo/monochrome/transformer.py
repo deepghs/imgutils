@@ -1,9 +1,10 @@
 import math
 
 import torch
-from torch import nn
-from einops.layers.torch import Rearrange
 from einops import repeat, rearrange
+from einops.layers.torch import Rearrange
+from torch import nn
+
 
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, dropout=0.1, max_len=200):
@@ -49,8 +50,8 @@ class SigTransformer(nn.Module):
         nhead = hidden // 64
 
         self.head = CNNHead(in_ch, hidden)
-        #self.pos_encoder = PositionalEncoding(hidden, dropout)
-        self.pos_embedding = nn.Parameter(torch.randn(seq_len + 1, 1, hidden)*0.02)
+        # self.pos_encoder = PositionalEncoding(hidden, dropout)
+        self.pos_embedding = nn.Parameter(torch.randn(seq_len + 1, 1, hidden) * 0.02)
         self.pos_drop = nn.Dropout(p=dropout)
 
         self.cls_token = nn.Parameter(torch.randn(1, 1, hidden) * 0.02)
@@ -67,9 +68,9 @@ class SigTransformer(nn.Module):
         src = self.head(src)  # [N,B,h]
         cls_tokens = repeat(self.cls_token, '1 1 h -> 1 b h', b=src.shape[1])
         src = torch.cat((cls_tokens, src), dim=0)
-        #src = self.pos_encoder(src)
+        # src = self.pos_encoder(src)
         src += self.pos_embedding
-        src=self.pos_drop(src)
+        src = self.pos_drop(src)
 
         output = rearrange(self.encoder(src), 'n b h -> b n h')
         output = self.mlp_head(output[:, 0, :])

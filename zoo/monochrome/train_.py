@@ -6,9 +6,9 @@ from typing import Optional, Type
 import torch
 from ditk import logging
 from torch import nn
+from torch.optim import lr_scheduler
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-from torch.optim import lr_scheduler
 from tqdm.auto import tqdm
 
 from .alexnet import MonochromeAlexNet
@@ -16,7 +16,6 @@ from .dataset import MonochromeDataset, random_split_dataset
 from .resnet import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
 from .transformer import SigTransformer
 from ..base import _TRAIN_DIR as _GLOBAL_TRAIN_DIR
-from ..utils import LRTyping, get_init_lr, get_dynamic_lr_scheduler
 
 from accelerate import Accelerator
 
@@ -72,11 +71,12 @@ def _ckpt_epoch(filename: Optional[str]) -> Optional[int]:
 
 
 def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optional[str] = None,
-          train_ratio: float = 0.8, batch_size: int = 4, feature_bins: int = 256, fc: Optional[int] = 100,
-          max_epochs: int = 500, learning_rate: LRTyping = 0.001, num_workers=8,
-          save_per_epoch: int = 10, eval_epoch=5, model_name: str = 'alexnet'):
+          train_ratio: float = 0.8, batch_size: int = 4, feature_bins: int = 180, fc: Optional[int] = 75,
+          max_epochs: int = 500, learning_rate: float = 0.001, weight_decay: float = 1e-3,
+          num_workers: Optional[int] = None, device: Optional[str] = None,
+          save_per_epoch: int = 10, eval_epoch: int=5, model_name: str = 'alexnet'):
     accelerator = Accelerator(
-        #mixed_precision=self.cfgs.mixed_precision,
+        # mixed_precision=self.cfgs.mixed_precision,
         step_scheduler_with_optimizer=False,
     )
 
@@ -106,13 +106,12 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
 
     # Load previous epoch
     model = _KNOWN_MODELS[model_name]().float()
-    # model = MonochromeAlexNet().float()
     if from_ckpt is None:
         from_ckpt = _find_latest_ckpt(session_name)
     previous_epoch = _ckpt_epoch(from_ckpt) or 0
     if from_ckpt:
         logging.info(f'Load checkpoint from {from_ckpt!r}.')
-        model.load_state_dict(torch.load(from_ckpt))
+        model.load_state_dict(torch.load(from_ckpt, map_location='cpu'))
     else:
         logging.info(f'No checkpoint found, new model will be used.')
 
@@ -121,12 +120,12 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
     #    model = model.cuda()
 
     loss_fn = nn.CrossEntropyLoss()
-    initial_lr = get_init_lr(learning_rate)
-    optimizer = torch.optim.AdamW([{'params': model.parameters(), 'initial_lr': initial_lr}], lr=initial_lr, weight_decay=1e-3)
-    #scheduler = get_dynamic_lr_scheduler(optimizer, lr=learning_rate, last_epoch=previous_epoch)
-    scheduler = lr_scheduler.OneCycleLR(optimizer, max_lr=learning_rate,
-                            steps_per_epoch=len(train_dataloader), epochs=max_epochs,
-                            pct_start=0.15, final_div_factor=20.)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+    scheduler = lr_scheduler.OneCycleLR(
+        optimizer, max_lr=learning_rate,
+        steps_per_epoch=len(train_dataloader), epochs=max_epochs,
+        pct_start=0.15, final_div_factor=20.
+    )
 
     model, optimizer, train_dataloader, test_dataloader, scheduler=accelerator.prepare(model, optimizer, train_dataloader, test_dataloader, scheduler)
 

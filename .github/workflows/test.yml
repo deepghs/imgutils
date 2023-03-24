@@ -67,6 +67,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y tree cloc wget curl make zip
+          sudo apt-get install -y git-lfs
       - name: Set up system dependences on Windows
         if: ${{ env.OS_NAME == 'Windows' }}
         shell: bash

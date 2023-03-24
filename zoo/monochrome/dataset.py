@@ -48,7 +48,7 @@ class MonochromeDataset(Dataset):
         return len(self.samples)
 
     def get_hist(self, sample):
-        image = Image.open(sample)
+        image = Image.open(sample).convert('RGB')  # image must be rgb
         if self.transform:
             image = self.transform(image)
         image = image.convert('HSV')
