@@ -43,7 +43,7 @@ def onnx_check(model: Optional[str] = None, feature_bins: int = 180, verbose: bo
 
     with tempfile.TemporaryDirectory() as td:
         for _model in models:
-            click.echo(click.style(f'Try exporting {_model} to onnx ...'), nl=False)
+            click.echo(click.style(f'Try exporting {_model} to onnx ... '), nl=False)
             _torch_model = _KNOWN_MODELS[_model]().float()
             onnx_filename = os.path.join(output_dir or td, f'{_model}.onnx')
             try:
