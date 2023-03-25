@@ -17,7 +17,8 @@ from .dataset import MonochromeDataset, Monochrome2DDataset, random_split_datase
 from .levit1d import LeSigTransformer
 from .levit2d import LeViT
 from .loss import FocalLoss
-from .resnet import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
+from .resnet1d import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
+from .resnet2d import ResNet182D, ResNet342D, ResNet502D, ResNet1012D, ResNet1522D
 from .transformer import SigTransformer
 from ..base import _TRAIN_DIR as _GLOBAL_TRAIN_DIR
 
@@ -44,6 +45,11 @@ _register_model(ResNet34)
 _register_model(ResNet50)
 _register_model(ResNet101)
 _register_model(ResNet152)
+_register_model(ResNet182D)
+_register_model(ResNet342D)
+_register_model(ResNet502D)
+_register_model(ResNet1012D)
+_register_model(ResNet1522D)
 _register_model(SigTransformer)
 _register_model(LeSigTransformer)
 _register_model(LeViT)
