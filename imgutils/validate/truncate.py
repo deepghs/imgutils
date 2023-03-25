@@ -46,6 +46,12 @@ def is_truncated_file(path: str) -> bool:
         False
         >>> is_truncated_file('2216614_truncated.jpg')
         True
+
+    .. warning::
+        The function :func:`is_truncated_file` is thread-safe due to the usage of a global lock. \
+        During the function is run, the value of `ImageFile.LOAD_TRUNCATED_IMAGES <https://pillow.readthedocs.io/en/stable/reference/ImageFile.html#PIL.ImageFile.LOAD_TRUNCATED_IMAGES>`_ \
+        is set to ``True``, this may cause some side effect when your projects have dependency on this ``ImageFile.LOAD_TRUNCATED_IMAGES``.
+
     """
     try:
         Image.open(path).load()
