@@ -21,7 +21,7 @@ def _image_input_process(img) -> Tuple[Image.Image, str]:
 
 
 @_mock_load_truncated_images(True)
-def image_plot(*images, save_as: str, columns=2):
+def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False):
     plt.cla()
     plt.tight_layout()
 
@@ -36,6 +36,8 @@ def image_plot(*images, save_as: str, columns=2):
         print(image, label)
         ax.imshow(image)
         ax.set_title(label)
+        if not keep_axis:
+            ax.axis('off')
 
     for i in range(len(images), rows * columns):
         xi, yi = i // columns, i % columns
