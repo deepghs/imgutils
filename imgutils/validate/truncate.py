@@ -33,11 +33,8 @@ def is_truncated_file(path: str) -> bool:
     Examples:
         Here are some images for example
 
-        .. figure:: truncated.dat.svg
-           :class: with-border
+        .. image:: truncated.dat.svg
            :align: center
-
-           Example images of truncated
 
         >>> from imgutils.validate import is_truncated_file
         >>>

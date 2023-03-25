@@ -19,11 +19,8 @@ def is_greyscale(image: ImageTyping):
     Examples:
         Here are some images for example
 
-        .. figure:: greyscale.dat.svg
-           :class: with-border
+        .. image:: greyscale.dat.svg
            :align: center
-
-           Example images of greyscale
 
         >>> from imgutils.validate import is_greyscale
         >>>
