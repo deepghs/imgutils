@@ -8,17 +8,17 @@ from accelerate import Accelerator
 from ditk import logging
 from torch import nn
 from torch.optim import lr_scheduler
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
 from torch.utils.tensorboard import SummaryWriter
 from tqdm.auto import tqdm
 
 from .alexnet import MonochromeAlexNet
-from .dataset import MonochromeDataset, Monochrome2DDataset, random_split_dataset, TRANSFORM_val, TRANSFORM2_val
+from .dataset import MonochromeDataset, Monochrome2DDataset, random_split_dataset, TRANSFORM_VAL, TRANSFORM2_VAL
+from .levit1d import LeSigTransformer
+from .levit2d import LeViT
 from .loss import FocalLoss
 from .resnet import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
 from .transformer import SigTransformer
-from .levit1d import LeSigTransformer
-from .levit2d import LeViT
 from ..base import _TRAIN_DIR as _GLOBAL_TRAIN_DIR
 
 _TRAIN_DIR = os.path.join(_GLOBAL_TRAIN_DIR, 'monochrome')
@@ -28,6 +28,7 @@ _CKPT_DIR = os.path.join(_TRAIN_DIR, 'ckpts')
 _CKPT_PATTERN = re.compile(r'^monochrome-(?P<name>[a-zA-Z\d_\-]+)-(?P<epoch>\d+)\.ckpt$')
 
 _KNOWN_MODELS = {}
+_KNOWN_DATASETS = {}
 
 
 def _register_model(cls: Type[nn.Module], *args, name=None, **kwargs):
@@ -44,6 +45,14 @@ _register_model(ResNet152)
 _register_model(SigTransformer)
 _register_model(LeSigTransformer)
 _register_model(LeViT)
+
+
+def _register_dataset(cls: Type[Dataset]):
+    _KNOWN_DATASETS[cls.__dims__] = cls
+
+
+_register_dataset(MonochromeDataset)
+_register_dataset(Monochrome2DDataset)
 
 
 def _find_latest_ckpt(name: str) -> Optional[str]:
@@ -78,13 +87,14 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
           train_ratio: float = 0.8, batch_size: int = 4, feature_bins: int = 180, fc: Optional[int] = 75,
           max_epochs: int = 500, learning_rate: float = 0.001, weight_decay: float = 1e-3, preference: float = 0.0,
           num_workers: Optional[int] = 8, save_per_epoch: int = 10, eval_epoch: int = 5,
-          model_name: str = 'alexnet', data_2d=False):
+          model_name: str = 'alexnet'):
     accelerator = Accelerator(
         # mixed_precision=self.cfgs.mixed_precision,
         step_scheduler_with_optimizer=False,
     )
 
     session_name = session_name or model_name
+    model_dims = getattr(_KNOWN_MODELS[model_name], '__dims__', 1)
     _log_dir = os.path.join(_LOG_DIR, session_name)
 
     if accelerator.is_local_main_process:
@@ -100,14 +110,18 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         writer = None
 
     # Initialize dataset
-    full_dataset = (Monochrome2DDataset if data_2d else MonochromeDataset)(dataset_dir, bins=feature_bins, fc=fc)
+    full_dataset = _KNOWN_DATASETS[model_dims](dataset_dir, bins=feature_bins, fc=fc)
     dataset_size = len(full_dataset)
     train_size = int(train_ratio * dataset_size)
     test_size = dataset_size - train_size
 
     # 使用 random_split 函数拆分数据集
-    train_dataset, test_dataset = random_split_dataset(full_dataset, train_size, test_size, trans_val=TRANSFORM2_val if data_2d else TRANSFORM_val)
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers, drop_last=True)
+    train_dataset, test_dataset = random_split_dataset(
+        full_dataset, train_size, test_size,
+        trans_val=TRANSFORM2_VAL if full_dataset.__dims__ == 2 else TRANSFORM_VAL
+    )
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers,
+                                  drop_last=True)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size, num_workers=num_workers)
 
     # Load previous epoch
