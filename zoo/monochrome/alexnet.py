@@ -5,7 +5,7 @@ import torch.nn as nn
 class MonochromeAlexNet(nn.Module):
     __model_name__ = 'alexnet'
 
-    def __init__(self, input_channels: int = 3, num_classes=2, avgpool_size: int = 7):
+    def __init__(self, input_channels: int = 3, num_classes=2, avgpool_size: int = 4):
         super(MonochromeAlexNet, self).__init__()
         self.features = nn.Sequential(
             nn.Conv1d(input_channels, 96, kernel_size=11, stride=4, padding=2),
@@ -39,3 +39,14 @@ class MonochromeAlexNet(nn.Module):
         x = torch.flatten(x, 1)
         x = self.classifier(x)
         return x
+
+
+if __name__ == '__main__':
+    from thop import profile
+
+    net = MonochromeAlexNet()
+    x = torch.randn(1, 3, 180)
+
+    flops, params = profile(net, (x,))
+    print('FLOPs = ' + str(flops / 1000 ** 3) + 'G')
+    print('Params = ' + str(params / 1000 ** 2) + 'M')

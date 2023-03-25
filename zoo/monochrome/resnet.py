@@ -46,18 +46,15 @@ class Bottleneck(nn.Module):
         super(Bottleneck, self).__init__()
         self.conv1 = nn.Conv1d(in_planes, planes, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm1d(planes)
-        self.conv2 = nn.Conv1d(planes, planes, kernel_size=3,
-                               stride=stride, padding=1, bias=False)
+        self.conv2 = nn.Conv1d(planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
         self.bn2 = nn.BatchNorm1d(planes)
-        self.conv3 = nn.Conv1d(planes, self.expansion *
-                               planes, kernel_size=1, bias=False)
+        self.conv3 = nn.Conv1d(planes, self.expansion * planes, kernel_size=1, bias=False)
         self.bn3 = nn.BatchNorm1d(self.expansion * planes)
 
         self.shortcut = nn.Sequential()
         if stride != 1 or in_planes != self.expansion * planes:
             self.shortcut = nn.Sequential(
-                nn.Conv1d(in_planes, self.expansion * planes,
-                          kernel_size=1, stride=stride, bias=False),
+                nn.Conv1d(in_planes, self.expansion * planes, kernel_size=1, stride=stride, bias=False),
                 nn.BatchNorm1d(self.expansion * planes)
             )
 
@@ -71,7 +68,7 @@ class Bottleneck(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, block, num_blocks, num_classes, avgpool_size: int = 8):
+    def __init__(self, block, num_blocks, num_classes, avgpool_size: int = 23):
         super(ResNet, self).__init__()
         self.in_planes = 64
 
@@ -143,9 +140,11 @@ class ResNet152(ResNet):
 if __name__ == '__main__':
     from thop import profile
 
-    net = ResNet50(2)
-    x = torch.randn(1, 3, 180)
+    for resnet_class in [ResNet18, ResNet34, ResNet50, ResNet101, ResNet152]:
+        net = resnet_class()
+        x = torch.randn(1, 3, 180)
 
-    flops, params = profile(net, (x,))
-    print('FLOPs = ' + str(flops / 1000 ** 3) + 'G')
-    print('Params = ' + str(params / 1000 ** 2) + 'M')
+        flops, params = profile(net, (x,))
+        print(f'{resnet_class.__name__}:')
+        print('FLOPs = ' + str(flops / 1000 ** 3) + 'G')
+        print('Params = ' + str(params / 1000 ** 2) + 'M')

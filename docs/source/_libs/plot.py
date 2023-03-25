@@ -1,0 +1,47 @@
+from typing import Tuple
+
+import matplotlib.pyplot as plt
+from PIL import Image
+
+from imgutils.data import load_image
+from imgutils.validate.truncate import _mock_load_truncated_images
+
+
+def _image_input_process(img) -> Tuple[Image.Image, str]:
+    if isinstance(img, tuple):
+        img_file, label = img
+        image = load_image(img_file)
+    elif isinstance(img, str):
+        label = img
+        image = load_image(img)
+    else:
+        raise TypeError(f'Unknown type of img - {img!r}.')
+
+    return image.convert('RGB'), label
+
+
+@_mock_load_truncated_images(True)
+def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False):
+    plt.cla()
+    plt.tight_layout()
+
+    assert images, 'No less than 1 images required.'
+    n = len(images)
+    rows = (n + columns - 1) // columns
+    fig, axs = plt.subplots(rows, columns)
+    for i, img in enumerate(images, start=0):
+        xi, yi = i // columns, i % columns
+        image, label = _image_input_process(img)
+        ax = axs[yi] if rows == 1 else axs[xi, yi]
+        print(image, label)
+        ax.imshow(image)
+        ax.set_title(label)
+        if not keep_axis:
+            ax.axis('off')
+
+    for i in range(len(images), rows * columns):
+        xi, yi = i // columns, i % columns
+        ax = axs[yi] if rows == 1 else axs[xi, yi]
+        ax.axis('off')
+
+    plt.savefig(save_as, bbox_inches='tight', pad_inches=0.1, dpi=200, transparent=True)

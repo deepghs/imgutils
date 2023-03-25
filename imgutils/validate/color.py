@@ -9,6 +9,33 @@ _G_PNSR_THRESHOLD = -_GREYSCALE_B / _GREYSCALE_K
 
 
 def is_greyscale(image: ImageTyping):
+    """
+    Overview:
+    Check if an image is greyscale or not.
+
+    :param image: Path or PIL object of image.
+    :return: Is greyscale or not.
+
+    Examples:
+        Here are some images for example
+
+        .. figure:: greyscale.dat.svg
+           :class: with-border
+           :align: center
+
+           Example images of greyscale
+
+        >>> from imgutils.validate import is_greyscale
+        >>>
+        >>> is_greyscale('jpeg_full.jpeg')
+        False
+        >>> is_greyscale('6125901.jpg')
+        False
+        >>> is_greyscale('6125785.png')
+        False
+        >>> is_greyscale('6124220.jpg')
+        True
+    """
     from ..metrics import psnr
 
     image = load_image(image)

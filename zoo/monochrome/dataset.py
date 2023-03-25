@@ -1,7 +1,8 @@
 import os
+import random
+from copy import deepcopy
 from typing import Optional
 
-import torch
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.transforms import transforms
@@ -44,7 +45,7 @@ TRANSFORM2_val = transforms.Compose([
 ])
 
 class MonochromeDataset(Dataset):
-    def __init__(self, root_dir: str, bins: int = 200, fc: Optional[int] = 50, transform=TRANSFORM):
+    def __init__(self, root_dir: str, bins: int = 180, fc: Optional[int] = 75, transform=TRANSFORM):
         self.root_dir = root_dir
         self.bins = bins
         self.fc = fc
