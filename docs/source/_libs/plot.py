@@ -21,14 +21,15 @@ def _image_input_process(img) -> Tuple[Image.Image, str]:
 
 
 @_mock_load_truncated_images(True)
-def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False):
+def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False, figsize=(6, 6)):
     plt.cla()
     plt.tight_layout()
 
     assert images, 'No less than 1 images required.'
     n = len(images)
     rows = (n + columns - 1) // columns
-    fig, axs = plt.subplots(rows, columns)
+    fig, axs = plt.subplots(rows, columns, figsize=figsize)
+    plt.subplots_adjust(wspace=0.2, hspace=0.15)
     for i, img in enumerate(images, start=0):
         xi, yi = i // columns, i % columns
         image, label = _image_input_process(img)
@@ -44,4 +45,4 @@ def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False):
         ax = axs[yi] if rows == 1 else axs[xi, yi]
         ax.axis('off')
 
-    plt.savefig(save_as, bbox_inches='tight', pad_inches=0.1, dpi=200, transparent=True)
+    plt.savefig(save_as, bbox_inches='tight', pad_inches=0.1, dpi=300, transparent=True)
