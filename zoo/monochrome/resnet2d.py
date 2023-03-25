@@ -59,7 +59,7 @@ class Bottleneck(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, block, num_blocks, num_classes=2, avgpool_size: Tuple[int, int] = (16, 16)):
+    def __init__(self, block, num_blocks, num_classes=2, avgpool_size: Tuple[int, int] = (4, 4)):
         super(ResNet, self).__init__()
         self.in_planes = 64
 
