@@ -152,7 +152,7 @@ class LeViT(nn.Module):
             stages=3,
             dim_key=32,
             dim_value=64,
-            dropout=0.,
+            dropout=0.2,
             num_distill_classes=None
     ):
         super().__init__()
