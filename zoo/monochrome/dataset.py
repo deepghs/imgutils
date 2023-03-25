@@ -25,6 +25,24 @@ TRANSFORM_val = transforms.Compose([
     transforms.Resize(450),
 ])
 
+TRANSFORM2 = transforms.Compose([
+    transforms.Resize(450),
+    transforms.RandomCrop(400, padding=50, pad_if_needed=True, padding_mode='reflect'),
+    transforms.RandomRotation((-180, 180)),
+    transforms.RandomHorizontalFlip(),
+    transforms.RandomVerticalFlip(),
+    transforms.ColorJitter(0.10, 0.10, 0.10, 0.10),
+    transforms.Resize((384, 384)),
+    transforms.ToTensor(),
+    transforms.Normalize([0.5], [0.5])
+])
+
+TRANSFORM2_val = transforms.Compose([
+    transforms.Resize((384, 384)),
+    transforms.ToTensor(),
+    transforms.Normalize([0.5], [0.5])
+])
+
 class MonochromeDataset(Dataset):
     def __init__(self, root_dir: str, bins: int = 200, fc: Optional[int] = 50, transform=TRANSFORM):
         self.root_dir = root_dir
@@ -47,33 +65,47 @@ class MonochromeDataset(Dataset):
     def __len__(self):
         return len(self.samples)
 
-    def get_hist(self, sample):
+    def pre_process(self, sample):
         image = Image.open(sample).convert('RGB')  # image must be rgb
         if self.transform:
             image = self.transform(image)
         image = image.convert('HSV')
         return image_encode(image, bins=self.bins, fc=self.fc, normalize=True)
 
+    def cache_data(self, repeats=1):
+        samples_build = []
+        for sample, label in tqdm(self.samples*repeats):
+            samples_build.append((self.pre_process(sample), label))
+        self.samples = samples_build
+        self.pre_build = True
+
     def __getitem__(self, idx):
         sample, label = self.samples[idx]
         if self.pre_build:
             return sample, label
         else:
-            return self.get_hist(sample), label
+            return self.pre_process(sample), label
 
-def random_split_dataset(dataset:MonochromeDataset, train_size, test_size):
+class Monochrome2DDataset(MonochromeDataset):
+    def __init__(self, root_dir: str, bins: int = 200, fc: Optional[int] = 50, transform=TRANSFORM2):
+        super(Monochrome2DDataset, self).__init__(root_dir, bins, fc, transform)
+
+    def pre_process(self, sample):
+        image = Image.open(sample).convert('RGB')  # image must be rgb
+        if self.transform:
+            image = self.transform(image)
+        return image
+
+def random_split_dataset(dataset:MonochromeDataset, train_size, test_size, trans_val=TRANSFORM_val):
     train_data = deepcopy(dataset)
     random.shuffle(train_data.samples)
     all_samples = train_data.samples
     train_data.samples = train_data.samples[:train_size]
 
     test_data = dataset
-    test_data.transform = TRANSFORM_val
-    samples_build = []
+    test_data.transform = trans_val
     print('pre-build testset')
-    for sample, label in tqdm(all_samples[train_size:train_size+test_size]):
-        samples_build.append((test_data.get_hist(sample), label))
-    test_data.samples = samples_build
-    test_data.pre_build=True
+    test_data.samples = all_samples[train_size:train_size+test_size]
+    test_data.cache_data()
 
     return train_data, test_data

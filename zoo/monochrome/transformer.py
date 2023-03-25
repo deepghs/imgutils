@@ -5,84 +5,122 @@ from einops import repeat, rearrange
 from einops.layers.torch import Rearrange
 from torch import nn
 
+# helpers
 
-class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, dropout=0.1, max_len=200):
-        super(PositionalEncoding, self).__init__()
-        self.dropout = nn.Dropout(p=dropout)
+def posemb_sincos_1d(patches, temperature = 10000, dtype = torch.float32):
+    _, n, dim, device, dtype = *patches.shape, patches.device, patches.dtype
 
-        pe = torch.zeros(max_len, d_model)
-        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model))
-        pe[:, 0::2] = torch.sin(position * div_term)
-        pe[:, 1::2] = torch.cos(position * div_term)
-        pe = pe.unsqueeze(0).transpose(0, 1)
-        self.register_buffer('pe', pe)
+    n = torch.arange(n, device = device)
+    assert (dim % 2) == 0, 'feature dimension must be multiple of 2 for sincos emb'
+    omega = torch.arange(dim // 2, device = device) / (dim // 2 - 1)
+    omega = 1. / (temperature ** omega)
+
+    n = n.flatten()[:, None] * omega[None, :]
+    pe = torch.cat((n.sin(), n.cos()), dim = 1)
+    return pe.type(dtype)
+
+# classes
+
+class FeedForward(nn.Module):
+    def __init__(self, dim, hidden_dim):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.LayerNorm(dim),
+            nn.Linear(dim, hidden_dim),
+            nn.GELU(),
+            nn.Linear(hidden_dim, dim),
+        )
+    def forward(self, x):
+        return self.net(x)
+
+class Attention(nn.Module):
+    def __init__(self, dim, heads = 8, dim_head = 64):
+        super().__init__()
+        inner_dim = dim_head *  heads
+        self.heads = heads
+        self.scale = dim_head ** -0.5
+        self.norm = nn.LayerNorm(dim)
+
+        self.attend = nn.Softmax(dim = -1)
+
+        self.to_qkv = nn.Linear(dim, inner_dim * 3, bias = False)
+        self.to_out = nn.Linear(inner_dim, dim, bias = False)
 
     def forward(self, x):
-        x = x + self.pe[:x.size(0), :]
-        return self.dropout(x)
+        x = self.norm(x)
 
+        qkv = self.to_qkv(x).chunk(3, dim = -1)
+        q, k, v = map(lambda t: rearrange(t, 'b n (h d) -> b h n d', h = self.heads), qkv)
 
-class CNNHead(nn.Module):
-    def __init__(self, in_chans=1, embed_dim=768):
+        dots = torch.matmul(q, k.transpose(-1, -2)) * self.scale
+
+        attn = self.attend(dots)
+
+        out = torch.matmul(attn, v)
+        out = rearrange(out, 'b h n d -> b n (h d)')
+        return self.to_out(out)
+
+class Transformer(nn.Module):
+    def __init__(self, dim, depth, heads, dim_head, mlp_dim):
         super().__init__()
-        self.proj = nn.Sequential(
-            #nn.Conv1d(in_chans, embed_dim // 2, kernel_size=7, stride=2),
-            #nn.BatchNorm1d(embed_dim // 2),
-            #nn.SiLU(),
-            #nn.Conv1d(embed_dim // 2, embed_dim, kernel_size=5, stride=2),
-            nn.Conv1d(in_chans, embed_dim, kernel_size=1, stride=1),
-            Rearrange('b h n -> n b h'),
-            nn.LayerNorm(embed_dim),
-        )
-
-    def forward(self, x):  # x:[B,ch,N_seq]
-        x = self.proj(x)
+        self.layers = nn.ModuleList([])
+        for _ in range(depth):
+            self.layers.append(nn.ModuleList([
+                Attention(dim, heads = heads, dim_head = dim_head),
+                FeedForward(dim, mlp_dim)
+            ]))
+    def forward(self, x):
+        for attn, ff in self.layers:
+            x = attn(x) + x
+            x = ff(x) + x
         return x
-
 
 class SigTransformer(nn.Module):
     __model_name__ = 'transformer'
 
-    def __init__(self, in_ch=3, n_cls=2, hidden=512, nlayers=16, dropout=0.1, seq_len=180):
-        super(SigTransformer, self).__init__()
-        nhead = hidden // 64
+    def __init__(self, seq_len=180, patch_size=1, num_classes=2, dim=1024, depth=6, heads=8, mlp_dim=2048, channels = 3, dim_head = 64):
+        super().__init__()
 
-        self.head = CNNHead(in_ch, hidden)
-        # self.pos_encoder = PositionalEncoding(hidden, dropout)
-        self.pos_embedding = nn.Parameter(torch.randn(seq_len + 1, 1, hidden) * 0.02)
-        self.pos_drop = nn.Dropout(p=dropout)
+        assert seq_len % patch_size == 0
 
-        self.cls_token = nn.Parameter(torch.randn(1, 1, hidden) * 0.02)
+        num_patches = seq_len // patch_size
+        patch_dim = channels * patch_size
 
-        encoder_layer = nn.TransformerEncoderLayer(hidden, nhead, dim_feedforward=2048, dropout=dropout)
-        encoder_norm = nn.LayerNorm(hidden)
-        self.encoder = nn.TransformerEncoder(encoder_layer, nlayers, encoder_norm)
-        self.mlp_head = nn.Sequential(
-            nn.LayerNorm(hidden),
-            nn.Linear(hidden, n_cls)
+        self.to_patch_embedding = nn.Sequential(
+            Rearrange('b c (n p) -> b n (p c)', p = patch_size),
+            nn.LayerNorm(patch_dim),
+            nn.Linear(patch_dim, dim),
+            nn.LayerNorm(dim),
         )
 
-    def forward(self, src):
-        src = self.head(src)  # [N,B,h]
-        cls_tokens = repeat(self.cls_token, '1 1 h -> 1 b h', b=src.shape[1])
-        src = torch.cat((cls_tokens, src), dim=0)
-        # src = self.pos_encoder(src)
-        src += self.pos_embedding
-        src = self.pos_drop(src)
+        self.transformer = Transformer(dim, depth, heads, dim_head, mlp_dim)
 
-        output = rearrange(self.encoder(src), 'n b h -> b n h')
-        output = self.mlp_head(output[:, 0, :])
+        self.to_latent = nn.Identity()
+        self.linear_head = nn.Sequential(
+            nn.LayerNorm(dim),
+            nn.Linear(dim, num_classes)
+        )
 
-        return output
+    def forward(self, series):
+        *_, n, dtype = *series.shape, series.dtype
 
+        x = self.to_patch_embedding(series)
+        pe = posemb_sincos_1d(x)
+        x = rearrange(x, 'b ... d -> b (...) d') + pe
+
+        x = self.transformer(x)
+        x = x.mean(dim = 1)
+
+        x = self.to_latent(x)
+        return self.linear_head(x)
 
 if __name__ == '__main__':
     from thop import profile
 
-    transformer = SigTransformer()
+    transformer = SigTransformer(180, 1, 2)
     x = torch.randn(1, 3, 180)
+    y = transformer(x)
+    print(y.shape)
 
     flops, params = profile(transformer, (x,))
     print('FLOPs = ' + str(flops / 1000 ** 3) + 'G')
