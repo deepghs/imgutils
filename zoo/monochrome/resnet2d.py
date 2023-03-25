@@ -82,7 +82,9 @@ class ResNet(nn.Module):
 
     def forward(self, x):
         out = F.relu(self.bn1(self.conv1(x)))
+        print(out.shape)
         out = self.layer1(out)
+        print(out.shape)
         out = self.layer2(out)
         out = self.layer3(out)
         out = self.layer4(out)
@@ -139,10 +141,11 @@ if __name__ == '__main__':
 
     for resnet_class in [
         ResNet182D, ResNet342D,
-        ResNet502D, ResNet1012D, ResNet1522D
+        ResNet502D,
+        # ResNet1012D, ResNet1522D
     ]:
         net = resnet_class()
-        x = torch.randn(1, 3, 384, 384)
+        x = torch.randn(4, 3, 160, 160)
 
         flops, params = profile(net, (x,))
         print(f'{resnet_class.__name__}:')
