@@ -6,6 +6,7 @@ from typing import Optional, Type
 import torch
 from accelerate import Accelerator
 from ditk import logging
+from hbutils.random import global_seed
 from torch import nn
 from torch.optim import lr_scheduler
 from torch.utils.data import DataLoader, Dataset
@@ -95,7 +96,10 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
           train_ratio: float = 0.8, batch_size: int = 4, feature_bins: int = 180, fc: Optional[int] = 75,
           max_epochs: int = 500, learning_rate: float = 0.001, weight_decay: float = 1e-3, preference: float = 0.0,
           num_workers: Optional[int] = 8, save_per_epoch: int = 10, eval_epoch: int = 5,
-          model_name: str = 'alexnet'):
+          model_name: str = 'alexnet', seed: Optional[int] = 0):
+    if seed is not None:
+        global_seed(seed)
+
     accelerator = Accelerator(
         # mixed_precision=self.cfgs.mixed_precision,
         step_scheduler_with_optimizer=False,
