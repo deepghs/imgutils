@@ -98,6 +98,9 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
           num_workers: Optional[int] = 8, save_per_epoch: int = 10, eval_epoch: int = 5,
           model_name: str = 'alexnet', seed: Optional[int] = 0):
     if seed is not None:
+        # native random, numpy, torch and faker's seeds are includes
+        # if you need to register more library for seeding, see:
+        # https://hansbug.github.io/hbutils/main/api_doc/random/state.html#register-random-source
         global_seed(seed)
 
     accelerator = Accelerator(
