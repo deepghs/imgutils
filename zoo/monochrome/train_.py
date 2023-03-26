@@ -162,7 +162,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         loss_weight = torch.as_tensor([torch.e, 1.0]) ** -preference
     else:
         loss_weight = torch.as_tensor([1.0, torch.e]) ** preference
-    loss_fn = FocalLoss(weight=loss_weight.to(accelerator.device)).to(accelerator.device)
+    loss_fn = FocalLoss(weight=loss_weight).to(accelerator.device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     scheduler = lr_scheduler.OneCycleLR(
         optimizer, max_lr=learning_rate,
