@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 from copy import deepcopy
@@ -6,9 +7,7 @@ from typing import Optional
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision.transforms import transforms
-from copy import deepcopy
 from tqdm.auto import tqdm
-import random
 
 from .encode import image_encode
 
@@ -22,7 +21,7 @@ TRANSFORM = transforms.Compose([
     transforms.Resize(450),
 ])
 
-TRANSFORM_val = transforms.Compose([
+TRANSFORM_VAL = transforms.Compose([
     transforms.Resize(450),
 ])
 
@@ -38,13 +37,16 @@ TRANSFORM2 = transforms.Compose([
     transforms.Normalize([0.5], [0.5])
 ])
 
-TRANSFORM2_val = transforms.Compose([
+TRANSFORM2_VAL = transforms.Compose([
     transforms.Resize((384, 384)),
     transforms.ToTensor(),
     transforms.Normalize([0.5], [0.5])
 ])
 
+
 class MonochromeDataset(Dataset):
+    __dims__ = 1
+
     def __init__(self, root_dir: str, bins: int = 180, fc: Optional[int] = 75, transform=TRANSFORM):
         self.root_dir = root_dir
         self.bins = bins
@@ -75,7 +77,7 @@ class MonochromeDataset(Dataset):
 
     def cache_data(self, repeats=1):
         samples_build = []
-        for sample, label in tqdm(self.samples*repeats):
+        for sample, label in tqdm(self.samples * repeats):
             samples_build.append((self.pre_process(sample), label))
         self.samples = samples_build
         self.pre_build = True
@@ -87,7 +89,10 @@ class MonochromeDataset(Dataset):
         else:
             return self.pre_process(sample), label
 
+
 class Monochrome2DDataset(MonochromeDataset):
+    __dims__ = 2
+
     def __init__(self, root_dir: str, bins: int = 200, fc: Optional[int] = 50, transform=TRANSFORM2):
         super(Monochrome2DDataset, self).__init__(root_dir, bins, fc, transform)
 
@@ -97,7 +102,8 @@ class Monochrome2DDataset(MonochromeDataset):
             image = self.transform(image)
         return image
 
-def random_split_dataset(dataset:MonochromeDataset, train_size, test_size, trans_val=TRANSFORM_val):
+
+def random_split_dataset(dataset: MonochromeDataset, train_size, test_size, trans_val=TRANSFORM_VAL):
     train_data = deepcopy(dataset)
     random.shuffle(train_data.samples)
     all_samples = train_data.samples
@@ -105,8 +111,8 @@ def random_split_dataset(dataset:MonochromeDataset, train_size, test_size, trans
 
     test_data = dataset
     test_data.transform = trans_val
-    print('pre-build testset')
-    test_data.samples = all_samples[train_size:train_size+test_size]
+    logging.info('Pre-build test dataset ...')
+    test_data.samples = all_samples[train_size:train_size + test_size]
     test_data.cache_data()
 
     return train_data, test_data

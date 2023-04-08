@@ -6,6 +6,7 @@ import torch
 from PIL import Image
 from torch import nn
 
+from .dataset import TRANSFORM2_VAL
 from .encode import image_encode
 from ..utils import get_testfile, onnx_optimize
 
@@ -22,9 +23,12 @@ class ModelWithSoftMax(nn.Module):
 
 
 def export_model_to_onnx(model, onnx_filename, opset_version: int = 14, verbose: bool = True,
-                         no_optimize: bool = False, feature_bins: int = 256):
+                         no_optimize: bool = False, feature_bins: int = 180):
     image = Image.open(get_testfile('6125785.jpg')).convert('RGB')
-    example_input = image_encode(image, bins=feature_bins, normalize=True).float().unsqueeze(0)
+    if getattr(model, '__dims__', 1) == 1:
+        example_input = image_encode(image, bins=feature_bins, normalize=True).float().unsqueeze(0)
+    else:
+        example_input = TRANSFORM2_VAL(image).float().unsqueeze(0)
     model = ModelWithSoftMax(model).float()
 
     if torch.cuda.is_available():

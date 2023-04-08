@@ -43,7 +43,7 @@ def onnx_check(model: Optional[str] = None, feature_bins: int = 180, verbose: bo
 
     with tempfile.TemporaryDirectory() as td:
         for _model in models:
-            click.echo(click.style(f'Try exporting {_model} to onnx ...'), nl=False)
+            click.echo(click.style(f'Try exporting {_model} to onnx ... '), nl=False)
             _torch_model = _KNOWN_MODELS[_model]().float()
             onnx_filename = os.path.join(output_dir or td, f'{_model}.onnx')
             try:
@@ -78,8 +78,9 @@ def export_one(output: str, feature_bins: int, ckpt: str, model_name: str):
 _KNOWN_CKPTS: List[Tuple[str, str, int]] = [
     # ('monochrome-alexnet-480.ckpt', 'alexnet', 180),
     # ('monochrome-resnet18-480.ckpt', 'resnet18', 180),
-    ('monochrome-transformer-480.ckpt', 'transformer', 180),
+    # ('monochrome-transformer-480.ckpt', 'transformer', 180),
     # ('monochrome-resnet18-safe2-450.ckpt', 'resnet18', 180),
+    ('monochrome-levit_d0.2-500.ckpt', 'levit', 180),
 ]
 
 
