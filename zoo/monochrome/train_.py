@@ -55,7 +55,7 @@ _register_model(ResNet1522D)
 _register_model(SigTransformer)
 _register_model(LeSigTransformer)
 _register_model(LeViT)
-_register_model(CAFormerBuilder)
+_register_model(CAFormerBuilder())
 
 
 def _register_dataset(cls: Type[Dataset]):
