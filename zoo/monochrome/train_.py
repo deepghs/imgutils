@@ -19,6 +19,7 @@ from .resnet import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
 from .transformer import SigTransformer
 from .levit1d import LeSigTransformer
 from .levit2d import LeViT
+from .metaformer import CAFormerBuilder
 from ..base import _TRAIN_DIR as _GLOBAL_TRAIN_DIR
 
 _TRAIN_DIR = os.path.join(_GLOBAL_TRAIN_DIR, 'monochrome')
@@ -44,6 +45,7 @@ _register_model(ResNet152)
 _register_model(SigTransformer)
 _register_model(LeSigTransformer)
 _register_model(LeViT)
+_register_model(CAFormerBuilder)
 
 
 def _find_latest_ckpt(name: str) -> Optional[str]:
@@ -140,6 +142,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         running_loss = 0.0
         train_correct, train_total = 0, 0
         train_fp, train_fn = 0, 0
+        model.train()
         for i, (inputs, labels) in enumerate(tqdm(train_dataloader)):
             inputs = inputs.float()
             inputs = inputs.to(accelerator.device)
@@ -178,6 +181,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
                 writer.add_scalar('train/fp', train_fp_p, epoch)
                 writer.add_scalar('train/fn', train_fn_p, epoch)
 
+        model.eval()
         if epoch % eval_epoch == 0:
             with torch.no_grad():
                 test_correct, test_total = 0, 0

@@ -133,14 +133,14 @@ class LeViT(nn.Module):
         self,
         image_size=384,
         num_classes=2,
-        dim = (256, 384, 512),
-        depth = 4,
+        dim = (384, 512, 768),
+        depth = 8,
         heads = (4, 6, 8),
-        mlp_mult = 2,
+        mlp_mult = 3,
         stages = 3,
-        dim_key = 32,
-        dim_value = 64,
-        dropout = 0.,
+        dim_key = 64,
+        dim_value = 128,
+        dropout = 0.2,
         num_distill_classes = None
     ):
         super().__init__()
