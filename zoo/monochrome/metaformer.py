@@ -7,7 +7,7 @@ class CAFormerBuilder:
     __model_name__ = 'caformer'
     __dims__ = 2
 
-    def __init__(self, arch='caformer_m36_384_in21ft1k', num_classes=2, drop_path_rate=0.4):
+    def __init__(self, arch='caformer_s36_384_in21ft1k', num_classes=2, drop_path_rate=0.4):
         self.create_model_args = dict(
             model_name=arch,
             pretrained=True,
