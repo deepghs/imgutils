@@ -9,7 +9,6 @@ from typing import List, Tuple
 import cv2
 import huggingface_hub
 import numpy as np
-import onnxruntime as rt
 import pandas as pd
 from PIL import Image
 
@@ -28,6 +27,7 @@ def make_square(img, target_size):
     left, right = delta_w // 2, delta_w - (delta_w // 2)
 
     color = [255, 255, 255]
+    # noinspection PyUnresolvedReferences
     new_im = cv2.copyMakeBorder(
         img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color
     )
@@ -37,8 +37,10 @@ def make_square(img, target_size):
 def smart_resize(img, size):
     # Assumes the image has already gone through make_square
     if img.shape[0] > size:
+        # noinspection PyUnresolvedReferences
         img = cv2.resize(img, (size, size), interpolation=cv2.INTER_AREA)
     elif img.shape[0] < size:
+        # noinspection PyUnresolvedReferences
         img = cv2.resize(img, (size, size), interpolation=cv2.INTER_CUBIC)
     return img
 
@@ -58,7 +60,7 @@ MODEL_NAMES = {
 }
 
 
-def _load_wd14_model(model_repo: str, model_filename: str) -> rt.InferenceSession:
+def _load_wd14_model(model_repo: str, model_filename: str):
     return open_onnx_model(huggingface_hub.hf_hub_download(model_repo, model_filename))
 
 
