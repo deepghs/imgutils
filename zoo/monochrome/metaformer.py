@@ -1,7 +1,10 @@
 import torch
-from torch import nn
 from timm.models import create_model
-import zoo.monochrome.metaformer_timm # register models
+
+from .metaformer_timm import __file__ as _bullshit
+
+_ = _bullshit
+
 
 class CAFormerBuilder:
     __model_name__ = 'caformer'
@@ -22,11 +25,12 @@ class CAFormerBuilder:
             scriptable=False,
             checkpoint_path=None
         )
-        self.num_classes=num_classes
+        self.num_classes = num_classes
 
     def __call__(self, *args, **kwargs):
         model = create_model(**self.create_model_args)
         return model
+
 
 if __name__ == '__main__':
     from thop import profile

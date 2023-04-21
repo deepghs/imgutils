@@ -18,10 +18,10 @@ from .dataset import MonochromeDataset, Monochrome2DDataset, random_split_datase
 from .levit1d import LeSigTransformer
 from .levit2d import LeViT
 from .loss import FocalLoss
+from .metaformer import CAFormerBuilder
 from .resnet1d import ResNet18, ResNet34, ResNet50, ResNet101, ResNet152
 from .resnet2d import ResNet182D, ResNet342D, ResNet502D, ResNet1012D, ResNet1522D
 from .transformer import SigTransformer
-from .metaformer import CAFormerBuilder
 from ..base import _TRAIN_DIR as _GLOBAL_TRAIN_DIR
 
 _TRAIN_DIR = os.path.join(_GLOBAL_TRAIN_DIR, 'monochrome')
