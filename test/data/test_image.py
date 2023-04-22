@@ -20,6 +20,6 @@ class TestDataImage:
             with pytest.raises(result):
                 _ = load_image(image_)
         elif isinstance(image_, Image.Image):
-            assert load_image(image_) is image_
+            assert load_image(image_, force_background=None) is image_
         else:
             assert image_diff(load_image(image_), result, throw_exception=False) < 1e-2
