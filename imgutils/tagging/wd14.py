@@ -136,7 +136,7 @@ def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
     probs = model.run([label_name], {input_name: image})[0]
 
     tag_names, rating_indexes, general_indexes, character_indexes = _get_wd14_labels()
-    labels = list(zip(tag_names, probs[0].astype(float)))
+    labels = list(zip(tag_names, probs[0].astype(float).tolist()))
 
     # First 4 labels are actually ratings: pick one with argmax
     ratings_names = [labels[i] for i in rating_indexes]

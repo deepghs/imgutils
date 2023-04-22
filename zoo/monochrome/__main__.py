@@ -81,7 +81,8 @@ _KNOWN_CKPTS: List[Tuple[str, str, int]] = [
     # ('monochrome-transformer-480.ckpt', 'transformer', 180),
     # ('monochrome-resnet18-safe2-450.ckpt', 'resnet18', 180),
     # ('monochrome-levit_d0.2-500.ckpt', 'levit', 180),
-    ('monochrome-caformer_safe2-80.ckpt', 'caformer', 180),
+    # ('monochrome-caformer_safe2-80.ckpt', 'caformer', 180),
+    ('monochrome-caformer_safe4-70.ckpt', 'caformer', 180),
 ]
 
 
