@@ -29,6 +29,8 @@ class CAFormerBuilder:
 
     def __call__(self, *args, **kwargs):
         model = create_model(**self.create_model_args)
+        model.__model_name__ = self.__model_name__
+        model.__dims__ = self.__dims__
         return model
 
 
