@@ -13,3 +13,6 @@ tensorboard
 einops
 thop
 accelerate
+ftfy
+regex
+git+https://github.com/openai/CLIP.git
