@@ -1,26 +1,29 @@
-import glob
 import os.path
-import random
 
 import pytest
-from hbutils.random import keep_global_state, global_seed
+import torch
 from hbutils.testing import tmatrix
 
 from imgutils.validate.monochrome import get_monochrome_score, is_monochrome
 
-_KNOWN_DUPS = {'2475192.jpg', '3842254.jpg', '2108110.jpg', '5257139.jpg', '6032011.jpg', '75719.jpg'}
+_ = torch
 
 
-@keep_global_state()
 def get_samples():
-    global_seed(0)
-    all_samples_from_dataset = glob.glob(
-        os.path.join('test', 'testfile', 'dataset', 'monochrome_danbooru', '*', '*.jpg'))
-    files = random.sample(all_samples_from_dataset, k=30)
-    return sorted([
-        (os.path.basename(os.path.dirname(file)), os.path.basename(file))
-        for file in files if os.path.basename(file) not in _KNOWN_DUPS
-    ])
+    return [
+        ('monochrome', '143640.jpg'), ('monochrome', '2165075.jpg'), ('monochrome', '2267010.jpg'),
+        ('monochrome', '2642558.jpg'), ('monochrome', '3141176.jpg'), ('monochrome', '4530291.jpg'),
+        ('monochrome', '4589191.jpg'), ('monochrome', '5182260.jpg'), ('monochrome', '5376761.jpg'),
+        ('monochrome', '5608827.jpg'), ('monochrome', '5992785.jpg'), ('monochrome', '6126963.jpg'),
+        ('monochrome', '6128358.jpg'), ('monochrome', '6131733.jpg'), ('monochrome', '6154723.jpg'),
+        ('monochrome', '843419.jpg'), ('monochrome', '84584446_p3_master1200.jpg'),
+        ('monochrome', '87392919_p26_master1200.jpg'),
+
+        ('normal', '2034501.jpg'), ('normal', '2160617.jpg'), ('normal', '3446505.jpg'),
+        ('normal', '3725624.jpg'), ('normal', '3899045.jpg'), ('normal', '4278075.jpg'),
+        ('normal', '4897680.jpg'), ('normal', '5531563.jpg'), ('normal', '62722650_p14_master1200.jpg'),
+        ('normal', '86243980_p0_master1200.jpg'), ('normal', '89270548_p3_master1200.jpg')
+    ]
 
 
 @pytest.mark.unittest

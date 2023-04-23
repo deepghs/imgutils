@@ -1,7 +1,10 @@
 import pytest
+import torch
 
 from imgutils.tagging import get_wd14_tags
 from test.testings import get_testfile
+
+_ = torch
 
 
 @pytest.mark.unittest
