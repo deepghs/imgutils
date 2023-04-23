@@ -38,5 +38,5 @@ class TestTaggingFormat:
         assert tags_to_text(tag_mapping) == '1girl, panties, drinking_glass, panty_pull, areola_slip'
         assert tags_to_text(tag_mapping, use_spaces=True) == \
                '1girl, panties, drinking glass, panty pull, areola slip'
-        assert tags_to_text(tag_mapping, use_spaces=True, include_ranks=True) == \
+        assert tags_to_text(tag_mapping, use_spaces=True, include_score=True) == \
                '(1girl:0.999), (panties:0.959), (drinking glass:0.934), (panty pull:0.683), (areola slip:0.412)'
