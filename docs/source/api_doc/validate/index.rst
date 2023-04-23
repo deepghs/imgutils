@@ -10,4 +10,5 @@ imgutils.validate
     :maxdepth: 3
 
     color
+    monochrome
     truncate

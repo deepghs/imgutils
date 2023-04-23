@@ -6,13 +6,13 @@ tqdm
 onnx
 onnxoptimizer
 onnxsim
-onnxruntime
 click
 di-toolkit
 tensorboard
 einops
 thop
 accelerate
+timm
 ftfy
 regex
 git+https://github.com/openai/CLIP.git

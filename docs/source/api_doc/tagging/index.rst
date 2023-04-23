@@ -9,4 +9,6 @@ imgutils.tagging
 .. toctree::
     :maxdepth: 3
 
+    deepdanbooru
+    format
     wd14

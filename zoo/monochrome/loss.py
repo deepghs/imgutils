@@ -11,7 +11,9 @@ class FocalLoss(nn.Module):
 
     def __init__(self, weight=None, gamma=2., reduction='mean'):
         nn.Module.__init__(self)
-        self.weight = torch.as_tensor(weight).float() if weight is not None else weight
+        weight = torch.as_tensor(weight).float() if weight is not None else weight
+        self.register_buffer('weight', weight)
+
         self.gamma = gamma
         self.reduction = reduction
 
