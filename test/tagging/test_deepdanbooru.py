@@ -1,10 +1,7 @@
 import pytest
-import torch
 
 from imgutils.tagging import get_deepdanbooru_tags
 from test.testings import get_testfile
-
-_ = torch
 
 
 @pytest.mark.unittest

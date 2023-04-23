@@ -1,12 +1,9 @@
 import os.path
 
 import pytest
-import torch
 from hbutils.testing import tmatrix
 
 from imgutils.validate.monochrome import get_monochrome_score, is_monochrome
-
-_ = torch
 
 
 def get_samples():
