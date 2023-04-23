@@ -61,4 +61,4 @@ def _open_onnx_model(ckpt: str, provider: str) -> InferenceSession:
 
 
 def open_onnx_model(ckpt: str, mode: str = None) -> InferenceSession:
-    return _open_onnx_model(ckpt, get_onnx_provider(mode))
+    return _open_onnx_model(ckpt, get_onnx_provider(mode or os.environ.get('ONNX_MODE', None)))
