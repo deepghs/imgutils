@@ -134,14 +134,11 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
 
             ix = torch.arange(0, char_ids.shape[0])
             mask = ix >= ix.reshape(-1, 1)  # BxB, remove duplicated
-            m_labels = (char_ids == char_ids.reshape(-1, 1))  # BxB
+            logits = model(inputs)  # BxBx2
+            outputs = logits[mask]  # Nx2
+            labels = (char_ids == char_ids.reshape(-1, 1))[mask]  # N
+            labels = labels.type(torch.long).to(accelerator.device)  # N
 
-            features = model.backbone(inputs)  # BxF
-            m_sims = torch.nn.CosineSimilarity(dim=-1)(features, features.unsqueeze(1))  # BxB
-            sims = m_sims[mask].to(accelerator.device)
-            labels = m_labels[mask].type(torch.long).to(accelerator.device)
-
-            outputs = model.diff(sims.reshape(-1, 1))
             preds = torch.argmax(outputs, dim=1)
             train_correct += (preds == labels).sum().item()
             train_fp += (preds[labels == 0] == 1).sum().item()
@@ -182,14 +179,11 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
 
                     ix = torch.arange(0, char_ids.shape[0])
                     mask = ix >= ix.reshape(-1, 1)  # BxB, remove duplicated
-                    m_labels = (char_ids == char_ids.reshape(-1, 1))  # BxB
+                    logits = model(inputs)  # BxBx2
+                    outputs = logits[mask]  # Nx2
+                    labels = (char_ids == char_ids.reshape(-1, 1))[mask]  # N
+                    labels = labels.type(torch.long).to(accelerator.device)  # N
 
-                    features = model.backbone(inputs)  # BxF
-                    m_sims = torch.nn.CosineSimilarity(dim=-1)(features, features.unsqueeze(1))  # BxB
-                    sims = m_sims[mask].to(accelerator.device)
-                    labels = m_labels[mask].type(torch.long).to(accelerator.device)
-
-                    outputs = model.diff(sims.reshape(-1, 1))
                     preds = torch.argmax(outputs, dim=1)
                     test_correct += (preds == labels).sum().item()
                     test_fp += (preds[labels == 0] == 1).sum().item()
