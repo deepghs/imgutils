@@ -20,16 +20,32 @@ class DiffMethod(nn.Module):
         return x
 
 
-class CCIP(torch.nn.Module):
+class CCIPFeature(torch.nn.Module):
     def __init__(self, name: str = "clip/ViT-B/32"):
         torch.nn.Module.__init__(self)
         self.backbone, self.preprocess = get_backbone(name)
+
+    def forward(self, x):
+        x = self.backbone(x)
+        x = x / x.norm(dim=-1, keepdim=True)
+        return x
+
+
+class CCIP(torch.nn.Module):
+    def __init__(self, name: str = "clip/ViT-B/32"):
+        torch.nn.Module.__init__(self)
+        self.backbone = CCIPFeature(name)
         self.diff = DiffMethod()
+        self.cos_sim = torch.nn.CosineSimilarity(dim=-1)
+
+    @property
+    def preprocess(self):
+        return self.backbone.preprocess
 
     def forward(self, x, y):
         x = self.backbone(x)
         y = self.backbone(y)
-        dis = F.pairwise_distance(x, y, keepdim=True)
+        dis = self.cos_sim(x, y)
         return self.diff(dis)
 
 
@@ -44,4 +60,4 @@ if __name__ == '__main__':
     print(d1.shape, d1.dtype)
     print(d2.shape, d2.dtype)
 
-    print(F.softmax(model.forward(d1, d2)))
+    print(F.softmax(model.forward(d1, d2), dim=-1))
