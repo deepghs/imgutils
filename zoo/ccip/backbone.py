@@ -5,6 +5,8 @@ import clip
 import torch
 from torchvision.transforms import Compose
 
+from .caformer import get_caformer
+
 
 def get_clip_backbone(name="ViT-B/32") -> Tuple[torch.nn.Module, Compose]:
     model, preprocess = clip.load(name, device='cpu')
@@ -17,6 +19,9 @@ _KNOWN_BACKBONES: Dict[str, Callable[..., Tuple[torch.nn.Module, Compose]]] = {}
 
 def register_backbone(name, func, *args, **kwargs):
     _KNOWN_BACKBONES[name] = partial(func, *args, **kwargs)
+
+
+register_backbone('caformer', get_caformer)
 
 
 def get_backbone(name: str) -> Tuple[torch.nn.Module, Compose]:
