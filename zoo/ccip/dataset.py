@@ -87,10 +87,14 @@ class CharacterDataset(Dataset):
     def __getitem__(self, item):
         idx = self._id_map[item]
         current_samples = self._x_to_y(self.group_size)
-        if current_samples > len(self.groups[idx]) and self.force_prob:
-            total_samples = self._y_to_x(len(self.groups[idx]))
-            current_samples = self._x_to_y(total_samples)
-            ex_samples = total_samples - current_samples
+        if current_samples > len(self.groups[idx]):
+            if self.force_prob:
+                total_samples = self._y_to_x(len(self.groups[idx]))
+                current_samples = self._x_to_y(total_samples)
+                ex_samples = total_samples - current_samples
+            else:
+                current_samples = len(self.groups[idx])
+                ex_samples = self.group_size - current_samples
         else:
             ex_samples = self.group_size - current_samples
 

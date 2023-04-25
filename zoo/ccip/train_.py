@@ -80,7 +80,7 @@ def _sample_analysis(poss, negs, svm_samples: int = 10000):
 
 
 def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optional[str] = None,
-          train_ratio: float = 0.8, max_epochs: int = 500, group_size: int = 100,
+          train_ratio: float = 0.8, max_epochs: int = 500, group_size: int = 30,
           learning_rate: float = 0.001, weight_decay: float = 1e-3, tau: float = 0.15,
           save_per_epoch: int = 10, eval_epoch: int = 5,
           model_name: str = 'clip/ViT-B/32', seed: Optional[int] = 0):
@@ -117,7 +117,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
     train_image_dataset.transform = Compose([*TRAIN_TRANSFORM.transforms, *model.preprocess.transforms])
     test_image_dataset.transform = Compose([*TEST_TRANSFORM.transforms, *model.preprocess.transforms])
 
-    train_dataset = CharacterDataset(train_image_dataset, group_size)
+    train_dataset = CharacterDataset(train_image_dataset, group_size, force_prob=False)
     test_dataset = CharacterDataset(test_image_dataset, group_size)
 
     if from_ckpt is None:

@@ -38,11 +38,17 @@ class NTXentLoss(nn.Module):
         self.register_buffer('tau', torch.as_tensor(tau, dtype=torch.float))
         self.register_buffer('eps', torch.as_tensor(eps, dtype=torch.float))
 
-    def forward(self, sim_tensors, state_tensors):
+    def forward(self, similarities, state):
         """
-        :param sim_tensors: Similarities, float32[N]
-        :param state_tensors: Positive sample or not, bool[N]
+        :param similarities: Similarities, float32[N]
+        :param state: Positive sample or not, bool[N]
         """
-        log_items = -torch.log(torch.softmax(sim_tensors / self.tau, dim=-1))
-        positive_items = log_items[state_tensors]
-        return (positive_items.sum() + self.eps) / (positive_items.shape[0] + self.eps)
+        negs = similarities[~state]
+        pos_items = []
+        for pos in similarities[state]:
+            current_sims = torch.cat([pos.reshape(-1), negs])
+            exp_sims = torch.exp(current_sims / self.tau)
+            pos_items.append(-torch.log(exp_sims[0] / exp_sims.sum()))
+
+        pos_tensor = torch.stack(pos_items)
+        return (pos_tensor.sum() + self.eps) / (pos_tensor.shape[0] + self.eps)
