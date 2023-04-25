@@ -12,7 +12,7 @@ def _possibility(n, m):
     v = _array_create(n, m)
     same, not_same = 0, 0
     for i in range(n):
-        for j in range(i, n):
+        for j in range(i + 1, n):
             if v[i] == v[j]:
                 same += 1
             else:

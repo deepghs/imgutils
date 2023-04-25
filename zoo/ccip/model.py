@@ -11,11 +11,9 @@ class CCIPBatchMetrics(nn.Module):
     def __init__(self):
         nn.Module.__init__(self)
         self.sim = nn.CosineSimilarity(dim=-1)
-        self.fc = nn.Linear(1, 2)
 
     def forward(self, x):  # x: BxN
-        x = self.sim(x, x.unsqueeze(1))
-        x = self.fc(x.unsqueeze(-1))
+        x = self.sim(x, x.unsqueeze(1))  # BxB
         return x
 
 
@@ -43,7 +41,7 @@ class CCIP(torch.nn.Module):
     def forward(self, x):
         # x: BxCxHxW
         x = self.feature(x)  # BxF
-        x = self.metrics(x)  # BxBx2
+        x = self.metrics(x)  # BxB
         return x
 
 

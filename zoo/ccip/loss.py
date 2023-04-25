@@ -26,3 +26,22 @@ class FocalLoss(nn.Module):
             weight=self.weight,
             reduction=self.reduction
         )
+
+
+class NTXentLoss(nn.Module):
+    """
+    Inspired from https://blog.csdn.net/cziun/article/details/119118768 .
+    """
+
+    def __init__(self, tau: float = 1.0):
+        nn.Module.__init__(self)
+        self.register_buffer('tau', torch.as_tensor(tau, dtype=torch.float))
+
+    def forward(self, sim_tensors, state_tensors):
+        """
+        :param sim_tensors: Similarities, float32[N]
+        :param state_tensors: Positive sample or not, bool[N]
+        """
+        log_items = -torch.log(torch.softmax(sim_tensors / self.tau, dim=-1))
+        positive_items = log_items[state_tensors]
+        return positive_items.mean()
