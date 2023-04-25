@@ -33,9 +33,10 @@ class NTXentLoss(nn.Module):
     Inspired from https://blog.csdn.net/cziun/article/details/119118768 .
     """
 
-    def __init__(self, tau: float = 1.0):
+    def __init__(self, tau: float = 1.0, eps: float = 1e-8):
         nn.Module.__init__(self)
         self.register_buffer('tau', torch.as_tensor(tau, dtype=torch.float))
+        self.register_buffer('eps', torch.as_tensor(eps, dtype=torch.float))
 
     def forward(self, sim_tensors, state_tensors):
         """
@@ -44,4 +45,4 @@ class NTXentLoss(nn.Module):
         """
         log_items = -torch.log(torch.softmax(sim_tensors / self.tau, dim=-1))
         positive_items = log_items[state_tensors]
-        return positive_items.mean()
+        return (positive_items.sum() + self.eps) / (positive_items.shape[0] + self.eps)
