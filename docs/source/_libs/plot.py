@@ -3,21 +3,21 @@ from typing import Tuple
 import matplotlib.pyplot as plt
 from PIL import Image
 
-from imgutils.data import load_image
+from imgutils.data import load_image, grid_transparent
 from imgutils.validate.truncate import _mock_load_truncated_images
 
 
 def _image_input_process(img) -> Tuple[Image.Image, str]:
     if isinstance(img, tuple):
         img_file, label = img
-        image = load_image(img_file)
+        image = load_image(img_file, force_background=None)
     elif isinstance(img, str):
         label = img
-        image = load_image(img)
+        image = load_image(img, force_background=None)
     else:
         raise TypeError(f'Unknown type of img - {img!r}.')
 
-    return image.convert('RGB'), label
+    return grid_transparent(image), label
 
 
 @_mock_load_truncated_images(True)
@@ -34,7 +34,6 @@ def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False, figsiz
         xi, yi = i // columns, i % columns
         image, label = _image_input_process(img)
         ax = axs[yi] if rows == 1 else axs[xi, yi]
-        print(image, label)
         ax.imshow(image)
         ax.set_title(label)
         if not keep_axis:

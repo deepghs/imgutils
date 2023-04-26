@@ -627,6 +627,7 @@ class MetaFormer(nn.Module):
             self.head = head_fn(dims[-1], num_classes)
 
         self.apply(self._init_weights)
+        self.output_dim = dims[-1]
 
     def _init_weights(self, m):
         if isinstance(m, (nn.Conv2d, nn.Linear)):
