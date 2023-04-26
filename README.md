@@ -25,8 +25,15 @@ image processing models.
 
 You can simply install it with `pip` command line from the official PyPI site.
 
-```
+```shell
 pip install dghs-imgutils
+```
+
+If your operating environment includes a available GPU, you can use the following installation command to achieve higher
+performance:
+
+```shell
+pip install dghs-imgutils[gpu]
 ```
 
 For more information about installation, you can refer
