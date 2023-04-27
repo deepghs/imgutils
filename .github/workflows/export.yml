@@ -17,7 +17,8 @@ jobs:
           - '3.8'
         model-name:
           #          - 'lpips'
-          - 'monochrome'
+          #          - 'monochrome'
+          - 'lineart'
 
     steps:
       - name: Checkout code
