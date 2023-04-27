@@ -1,8 +1,7 @@
 import os.path
-from unittest import skipUnless
 
 import pytest
-from hbutils.testing import tmatrix, OS
+from hbutils.testing import tmatrix
 
 from imgutils.data import load_image
 from imgutils.edge import edge_image_with_lineart
@@ -20,7 +19,6 @@ def _release_model_after_run():
 
 @pytest.mark.unittest
 class TestEdgeLineart:
-    @skipUnless(OS.linux or OS.macos, 'Not run on windows')
     @pytest.mark.parametrize(*tmatrix({
         'original_image': ['6125785.jpg', '6125901.jpg'],
         'backcolor': ['transparent', 'white'],

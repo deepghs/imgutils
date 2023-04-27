@@ -5,7 +5,16 @@ from hbutils.testing import tmatrix
 
 from imgutils.data import load_image
 from imgutils.edge import edge_image_with_lineart_anime
+from imgutils.edge.lineart_anime import _open_la_anime_model
 from test.testings import get_testfile
+
+
+@pytest.fixture()
+def _release_model_after_run():
+    try:
+        yield
+    finally:
+        _open_la_anime_model.cache_clear()
 
 
 @pytest.mark.unittest
@@ -15,7 +24,8 @@ class TestEdgeLineartAnime:
         'backcolor': ['transparent', 'white'],
         'forecolor': ['', 'black']
     }))
-    def test_edge_image_with_lineart_anime(self, original_image, backcolor, forecolor, image_diff):
+    def test_edge_image_with_lineart_anime(self, original_image, backcolor, forecolor,
+                                           image_diff, _release_model_after_run):
         image = edge_image_with_lineart_anime(
             get_testfile(original_image),
             backcolor=backcolor, forecolor=None if not forecolor else forecolor,

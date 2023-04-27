@@ -1,7 +1,16 @@
 import pytest
 
 from imgutils.tagging import get_wd14_tags
+from imgutils.tagging.wd14 import _get_wd14_model
 from test.testings import get_testfile
+
+
+@pytest.fixture()
+def _release_model_after_run():
+    try:
+        yield
+    finally:
+        _get_wd14_model.cache_clear()
 
 
 @pytest.mark.unittest
