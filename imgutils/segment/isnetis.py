@@ -7,9 +7,8 @@ from functools import lru_cache
 import cv2
 import huggingface_hub
 import numpy as np
-from PIL import ImageColor, Image
 
-from ..data import ImageTyping, load_image
+from ..data import ImageTyping, load_image, istack
 from ..utils.onnxruntime import open_onnx_model
 
 
@@ -26,7 +25,7 @@ def get_isnetis_mask(image: ImageTyping, scale: int = 1024):
     :param image: Original image (assume its size is ``(H, W)``).
     :param scale: Scale when passing it into neural network. Default is ``1024``,
         inspired by https://huggingface.co/spaces/skytnt/anime-remove-background/blob/main/app.py#L8 .
-    :return: Get a mask with all the pixels, which shape is ``(H, W, 1)``.
+    :return: Get a mask with all the pixels, which shape is ``(H, W)``.
     """
     image = np.asarray(load_image(image, mode='RGB'))
     image = (image / 255).astype(np.float32)
@@ -41,7 +40,7 @@ def get_isnetis_mask(image: ImageTyping, scale: int = 1024):
     mask = np.transpose(mask, (1, 2, 0))
     mask = mask[ph // 2:ph // 2 + h, pw // 2:pw // 2 + w]
     mask = cv2.resize(mask, (w0, h0))[:, :, np.newaxis]
-    return mask
+    return mask.reshape(*mask.shape[:-1])
 
 
 def segment_with_isnetis(image: ImageTyping, background: str = 'lime', scale: int = 1024):
@@ -72,18 +71,7 @@ def segment_with_isnetis(image: ImageTyping, background: str = 'lime', scale: in
     """
     image = load_image(image, mode='RGB')
     mask = get_isnetis_mask(image, scale)
-    h, w, _ = mask.shape
-
-    _mk = np.zeros((h, w, 3))
-    r, g, b = ImageColor.getrgb(background)
-    _mk[:, :, 0] = r
-    _mk[:, :, 1] = g
-    _mk[:, :, 2] = b
-
-    _image_arr = np.asarray(image)
-    _masked_data = (_mk * (1 - mask) + _image_arr * mask).astype(np.uint8)
-
-    return mask, Image.fromarray(_masked_data, mode='RGB')
+    return mask, istack((background, 1.0), (image, mask)).convert('RGB')
 
 
 def segment_rgba_with_isnetis(image: ImageTyping, scale: int = 1024):
@@ -113,11 +101,4 @@ def segment_rgba_with_isnetis(image: ImageTyping, scale: int = 1024):
     """
     image = load_image(image, mode='RGB')
     mask = get_isnetis_mask(image, scale)
-    h, w, _ = mask.shape
-
-    _mk = np.zeros((h, w, 4))
-    _mk[:, :, :3] = np.asarray(image)
-    _mk[:, :, 3] = 255
-    _mk = (_mk * mask).astype(np.uint8)
-
-    return mask, Image.fromarray(_mk, mode='RGBA')
+    return mask, istack((image, mask))

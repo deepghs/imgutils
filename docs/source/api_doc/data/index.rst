@@ -13,3 +13,4 @@ imgutils.data
     encode
     decode
     image
+    layer
