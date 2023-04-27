@@ -5,7 +5,16 @@ from hbutils.testing import tmatrix
 
 from imgutils.data import load_image
 from imgutils.edge import edge_image_with_lineart
+from imgutils.edge.lineart import _open_la_model
 from test.testings import get_testfile
+
+
+@pytest.fixture()
+def _release_model_after_run():
+    try:
+        yield
+    finally:
+        _open_la_model.cache_clear()
 
 
 @pytest.mark.unittest
@@ -16,7 +25,8 @@ class TestEdgeLineart:
         'forecolor': ['', 'black'],
         'coarse': [True, False],
     }))
-    def test_edge_image_with_lineart(self, original_image, backcolor, forecolor, coarse, image_diff):
+    def test_edge_image_with_lineart(self, original_image, backcolor, forecolor, coarse,
+                                     image_diff, _release_model_after_run):
         image = edge_image_with_lineart(
             get_testfile(original_image), coarse=coarse,
             backcolor=backcolor, forecolor=None if not forecolor else forecolor,
