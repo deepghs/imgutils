@@ -1,3 +1,7 @@
+"""
+Overview:
+    Get edge with lineart anime model.
+"""
 from functools import lru_cache, partial
 from typing import Optional
 
@@ -25,6 +29,14 @@ def _open_la_anime_model():
 
 
 def get_edge_by_lineart_anime(image: ImageTyping, detect_resolution: int = 512):
+    """
+    Overview:
+        Get edge mask with lineart anime model.
+
+    :param image: Original image (assuming its size is ``HxW``).
+    :param detect_resolution: Resolution when passing the image into neural network. Default is ``512``.
+    :return: A mask with format ``float32[H, W]``.
+    """
     image = load_image(image, mode='RGB')
     output_, = _open_la_anime_model().run(['output'], {'input': _preprocess(image, detect_resolution)})
     output_ = (output_ + 1.0) / 2.0
@@ -34,6 +46,22 @@ def get_edge_by_lineart_anime(image: ImageTyping, detect_resolution: int = 512):
 
 def edge_image_with_lineart_anime(image: ImageTyping, detect_resolution: int = 512,
                                   backcolor: str = 'white', forecolor: Optional[str] = None):
+    """
+    Overview:
+        Get an image with the extracted edge from ``image``.
+
+    :param image: Original image (assuming its size is ``HxW``).
+    :param detect_resolution: Resolution when passing the image into neural network. Default is ``512``.
+    :param backcolor: Background color the target image. Default is ``white``. When ``transparent`` is given, \
+        the background will be transparent.
+    :param forecolor: Fore color of the target image. Default is ``None`` which means use the color \
+        from the given ``image``.
+    :return: An image with the extracted edge from ``image``.
+
+    Examples::
+        .. image:: lineart_anime.dat.svg
+            :align: center
+    """
     return _get_image_edge(
         image,
         partial(get_edge_by_lineart_anime, detect_resolution=detect_resolution),
