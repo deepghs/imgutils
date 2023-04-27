@@ -64,6 +64,11 @@ def edge_image_with_lineart(image: ImageTyping, coarse: bool = False, detect_res
     Examples::
         .. image:: lineart.dat.svg
             :align: center
+
+        When ``coarse`` is used:
+
+        .. image:: lineart_coarse.dat.svg
+            :align: center
     """
     return _get_image_edge(
         image,

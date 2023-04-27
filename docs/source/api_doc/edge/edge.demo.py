@@ -1,5 +1,3 @@
-from functools import partial
-
 from hbutils.reflection import nested_for
 from tqdm.auto import tqdm
 
@@ -11,7 +9,6 @@ if __name__ == '__main__':
     funcs = [
         ('canny', edge_image_with_canny),
         ('lineart', edge_image_with_lineart),
-        ('lineart\n(coarse)', partial(edge_image_with_lineart, coarse=True)),
         ('lineart\nanime', edge_image_with_lineart_anime)
     ]
     table = [[item] for item in demo_images]
