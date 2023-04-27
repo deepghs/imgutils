@@ -1,6 +1,9 @@
 """
 Overview:
     Get edge with lineart model.
+
+    Having the **best effect**, closest to the drawing lines,
+    but consuming a large amount of memory and computing power at runtime.
 """
 from functools import lru_cache, partial
 from typing import Optional

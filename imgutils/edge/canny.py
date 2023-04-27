@@ -1,6 +1,8 @@
 """
 Overview:
     Get edge with ``cv2.Canny``.
+
+    Having **the fastest running speed and the lowest system resource overhead**.
 """
 from functools import partial
 from typing import Optional
