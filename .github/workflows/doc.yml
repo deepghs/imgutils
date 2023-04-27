@@ -24,6 +24,10 @@ jobs:
           - 18080:8080
 
     steps:
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 8
       - name: Checkout code
         uses: actions/checkout@v2
         with:
