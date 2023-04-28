@@ -20,6 +20,7 @@ def train(train_cfg: str, session_name: str, level: str = 's',
     model.train(
         data=train_cfg, epochs=max_epochs,
         name=session_name, project=_TRAIN_DIR,
-        exist_ok=True, save=True, save_period=save_per_epoch, resume=resume,
+        save=True, save_period=save_per_epoch, plots=True,
+        exist_ok=True, resume=resume,
         **kwargs
     )
