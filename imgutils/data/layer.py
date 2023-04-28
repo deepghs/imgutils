@@ -67,6 +67,7 @@ def istack(*items: Union[ImageTyping, str, Tuple[ImageTyping, _AlphaTyping], Tup
         >>>
         >>> # custom mask
         >>> import numpy as np
+        >>> from PIL import Image
         >>> width, height = Image.open('nian.png').size
         >>> hs1 = (1 - np.abs(np.linspace(-1 / 3, 1, height))) ** 0.5
         >>> ws1 = (1 - np.abs(np.linspace(-1, 1, width))) ** 0.5
