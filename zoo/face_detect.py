@@ -24,6 +24,7 @@ def cli():
 
 _KNOWN_CKPTS: List[str] = [
     'face_detect_best_s.pt',
+    'face_detect_best_n.pt',
 ]
 
 
