@@ -24,6 +24,7 @@ def cli():
 
 _KNOWN_CKPTS: List[str] = [
     'person_detect_best_s.pt',
+    'person_detect_best_m.pt',
 ]
 
 
