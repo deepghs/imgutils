@@ -86,11 +86,14 @@ def _xy_postprocess(x, y, old_size, new_size):
     return x, y
 
 
-def _data_simple_postprocess(output, conf_threshold, iou_threshold, old_size, new_size):
+def _data_simple_postprocess(output, conf_threshold, iou_threshold, old_size, new_size, label):
     output = output[:, output[-1, :] > conf_threshold]
     boxes = output[:4, :].transpose(1, 0)
     scores = output[4, :]
     records = sorted(zip(boxes, scores), key=lambda x: -x[1])
+
+    if not records:
+        return []
 
     boxes = _yolo_xywh2xyxy(np.stack([bx for bx, _ in records]))
     scores = np.stack([score for _, score in records])
@@ -101,6 +104,6 @@ def _data_simple_postprocess(output, conf_threshold, iou_threshold, old_size, ne
     for box, score in zip(boxes, scores):
         x0, y0 = _xy_postprocess(box[0], box[1], old_size, new_size)
         x1, y1 = _xy_postprocess(box[2], box[3], old_size, new_size)
-        detections.append(((x0, y0, x1, y1), float(score)))
+        detections.append(((x0, y0, x1, y1), label, float(score)))
 
     return detections
