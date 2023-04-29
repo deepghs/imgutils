@@ -16,4 +16,4 @@ timm
 ftfy
 regex
 git+https://github.com/openai/CLIP.git
-ultralytics
+ultralytics==8.0.20
