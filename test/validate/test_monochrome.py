@@ -3,7 +3,15 @@ import os.path
 import pytest
 from hbutils.testing import tmatrix
 
-from imgutils.validate.monochrome import get_monochrome_score, is_monochrome
+from imgutils.validate.monochrome import get_monochrome_score, is_monochrome, _monochrome_validate_model
+
+
+@pytest.fixture(scope='module', autouse=True)
+def _release_model_after_run():
+    try:
+        yield
+    finally:
+        _monochrome_validate_model.cache_clear()
 
 
 def get_samples():
