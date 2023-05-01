@@ -3,7 +3,8 @@ from typing import Optional
 import numpy as np
 from PIL import ImageColor, Image
 
-from .image import ImageTyping, load_image
+from .image import ImageTyping
+from .layer import istack
 
 __all__ = [
     'grid_background',
@@ -62,6 +63,4 @@ def grid_transparent(image: ImageTyping, step: Optional[int] = None,
 
     """
     retval = grid_background(image.height, image.width, step, forecolor, backcolor)
-    image = load_image(image, force_background=None, mode='RGBA')
-    retval.paste(image, mask=image)
-    return retval.convert('RGB')
+    return istack(retval, image).convert('RGB')

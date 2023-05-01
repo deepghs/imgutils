@@ -43,10 +43,5 @@ def load_images(images: MultiImagesTyping, mode=None) -> List[Image.Image]:
 
 
 def add_background_for_rgba(image: ImageTyping, background: str = 'white'):
-    if not isinstance(image, Image.Image):
-        image = load_image(image)
-    image = image.convert("RGBA")
-    new_image = Image.new("RGBA", image.size, background)
-    new_image.paste(image, mask=image)
-    image = new_image.convert("RGB")
-    return image
+    from .layer import istack
+    return istack(background, image).convert('RGB')
