@@ -12,7 +12,7 @@ from typing import List, Tuple
 
 from huggingface_hub import hf_hub_download
 
-from ._yolo import _image_preprocess, _data_simple_postprocess
+from ._yolo import _image_preprocess, _data_postprocess
 from ..data import ImageTyping, load_image, rgb_encode
 from ..utils import open_onnx_model
 
@@ -67,4 +67,4 @@ def detect_faces(image: ImageTyping, level: str = 's', max_infer_size=1216,
 
     data = rgb_encode(new_image)[None, ...]
     output, = _open_face_detect_model(level).run(['output0'], {'images': data})
-    return _data_simple_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, 'head')
+    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, ['head'])

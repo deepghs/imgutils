@@ -4,7 +4,7 @@ Overview:
 
     See :func:`imgutils.detect.face.detect_faces` and :func:`imgutils.detect.person.detect_person` for examples.
 """
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from PIL import ImageFont, ImageDraw
 from hbutils.color import rnd_colors, Color
@@ -26,7 +26,8 @@ def _try_get_font_from_matplotlib(fontsize: int = 12):
 
 
 def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, float, float, float], str, float]],
-                        text_padding: int = 6, fontsize: int = 12, no_label: bool = False):
+                        labels: Optional[List[str]] = None, text_padding: int = 6, fontsize: int = 12,
+                        no_label: bool = False):
     """
     Overview:
         Visualize the results of the object detection.
@@ -34,6 +35,8 @@ def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, f
     :param image: Image be detected.
     :param detection: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
         the target type (always `head`) and the target confidence score.
+    :param labels: An array of known labels. If not provided, the labels will be automatically detected
+        from the given ``detection``.
     :param text_padding: Text padding of the labels. Default is ``6``.
     :param fontsize: Font size of the labels. At runtime, an attempt will be made to retrieve the font used
         for rendering from `matplotlib`. Therefore, if `matplotlib` is not installed, only the default pixel font
@@ -50,7 +53,7 @@ def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, f
     draw = ImageDraw.Draw(visual_image, mode='RGBA')
     font = _try_get_font_from_matplotlib(fontsize) or ImageFont.load_default()
 
-    labels = sorted({label for _, label, _ in detection})
+    labels = sorted(labels or {label for _, label, _ in detection})
     _colors = list(map(str, rnd_colors(len(labels))))
     _color_map = dict(zip(labels, _colors))
     for (xmin, ymin, xmax, ymax), label, score in detection:

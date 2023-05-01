@@ -86,24 +86,25 @@ def _xy_postprocess(x, y, old_size, new_size):
     return x, y
 
 
-def _data_simple_postprocess(output, conf_threshold, iou_threshold, old_size, new_size, label):
-    output = output[:, output[-1, :] > conf_threshold]
-    boxes = output[:4, :].transpose(1, 0)
-    scores = output[4, :]
-    records = sorted(zip(boxes, scores), key=lambda x: -x[1])
+def _data_postprocess(output, conf_threshold, iou_threshold, old_size, new_size, labels: List[str]):
+    max_scores = output[4:, :].max(axis=0)
+    output = output[:, max_scores > conf_threshold].transpose(1, 0)
+    boxes = output[:, :4]
+    scores = output[:, 4:]
+    filtered_max_scores = scores.max(axis=1)
 
-    if not records:
+    if not boxes.size:
         return []
 
-    boxes = _yolo_xywh2xyxy(np.stack([bx for bx, _ in records]))
-    scores = np.stack([score for _, score in records])
-    idx = _yolo_nms(boxes, scores, thresh=iou_threshold)
+    boxes = _yolo_xywh2xyxy(boxes)
+    idx = _yolo_nms(boxes, filtered_max_scores, thresh=iou_threshold)
     boxes, scores = boxes[idx], scores[idx]
 
     detections = []
     for box, score in zip(boxes, scores):
         x0, y0 = _xy_postprocess(box[0], box[1], old_size, new_size)
         x1, y1 = _xy_postprocess(box[2], box[3], old_size, new_size)
-        detections.append(((x0, y0, x1, y1), label, float(score)))
+        max_score_id = score.argmax()
+        detections.append(((x0, y0, x1, y1), labels[max_score_id], float(score[max_score_id])))
 
     return detections

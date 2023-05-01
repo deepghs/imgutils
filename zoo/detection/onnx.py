@@ -1,4 +1,5 @@
 import os.path
+from shutil import SameFileError
 
 from hbutils.system import copy
 from ultralytics import YOLO
@@ -11,4 +12,7 @@ def export_yolo_to_onnx(yolo: YOLO, onnx_filename, opset_version: int = 14,
 
     _retval = yolo.export(format='onnx', dynamic=True, simplify=not no_optimize, opset=opset_version)
     _exported_onnx_file = _retval or (os.path.splitext(yolo.ckpt_path)[0] + '.onnx')
-    copy(_exported_onnx_file, onnx_filename)
+    try:
+        copy(_exported_onnx_file, onnx_filename)
+    except SameFileError:
+        pass
