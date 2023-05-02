@@ -35,7 +35,12 @@ def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False, figsiz
     for i, img in enumerate(images, start=0):
         xi, yi = i // columns, i % columns
         image, label = _image_input_process(img)
-        ax = axs[yi] if rows == 1 else axs[xi, yi]
+        if rows == 1 and columns == 1:
+            ax = axs
+        elif rows == 1:
+            ax = axs[yi]
+        else:
+            ax = axs[xi, yi]
         ax.imshow(image)
         ax.set_title(label)
         if not keep_axis:

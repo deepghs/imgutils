@@ -18,7 +18,9 @@ jobs:
         model-name:
           #          - 'lpips'
           #          - 'monochrome'
-          - 'lineart'
+          #          - 'person_detect'
+          #          - 'face_detect'
+          - 'manbits_detect'
 
     steps:
       - name: Checkout code

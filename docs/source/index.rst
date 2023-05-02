@@ -25,6 +25,7 @@ configuration file's structure and their versions.
 
     api_doc/config/index
     api_doc/data/index
+    api_doc/detect/index
     api_doc/edge/index
     api_doc/metrics/index
     api_doc/segment/index

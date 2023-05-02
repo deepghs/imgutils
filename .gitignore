@@ -1218,3 +1218,6 @@ fabric.properties
 /test/testfile/dataset
 /zoo/testfile/dataset
 /.train
+*.pt
+/runs
+/YOLOv8
