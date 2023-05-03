@@ -41,6 +41,13 @@ to [Installation](https://deepghs.github.io/imgutils/main/tutorials/installation
 
 ## Supported or Developing Features
 
+* [Tachie(差分) Detection and Clustering](https://github.com/deepghs/imgutils#tachie%E5%B7%AE%E5%88%86-detection-and-clustering)
+* [Object Detection](https://github.com/deepghs/imgutils#object-detection)
+* [Monochrome Image Detection](https://github.com/deepghs/imgutils#monochrome-image-detection)
+* [Truncated Image Check](https://github.com/deepghs/imgutils#truncated-image-check)
+* [Image Tagging](https://github.com/deepghs/imgutils#image-tagging)
+* [Character Extraction](https://github.com/deepghs/imgutils#character-extraction)
+
 ### Tachie(差分) Detection and Clustering
 
 For the dataset, we need to filter the differences between the tachie(差分). As shown in the following picture
@@ -58,6 +65,32 @@ print(images)
 print(lpips_clustering(images))  # -1 means noises, the same as that in sklearn
 # [0, 0, 0, 1, 1, -1, -1, -1, -1]
 ```
+
+### Object Detection
+
+Currently, object detection is supported for anime faces and person, as shown below
+
+* Face Detection
+
+![face detection](https://deepghs.github.io/imgutils/main/_images/face_detect.dat.svg)
+
+* Person Detection
+
+![person detection](https://deepghs.github.io/imgutils/main/_images/person_detect.dat.svg)
+
+Based on practical tests, face detection currently has a very stable performance and can be used for automation tasks.
+However, person detection is still being further iterated and will focus on enhancing detection capabilities for
+artistic illustrations in the future.
+
+### Edge Detection / Lineart Generation
+
+Anime images can be converted to line drawings using the model provided
+by [patrickvonplaten/controlnet_aux](https://github.com/patrickvonplaten/controlnet_aux), as shown below.
+
+![edge example](https://deepghs.github.io/imgutils/main/_images/edge.dat.svg)
+
+It is worth noting that the `lineart` model may consume more computational resources, while `canny` is the fastest but
+has average effect. Therefore, `lineart_anime` may be the most balanced choice in most cases.
 
 ### Monochrome Image Detection
 
