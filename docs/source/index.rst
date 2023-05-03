@@ -18,6 +18,11 @@ configuration file's structure and their versions.
     :maxdepth: 2
     :caption: Best Practice
 
+.. toctree::
+    :maxdepth: 2
+    :caption: Information
+
+    information/environment.result
 
 .. toctree::
     :maxdepth: 2

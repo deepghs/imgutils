@@ -11,3 +11,8 @@ easydict>=1.7,<2
 responses>=0.20.0
 matplotlib
 natsort
+nbsphinx>=0.8.8
+ipython>=7.16.3
+psutil>=5.8.0
+ipykernel>=6.15
+py-cpuinfo>=8.0.0

@@ -40,7 +40,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y make wget curl cloc graphviz
+          sudo apt-get install -y make wget curl cloc graphviz pandoc
           dot -V
           python -m pip install -r requirements.txt
           python -m pip install -r requirements-doc.txt

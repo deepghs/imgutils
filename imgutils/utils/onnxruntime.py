@@ -1,3 +1,7 @@
+"""
+Overview:
+    Management of onnx models.
+"""
 import logging
 import os
 import shutil
@@ -34,6 +38,15 @@ alias = {
 
 
 def get_onnx_provider(provider: Optional[str] = None):
+    """
+    Overview:
+        Get onnx provider.
+
+    :param provider: The provider for ONNX runtime. ``None`` by default and will automatically detect
+        if the ``CUDAExecutionProvider`` is available. If it is available, it will be used,
+        otherwise the default ``CPUExecutionProvider`` will be used.
+    :return: String of the provider.
+    """
     if not provider:
         if "CUDAExecutionProvider" in get_available_providers():
             return "CUDAExecutionProvider"
@@ -61,4 +74,19 @@ def _open_onnx_model(ckpt: str, provider: str) -> InferenceSession:
 
 
 def open_onnx_model(ckpt: str, mode: str = None) -> InferenceSession:
+    """
+    Overview:
+        Open an ONNX model and load its ONNX runtime.
+
+    :param ckpt: ONNX model file.
+    :param mode: Provider of the ONNX. Default is ``None`` which means the provider will be auto-detected,
+        see :func:`get_onnx_provider` for more details.
+    :return: A loaded ONNX runtime object.
+
+    .. note::
+        When ``mode`` is set to ``None``, it will attempt to detect the environment variable ``ONNX_MODE``.
+        This means you can decide which ONNX runtime to use by setting the environment variable. For example,
+        on Linux, executing ``export ONNX_MODE=cpu`` will ignore any existing CUDA and force the model inference
+        to run on CPU.
+    """
     return _open_onnx_model(ckpt, get_onnx_provider(mode or os.environ.get('ONNX_MODE', None)))
