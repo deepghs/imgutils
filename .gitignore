@@ -1206,6 +1206,7 @@ fabric.properties
 /docs/source/**/*.sh.exitcode
 /docs/source/**/*.dat.*
 !/docs/source/_static/**/*
+/docs/source/**/*.result.ipynb
 /cartpole_dqn_*
 /imgutils/**/*.json
 /imgutils/**/*.yaml
