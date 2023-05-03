@@ -43,6 +43,7 @@ to [Installation](https://deepghs.github.io/imgutils/main/tutorials/installation
 
 * [Tachie(差分) Detection and Clustering](https://github.com/deepghs/imgutils#tachie%E5%B7%AE%E5%88%86-detection-and-clustering)
 * [Object Detection](https://github.com/deepghs/imgutils#object-detection)
+* [Edge Detection / Lineart Generation](https://github.com/deepghs/imgutils#edge-detection--lineart-generation)
 * [Monochrome Image Detection](https://github.com/deepghs/imgutils#monochrome-image-detection)
 * [Truncated Image Check](https://github.com/deepghs/imgutils#truncated-image-check)
 * [Image Tagging](https://github.com/deepghs/imgutils#image-tagging)
