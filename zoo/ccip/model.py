@@ -73,5 +73,6 @@ if __name__ == '__main__':
 
     data = torch.randn(4,3,384,384).cuda()
     model = CCIP('caformer').cuda()
+    print(model.feature.backbone.attnpool.num_heads)
     print(model(data))
 
