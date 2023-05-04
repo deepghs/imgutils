@@ -2,6 +2,7 @@ torch<2
 lpips
 matplotlib
 torchvision
+torchmetrics>=0.11.4
 tqdm
 onnx
 onnxoptimizer
