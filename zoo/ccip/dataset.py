@@ -134,7 +134,7 @@ class FastCharacterDataset(Dataset):
             if cid not in groups:
                 groups[cid] = []
             groups[cid].append(i)
-        self.groups = {k:np.array(v) for k,v in groups.items()}
+        self.groups = groups
 
         self.group_size = group_size
         self.prob = prob*2
@@ -149,12 +149,12 @@ class FastCharacterDataset(Dataset):
 
     def __getitem__(self, item):
         image, cid = self.images_dataset[self.idxs[item]]
-        n_same = int(self.prob) + int((self.prob-int(self.prob))<=(item%self.group_size/self.group_size))
+        n_same = int(self.prob) + int((self.prob-int(self.prob))<=((item%self.group_size+1)/self.group_size))
 
         image = [image]
         cid = [cid]
         if n_same>0:
-            same_idxs = random.sample(self.groups[cid], k=n_same)
+            same_idxs = random.sample(self.groups[cid[0]], k=n_same)
             for idx in same_idxs:
                 img_i, cid_i = self.images_dataset[idx]
                 image.append(img_i)

@@ -70,7 +70,7 @@ class MLCELoss(nn.Module):
         log_prob_x = log_prob_raw.clone()
         log_prob_x[same_mask_diag0.bool()] = self.eps
         log_prob_x.diagonal().copy_((log_prob_raw*same_mask_diag0).sum(dim=1))
-        log_prob_x = log_prob_x + torch.diag_embed(torch.ones(len(target_tensor))*self.eps)
-        y = torch.arange(0, len(target_tensor))
+        log_prob_x = log_prob_x + torch.diag_embed(torch.ones(len(target_tensor))*self.eps).to(input_tensor.device)
+        y = torch.arange(0, len(target_tensor)).to(input_tensor.device)
 
         return F.nll_loss(log_prob_x.log(), y, weight=self.weight, reduction=self.reduction)
