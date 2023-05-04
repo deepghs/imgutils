@@ -69,7 +69,7 @@ class CCIPImagesDataset(ImagesDataset):
                     _items.append((os.path.join(root, name), _maxid))
                 _maxid += 1
 
-        super(CCIPImagesDataset, self).__init__(self, _items, transform)
+        super(CCIPImagesDataset, self).__init__(_items, transform)
 
 
 class CharacterDataset(Dataset):
