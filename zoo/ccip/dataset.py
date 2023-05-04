@@ -59,17 +59,17 @@ class ImagesDataset(Dataset):
 
 class CCIPImagesDataset(ImagesDataset):
     def __init__(self, root_dir, transform=None):
-        _ids, _maxid = {}, 0
+        _maxid = 0
         _items: List[Tuple[str, int]] = []
-        for file in glob.glob(os.path.join(root_dir, '*', '*', '*.jpg')):
-            dirname = os.path.normcase(os.path.normpath(os.path.dirname(os.path.abspath(file))))
-            if dirname not in _ids:
-                _ids[dirname] = _maxid
+
+        for root, dirs, files in os.walk(root_dir, topdown=False):
+            jpg_files = list(filter(lambda x:x.endswith('.jpg'), files))
+            if len(jpg_files)>0:
+                for name in jpg_files:
+                    _items.append((os.path.join(root, name), _maxid))
                 _maxid += 1
 
-            _items.append((file, _ids[dirname]))
-
-        ImagesDataset.__init__(self, _items, transform)
+        super(CCIPImagesDataset, self).__init__(self, _items, transform)
 
 
 class CharacterDataset(Dataset):
