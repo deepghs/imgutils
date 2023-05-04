@@ -52,3 +52,25 @@ class NTXentLoss(nn.Module):
 
         pos_tensor = torch.stack(pos_items)
         return (pos_tensor.sum() + self.eps) / (pos_tensor.shape[0] + self.eps)
+
+class MLCELoss(nn.Module):
+    def __init__(self, weight=None, reduction='mean', eps=1e-4):
+        super().__init__()
+        weight = torch.as_tensor(weight).float() if weight is not None else weight
+        self.register_buffer('weight', weight)
+        self.reduction = reduction
+        self.eps = eps
+
+    def forward(self, input_tensor, target_tensor):
+        log_prob_raw = F.softmax(input_tensor, dim=1)
+
+        same_mask = (target_tensor.unsqueeze(0) == target_tensor.unsqueeze(1)).long() # [B,B]
+        same_mask_diag0 = same_mask - torch.diag_embed(torch.diag(same_mask)) # diag=0
+
+        log_prob_x = log_prob_raw.clone()
+        log_prob_x[same_mask_diag0.bool()] = self.eps
+        log_prob_x.diagonal().copy_((log_prob_raw*same_mask_diag0).sum(dim=1))
+        log_prob_x = log_prob_x + torch.diag_embed(torch.ones(len(target_tensor))*self.eps)
+        y = torch.arange(0, len(target_tensor))
+
+        return F.nll_loss(log_prob_x.log(), y, weight=self.weight, reduction=self.reduction)

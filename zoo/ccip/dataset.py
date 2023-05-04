@@ -3,6 +3,7 @@ import os.path
 import random
 from typing import List, Tuple, Dict
 
+import numpy as np
 import torch
 from PIL import Image
 from torch.utils.data import Dataset
@@ -11,14 +12,19 @@ from torchvision import transforms
 from imgutils.data import load_image
 from .prob import get_reg_for_prob
 
-TRAIN_TRANSFORM = transforms.Compose([
-    transforms.Resize(300),
-    transforms.RandomCrop(250, padding=25, pad_if_needed=True, padding_mode='reflect'),
+TRAIN_TRANSFORM = [
+    transforms.Resize(416),
     transforms.RandomRotation((-15, 15)),
+    transforms.RandomCrop(384),
     transforms.RandomHorizontalFlip(),
     transforms.ColorJitter(0.10, 0.10, 0.10, 0.10),
-])
-TEST_TRANSFORM = transforms.Compose([])
+    transforms.ToTensor(),
+]
+TEST_TRANSFORM = [
+    transforms.Resize(416),
+    transforms.CenterCrop(384),
+    transforms.ToTensor(),
+]
 
 
 class ImagesDataset(Dataset):
@@ -37,7 +43,7 @@ class ImagesDataset(Dataset):
 
         return image, idx
 
-    def split_dataset(self, test_prob: float = 0.2):
+    def split_dataset(self, test_prob: float = 0.2, train_transform=None, test_transform=None):
         total = len(self.items)
         test_ids = set(random.sample(list(range(total)), k=int(total * test_prob)))
 
@@ -48,7 +54,7 @@ class ImagesDataset(Dataset):
             else:
                 train_items.append(item)
 
-        return ImagesDataset(train_items, self.transform), ImagesDataset(test_items, self.transform)
+        return ImagesDataset(train_items, train_transform or self.transform), ImagesDataset(test_items, test_transform or self.transform)
 
 
 class CCIPImagesDataset(ImagesDataset):
@@ -116,3 +122,49 @@ class CharacterDataset(Dataset):
 
         return torch.stack(list(map(torch.as_tensor, images))), \
                torch.stack(list(map(torch.as_tensor, labels)))
+
+
+class FastCharacterDataset(Dataset):
+    def __init__(self, images_dataset: ImagesDataset, group_size: int = 100,
+                 prob: float = 0.5, **kwargs):
+        self.images_dataset = images_dataset
+
+        groups: Dict[int, List[int]] = {}
+        for i, (_, cid) in enumerate(self.images_dataset.items):
+            if cid not in groups:
+                groups[cid] = []
+            groups[cid].append(i)
+        self.groups = {k:np.array(v) for k,v in groups.items()}
+
+        self.group_size = group_size
+        self.prob = prob*2
+
+    def reset(self):
+        idxs = np.arange(0, len(self.images_dataset.items))
+        np.random.shuffle(idxs)
+        self.idxs = idxs[:-(len(idxs)%self.group_size)]
+
+    def __len__(self):
+        return len(self.idxs)
+
+    def __getitem__(self, item):
+        image, cid = self.images_dataset[self.idxs[item]]
+        n_same = int(self.prob) + int((self.prob-int(self.prob))<=(item%self.group_size/self.group_size))
+
+        image = [image]
+        cid = [cid]
+        if n_same>0:
+            same_idxs = random.sample(self.groups[cid], k=n_same)
+            for idx in same_idxs:
+                img_i, cid_i = self.images_dataset[idx]
+                image.append(img_i)
+                cid.append(cid_i)
+
+        return image, cid
+
+def char_collect_fn(batch):
+    img_list, cid_list = [], []
+    for data in batch:
+        img_list.extend(data[0])
+        cid_list.extend(data[1])
+    return torch.stack(img_list), torch.tensor(cid_list)

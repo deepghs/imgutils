@@ -26,13 +26,9 @@ class CaformerBackbone(torch.nn.Module):
         return x
 
 
-def get_caformer(input_resolution: int = 224, heads: int = 32, feat_dims: int = 1024, **kwargs):
-    transform = Compose([
-        Resize(input_resolution, interpolation=InterpolationMode.BICUBIC),
-        CenterCrop(input_resolution),
-        lambda x: x.convert('RGB'),
-        ToTensor(),
+def get_caformer(input_resolution: int = 384, heads: int = 32, feat_dims: int = 1024, **kwargs):
+    transform = [
         Normalize((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711)),
-    ])
+    ]
 
     return CaformerBackbone(input_resolution, heads, feat_dims, **kwargs), transform

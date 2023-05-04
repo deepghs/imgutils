@@ -12,10 +12,11 @@ from sklearn.metrics import accuracy_score
 from torch.optim import lr_scheduler
 from torch.utils.tensorboard import SummaryWriter
 from torchvision.transforms import Compose
+from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 
-from .dataset import TRAIN_TRANSFORM, CCIPImagesDataset, CharacterDataset, TEST_TRANSFORM
-from .loss import NTXentLoss
+from .dataset import TRAIN_TRANSFORM, CCIPImagesDataset, CharacterDataset, TEST_TRANSFORM, char_collect_fn
+from .loss import NTXentLoss, MLCELoss
 from .model import CCIP
 from ..base import _TRAIN_DIR as _GLOBAL_TRAIN_DIR
 
@@ -81,8 +82,8 @@ def _sample_analysis(poss, negs, svm_samples: int = 10000):
 
 def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optional[str] = None,
           train_ratio: float = 0.8, max_epochs: int = 500, group_size: int = 30,
-          learning_rate: float = 0.001, weight_decay: float = 1e-3, tau: float = 0.15,
-          save_per_epoch: int = 10, eval_epoch: int = 5,
+          learning_rate: float = 0.001, weight_decay: float = 1e-2, tau: float = 0.15,
+          save_per_epoch: int = 10, eval_epoch: int = 5, num_workers=8,
           model_name: str = 'clip/ViT-B/32', seed: Optional[int] = 0):
     if seed is not None:
         # native random, numpy, torch and faker's seeds are includes
@@ -113,12 +114,15 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
 
     model = CCIP(model_name)
     image_dataset = CCIPImagesDataset(dataset_dir)
-    train_image_dataset, test_image_dataset = image_dataset.split_dataset(test_prob=1 - train_ratio)
-    train_image_dataset.transform = Compose([*TRAIN_TRANSFORM.transforms, *model.preprocess.transforms])
-    test_image_dataset.transform = Compose([*TEST_TRANSFORM.transforms, *model.preprocess.transforms])
+    train_image_dataset, test_image_dataset = image_dataset.split_dataset(test_prob=1 - train_ratio,
+                                    train_transform=Compose(TRAIN_TRANSFORM.transforms+model.preprocess.transforms),
+                                    test_transform=Compose(TEST_TRANSFORM.transforms+model.preprocess.transforms),)
 
     train_dataset = CharacterDataset(train_image_dataset, group_size, force_prob=False)
     test_dataset = CharacterDataset(test_image_dataset, group_size)
+    train_dataloader = DataLoader(train_dataset, batch_size=group_size, shuffle=True, num_workers=num_workers, collate_fn=char_collect_fn,
+                                  drop_last=True)
+    test_dataloader = DataLoader(test_dataset, batch_size=group_size, num_workers=num_workers, collate_fn=char_collect_fn)
 
     if from_ckpt is None:
         from_ckpt = _find_latest_ckpt(session_name)
@@ -129,7 +133,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
     else:
         logging.info(f'No checkpoint found, new model will be used.')
 
-    loss_fn = NTXentLoss(tau=tau).to(accelerator.device)
+    loss_fn = MLCELoss().to(accelerator.device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     scheduler = lr_scheduler.OneCycleLR(
         optimizer, max_lr=learning_rate,
@@ -137,36 +141,52 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         pct_start=0.15, final_div_factor=20.
     )
 
-    model, optimizer, train_dataset, test_dataset, scheduler = \
-        accelerator.prepare(model, optimizer, train_dataset, test_dataset, scheduler)
+    model, optimizer, train_dataloader, test_dataloader, scheduler = \
+        accelerator.prepare(model, optimizer, train_dataloader, test_dataloader, scheduler)
+    test_dataloader.dataset.reset()
 
     for epoch in range(previous_epoch + 1, max_epochs + 1):
         running_loss = 0.0
         train_pos_total = 0
         positive_sims, negative_sims = [], []
         model.train()
-        for i, (inputs, char_ids) in enumerate(tqdm(train_dataset)):
-            inputs = inputs.float()
+        for i, (inputs, char_ids) in enumerate(tqdm(train_dataloader)):
+            train_dataloader.dataset.reset()
             inputs = inputs.to(accelerator.device)  # BxCxHxW
             char_ids = char_ids.to(accelerator.device)  # B
 
-            ix = torch.arange(0, char_ids.shape[0])
-            mask = ix > ix.reshape(-1, 1)  # BxB, remove duplicated
-            similarities = model(inputs)  # BxB
-            outputs = similarities[mask]  # N
-            labels = (char_ids == char_ids.reshape(-1, 1))[mask].to(accelerator.device)  # N
+            # B = len(char_ids)
+            # mask = torch.triu(torch.ones(B,B),diagonal=1).to(accelerator.device)  # BxB, remove duplicated
+            # similarities = model(inputs)  # BxB
+            # outputs = similarities[mask]  # N
+            # labels = (char_ids.view(-1,1) == char_ids.view(1,-1))[mask]  # N
+            # labels = char_ids
+
+            outputs = model(inputs)  # BxB
+            labels = char_ids
 
             loss = loss_fn(outputs, labels)
             accelerator.backward(loss)
             optimizer.step()
-            train_pos_total += labels.sum()
-            running_loss += loss.item() * labels.sum()
             scheduler.step()
 
-            positive_sims.append(outputs[labels])
-            negative_sims.append(outputs[~labels])
+            running_loss += loss.item()*len(char_ids)
 
-        epoch_loss = running_loss / train_pos_total
+            gt = (char_ids.view(-1, 1) == char_ids.view(1, -1)).detach().cpu()
+            outputs = outputs.detach().cpu()
+            gt_diag0 = gt.clone()
+            gt_diag0.diagonal().copy_(torch.zeros(len(char_ids)))
+            # outputs.diagonal().copy_(torch.ones(len(char_ids))*-10000)
+            # max_idxs = outputs.argsort(dim=-1)
+            # for max_idx, n_pos in zip(max_idxs, gt.sum(dim=1)):
+            #     train_pos_total += n_pos
+            #     positive_sims.append(outputs[labels])
+            #     negative_sims.append(outputs[~labels])
+            train_pos_total += gt_diag0.sum()
+            positive_sims.append(outputs[gt_diag0])
+            negative_sims.append(outputs[~gt])
+
+        epoch_loss = running_loss #/ train_pos_total
         train_psims = torch.cat(positive_sims)
         train_nsims = torch.cat(negative_sims)
         train_pos_mean, train_pos_std, train_neg_mean, train_neg_std, train_threshold, train_acc_svm = \
@@ -188,19 +208,19 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         if epoch % eval_epoch == 0:
             with torch.no_grad():
                 positive_sims, negative_sims = [], []
-                for i, (inputs, char_ids) in enumerate(tqdm(test_dataset)):
-                    inputs = inputs.float()
+                for i, (inputs, char_ids) in enumerate(tqdm(test_dataloader)):
                     inputs = inputs.to(accelerator.device)  # BxCxHxW
                     char_ids = char_ids.to(accelerator.device)  # B
 
-                    ix = torch.arange(0, char_ids.shape[0])
-                    mask = ix > ix.reshape(-1, 1)  # BxB, remove duplicated
-                    similarities = model(inputs)  # BxB
-                    outputs = similarities[mask]  # N
-                    labels = (char_ids == char_ids.reshape(-1, 1))[mask].to(accelerator.device)  # N
+                    outputs = model(inputs)  # BxB
 
-                    positive_sims.append(outputs[labels])
-                    negative_sims.append(outputs[~labels])
+                    gt = (char_ids.view(-1, 1) == char_ids.view(1, -1)).detach().cpu()
+                    outputs = outputs.detach().cpu()
+                    gt_diag0 = gt.clone()
+                    gt_diag0.diagonal().copy_(torch.zeros(len(char_ids)))
+                    train_pos_total += gt_diag0.sum()
+                    positive_sims.append(outputs[gt_diag0])
+                    negative_sims.append(outputs[~gt])
 
                 test_psims = torch.cat(positive_sims)
                 test_nsims = torch.cat(negative_sims)
