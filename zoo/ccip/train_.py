@@ -191,7 +191,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
                         if writer:
                             #writer.add_scalar('train/loss', mean_loss, epoch)
                             writer.add_scalar('train/auc', auc, (epoch-1)*num_iter + i)
-                            writer.add_scalar('train/ap', auc, (epoch-1)*num_iter + i)
+                            writer.add_scalar('train/ap', ap, (epoch-1)*num_iter + i)
 
                         pred_list.clear()
                         gt_list.clear()
@@ -222,7 +222,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
                     logging.info(f'Epoch [{epoch}/{max_epochs}], AUC: {auc:.3e}, AP: {ap:.3e}.')
                     if writer:
                         writer.add_scalar('test/auc', auc, epoch)
-                        writer.add_scalar('test/ap', auc, epoch)
+                        writer.add_scalar('test/ap', ap, epoch)
 
                     pred_list.clear()
                     gt_list.clear()
