@@ -134,6 +134,9 @@ class FastCharacterDataset(Dataset):
             if cid not in groups:
                 groups[cid] = []
             groups[cid].append(i)
+        for k,v in groups.items():
+            if len(v)==1:
+                v.append(v[0])
         self.groups = groups
 
         self.group_size = group_size
