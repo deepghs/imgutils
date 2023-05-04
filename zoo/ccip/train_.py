@@ -133,7 +133,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     scheduler = lr_scheduler.OneCycleLR(
         optimizer, max_lr=learning_rate,
-        steps_per_epoch=len(train_dataset), epochs=max_epochs,
+        steps_per_epoch=len(train_dataloader), epochs=max_epochs,
         pct_start=0.15, final_div_factor=20.
     )
 
@@ -176,7 +176,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
                 if (i+1)%loss_log_iter == 0:
                     mean_loss = running_loss/train_pos_total
                     if writer:
-                        writer.add_scalar('train/loss', mean_loss, epoch*num_iter + i)
+                        writer.add_scalar('train/loss', mean_loss, (epoch-1)*num_iter + i)
                     running_loss = 0.
                     train_pos_total = 0
 
@@ -190,8 +190,8 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
                         logging.info(f'Epoch [{epoch}/{max_epochs}]<{i+1}/{num_iter}>, loss: {mean_loss:.6f}, AUC: {auc:.3e}, AP: {ap:.3e}.')
                         if writer:
                             #writer.add_scalar('train/loss', mean_loss, epoch)
-                            writer.add_scalar('train/auc', auc, epoch*num_iter + i)
-                            writer.add_scalar('train/ap', auc, epoch*num_iter + i)
+                            writer.add_scalar('train/auc', auc, (epoch-1)*num_iter + i)
+                            writer.add_scalar('train/ap', auc, (epoch-1)*num_iter + i)
 
                         pred_list.clear()
                         gt_list.clear()
