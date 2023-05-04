@@ -6,7 +6,7 @@ from ..monochrome.metaformer import CAFormerBuilder
 
 
 class CaformerBackbone(torch.nn.Module):
-    def __init__(self, input_resolution: int = 384, heads: int = 32, out_dims: int = 1024, **kwargs):
+    def __init__(self, input_resolution: int = 384, heads: int = 8, out_dims: int = 768, **kwargs):
         torch.nn.Module.__init__(self)
         self.input_resolution = input_resolution
         self.caformer = CAFormerBuilder(**kwargs)()
