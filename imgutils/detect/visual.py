@@ -56,7 +56,7 @@ def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, f
     labels = sorted(labels or {label for _, label, _ in detection})
     _colors = list(map(str, rnd_colors(len(labels))))
     _color_map = dict(zip(labels, _colors))
-    for (xmin, ymin, xmax, ymax), label, score in detection:
+    for _, ((xmin, ymin, xmax, ymax), label, score) in sorted(enumerate(detection), key=lambda x: (x[1][2], x[0])):
         box_color = _color_map[label]
         draw.rectangle((xmin, ymin, xmax, ymax), outline=box_color, width=2)
 
