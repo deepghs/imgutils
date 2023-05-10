@@ -10,7 +10,7 @@ on:
     types: [ published ]
 
 jobs:
-  doc:
+  contents:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     strategy:
@@ -44,11 +44,94 @@ jobs:
           dot -V
           python -m pip install -r requirements.txt
           python -m pip install -r requirements-doc.txt
+      - name: Prepare dataset
+        uses: nick-fields/retry@v2
+        env:
+          CI: 'true'
+          HF_NARUGO_USERNAME: ${{ secrets.HF_NARUGO_USERNAME }}
+          HF_NARUGO_PASSWORD: ${{ secrets.HF_NARUGO_PASSWORD }}
+        with:
+          shell: bash
+          timeout_minutes: 20
+          max_attempts: 5
+          retry_on: any
+          command: |
+            make dataset
+      - name: Generate the contents
+        env:
+          ENV_PROD: 'true'
+          PLANTUML_HOST: http://localhost:18080
+        run: |
+          plantumlcli -c
+          make docs
+      - name: Change Commit
+        id: commit
+        run: |
+          git config user.name 'narugo1992'
+          git config user.email 'narugo@126.com'
+          git add -A
+          git diff-index --quiet HEAD || git commit -a -m "dev(narugo): auto sync $(date -R)"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+
+  doc:
+    runs-on: ubuntu-latest
+    needs:
+      - contents
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    strategy:
+      matrix:
+        python-version: [ 3.7 ]
+
+    services:
+      plantuml:
+        image: plantuml/plantuml-server
+        ports:
+          - 18080:8080
+
+    steps:
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 8
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 20
+          submodules: 'recursive'
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y make wget curl cloc graphviz pandoc
+          dot -V
+          python -m pip install -r requirements.txt
+          python -m pip install -r requirements-doc.txt
+      - name: Prepare dataset
+        uses: nick-fields/retry@v2
+        env:
+          CI: 'true'
+          HF_NARUGO_USERNAME: ${{ secrets.HF_NARUGO_USERNAME }}
+          HF_NARUGO_PASSWORD: ${{ secrets.HF_NARUGO_PASSWORD }}
+        with:
+          shell: bash
+          timeout_minutes: 20
+          max_attempts: 5
+          retry_on: any
+          command: |
+            make dataset
       - name: Generate
         env:
           ENV_PROD: 'true'
           PLANTUML_HOST: http://localhost:18080
         run: |
+          git pull
           git fetch --all --tags
           git branch -av
           git remote -v

@@ -45,3 +45,5 @@ clean:
 	@$(DEMOS) clean
 	@$(NOTEBOOK) clean
 
+cleanbm:
+	@$(DEMOS) cleanbm

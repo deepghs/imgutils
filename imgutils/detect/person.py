@@ -7,6 +7,12 @@ Overview:
 
     .. image:: person_detect.dat.svg
         :align: center
+
+    This is an overall benchmark of all the person detect models:
+
+    .. image:: person_detect.benchmark.py.svg
+        :align: center
+
 """
 from functools import lru_cache
 
@@ -32,8 +38,8 @@ def detect_person(image: ImageTyping, level: str = 's', max_infer_size=1216,
         Detect human bodies (including the entire body) in anime images.
 
     :param image: Image to detect.
-    :param level: The model level being used can be either `s` or `n`.
-        The `n` model runs faster with smaller system overhead, while the `s` model achieves higher accuracy.
+    :param level: The model level being used can be either `s`, `m` or `x`.
+        The `s` model runs faster with smaller system overhead, while the `m` model achieves higher accuracy.
         The default value is `s`.
     :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
         the image will be resized and used for inference. The default value is `1216` pixels.

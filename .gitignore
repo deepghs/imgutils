@@ -1205,6 +1205,7 @@ fabric.properties
 /docs/source/**/*.sh.err
 /docs/source/**/*.sh.exitcode
 /docs/source/**/*.dat.*
+!/docs/source/**/*.benchmark.py.*
 !/docs/source/_static/**/*
 /docs/source/**/*.result.ipynb
 /cartpole_dqn_*

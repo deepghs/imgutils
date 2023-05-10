@@ -5,5 +5,11 @@ Overview:
 
     .. image:: isnetis_trans.dat.svg
         :align: center
+
+    This is an overall benchmark of all the segment models:
+
+    .. image:: segment.benchmark.py.svg
+        :align: center
+
 """
 from .isnetis import get_isnetis_mask, segment_with_isnetis, segment_rgba_with_isnetis
