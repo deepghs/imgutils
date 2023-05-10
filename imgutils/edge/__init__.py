@@ -9,7 +9,7 @@ Overview:
 
     This is an overall benchmark of all the outline models:
 
-    .. image:: benchmark_edge.bm.svg
+    .. image:: edge.benchmark.py.svg
         :align: center
 
 """

@@ -75,6 +75,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
 
   doc:
     runs-on: ubuntu-latest
@@ -130,6 +131,7 @@ jobs:
           ENV_PROD: 'true'
           PLANTUML_HOST: http://localhost:18080
         run: |
+          git pull
           git fetch --all --tags
           git branch -av
           git remote -v
