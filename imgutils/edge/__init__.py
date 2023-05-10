@@ -7,6 +7,11 @@ Overview:
     .. image:: edge.dat.svg
         :align: center
 
+    This is an overall benchmark of all the outline models:
+
+    .. image:: benchmark_edge.dat.svg
+        :align: center
+
 """
 from .canny import get_edge_by_canny, edge_image_with_canny
 from .lineart import get_edge_by_lineart, edge_image_with_lineart

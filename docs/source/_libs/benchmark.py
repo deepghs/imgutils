@@ -94,19 +94,39 @@ class BaseBenchmark:
 
 
 def create_plot(items: List[Tuple[str, BaseBenchmark]], save_as: str,
-                title: str = 'Unnamed Benchmark Plot', run_times=15, try_times=10, figsize=(720, 420), dpi: int = 300):
+                title: str = 'Unnamed Benchmark Plot', run_times=15, try_times=10,
+                mem_ylog: bool = False, time_ylog: bool = False,
+                figsize=(720, 420), dpi: int = 300):
     def fmt_size(x, pos):
         _ = pos
         warnings.filterwarnings('ignore')
         return size_to_bytes_str(x, precision=1)
 
+    def fmt_time(x, pos):
+        _ = pos
+        if x < 1e-6:
+            return f'{x * 1e9:.1f}ns'
+        elif x < 1e-3:
+            return f'{x * 1e6:.1f}μs'
+        elif x < 1:
+            return f'{x * 1e3:.1f}ms'
+        else:
+            return f'{x * 1.0:.1f}s'
+
     fig, axes = plt.subplots(1, 2, figsize=(figsize[0] / INCHES_TO_PIXELS, figsize[1] / INCHES_TO_PIXELS))
 
+    if mem_ylog:
+        axes[0].set_yscale('log')
     axes[0].yaxis.set_major_formatter(FuncFormatter(fmt_size))
     axes[0].set_title('Memory Benchmark')
     axes[0].set_ylabel('Memory Usage')
+
+    if time_ylog:
+        axes[1].set_yscale('log')
+    axes[1].yaxis.set_major_formatter(FuncFormatter(fmt_time))
     axes[1].set_title('Performance Benchmark (CPU)')
-    axes[1].set_ylabel('Time Cost (s)')
+    axes[1].set_ylabel('Time Cost')
+
     labeled = False
 
     for name, bm in tqdm(items):

@@ -6,6 +6,12 @@ Overview:
 
     .. image:: face_detect.dat.svg
         :align: center
+
+    This is an overall benchmark of all the face detect models:
+
+    .. image:: benchmark_face_detect.dat.svg
+        :align: center
+
 """
 from functools import lru_cache
 from typing import List, Tuple
