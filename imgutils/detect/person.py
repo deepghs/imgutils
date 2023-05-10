@@ -10,7 +10,7 @@ Overview:
 
     This is an overall benchmark of all the person detect models:
 
-    .. image:: benchmark_person_detect.bm.svg
+    .. image:: benchmark_person_detect.dat.svg
         :align: center
 
 """

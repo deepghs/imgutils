@@ -70,19 +70,17 @@ jobs:
           git config user.name 'narugo1992'
           git config user.email 'narugo@126.com'
           git add -A
-          (git diff-index --quiet HEAD && echo "HAS_CHANGE=" >> $GITHUB_ENV) || echo "HAS_CHANGE=yes" >> $GITHUB_ENV
           git diff-index --quiet HEAD || git commit -a -m "dev(narugo): auto sync $(date -R)"
       - name: Push changes
-        if: ${{ env.HAS_CHANGE }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Cancel current workflow
-        if: ${{ env.HAS_CHANGE }}
-        uses: andymckay/cancel-action@master
+          branch: ${{ github.ref }}
 
   doc:
     runs-on: ubuntu-latest
+    needs:
+      - contents
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     strategy:
       matrix:
@@ -133,6 +131,7 @@ jobs:
           ENV_PROD: 'true'
           PLANTUML_HOST: http://localhost:18080
         run: |
+          git pull
           git fetch --all --tags
           git branch -av
           git remote -v

@@ -28,7 +28,7 @@ if __name__ == '__main__':
             ('face (yolov8s)', FaceDetectBenchmark('s')),
             ('face (yolov8n)', FaceDetectBenchmark('n')),
         ],
-        save_as='benchmark_face_detect.bm.svg',
+        save_as='benchmark_face_detect.dat.svg',
         title='Benchmark for Anime Face Detections',
         run_times=10,
         try_times=5,

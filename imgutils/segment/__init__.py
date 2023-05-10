@@ -8,7 +8,7 @@ Overview:
 
     This is an overall benchmark of all the segment models:
 
-    .. image:: benchmark_segment.bm.svg
+    .. image:: benchmark_segment.dat.svg
         :align: center
 
 """

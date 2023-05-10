@@ -45,4 +45,8 @@ clean:
 		$(shell find ${SOURCE} -name *.sh.txt) \
 		$(shell find ${SOURCE} -name *.sh.err) \
 		$(shell find ${SOURCE} -name *.sh.exitcode) \
-		$(shell find ${SOURCE} -name *.dat.*)
+		$(shell find ${SOURCE} -name *.dat.* -not -name benchmark_*.dat.*)
+
+cleanbm:
+	rm -rf \
+		$(shell find ${SOURCE} -name benchmark_*.dat.*)
