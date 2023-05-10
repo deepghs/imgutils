@@ -29,7 +29,7 @@ if __name__ == '__main__':
             ('person (yolov8m)', PersonDetectBenchmark('m')),
             ('person (yolov8x)', PersonDetectBenchmark('x')),
         ],
-        save_as='benchmark_person_detect.dat.svg',
+        save_as='benchmark_person_detect.bm.svg',
         title='Benchmark for Anime Person Detections',
         run_times=10,
         try_times=5,

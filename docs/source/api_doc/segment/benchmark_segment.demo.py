@@ -23,7 +23,7 @@ if __name__ == '__main__':
         [
             ('isnetis', IsnetisBenchmark()),
         ],
-        save_as='benchmark_segment.dat.svg',
+        save_as='benchmark_segment.bm.svg',
         title='Benchmark for Segment Models',
         run_times=10,
         try_times=5,

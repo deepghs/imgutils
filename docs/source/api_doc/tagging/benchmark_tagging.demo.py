@@ -45,7 +45,7 @@ if __name__ == '__main__':
             ('wd14-convnextv2', Wd14Benchmark("ConvNextV2")),
             ('wd14-vit', Wd14Benchmark("ViT")),
         ],
-        save_as='benchmark_tagging.dat.svg',
+        save_as='benchmark_tagging.bm.svg',
         title='Benchmark for Tagging Models',
         run_times=10,
         try_times=5,

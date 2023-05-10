@@ -56,7 +56,7 @@ if __name__ == '__main__':
             ('lineart (coarse)', LineartBenchmark(coarse=True)),
             ('lineart-anime', LineartAnimeBenchmark()),
         ],
-        save_as='benchmark_edge.dat.svg',
+        save_as='benchmark_edge.bm.svg',
         title='Benchmark for Edge Models',
         run_times=10,
         try_times=5,
