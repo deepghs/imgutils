@@ -1,7 +1,7 @@
 import random
 
 from benchmark import BaseBenchmark, create_plot_cli
-from imgutils.tagging import get_deepdanbooru_tags, get_wd14_tags
+from imgutils.tagging import get_deepdanbooru_tags, get_wd14_tags, get_mldanbooru_tags
 
 
 class DeepdanbooruBenchmark(BaseBenchmark):
@@ -36,6 +36,20 @@ class Wd14Benchmark(BaseBenchmark):
         _ = get_wd14_tags(image_file, model_name=self.model)
 
 
+class MLDanbooruBenchmark(BaseBenchmark):
+    def load(self):
+        from imgutils.tagging.mldanbooru import _open_mldanbooru_model
+        _ = _open_mldanbooru_model()
+
+    def unload(self):
+        from imgutils.tagging.mldanbooru import _open_mldanbooru_model
+        _open_mldanbooru_model.cache_clear()
+
+    def run(self):
+        image_file = random.choice(self.all_images)
+        _ = get_mldanbooru_tags(image_file)
+
+
 if __name__ == '__main__':
     create_plot_cli(
         [
@@ -44,6 +58,7 @@ if __name__ == '__main__':
             ('wd14-convnext', Wd14Benchmark("ConvNext")),
             ('wd14-convnextv2', Wd14Benchmark("ConvNextV2")),
             ('wd14-vit', Wd14Benchmark("ViT")),
+            ('mldanbooru', MLDanbooruBenchmark()),
         ],
         title='Benchmark for Tagging Models',
         run_times=10,

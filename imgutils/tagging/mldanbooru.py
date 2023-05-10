@@ -1,3 +1,8 @@
+"""
+Overview:
+    Tagging utils based on ML-danbooru which is provided by 7eu7d. The code is here:
+    `7eu7d7/ML-Danbooru <https://github.com/7eu7d7/ML-Danbooru>`_ .
+"""
 from functools import lru_cache
 from typing import Tuple, List
 
@@ -54,6 +59,20 @@ def _get_mldanbooru_labels(use_real_name: bool = False) -> Tuple[List[str], List
 def get_mldanbooru_tags(image: ImageTyping, use_real_name: bool = False,
                         threshold: float = 0.7, size: int = 448, keep_ratio: bool = False):
     """
+    Overview:
+        Tagging image with ML-Danbooru, similar to
+        `deepghs/ml-danbooru-demo <https://huggingface.co/spaces/deepghs/ml-danbooru-demo>`_.
+
+    :param image: Image to tagging.
+    :param use_real_name: Use real name on danbooru. Due to the renaming and redirection of many tags
+        on the Danbooru website after the training of ``deepdanbooru``,
+        it may be necessary to use the latest tag names in some application scenarios.
+        The default value of ``False`` indicates the use of the original tag names.
+    :param threshold: Threshold for tags, default is ``0.7``.
+    :param size: Size when passing the resized image into model, default is ``448``.
+    :param keep_ratio: Keep the original ratio between height and width when passing the image into
+        model, default is ``False``.
+
     Example:
         Here are some images for example
 
@@ -68,6 +87,11 @@ def get_mldanbooru_tags(image: ImageTyping, use_real_name: bool = False,
         >>>
         >>> get_mldanbooru_tags('hutao.jpg')
         {'1girl': 0.9999866485595703, 'skirt': 0.997043788433075, 'tongue': 0.9969649910926819, 'hair_ornament': 0.9957101345062256, 'tongue_out': 0.9928386807441711, 'flower': 0.9886980056762695, 'twintails': 0.9864778518676758, 'ghost': 0.9769423007965088, 'hair_flower': 0.9747489094734192, 'bag': 0.9736957550048828, 'long_hair': 0.9388670325279236, 'backpack': 0.9356311559677124, 'brown_hair': 0.91000896692276, 'cardigan': 0.8955123424530029, 'red_eyes': 0.8910233378410339, 'plaid': 0.8904104828834534, 'looking_at_viewer': 0.8881211280822754, 'school_uniform': 0.8876776695251465, 'outdoors': 0.8864808678627014, 'jacket': 0.8810517191886902, 'plaid_skirt': 0.8798807263374329, 'ahoge': 0.8765745162963867, 'pleated_skirt': 0.8737136125564575, 'nail_polish': 0.8650439381599426, 'solo': 0.8613706827163696, 'blue_cardigan': 0.8571277260780334, 'bangs': 0.8333670496940613, 'very_long_hair': 0.8160212635993958, 'eyebrows_visible_through_hair': 0.8122442364692688, 'hairclip': 0.8091571927070618, 'red_nails': 0.8082079887390137, ':p': 0.8048468232154846, 'long_sleeves': 0.8042327165603638, 'shirt': 0.7984272241592407, 'blazer': 0.794708251953125, 'ribbon': 0.78981614112854, 'hair_ribbon': 0.7892146110534668, 'star-shaped_pupils': 0.7867060899734497, 'gradient_hair': 0.786359965801239, 'white_shirt': 0.7790888547897339, 'brown_skirt': 0.7760675549507141, 'symbol-shaped_pupils': 0.774523913860321, 'smile': 0.7721588015556335, 'hair_between_eyes': 0.7697228789329529, 'cowboy_shot': 0.755959689617157, 'multicolored_hair': 0.7477189898490906, 'blush': 0.7476690411567688, 'railing': 0.7476617693901062, 'blue_jacket': 0.7458406090736389, 'sleeves_past_wrists': 0.741143524646759, 'day': 0.7364678978919983, 'collared_shirt': 0.7193643450737, 'red_neckwear': 0.7108616828918457, 'flower-shaped_pupils': 0.7086325287818909, 'miniskirt': 0.7055293321609497, 'holding': 0.7039415836334229, 'open_clothes': 0.7018357515335083}
+
+    .. note::
+        ML-Danbooru only contains generic tags, so the return value will not be splitted like that in
+        :func:`imgutils.tagging.deepdanbooru.get_deepdanbooru_tags` or
+        :func:`imgutils.tagging.wd14.get_wd14_tags`.
     """
     image = load_image(image, mode='RGB')
     real_input = _to_tensor(_resize_align(image, size, keep_ratio))
