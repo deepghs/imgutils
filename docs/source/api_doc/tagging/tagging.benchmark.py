@@ -1,6 +1,6 @@
 import random
 
-from benchmark import BaseBenchmark, create_plot
+from benchmark import BaseBenchmark, create_plot_cli
 from imgutils.tagging import get_deepdanbooru_tags, get_wd14_tags
 
 
@@ -37,7 +37,7 @@ class Wd14Benchmark(BaseBenchmark):
 
 
 if __name__ == '__main__':
-    create_plot(
+    create_plot_cli(
         [
             ('deepdanbooru', DeepdanbooruBenchmark()),
             ('wd14-swinv2', Wd14Benchmark("SwinV2")),
@@ -45,9 +45,8 @@ if __name__ == '__main__':
             ('wd14-convnextv2', Wd14Benchmark("ConvNextV2")),
             ('wd14-vit', Wd14Benchmark("ViT")),
         ],
-        save_as='benchmark_tagging.dat.svg',
         title='Benchmark for Tagging Models',
         run_times=10,
         try_times=5,
         figsize=(1080, 600)
-    )
+    )()

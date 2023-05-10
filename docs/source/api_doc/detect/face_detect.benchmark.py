@@ -1,6 +1,6 @@
 import random
 
-from benchmark import BaseBenchmark, create_plot
+from benchmark import BaseBenchmark, create_plot_cli
 from imgutils.detect import detect_faces
 
 
@@ -23,14 +23,13 @@ class FaceDetectBenchmark(BaseBenchmark):
 
 
 if __name__ == '__main__':
-    create_plot(
+    create_plot_cli(
         [
             ('face (yolov8s)', FaceDetectBenchmark('s')),
             ('face (yolov8n)', FaceDetectBenchmark('n')),
         ],
-        save_as='benchmark_face_detect.dat.svg',
         title='Benchmark for Anime Face Detections',
         run_times=10,
         try_times=5,
         figsize=(1080, 600)
-    )
+    )()

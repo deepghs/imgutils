@@ -1,6 +1,6 @@
 import random
 
-from benchmark import BaseBenchmark, create_plot
+from benchmark import BaseBenchmark, create_plot_cli
 from imgutils.edge import get_edge_by_canny, get_edge_by_lineart_anime, get_edge_by_lineart
 
 
@@ -49,16 +49,15 @@ class LineartBenchmark(BaseBenchmark):
 
 
 if __name__ == '__main__':
-    create_plot(
+    create_plot_cli(
         [
             ('canny', CannyBenchmark()),
             ('lineart', LineartBenchmark(coarse=False)),
             ('lineart (coarse)', LineartBenchmark(coarse=True)),
             ('lineart-anime', LineartAnimeBenchmark()),
         ],
-        save_as='benchmark_edge.dat.svg',
         title='Benchmark for Edge Models',
         run_times=10,
         try_times=5,
         figsize=(1080, 600)
-    )
+    )()

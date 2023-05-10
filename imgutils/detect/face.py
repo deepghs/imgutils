@@ -9,7 +9,7 @@ Overview:
 
     This is an overall benchmark of all the face detect models:
 
-    .. image:: benchmark_face_detect.dat.svg
+    .. image:: face_detect.benchmark.py.svg
         :align: center
 
 """

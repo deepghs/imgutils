@@ -1,6 +1,6 @@
 import random
 
-from benchmark import BaseBenchmark, create_plot
+from benchmark import BaseBenchmark, create_plot_cli
 from imgutils.detect import detect_person
 
 
@@ -23,15 +23,14 @@ class PersonDetectBenchmark(BaseBenchmark):
 
 
 if __name__ == '__main__':
-    create_plot(
+    create_plot_cli(
         [
             ('person (yolov8s)', PersonDetectBenchmark('s')),
             ('person (yolov8m)', PersonDetectBenchmark('m')),
             ('person (yolov8x)', PersonDetectBenchmark('x')),
         ],
-        save_as='benchmark_person_detect.dat.svg',
         title='Benchmark for Anime Person Detections',
         run_times=10,
         try_times=5,
         figsize=(1080, 600)
-    )
+    )()

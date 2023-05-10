@@ -46,4 +46,4 @@ builddir:
 	@echo $(shell readlink -f ${BUILDDIR}/html)
 
 cleanbm:
-	@$(ALL) cleanbm
+	$(ALL) cleanbm

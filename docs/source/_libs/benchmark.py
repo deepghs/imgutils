@@ -6,6 +6,7 @@ import warnings
 from multiprocessing import Process
 from typing import Tuple, List
 
+import click
 import matplotlib.pyplot as plt
 import numpy as np
 import psutil
@@ -93,10 +94,10 @@ class BaseBenchmark:
         return final_mems, final_times, final_labels
 
 
-def create_plot(items: List[Tuple[str, BaseBenchmark]], save_as: str,
-                title: str = 'Unnamed Benchmark Plot', run_times=15, try_times=10,
-                mem_ylog: bool = False, time_ylog: bool = False,
-                figsize=(720, 420), dpi: int = 300):
+def create_plot_cli(items: List[Tuple[str, BaseBenchmark]],
+                    title: str = 'Unnamed Benchmark Plot', run_times=15, try_times=10,
+                    mem_ylog: bool = False, time_ylog: bool = False,
+                    figsize=(720, 420), dpi: int = 300):
     def fmt_size(x, pos):
         _ = pos
         warnings.filterwarnings('ignore')
@@ -113,39 +114,45 @@ def create_plot(items: List[Tuple[str, BaseBenchmark]], save_as: str,
         else:
             return f'{x * 1.0:.1f}s'
 
-    fig, axes = plt.subplots(1, 2, figsize=(figsize[0] / INCHES_TO_PIXELS, figsize[1] / INCHES_TO_PIXELS))
+    @click.command()
+    @click.option('--output', '-o', 'save_as', type=click.Path(dir_okay=False), required=True,
+                  help='Output path of image file.', show_default=True)
+    def _execute(save_as):
+        fig, axes = plt.subplots(1, 2, figsize=(figsize[0] / INCHES_TO_PIXELS, figsize[1] / INCHES_TO_PIXELS))
 
-    if mem_ylog:
-        axes[0].set_yscale('log')
-    axes[0].yaxis.set_major_formatter(FuncFormatter(fmt_size))
-    axes[0].set_title('Memory Benchmark')
-    axes[0].set_ylabel('Memory Usage')
+        if mem_ylog:
+            axes[0].set_yscale('log')
+        axes[0].yaxis.set_major_formatter(FuncFormatter(fmt_size))
+        axes[0].set_title('Memory Benchmark')
+        axes[0].set_ylabel('Memory Usage')
 
-    if time_ylog:
-        axes[1].set_yscale('log')
-    axes[1].yaxis.set_major_formatter(FuncFormatter(fmt_time))
-    axes[1].set_title('Performance Benchmark (CPU)')
-    axes[1].set_ylabel('Time Cost')
+        if time_ylog:
+            axes[1].set_yscale('log')
+        axes[1].yaxis.set_major_formatter(FuncFormatter(fmt_time))
+        axes[1].set_title('Performance Benchmark (CPU)')
+        axes[1].set_ylabel('Time Cost')
 
-    labeled = False
+        labeled = False
 
-    for name, bm in tqdm(items):
-        mems, times, labels = bm.run_in_subprocess(run_times, try_times)
-        axes[0].plot(mems, label=name)
-        axes[1].plot(times, label=name)
-        if not labeled:
-            axes[0].set_xticks(range(len(labels)), labels, rotation='vertical')
-            axes[1].set_xticks(range(len(labels)), labels, rotation='vertical')
-            labeled = True
+        for name, bm in tqdm(items):
+            mems, times, labels = bm.run_in_subprocess(run_times, try_times)
+            axes[0].plot(mems, label=name)
+            axes[1].plot(times, label=name)
+            if not labeled:
+                axes[0].set_xticks(range(len(labels)), labels, rotation='vertical')
+                axes[1].set_xticks(range(len(labels)), labels, rotation='vertical')
+                labeled = True
 
-    axes[0].legend()
-    axes[0].grid()
-    axes[1].legend()
-    axes[1].grid()
+        axes[0].legend()
+        axes[0].grid()
+        axes[1].legend()
+        axes[1].grid()
 
-    fig.suptitle(f'{title}\n'
-                 f'(Mean of {plural_word(try_times, "try")}, '
-                 f'run for {plural_word(run_times, "time")})')
+        fig.suptitle(f'{title}\n'
+                     f'(Mean of {plural_word(try_times, "try")}, '
+                     f'run for {plural_word(run_times, "time")})')
 
-    fig.tight_layout()
-    plt.savefig(save_as, bbox_inches='tight', dpi=dpi, transparent=True)
+        fig.tight_layout()
+        plt.savefig(save_as, bbox_inches='tight', dpi=dpi, transparent=True)
+
+    return _execute
