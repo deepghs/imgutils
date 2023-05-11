@@ -14,7 +14,7 @@ def _release_model_after_run():
 
 
 @pytest.mark.unittest
-class TestTaggingmldanbooru:
+class TestTaggingMldanbooru:
     @pytest.mark.parametrize(['keep_ratio'], [(True,), (False,)])
     def test_get_mldanbooru_tags(self, keep_ratio):
         tags = get_mldanbooru_tags(get_testfile('6124220.jpg'), keep_ratio=keep_ratio)

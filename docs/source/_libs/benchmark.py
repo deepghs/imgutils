@@ -97,7 +97,7 @@ class BaseBenchmark:
 def create_plot_cli(items: List[Tuple[str, BaseBenchmark]],
                     title: str = 'Unnamed Benchmark Plot', run_times=15, try_times=10,
                     mem_ylog: bool = False, time_ylog: bool = False,
-                    figsize=(720, 420), dpi: int = 300):
+                    figsize=(1080, 600), dpi: int = 300):
     def fmt_size(x, pos):
         _ = pos
         warnings.filterwarnings('ignore')
