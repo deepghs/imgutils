@@ -5,6 +5,11 @@ Overview:
 
     When threshold is `0.45`, the `adjusted rand score <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html>`_ can reach `0.995`.
 
+    This is an overall benchmark of all the operations in LPIPS models:
+
+    .. image:: lpips.benchmark.py.svg
+        :align: center
+
 """
 from functools import lru_cache
 from typing import Tuple, Union, List
