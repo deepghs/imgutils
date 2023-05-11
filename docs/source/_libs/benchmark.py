@@ -25,6 +25,9 @@ class BaseBenchmark:
     def __init__(self):
         self.all_images = _DEFAULT_IMAGE_POOL
 
+    def prepare(self):
+        pass
+
     def load(self):
         raise NotImplementedError
 
@@ -42,6 +45,7 @@ class BaseBenchmark:
             logs.append((name, current_process.memory_info().rss, time.time()))
 
         # make sure the model is downloaded
+        self.prepare()
         self.load()
         self.unload()
 
