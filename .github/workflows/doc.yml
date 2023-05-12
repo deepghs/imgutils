@@ -131,12 +131,15 @@ jobs:
           retry_on: any
           command: |
             make dataset
+      - name: Sync from ref
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          git pull
       - name: Generate
         env:
           ENV_PROD: 'true'
           PLANTUML_HOST: http://localhost:18080
         run: |
-          git pull
           git fetch --all --tags
           git branch -av
           git remote -v
