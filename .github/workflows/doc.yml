@@ -12,7 +12,7 @@ on:
 jobs:
   contents:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    if: ${{ !contains(github.event.head_commit.message, 'ci skip') && github.event_name == 'push' }}
     strategy:
       matrix:
         python-version: [ 3.7 ]
