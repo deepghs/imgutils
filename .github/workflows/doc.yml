@@ -12,7 +12,7 @@ on:
 jobs:
   contents:
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, 'ci skip') && github.event_name == 'push' }}
+    if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
     strategy:
       matrix:
         python-version: [ 3.7 ]
@@ -38,6 +38,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
+        if: ${{ github.event_name == 'push' }}
         run: |
           sudo apt-get update -y
           sudo apt-get install -y make wget curl cloc graphviz pandoc
@@ -46,6 +47,7 @@ jobs:
           python -m pip install -r requirements-doc.txt
       - name: Prepare dataset
         uses: nick-fields/retry@v2
+        if: ${{ github.event_name == 'push' }}
         env:
           CI: 'true'
           HF_NARUGO_USERNAME: ${{ secrets.HF_NARUGO_USERNAME }}
@@ -58,6 +60,7 @@ jobs:
           command: |
             make dataset
       - name: Generate the contents
+        if: ${{ github.event_name == 'push' }}
         env:
           ENV_PROD: 'true'
           PLANTUML_HOST: http://localhost:18080
@@ -65,6 +68,7 @@ jobs:
           plantumlcli -c
           make docs
       - name: Change Commit
+        if: ${{ github.event_name == 'push' }}
         id: commit
         run: |
           git config user.name 'narugo1992'
@@ -73,6 +77,7 @@ jobs:
           git diff-index --quiet HEAD || git commit -a -m "dev(narugo): auto sync $(date -R)"
       - name: Push changes
         uses: ad-m/github-push-action@master
+        if: ${{ github.event_name == 'push' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
