@@ -7,6 +7,11 @@ Overview:
 
     .. image:: monochrome.dat.svg
         :align: center
+
+    This is an overall benchmark of all the monochrome validation models:
+
+    .. image:: monochrome.benchmark.py.svg
+        :align: center
 """
 from functools import lru_cache
 from typing import Optional, Tuple, Mapping
