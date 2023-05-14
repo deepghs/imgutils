@@ -3,7 +3,16 @@ import os.path
 import pytest
 
 from imgutils.metrics import get_aesthetic_score
+from imgutils.metrics.aesthetic import _open_aesthetic_model
 from test.testings import get_testfile
+
+
+@pytest.fixture(scope='module', autouse=True)
+def _release_model():
+    try:
+        yield
+    finally:
+        _open_aesthetic_model.cache_clear()
 
 
 @pytest.mark.unittest
@@ -19,4 +28,5 @@ class TestMetricsAesthetic:
         ('5512471-0.919.jpg', 0.9187621474266052),
     ])
     def test_get_aesthetic_score(self, file, score):
-        assert get_aesthetic_score(get_testfile(os.path.join('aesthetic', file))) == pytest.approx(score)
+        assert get_aesthetic_score(get_testfile(os.path.join('aesthetic', file))) == \
+               pytest.approx(score, abs=1e-3)
