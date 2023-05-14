@@ -12,7 +12,7 @@ if __name__ == '__main__':
         (_detect('nian.png'), 'large scale'),
         (_detect('two_bikini_girls.png'), 'closed faces'),
         (_detect('genshin_post.jpg'), 'multiple'),
-        (_detect('mostima_post.jpg'), 'anime style'),
+        (_detect('soldiers.jpg'), 'multiple++'),
         save_as='person_detect.dat.svg',
         columns=2,
         figsize=(12, 9),

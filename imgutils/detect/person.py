@@ -22,16 +22,22 @@ from ._yolo import _image_preprocess, _data_postprocess
 from ..data import ImageTyping, load_image, rgb_encode
 from ..utils import open_onnx_model
 
+_VERSIONS = {
+    'v0': '',
+    'v1': 'plus_',
+    'v1.1': 'plus_v1.1_',
+}
+
 
 @lru_cache()
-def _open_person_detect_model(level: str = 'm', plus: bool = True):
+def _open_person_detect_model(level: str, version: str):
     return open_onnx_model(hf_hub_download(
         'deepghs/imgutils-models',
-        f'person_detect/person_detect_{"plus_" if plus else ""}best_{level}.onnx'
+        f'person_detect/person_detect_{_VERSIONS[version]}best_{level}.onnx'
     ))
 
 
-def detect_person(image: ImageTyping, level: str = 'm', plus: bool = True, max_infer_size=1216,
+def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1', max_infer_size=640,
                   conf_threshold: float = 0.3, iou_threshold: float = 0.5):
     """
     Overview:
@@ -41,10 +47,9 @@ def detect_person(image: ImageTyping, level: str = 'm', plus: bool = True, max_i
     :param level: The model level being used can be either `s`, `m` or `x`.
         The `s` model runs faster with smaller system overhead, while the `m` model achieves higher accuracy.
         The default value is `s`.
-    :param plus: Use plus model. Default is ``True``. This argument is not recommended to use ``False`` unless
-        you know what this means.
+    :param version: Version of model, default is ``v1``.
     :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
-        the image will be resized and used for inference. The default value is `1216` pixels.
+        the image will be resized and used for inference. The default value is ``640`` pixels.
     :param conf_threshold: The confidence threshold, only detection results with confidence scores above
         this threshold will be returned. The default value is `0.3`.
     :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold
@@ -74,5 +79,5 @@ def detect_person(image: ImageTyping, level: str = 'm', plus: bool = True, max_i
     new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
 
     data = rgb_encode(new_image)[None, ...]
-    output, = _open_person_detect_model(level, plus).run(['output0'], {'images': data})
+    output, = _open_person_detect_model(level, version).run(['output0'], {'images': data})
     return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, ['person'])
