@@ -9,5 +9,6 @@ imgutils.metrics
 .. toctree::
     :maxdepth: 3
 
+    aesthetic
     lpips
     psnr_
