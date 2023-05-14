@@ -9,8 +9,11 @@ def _detect(img, **kwargs):
 
 if __name__ == '__main__':
     image_plot(
-        (_detect('genshin_post.jpg'), ''),
+        (_detect('nian.png'), 'large scale'),
+        (_detect('two_bikini_girls.png'), 'closed faces'),
+        (_detect('genshin_post.jpg'), 'multiple'),
+        (_detect('mostima_post.jpg'), 'anime style'),
         save_as='person_detect.dat.svg',
-        columns=1,
+        columns=2,
         figsize=(12, 9),
     )

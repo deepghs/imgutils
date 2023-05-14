@@ -5,13 +5,14 @@ from imgutils.detect import detect_person
 
 
 class PersonDetectBenchmark(BaseBenchmark):
-    def __init__(self, level):
+    def __init__(self, level, plus):
         BaseBenchmark.__init__(self)
         self.level = level
+        self.plus = plus
 
     def load(self):
         from imgutils.detect.person import _open_person_detect_model
-        _ = _open_person_detect_model(level=self.level)
+        _ = _open_person_detect_model(level=self.level, plus=self.plus)
 
     def unload(self):
         from imgutils.detect.person import _open_person_detect_model
@@ -19,15 +20,16 @@ class PersonDetectBenchmark(BaseBenchmark):
 
     def run(self):
         image_file = random.choice(self.all_images)
-        _ = detect_person(image_file, level=self.level)
+        _ = detect_person(image_file, level=self.level, plus=self.plus)
 
 
 if __name__ == '__main__':
     create_plot_cli(
         [
-            ('person (yolov8s)', PersonDetectBenchmark('s')),
-            ('person (yolov8m)', PersonDetectBenchmark('m')),
-            ('person (yolov8x)', PersonDetectBenchmark('x')),
+            ('person plus (yolov8m)', PersonDetectBenchmark('m', True)),
+            ('person (yolov8s)', PersonDetectBenchmark('s', False)),
+            ('person (yolov8m)', PersonDetectBenchmark('m', False)),
+            ('person (yolov8x)', PersonDetectBenchmark('x', False)),
         ],
         title='Benchmark for Anime Person Detections',
         run_times=10,
