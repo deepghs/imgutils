@@ -152,7 +152,7 @@ class FastCharacterDataset(Dataset):
 
     def __getitem__(self, item):
         image, cid = self.images_dataset[self.idxs[item]]
-        n_same = int(self.prob) + int((self.prob-int(self.prob))<=((item%self.group_size+1)/self.group_size))
+        n_same = int(self.prob) + int(((item%self.group_size+1)/self.group_size)<=(self.prob-int(self.prob)))
 
         image = [image]
         cid = [cid]
