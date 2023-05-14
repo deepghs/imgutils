@@ -1,9 +1,12 @@
 """
 Overview:
     A tool for measuring the aesthetic level of anime images, with the model
-    obtained from ` <https://huggingface.co/skytnt/anime-aesthetic>`_.
+    obtained from `skytnt/anime-aesthetic <https://huggingface.co/skytnt/anime-aesthetic>`_.
 
-    This is an overall benchmark of all the operations in LPIPS models:
+    .. image:: aesthetic_full.dat.svg
+        :align: center
+
+    This is an overall benchmark of all the operations in aesthetic models:
 
     .. image:: aesthetic.benchmark.py.svg
         :align: center
@@ -45,6 +48,33 @@ def _preprocess(image: Image.Image):
 
 
 def get_aesthetic_score(image: ImageTyping):
+    """
+    Overview:
+        Get aesthetic score for image.
+
+    :param image: Original image.
+    :return: Score of aesthetic.
+
+    Examples::
+        >>> from imgutils.metrics import get_aesthetic_score
+        >>>
+        >>> get_aesthetic_score('2053756.jpg')
+        0.09986039996147156
+        >>> get_aesthetic_score('1663584.jpg')
+        0.24299287796020508
+        >>> get_aesthetic_score('4886411.jpg')
+        0.38091593980789185
+        >>> get_aesthetic_score('2066024.jpg')
+        0.5131649971008301
+        >>> get_aesthetic_score('3670169.jpg')
+        0.6011670827865601
+        >>> get_aesthetic_score('5930006.jpg')
+        0.7067991495132446
+        >>> get_aesthetic_score('3821265.jpg')
+        0.8237218260765076
+        >>> get_aesthetic_score('5512471.jpg')
+        0.9187621474266052
+    """
     image = load_image(image, mode='RGB')
     retval, *_ = _open_aesthetic_model().run(None, {'img': _preprocess(image)})
     return float(retval.item())
