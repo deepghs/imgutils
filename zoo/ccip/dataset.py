@@ -13,7 +13,7 @@ from imgutils.data import load_image
 from .prob import get_reg_for_prob
 
 TRAIN_TRANSFORM = [
-    transforms.Resize(416),
+    transforms.Resize((416, 416)),
     transforms.RandomRotation((-15, 15)),
     transforms.RandomCrop(384),
     transforms.RandomHorizontalFlip(),
@@ -21,7 +21,7 @@ TRAIN_TRANSFORM = [
     transforms.ToTensor(),
 ]
 TEST_TRANSFORM = [
-    transforms.Resize(416),
+    transforms.Resize((416, 416)),
     transforms.CenterCrop(384),
     transforms.ToTensor(),
 ]

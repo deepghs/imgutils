@@ -34,7 +34,7 @@ class CCIPFeature(nn.Module):
 
     def forward(self, x):
         x = self.backbone(x)
-        x = x / x.norm(dim=-1, keepdim=True)
+        #x = x / x.norm(dim=-1, keepdim=True)
         return x
 
 

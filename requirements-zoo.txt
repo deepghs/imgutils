@@ -1,4 +1,4 @@
-torch<2
+torch
 lpips
 matplotlib
 torchvision
@@ -16,4 +16,3 @@ accelerate
 timm
 ftfy
 regex
-git+https://github.com/openai/CLIP.git
