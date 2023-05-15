@@ -28,6 +28,7 @@ class Infer:
         image = self.img_transform(image)
         return image
 
+    @torch.no_grad()
     def infer_one(self, img_list):
         imgs = torch.stack(img_list).to(self.device)
         outputs = self.model(imgs)
@@ -47,5 +48,7 @@ if __name__ == '__main__':
     imgs.append(demo.load_img(r'E:\dataset\pixiv\ganyu/91039559171fd81f1ccb54838e1f546a4c3d6e7c.jpg@942w_942h_progressive.webp'))
     imgs.append(demo.load_img(r'E:\dataset\pixiv\p1/eb7009f1dd5ecc61cf8d55f7d82c1922487b3cfc.jpg@942w_1338h_progressive.webp'))
     imgs.append(demo.load_img(r'E:\dataset\pixiv\p1/c398774304db7cc737bb57fa2f380295.jpg'))
+    imgs.append(demo.load_img(r'E:\dataset\pixiv\p1/20221215165339_13707.png'))
+    imgs.append(demo.load_img(r'E:\dataset\pixiv\p1/e768ebbb4a116c8b85b39342d3348775.png'))
     pred = demo.infer_one(imgs)
     print(pred)
