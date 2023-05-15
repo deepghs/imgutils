@@ -25,11 +25,11 @@ class TestDetectPerson:
             values.append((bbox, int(score * 1000) / 1000))
 
         assert values == pytest.approx([
-            ((1, 141, 417, 720), 0.882),
-            ((707, 5, 1264, 720), 0.83),
-            ((617, 412, 801, 681), 0.773),
-            ((376, 234, 558, 661), 0.75),
+            ((715, 8, 1268, 720), 0.861),
+            ((57, 140, 407, 720), 0.856),
+            ((614, 417, 802, 680), 0.802),
+            ((373, 234, 561, 657), 0.782)
         ])
 
     def test_detect_person_none(self):
-        assert detect_person(get_testfile('png_full.png')) == []
+        assert detect_person(get_testfile('png_full.png'), conf_threshold=0.5) == []

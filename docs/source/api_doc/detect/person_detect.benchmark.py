@@ -26,6 +26,7 @@ class PersonDetectBenchmark(BaseBenchmark):
 if __name__ == '__main__':
     create_plot_cli(
         [
+            ('person v1.1 (yolov8m)', PersonDetectBenchmark('m', 'v1.1')),
             ('person v1 (yolov8m)', PersonDetectBenchmark('m', 'v1')),
             ('person v0 (yolov8s)', PersonDetectBenchmark('s', 'v0')),
             ('person v0 (yolov8m)', PersonDetectBenchmark('m', 'v0')),

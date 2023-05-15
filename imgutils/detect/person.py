@@ -37,7 +37,7 @@ def _open_person_detect_model(level: str, version: str):
     ))
 
 
-def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1', max_infer_size=640,
+def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1.1', max_infer_size=640,
                   conf_threshold: float = 0.3, iou_threshold: float = 0.5):
     """
     Overview:
