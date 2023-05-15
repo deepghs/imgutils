@@ -27,6 +27,7 @@ _CKPT_DIR = os.path.join(_TRAIN_DIR, 'ckpts')
 
 _CKPT_PATTERN = re.compile(r'^ccip-(?P<name>[a-zA-Z\d_\-]+)-(?P<epoch>\d+)\.ckpt$')
 
+
 def _find_latest_ckpt(name: str) -> Optional[str]:
     if os.path.exists(_CKPT_DIR):
         ckpts = []
@@ -43,6 +44,7 @@ def _find_latest_ckpt(name: str) -> Optional[str]:
     else:
         return None
 
+
 def _ckpt_epoch(filename: Optional[str]) -> Optional[int]:
     if filename is not None:
         matching = _CKPT_PATTERN.fullmatch(os.path.basename(filename))
@@ -53,12 +55,13 @@ def _ckpt_epoch(filename: Optional[str]) -> Optional[int]:
     else:
         return None
 
+
 def _sample_analysis(poss, negs, svm_samples: int = 10000):
     poss_cnt, negs_cnt = poss.shape[0], negs.shape[0]
-    total = poss_cnt+negs_cnt
-    if total>svm_samples:
-        s_poss = poss[random.sample(range(poss_cnt), k=int(round(poss_cnt*svm_samples/total)))]
-        s_negs = negs[random.sample(range(negs_cnt), k=int(round(negs_cnt*svm_samples/total)))]
+    total = poss_cnt + negs_cnt
+    if total > svm_samples:
+        s_poss = poss[random.sample(range(poss_cnt), k=int(round(poss_cnt * svm_samples / total)))]
+        s_negs = negs[random.sample(range(negs_cnt), k=int(round(negs_cnt * svm_samples / total)))]
     else:
         s_poss, s_negs = poss, negs
 
@@ -70,12 +73,14 @@ def _sample_analysis(poss, negs, svm_samples: int = 10000):
     model.fit(features.reshape(-1, 1), labels)
     predictions = model.predict(features.reshape(-1, 1))
 
-    return poss.mean().item(), poss.std().item(), negs.mean().item(), negs.std().item(), accuracy_score(labels, predictions)
+    return poss.mean().item(), poss.std().item(), negs.mean().item(), negs.std().item(), accuracy_score(labels,
+                                                                                                        predictions)
+
 
 def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optional[str] = None,
           train_ratio: float = 0.8, max_epochs: int = 500, group_size: int = 30,
           learning_rate: float = 0.001, weight_decay: float = 1e-2, tau: float = 0.15,
-          save_per_epoch: int = 10, eval_epoch: int = 5, loss_log_iter:int = 20, log_iter: int = 500, num_workers=8,
+          save_per_epoch: int = 10, eval_epoch: int = 5, loss_log_iter: int = 20, log_iter: int = 500, num_workers=8,
           model_name: str = 'clip/ViT-B/32', seed: Optional[int] = 0):
     if seed is not None:
         # native random, numpy, torch and faker's seeds are includes
@@ -98,9 +103,9 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         os.makedirs(_CKPT_DIR, exist_ok=True)
         writer = SummaryWriter(_log_dir)
         writer.add_custom_scalars({
-            "contrastive":{
-                "train":["Multiline", ["train/pos/mean", "train/neg/mean"]],
-                "test":["Multiline", ["test/pos/mean", "test/neg/mean"]],
+            "contrastive": {
+                "train": ["Multiline", ["train/pos/mean", "train/neg/mean"]],
+                "test": ["Multiline", ["test/pos/mean", "test/neg/mean"]],
             },
         })
     else:
@@ -108,17 +113,21 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
 
     model = CCIP(model_name)
     image_dataset = CCIPImagesDataset(dataset_dir)
-    train_image_dataset, test_image_dataset = image_dataset.split_dataset(test_prob=1-train_ratio,
-                                                                          train_transform=Compose(TRAIN_TRANSFORM+model.preprocess),
-                                                                          test_transform=Compose(TEST_TRANSFORM+model.preprocess), )
+    train_image_dataset, test_image_dataset = image_dataset.split_dataset(
+        test_prob=1 - train_ratio,
+        train_transform=Compose(TRAIN_TRANSFORM + model.preprocess),
+        test_transform=Compose(TEST_TRANSFORM + model.preprocess),
+    )
 
     train_dataset = FastCharacterDataset(train_image_dataset, group_size, force_prob=False)
     test_dataset = FastCharacterDataset(test_image_dataset, group_size)
     train_dataset.reset()
     test_dataset.reset()
-    train_dataloader = DataLoader(train_dataset, batch_size=group_size, shuffle=True, num_workers=num_workers, collate_fn=char_collect_fn,
+    train_dataloader = DataLoader(train_dataset, batch_size=group_size, shuffle=True, num_workers=num_workers,
+                                  collate_fn=char_collect_fn,
                                   drop_last=True)
-    test_dataloader = DataLoader(test_dataset, batch_size=group_size, num_workers=num_workers, collate_fn=char_collect_fn)
+    test_dataloader = DataLoader(test_dataset, batch_size=group_size, num_workers=num_workers,
+                                 collate_fn=char_collect_fn)
 
     if from_ckpt is None:
         from_ckpt = _find_latest_ckpt(session_name)
@@ -136,7 +145,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         steps_per_epoch=len(train_dataloader), epochs=max_epochs,
         pct_start=0.15, final_div_factor=20.
     )
-    #model = torch.compile(model)
+    # model = torch.compile(model)
 
     model, optimizer, train_dataloader, test_dataloader, scheduler = \
         accelerator.prepare(model, optimizer, train_dataloader, test_dataloader, scheduler)
@@ -144,7 +153,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
     metric_auroc = AUROC(task="binary")
     metric_ap = AveragePrecision(task="binary")
 
-    for epoch in range(previous_epoch+1, max_epochs+1):
+    for epoch in range(previous_epoch + 1, max_epochs + 1):
         running_loss = 0.0
         train_pos_total = 0
         pred_list, gt_list = [], []
@@ -164,7 +173,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
             scheduler.step()
             optimizer.zero_grad()
 
-            running_loss += loss.item()*len(char_ids)
+            running_loss += loss.item() * len(char_ids)
             train_pos_total += len(char_ids)
 
             mask = torch.ones_like(outputs).bool().cpu()
@@ -175,32 +184,33 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
             gt_list.append(gt_same.long()[mask])
 
             with torch.no_grad():
-                if (i+1)%loss_log_iter == 0:
-                    mean_loss = running_loss/train_pos_total
+                if (i + 1) % loss_log_iter == 0:
+                    mean_loss = running_loss / train_pos_total
                     if writer:
-                        writer.add_scalar('train/loss', mean_loss, (epoch-1)*num_iter + i)
-                        writer.add_scalar('train/lr', scheduler.get_last_lr()[0], (epoch-1)*num_iter + i)
+                        writer.add_scalar('train/loss', mean_loss, (epoch - 1) * num_iter + i)
+                        writer.add_scalar('train/lr', scheduler.get_last_lr()[0], (epoch - 1) * num_iter + i)
                     running_loss = 0.
                     train_pos_total = 0
 
-                if (i+1)%log_iter == 0:
+                if (i + 1) % log_iter == 0:
                     pred_t = torch.cat(pred_list).to(accelerator.device)
                     gt_t = torch.cat(gt_list).to(accelerator.device)
                     pred_t, gt_t = accelerator.gather_for_metrics((pred_t, gt_t))
                     if accelerator.is_local_main_process:
                         auc = metric_auroc(pred_t, gt_t).item()
                         ap = metric_ap(pred_t, gt_t).item()
-                        logging.info(f'Epoch [{epoch}/{max_epochs}]<{i+1}/{num_iter}>, loss: {mean_loss:.6f}, AUC: {auc:.3e}, AP: {ap:.3e}.')
+                        logging.info(
+                            f'Epoch [{epoch}/{max_epochs}]<{i + 1}/{num_iter}>, loss: {mean_loss:.6f}, AUC: {auc:.3e}, AP: {ap:.3e}.')
                         if writer:
-                            #writer.add_scalar('train/loss', mean_loss, epoch)
-                            writer.add_scalar('train/auc', auc, (epoch-1)*num_iter + i)
-                            writer.add_scalar('train/ap', ap, (epoch-1)*num_iter + i)
+                            # writer.add_scalar('train/loss', mean_loss, epoch)
+                            writer.add_scalar('train/auc', auc, (epoch - 1) * num_iter + i)
+                            writer.add_scalar('train/ap', ap, (epoch - 1) * num_iter + i)
 
                         pred_list.clear()
                         gt_list.clear()
 
         model.eval()
-        if epoch%eval_epoch == 0:
+        if epoch % eval_epoch == 0:
             with torch.no_grad():
                 pred_list, gt_list = [], []
                 for i, (inputs, char_ids) in enumerate(tqdm(test_dataloader)):
@@ -230,7 +240,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
                     pred_list.clear()
                     gt_list.clear()
 
-        if accelerator.is_local_main_process and epoch%save_per_epoch == 0:
+        if accelerator.is_local_main_process and epoch % save_per_epoch == 0:
             current_ckpt_file = os.path.join(_CKPT_DIR, f'ccip-{session_name}-{epoch}.ckpt')
             torch.save(model.state_dict(), current_ckpt_file)
             logging.info(f'Saved to {current_ckpt_file!r}.')

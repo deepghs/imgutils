@@ -1,5 +1,5 @@
 import torch.nn
-from torchvision.transforms import InterpolationMode, Compose, Resize, CenterCrop, ToTensor, Normalize
+from torchvision.transforms import Normalize
 
 from .attention_pool import AttentionPool2d
 from ..monochrome.metaformer import CAFormerBuilder

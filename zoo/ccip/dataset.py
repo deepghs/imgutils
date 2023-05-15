@@ -1,4 +1,3 @@
-import glob
 import os.path
 import random
 from typing import List, Tuple, Dict
@@ -54,7 +53,8 @@ class ImagesDataset(Dataset):
             else:
                 train_items.append(item)
 
-        return ImagesDataset(train_items, train_transform or self.transform), ImagesDataset(test_items, test_transform or self.transform)
+        return ImagesDataset(train_items, train_transform or self.transform), \
+            ImagesDataset(test_items, test_transform or self.transform)
 
 
 class CCIPImagesDataset(ImagesDataset):
@@ -63,8 +63,8 @@ class CCIPImagesDataset(ImagesDataset):
         _items: List[Tuple[str, int]] = []
 
         for root, dirs, files in os.walk(root_dir, topdown=False):
-            jpg_files = list(filter(lambda x:x.endswith('.jpg'), files))
-            if len(jpg_files)>0:
+            jpg_files = list(filter(lambda x: x.endswith('.jpg'), files))
+            if len(jpg_files) > 0:
                 for name in jpg_files:
                     _items.append((os.path.join(root, name), _maxid))
                 _maxid += 1
@@ -121,7 +121,7 @@ class CharacterDataset(Dataset):
             labels.append(label)
 
         return torch.stack(list(map(torch.as_tensor, images))), \
-               torch.stack(list(map(torch.as_tensor, labels)))
+            torch.stack(list(map(torch.as_tensor, labels)))
 
 
 class FastCharacterDataset(Dataset):
@@ -134,29 +134,29 @@ class FastCharacterDataset(Dataset):
             if cid not in groups:
                 groups[cid] = []
             groups[cid].append(i)
-        for k,v in groups.items():
-            if len(v)==1:
+        for k, v in groups.items():
+            if len(v) == 1:
                 v.append(v[0])
         self.groups = groups
 
         self.group_size = group_size
-        self.prob = prob*2
+        self.prob = prob * 2
 
     def reset(self):
         idxs = np.arange(0, len(self.images_dataset.items))
         np.random.shuffle(idxs)
-        self.idxs = idxs[:-(len(idxs)%self.group_size)]
+        self.idxs = idxs[:-(len(idxs) % self.group_size)]
 
     def __len__(self):
         return len(self.idxs)
 
     def __getitem__(self, item):
         image, cid = self.images_dataset[self.idxs[item]]
-        n_same = int(self.prob) + int(((item%self.group_size+1)/self.group_size)<=(self.prob-int(self.prob)))
+        n_same = int(self.prob) + int(((item % self.group_size + 1) / self.group_size) <= (self.prob - int(self.prob)))
 
         image = [image]
         cid = [cid]
-        if n_same>0:
+        if n_same > 0:
             same_idxs = random.sample(self.groups[cid[0]], k=n_same)
             for idx in same_idxs:
                 img_i, cid_i = self.images_dataset[idx]
@@ -164,6 +164,7 @@ class FastCharacterDataset(Dataset):
                 cid.append(cid_i)
 
         return image, cid
+
 
 def char_collect_fn(batch):
     img_list, cid_list = [], []

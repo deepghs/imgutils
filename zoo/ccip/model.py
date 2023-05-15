@@ -1,27 +1,25 @@
-import torch.nn
-import torch.nn.functional as F
-from PIL import Image
-from torch import nn
 import numpy as np
+import torch.nn
+from torch import nn
 
-#from zoo.utils import get_testfile
+# from zoo.utils import get_testfile
 from .backbone import get_backbone
 
 
 class CCIPBatchMetrics(nn.Module):
     def __init__(self):
         super().__init__()
-        self.logit_scale = nn.Parameter(torch.ones([])*np.log(1/0.07))
-        #self.sim = nn.CosineSimilarity(dim=-1)
+        self.logit_scale = nn.Parameter(torch.ones([]) * np.log(1 / 0.07))
+        # self.sim = nn.CosineSimilarity(dim=-1)
 
     def forward(self, image_features):  # x: BxN
 
         # normalized features
-        image_features = image_features/image_features.norm(dim=1, keepdim=True)
+        image_features = image_features / image_features.norm(dim=1, keepdim=True)
 
         # cosine similarity as logits
         logit_scale = self.logit_scale.exp()
-        logits_per_image = logit_scale*image_features@image_features.t()
+        logits_per_image = logit_scale * image_features @ image_features.t()
         logits_per_image = logits_per_image - torch.diag_embed(torch.diag(logits_per_image))
 
         return logits_per_image
@@ -34,7 +32,7 @@ class CCIPFeature(nn.Module):
 
     def forward(self, x):
         x = self.backbone(x)
-        #x = x / x.norm(dim=-1, keepdim=True)
+        # x = x / x.norm(dim=-1, keepdim=True)
         return x
 
 
@@ -71,8 +69,7 @@ if __name__ == '__main__':
     #
     # print(F.softmax(model.forward(data), dim=-1))
 
-    data = torch.randn(4,3,384,384).cuda()
+    data = torch.randn(4, 3, 384, 384).cuda()
     model = CCIP('caformer').cuda()
     print(model.feature.backbone.attnpool.num_heads)
     print(model(data))
-
