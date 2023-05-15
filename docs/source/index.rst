@@ -18,6 +18,11 @@ configuration file's structure and their versions.
     :maxdepth: 2
     :caption: Best Practice
 
+.. toctree::
+    :maxdepth: 2
+    :caption: Information
+
+    information/environment.result
 
 .. toctree::
     :maxdepth: 2
@@ -25,6 +30,8 @@ configuration file's structure and their versions.
 
     api_doc/config/index
     api_doc/data/index
+    api_doc/detect/index
+    api_doc/edge/index
     api_doc/metrics/index
     api_doc/segment/index
     api_doc/tagging/index

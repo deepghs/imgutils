@@ -11,6 +11,8 @@ BUILDDIR           ?= ${PROJ_DIR}/build
 ALL_MK := ${SOURCEDIR}/all.mk
 ALL    := $(MAKE) -f "${ALL_MK}" SOURCE=${SOURCEDIR}
 
+BMS    := $(shell find ${SOURCEDIR} -name 'benchmark_*.dat.*')
+
 .EXPORT_ALL_VARIABLES:
 
 NO_CONTENTS_BUILD = true
@@ -42,3 +44,6 @@ sourcedir:
 	@echo $(shell readlink -f ${SOURCEDIR})
 builddir:
 	@echo $(shell readlink -f ${BUILDDIR}/html)
+
+cleanbm:
+	$(ALL) cleanbm

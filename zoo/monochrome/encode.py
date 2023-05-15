@@ -30,7 +30,7 @@ def image_encode(image: ImageTyping, bins: int = 200, mf: Optional[int] = 5,
     if image.width * image.height > maxpixels:
         r = (image.width * image.height / maxpixels) ** 0.5
         new_width, new_height = map(lambda x: int(round(x / r)), image.size)
-        image = image.resize((new_width, new_height))
+        image = image._resize_align((new_width, new_height))
 
     if mf is not None:
         image = image.filter(ImageFilter.MedianFilter(mf))

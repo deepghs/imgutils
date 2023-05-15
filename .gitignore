@@ -1205,7 +1205,9 @@ fabric.properties
 /docs/source/**/*.sh.err
 /docs/source/**/*.sh.exitcode
 /docs/source/**/*.dat.*
+!/docs/source/**/*.benchmark.py.*
 !/docs/source/_static/**/*
+/docs/source/**/*.result.ipynb
 /cartpole_dqn_*
 /imgutils/**/*.json
 /imgutils/**/*.yaml
@@ -1218,3 +1220,6 @@ fabric.properties
 /test/testfile/dataset
 /zoo/testfile/dataset
 /.train
+*.pt
+/runs
+/YOLOv8

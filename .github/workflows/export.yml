@@ -17,7 +17,10 @@ jobs:
           - '3.8'
         model-name:
           #          - 'lpips'
-          - 'monochrome'
+          #          - 'monochrome'
+          - 'person_detect'
+          #          - 'face_detect'
+          #          - 'manbits_detect'
 
     steps:
       - name: Checkout code

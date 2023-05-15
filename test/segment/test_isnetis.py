@@ -20,7 +20,7 @@ class TestSegmentIsnetis:
         target_image_file = get_testfile(f'isnetis_{obody}_{background}{oext}')
 
         mask, ret_image = segment_with_isnetis(image, **({'background': background} if background else {}))
-        assert mask.shape == (image.height, image.width, 1)
+        assert mask.shape == (image.height, image.width)
         assert ret_image.size == image.size
         assert ret_image.mode == 'RGB'
 
@@ -38,7 +38,7 @@ class TestSegmentIsnetis:
         target_image_file = get_testfile(f'isnetis_rgba_{obody}.png')
 
         mask, ret_image = segment_rgba_with_isnetis(image)
-        assert mask.shape == (image.height, image.width, 1)
+        assert mask.shape == (image.height, image.width)
         assert ret_image.size == image.size
         assert ret_image.mode == 'RGBA'
 
