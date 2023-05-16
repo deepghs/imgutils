@@ -148,7 +148,8 @@ def onnx_check(model: str, check_item: Optional[str] = None, verbose: bool = Fal
 
 
 MODELS = [
-    ('caformer', 'ccip-caformer-2_fp32.ckpt'),
+    # ('caformer', 'ccip-caformer-2_fp32.ckpt'),
+    ('caformer', 'ccip-caformer-4_fp32.ckpt'),
 ]
 
 
