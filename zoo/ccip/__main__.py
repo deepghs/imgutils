@@ -148,7 +148,7 @@ def onnx_check(model: str, check_item: Optional[str] = None, verbose: bool = Fal
 
 
 MODELS = [
-    # ('caformer', 'ccip-caformer-2_fp32.ckpt'),
+    ('caformer', 'ccip-caformer-2_fp32.ckpt'),
     ('caformer', 'ccip-caformer-4_fp32.ckpt'),
 ]
 
@@ -183,7 +183,7 @@ def export(output_dir: str, verbose: bool = False, threshold_samples: int = 500)
                 onnx_filename = os.path.join(output_dir or td, f'{ckpt_body}_{item}.onnx')
                 export_func = _CHECK_ITEMS[item]
                 try:
-                    model = CCIP(model_name)  # necessary
+                    model, preprocess = _get_model_from_ckpt(model_name, ckpt_file, device='cpu', fp16=False)
                     if verbose:
                         export_func(model, threshold, onnx_filename, verbose=verbose)
                     else:

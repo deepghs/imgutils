@@ -35,11 +35,11 @@ def load_image(image: ImageTyping, mode=None, force_background: Optional[str] = 
     return image
 
 
-def load_images(images: MultiImagesTyping, mode=None) -> List[Image.Image]:
+def load_images(images: MultiImagesTyping, mode=None, force_background: Optional[str] = 'white') -> List[Image.Image]:
     if not isinstance(images, (list, tuple)):
         images = [images]
 
-    return [load_image(item, mode) for item in images]
+    return [load_image(item, mode, force_background) for item in images]
 
 
 def add_background_for_rgba(image: ImageTyping, background: str = 'white'):

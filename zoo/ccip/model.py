@@ -60,7 +60,7 @@ class LogitToConfidence(nn.Module):
         self.threshold: torch.Tensor
 
     def forward(self, x):
-        ex = (x - self.threshold)
+        ex = x - self.threshold
         return torch.exp(ex) / (torch.exp(ex) + 1.0)
 
 
