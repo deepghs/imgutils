@@ -44,10 +44,10 @@ def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1.1', m
         Detect human bodies (including the entire body) in anime images.
 
     :param image: Image to detect.
-    :param level: The model level being used can be either `s`, `m` or `x`.
-        The `s` model runs faster with smaller system overhead, while the `m` model achieves higher accuracy.
-        The default value is `s`.
-    :param version: Version of model, default is ``v1``.
+    :param level: The model level being used can be either ``n``, ``s``, ``m`` or ``x``.
+        The ``n`` model runs faster with smaller system overhead, while the ``m`` model achieves higher accuracy.
+        The default value is ``m``.
+    :param version: Version of model, default is ``v1.1``. Available versions are ``v0``, ``v1`` and ``v1.1``.
     :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
         the image will be resized and used for inference. The default value is ``640`` pixels.
     :param conf_threshold: The confidence threshold, only detection results with confidence scores above
@@ -74,6 +74,12 @@ def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1.1', m
         >>> from matplotlib import pyplot as plt
         >>> plt.imshow(detection_visualize(image, result))
         >>> plt.show()
+
+    .. note::
+        Please note that certain combinations of versions and levels may not have corresponding models.
+        When using them, please refer to the performance chart at the top of that page, which lists
+        the versions and models included.
+
     """
     image = load_image(image, mode='RGB')
     new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
