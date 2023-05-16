@@ -18,9 +18,10 @@ jobs:
         model-name:
           #          - 'lpips'
           #          - 'monochrome'
-          - 'person_detect'
+          #          - 'person_detect'
           #          - 'face_detect'
           #          - 'manbits_detect'
+          - 'ccip'
 
     steps:
       - name: Checkout code

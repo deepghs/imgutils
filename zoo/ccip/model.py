@@ -13,14 +13,14 @@ class CCIPBatchMetrics(nn.Module):
         # self.sim = nn.CosineSimilarity(dim=-1)
 
     def forward(self, image_features):  # x: BxN
-
         # normalized features
         image_features = image_features / image_features.norm(dim=1, keepdim=True)
 
         # cosine similarity as logits
         logit_scale = self.logit_scale.exp()
         logits_per_image = logit_scale * image_features @ image_features.t()
-        logits_per_image = logits_per_image - torch.diag_embed(torch.diag(logits_per_image))
+        if self.training:
+            logits_per_image = logits_per_image - torch.diag_embed(torch.diag(logits_per_image))
 
         return logits_per_image
 
@@ -51,6 +51,17 @@ class CCIP(nn.Module):
         x = self.feature(x)  # BxF
         x = self.metrics(x)  # BxB
         return x
+
+
+class LogitToConfidence(nn.Module):
+    def __init__(self, threshold):
+        nn.Module.__init__(self)
+        self.register_buffer('threshold', torch.tensor(threshold))
+        self.threshold: torch.Tensor
+
+    def forward(self, x):
+        ex = (x - self.threshold)
+        return torch.exp(ex) / (torch.exp(ex) + 1.0)
 
 
 if __name__ == '__main__':

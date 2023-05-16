@@ -13,24 +13,35 @@ def _load_remote_ckpt(remote_ckpt):
     return hf_hub_download('deepghs/ccip', remote_ckpt, repo_type='model')
 
 
+def _get_model_from_ckpt(model_name, ckpt, device, fp16: bool):
+    model = CCIP(model_name).to(device)
+    model.eval()
+    if fp16:
+        model = model.half()
+
+    state = torch.load(ckpt, map_location='cpu')
+    try:
+        model.load_state_dict(state)
+    except:
+        len_p = len('module._orig_mod.')
+        model.load_state_dict({k[len_p:]: v for k, v in state.items()})
+
+    preprocess = transforms.Compose(TEST_TRANSFORM + model.preprocess)
+
+    return model, preprocess
+
+
 class Infer:
     def __init__(self, args, device=None):
         self.args = args
         self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
 
-        self.model = CCIP(args.model_name).to(device)
-        self.model.eval()
-        if self.args.fp16:
-            self.model = self.model.half()
-
-        state = torch.load(args.ckpt or _load_remote_ckpt(args.remote_ckpt), map_location='cpu')
-        try:
-            self.model.load_state_dict(state)
-        except:
-            len_p = len('module._orig_mod.')
-            self.model.load_state_dict({k[len_p:]: v for k, v in state.items()})
-
-        self.img_transform = transforms.Compose(TEST_TRANSFORM + self.model.preprocess)
+        self.model, self.img_transform = _get_model_from_ckpt(
+            model_name=args.model_name,
+            ckpt=args.ckpt or _load_remote_ckpt(args.remote_ckpt),
+            device=self.device,
+            fp16=args.fp16
+        )
 
     def load_img(self, path):
         image = load_image(path, mode='RGB')

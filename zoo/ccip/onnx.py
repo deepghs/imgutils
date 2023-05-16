@@ -5,20 +5,21 @@ import onnx
 import torch
 from PIL import Image
 from torch import nn
+from torchvision import transforms
 
-from .model import CCIP
+from .dataset import TEST_TRANSFORM
+from .model import CCIP, LogitToConfidence
 from ..utils import get_testfile, onnx_optimize
 
 
-class ModelWithSoftMax(nn.Module):
-    def __init__(self, model):
+class ModelWithConfidence(nn.Module):
+    def __init__(self, model, threshold):
         nn.Module.__init__(self)
         self.model = model
+        self.logit_to_conf = LogitToConfidence(threshold)
 
     def forward(self, x):
-        x = self.model(x)
-        x = torch.softmax(x, dim=-1)
-        return x
+        return self.logit_to_conf(self.model(x))
 
 
 def get_batch_images(preprocess) -> torch.Tensor:
@@ -28,6 +29,7 @@ def get_batch_images(preprocess) -> torch.Tensor:
         get_testfile('6125901.jpg'),
     ]
 
+    preprocess = transforms.Compose(TEST_TRANSFORM + preprocess)
     return torch.stack([
         preprocess(Image.open(img))
         for img in image_files
@@ -68,11 +70,11 @@ def _onnx_export(model, example_input, onnx_filename, opset_version: int = 14, v
         onnx.save(model, onnx_filename)
 
 
-def export_full_model_to_onnx(model: CCIP, onnx_filename, opset_version: int = 14, verbose: bool = True,
-                              no_optimize: bool = False):
+def export_full_model_to_onnx(model: CCIP, threshold: float, onnx_filename, opset_version: int = 14,
+                              verbose: bool = True, no_optimize: bool = False):
     example_input = get_batch_images(model.preprocess)
     return _onnx_export(
-        ModelWithSoftMax(model), example_input,
+        ModelWithConfidence(model, threshold), example_input,
         onnx_filename, opset_version, verbose, no_optimize,
         dynamic_axes={
             "input": {0: "batch"},
@@ -81,8 +83,9 @@ def export_full_model_to_onnx(model: CCIP, onnx_filename, opset_version: int = 1
     )
 
 
-def export_feat_model_to_onnx(model: CCIP, onnx_filename, opset_version: int = 14, verbose: bool = True,
-                              no_optimize: bool = False):
+def export_feat_model_to_onnx(model: CCIP, threshold: float, onnx_filename, opset_version: int = 14,
+                              verbose: bool = True, no_optimize: bool = False):
+    _ = threshold
     example_input = get_batch_images(model.preprocess)
     return _onnx_export(
         model.feature, example_input,
@@ -94,14 +97,14 @@ def export_feat_model_to_onnx(model: CCIP, onnx_filename, opset_version: int = 1
     )
 
 
-def export_metrics_model_to_onnx(model: CCIP, onnx_filename, opset_version: int = 14, verbose: bool = True,
-                                 no_optimize: bool = False):
+def export_metrics_model_to_onnx(model: CCIP, threshold: float, onnx_filename, opset_version: int = 14,
+                                 verbose: bool = True, no_optimize: bool = False):
     origin = get_batch_images(model.preprocess)
     with torch.no_grad():
         example_input = model.feature(origin)
 
     return _onnx_export(
-        ModelWithSoftMax(model.metrics), example_input,
+        ModelWithConfidence(model.metrics, threshold), example_input,
         onnx_filename, opset_version, verbose, no_optimize,
         dynamic_axes={
             "input": {0: "batch"},
