@@ -31,7 +31,7 @@ def _open_face_detect_model(level: str = 's'):
     ))
 
 
-def detect_faces(image: ImageTyping, level: str = 's', max_infer_size=1216,
+def detect_faces(image: ImageTyping, level: str = 's', max_infer_size=640,
                  conf_threshold: float = 0.25, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
@@ -43,7 +43,7 @@ def detect_faces(image: ImageTyping, level: str = 's', max_infer_size=1216,
         The `n` model runs faster with smaller system overhead, while the `s` model achieves higher accuracy.
         The default value is `s`.
     :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
-        the image will be resized and used for inference. The default value is `1216` pixels.
+        the image will be resized and used for inference. The default value is `640` pixels.
     :param conf_threshold: The confidence threshold, only detection results with confidence scores above
         this threshold will be returned. The default value is `0.25`.
     :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold

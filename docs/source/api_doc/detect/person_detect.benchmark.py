@@ -5,13 +5,14 @@ from imgutils.detect import detect_person
 
 
 class PersonDetectBenchmark(BaseBenchmark):
-    def __init__(self, level):
+    def __init__(self, level, version):
         BaseBenchmark.__init__(self)
         self.level = level
+        self.version = version
 
     def load(self):
         from imgutils.detect.person import _open_person_detect_model
-        _ = _open_person_detect_model(level=self.level)
+        _ = _open_person_detect_model(level=self.level, version=self.version)
 
     def unload(self):
         from imgutils.detect.person import _open_person_detect_model
@@ -19,15 +20,19 @@ class PersonDetectBenchmark(BaseBenchmark):
 
     def run(self):
         image_file = random.choice(self.all_images)
-        _ = detect_person(image_file, level=self.level)
+        _ = detect_person(image_file, level=self.level, version=self.version)
 
 
 if __name__ == '__main__':
     create_plot_cli(
         [
-            ('person (yolov8s)', PersonDetectBenchmark('s')),
-            ('person (yolov8m)', PersonDetectBenchmark('m')),
-            ('person (yolov8x)', PersonDetectBenchmark('x')),
+            ('person v1.1 (yolov8m)', PersonDetectBenchmark('m', 'v1.1')),
+            ('person v1.1 (yolov8s)', PersonDetectBenchmark('s', 'v1.1')),
+            ('person v1.1 (yolov8n)', PersonDetectBenchmark('n', 'v1.1')),
+            ('person v1 (yolov8m)', PersonDetectBenchmark('m', 'v1')),
+            ('person v0 (yolov8s)', PersonDetectBenchmark('s', 'v0')),
+            ('person v0 (yolov8m)', PersonDetectBenchmark('m', 'v0')),
+            ('person v0 (yolov8x)', PersonDetectBenchmark('x', 'v0')),
         ],
         title='Benchmark for Anime Person Detections',
         run_times=10,
