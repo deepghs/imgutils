@@ -2,7 +2,7 @@
 Overview:
     Visualize the detection results.
 
-    See :func:`imgutils.detect.face.detect_faces` and :func:`imgutils.detect.person.detect_person` for examples.
+    See :func:`imgutils.detect.head.detect_heads` and :func:`imgutils.detect.person.detect_person` for examples.
 """
 from typing import List, Tuple, Optional
 
@@ -46,7 +46,7 @@ def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, f
         content as well as the visualized bounding boxes.
 
     Examples::
-        See :func:`imgutils.detect.face.detect_faces` and :func:`imgutils.detect.person.detect_person` for examples.
+        See :func:`imgutils.detect.head.detect_heads` and :func:`imgutils.detect.person.detect_person` for examples.
     """
     image = load_image(image, force_background=None, mode='RGBA')
     visual_image = image.copy()
