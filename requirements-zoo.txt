@@ -13,10 +13,9 @@ tensorboard
 einops
 thop
 accelerate
-timm
+timm~=0.6.13
 ftfy
 regex
-torchmetrics
 git+https://github.com/openai/CLIP.git
 ultralytics
 controlnet_aux
