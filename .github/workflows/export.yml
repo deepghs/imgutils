@@ -38,6 +38,7 @@ jobs:
           pip install --upgrade flake8 setuptools wheel twine
           pip install -r requirements.txt
           pip install -r requirements-test.txt
+          pip install 'torch<2'
           pip install -r requirements-zoo.txt
       - name: Prepare dataset
         uses: nick-fields/retry@v2
