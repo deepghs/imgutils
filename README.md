@@ -69,17 +69,17 @@ print(lpips_clustering(images))  # -1 means noises, the same as that in sklearn
 
 ### Object Detection
 
-Currently, object detection is supported for anime faces and person, as shown below
+Currently, object detection is supported for anime heads and person, as shown below
 
-* Face Detection
+* Head Detection
 
-![face detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/face_detect.dat.svg)
+![head detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/head_detect.dat.svg)
 
 * Person Detection
 
 ![person detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/person_detect.dat.svg)
 
-Based on practical tests, face detection currently has a very stable performance and can be used for automation tasks.
+Based on practical tests, head detection currently has a very stable performance and can be used for automation tasks.
 However, person detection is still being further iterated and will focus on enhancing detection capabilities for
 artistic illustrations in the future.
 

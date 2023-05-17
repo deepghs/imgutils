@@ -1,6 +1,6 @@
 import pytest
 
-from imgutils.detect.face import _open_face_detect_model, detect_faces
+from imgutils.detect.head import _open_head_detect_model, detect_heads
 from test.testings import get_testfile
 
 
@@ -9,13 +9,13 @@ def _release_model_after_run():
     try:
         yield
     finally:
-        _open_face_detect_model.cache_clear()
+        _open_head_detect_model.cache_clear()
 
 
 @pytest.mark.unittest
-class TestDetectFace:
-    def test_detect_faces(self):
-        detections = detect_faces(get_testfile('genshin_post.jpg'))
+class TestDetectHead:
+    def test_detect_heads(self):
+        detections = detect_heads(get_testfile('genshin_post.jpg'))
         assert len(detections) == 4
 
         values = []
@@ -30,5 +30,5 @@ class TestDetectFace:
             ((461, 247, 536, 330), 0.434),
         ])
 
-    def test_detect_faces_none(self):
-        assert detect_faces(get_testfile('png_full.png')) == []
+    def test_detect_heads_none(self):
+        assert detect_heads(get_testfile('png_full.png')) == []

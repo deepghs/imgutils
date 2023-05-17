@@ -4,7 +4,7 @@ from ultralytics import YOLO
 
 from ..base import _TRAIN_DIR as _GLOBAL_TRAIN_DIR
 
-_TRAIN_DIR = os.path.join(_GLOBAL_TRAIN_DIR, 'face_detect')
+_TRAIN_DIR = os.path.join(_GLOBAL_TRAIN_DIR, 'head_detect')
 
 
 def train(train_cfg: str, session_name: str, level: str = 's',
