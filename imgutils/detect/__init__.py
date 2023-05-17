@@ -9,5 +9,6 @@ Overview:
         :align: center
 """
 from .head import detect_heads
+from .manbits import detect_manbits
 from .person import detect_person
 from .visual import detection_visualize
