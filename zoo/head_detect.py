@@ -11,7 +11,7 @@ from .detection.onnx import export_yolo_to_onnx
 from .utils import GLOBAL_CONTEXT_SETTINGS
 from .utils import print_version as _origin_print_version
 
-print_version = partial(_origin_print_version, 'zoo.face_detect')
+print_version = partial(_origin_print_version, 'zoo.head_detect')
 
 
 @click.group(context_settings={**GLOBAL_CONTEXT_SETTINGS})
@@ -23,8 +23,8 @@ def cli():
 
 
 _KNOWN_CKPTS: List[str] = [
-    'face_detect_best_s.pt',
-    'face_detect_best_n.pt',
+    'head_detect_best_s.pt',
+    'head_detect_best_n.pt',
 ]
 
 
@@ -34,7 +34,7 @@ _KNOWN_CKPTS: List[str] = [
               help='Output directory of all models.', show_default=True)
 def export(output_dir: str):
     for ckpt in tqdm(_KNOWN_CKPTS):
-        yolo = YOLO(hf_hub_download('deepghs/imgutils-models', f'face_detect/{ckpt}'))
+        yolo = YOLO(hf_hub_download('deepghs/imgutils-models', f'head_detect/{ckpt}'))
         filebody, _ = os.path.splitext(ckpt)
         output_file = os.path.join(output_dir, f'{filebody}.onnx')
         export_yolo_to_onnx(yolo, output_file)
