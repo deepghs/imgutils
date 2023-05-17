@@ -8,6 +8,7 @@ Overview:
     .. image:: head_detect.dat.svg
         :align: center
 """
+from .face import detect_faces
 from .head import detect_heads
 from .person import detect_person
 from .visual import detection_visualize
