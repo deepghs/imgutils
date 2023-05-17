@@ -32,7 +32,7 @@ def _open_head_detect_model(level: str = 's'):
 
 
 def detect_heads(image: ImageTyping, level: str = 's', max_infer_size=640,
-                 conf_threshold: float = 0.25, iou_threshold: float = 0.7) \
+                 conf_threshold: float = 0.3, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Overview:
@@ -45,7 +45,7 @@ def detect_heads(image: ImageTyping, level: str = 's', max_infer_size=640,
     :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
         the image will be resized and used for inference. The default value is `640` pixels.
     :param conf_threshold: The confidence threshold, only detection results with confidence scores above
-        this threshold will be returned. The default value is `0.25`.
+        this threshold will be returned. The default value is `0.3`.
     :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold
         will be discarded. The default value is `0.7`.
     :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
