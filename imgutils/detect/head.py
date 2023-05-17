@@ -1,15 +1,15 @@
 """
 Overview:
-    Detect human faces (including the entire head) in anime images.
+    Detect human heads (including the entire head) in anime images.
 
     Trained on dataset `ani_face_detection <https://universe.roboflow.com/linog/ani_face_detection>`_ with YOLOv8.
 
-    .. image:: face_detect.dat.svg
+    .. image:: head_detect.dat.svg
         :align: center
 
-    This is an overall benchmark of all the face detect models:
+    This is an overall benchmark of all the head detect models:
 
-    .. image:: face_detect.benchmark.py.svg
+    .. image:: head_detect.benchmark.py.svg
         :align: center
 
 """
@@ -24,26 +24,26 @@ from ..utils import open_onnx_model
 
 
 @lru_cache()
-def _open_face_detect_model(level: str = 's'):
+def _open_head_detect_model(level: str = 's'):
     return open_onnx_model(hf_hub_download(
         'deepghs/imgutils-models',
-        f'face_detect/face_detect_best_{level}.onnx'
+        f'head_detect/head_detect_best_{level}.onnx'
     ))
 
 
-def detect_faces(image: ImageTyping, level: str = 's', max_infer_size=1216,
+def detect_heads(image: ImageTyping, level: str = 's', max_infer_size=640,
                  conf_threshold: float = 0.25, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Overview:
-        Detect human faces (including the entire head) in anime images.
+        Detect human heads in anime images.
 
     :param image: Image to detect.
     :param level: The model level being used can be either `s` or `n`.
         The `n` model runs faster with smaller system overhead, while the `s` model achieves higher accuracy.
         The default value is `s`.
     :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
-        the image will be resized and used for inference. The default value is `1216` pixels.
+        the image will be resized and used for inference. The default value is `640` pixels.
     :param conf_threshold: The confidence threshold, only detection results with confidence scores above
         this threshold will be returned. The default value is `0.25`.
     :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold
@@ -52,10 +52,10 @@ def detect_faces(image: ImageTyping, level: str = 's', max_infer_size=1216,
         the target type (always `head`) and the target confidence score.
 
     Examples::
-        >>> from imgutils.detect import detect_faces, detection_visualize
+        >>> from imgutils.detect import detect_heads, detection_visualize
         >>>
         >>> image = 'mostima_post.jpg'
-        >>> result = detect_faces(image)  # detect it
+        >>> result = detect_heads(image)  # detect it
         >>> result
         [
             ((29, 441, 204, 584), 'head', 0.7874319553375244),
@@ -72,5 +72,5 @@ def detect_faces(image: ImageTyping, level: str = 's', max_infer_size=1216,
     new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
 
     data = rgb_encode(new_image)[None, ...]
-    output, = _open_face_detect_model(level).run(['output0'], {'images': data})
+    output, = _open_head_detect_model(level).run(['output0'], {'images': data})
     return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, ['head'])
