@@ -30,14 +30,14 @@ class WeakRandAugment(transforms.RandAugment):
         }
 
 TRAIN_TRANSFORM = [
-    transforms.Resize((272, 272)),
+    transforms.Resize((416, 416)),
     transforms.RandomHorizontalFlip(),
     WeakRandAugment(),
-    transforms.RandomCrop(256),
+    transforms.RandomCrop(384),
     transforms.ToTensor(),
 ]
 TEST_TRANSFORM = [
-    transforms.Resize((256, 256)),
+    transforms.Resize((384, 384)),
     #transforms.c(384),
     transforms.ToTensor(),
 ]
