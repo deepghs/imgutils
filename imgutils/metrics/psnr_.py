@@ -23,7 +23,7 @@ def psnr(img1, img2) -> float:
     Example:
         Here are some images for example
 
-        .. image:: psnr.dat.svg
+        .. image:: psnr.plot.py.svg
            :align: center
 
         >>> from imgutils.metrics import psnr

@@ -65,7 +65,7 @@ def segment_with_isnetis(image: ImageTyping, background: str = 'lime', scale: in
 
         The result should be
 
-        .. image:: isnetis_color.dat.svg
+        .. image:: isnetis_color.plot.py.svg
            :align: center
 
     """
@@ -95,7 +95,7 @@ def segment_rgba_with_isnetis(image: ImageTyping, scale: int = 1024):
 
         The result should be
 
-        .. image:: isnetis_trans.dat.svg
+        .. image:: isnetis_trans.plot.py.svg
            :align: center
 
     """

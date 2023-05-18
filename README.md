@@ -53,7 +53,7 @@ to [Installation](https://deepghs.github.io/imgutils/main/tutorials/installation
 
 For the dataset, we need to filter the differences between the tachie(差分). As shown in the following picture
 
-![tachie](https://deepghs.github.io/imgutils/main/_images/lpips_full.dat.svg)
+![tachie](https://deepghs.github.io/imgutils/main/_images/lpips_full.plot.py.svg)
 
 We can use `lpips_clustering` to cluster such situations as shown below
 
@@ -73,11 +73,11 @@ Currently, object detection is supported for anime heads and person, as shown be
 
 * Head Detection
 
-![head detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/head_detect.dat.svg)
+![head detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/head_detect.plot.py.svg)
 
 * Person Detection
 
-![person detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/person_detect.dat.svg)
+![person detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/person_detect.plot.py.svg)
 
 Based on practical tests, head detection currently has a very stable performance and can be used for automation tasks.
 However, person detection is still being further iterated and will focus on enhancing detection capabilities for
@@ -88,7 +88,7 @@ artistic illustrations in the future.
 Anime images can be converted to line drawings using the model provided
 by [patrickvonplaten/controlnet_aux](https://github.com/patrickvonplaten/controlnet_aux), as shown below.
 
-![edge example](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/edge.dat.svg)
+![edge example](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/edge.plot.py.svg)
 
 It is worth noting that the `lineart` model may consume more computational resources, while `canny` is the fastest but
 has average effect. Therefore, `lineart_anime` may be the most balanced choice in most cases.
@@ -99,7 +99,7 @@ When filtering the crawled images, we need to remove monochrome images. However,
 composed of grayscale colors and may still contain colors, as shown by the first two rows of six images in the figure
 below
 
-![monochrome example](https://deepghs.github.io/imgutils/main/_images/monochrome.dat.svg)
+![monochrome example](https://deepghs.github.io/imgutils/main/_images/monochrome.plot.py.svg)
 
 We can use `is_monochrome` to determine whether an image is monochrome, as shown below:
 
@@ -159,7 +159,7 @@ if __name__ == '__main__':
 The `imgutils` library integrates various anime-style image tagging models, allowing for results similar to the
 following:
 
-![tagging demo images](https://deepghs.github.io/imgutils/main/_images/tagging_demo.dat.svg)
+![tagging demo images](https://deepghs.github.io/imgutils/main/_images/tagging_demo.plot.py.svg)
 
 The ratings, features, and characters in the image can be detected, like this:
 
@@ -246,7 +246,7 @@ the [`segment-rgba-with-isnetis`](https://deepghs.github.io/imgutils/main/api_do
 function for extraction and obtain an RGBA format image (with the background part being transparent), just like the
 example shown below.
 
-![isnetis](https://deepghs.github.io/imgutils/main/_images/isnetis_trans.dat.svg)
+![isnetis](https://deepghs.github.io/imgutils/main/_images/isnetis_trans.plot.py.svg)
 
 ```python
 from imgutils.segment import segment_rgba_with_isnetis

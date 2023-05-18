@@ -5,12 +5,12 @@ Overview:
     Trained on dataset `AniDet3 <https://universe.roboflow.com/university-of-michigan-ann-arbor/anidet3-ai42v>`_ \
         with YOLOv8.
 
-    .. image:: person_detect.dat.svg
+    .. image:: person_detect_demo.plot.py.svg
         :align: center
 
     This is an overall benchmark of all the person detect models:
 
-    .. image:: person_detect.benchmark.py.svg
+    .. image:: person_detect_benchmark.plot.py.svg
         :align: center
 
 """

@@ -5,8 +5,8 @@ PYTHON_DEMOS   := $(shell find ${SOURCE} -name *.demo.py)
 PYTHON_DEMOXS  := $(shell find ${SOURCE} -name *.demox.py)
 PYTHON_RESULTS := $(addsuffix .py.txt, $(basename ${PYTHON_DEMOS} ${PYTHON_DEMOXS}))
 
-PYTHON_BMS        := $(shell find ${SOURCE} -name *.benchmark.py)
-PYTHON_BM_RESULTS := $(addsuffix .py.svg, $(basename ${PYTHON_BMS}))
+PYTHON_PLOTS        := $(shell find ${SOURCE} -name *.plot.py)
+PYTHON_PLOT_RESULTS := $(addsuffix .py.svg, $(basename ${PYTHON_PLOTS}))
 
 SHELL_DEMOS    := $(shell find ${SOURCE} -name *.demo.sh)
 SHELL_DEMOXS   := $(shell find ${SOURCE} -name *.demox.sh)
@@ -24,7 +24,7 @@ SHELL_RESULTS  := $(addsuffix .sh.txt, $(basename ${SHELL_DEMOS} ${SHELL_DEMOXS}
 		2> "$(shell readlink -f $(addsuffix .err, $(basename $@)))"; \
 		echo $$? > "$(shell readlink -f $(addsuffix .exitcode, $(basename $@)))"
 
-%.benchmark.py.svg: %.benchmark.py
+%.plot.py.svg: %.plot.py
 	cd "$(shell dirname $(shell readlink -f $<))" && \
 		PYTHONPATH="$(shell dirname $(shell readlink -f $<)):${PYTHONPATH}" \
 		$(PYTHON) "$(shell readlink -f $<)" -o "$(shell readlink -f $@)"
@@ -41,7 +41,7 @@ SHELL_RESULTS  := $(addsuffix .sh.txt, $(basename ${SHELL_DEMOS} ${SHELL_DEMOXS}
 		2> "$(shell readlink -f $(addsuffix .err, $(basename $@)))"; \
 		echo $$? > "$(shell readlink -f $(addsuffix .exitcode, $(basename $@)))"
 
-build: ${PYTHON_RESULTS} ${SHELL_RESULTS} ${PYTHON_BM_RESULTS}
+build: ${PYTHON_RESULTS} ${SHELL_RESULTS} ${PYTHON_PLOT_RESULTS}
 
 all: build
 
@@ -55,6 +55,6 @@ clean:
 		$(shell find ${SOURCE} -name *.sh.exitcode) \
 		$(shell find ${SOURCE} -name *.dat.*)
 
-cleanbm:
+cleanplt:
 	rm -rf \
-		$(shell find ${SOURCE} -name *.benchmark.py.*)
+		$(shell find ${SOURCE} -name *.plot.py.*)
