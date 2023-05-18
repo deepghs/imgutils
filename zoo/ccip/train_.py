@@ -159,8 +159,8 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         pred_list, gt_list = [], []
         model.train()
         num_iter = len(train_dataloader)
+        train_dataloader.dataset.reset()
         for i, (inputs, char_ids) in enumerate(tqdm(train_dataloader)):
-            train_dataloader.dataset.reset()
             inputs = inputs.to(accelerator.device)  # BxCxHxW
             char_ids = char_ids.to(accelerator.device)  # B
 
