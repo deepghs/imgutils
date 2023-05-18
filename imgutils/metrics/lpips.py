@@ -7,7 +7,7 @@ Overview:
 
     This is an overall benchmark of all the operations in LPIPS models:
 
-    .. image:: lpips.benchmark.py.svg
+    .. image:: lpips_benchmark.plot.py.svg
         :align: center
 
 """
@@ -119,7 +119,7 @@ def lpips_difference(img1: AutoFeatTyping, img2: AutoFeatTyping) -> float:
     Example:
         Here are some images for example
 
-        .. image:: lpips_small.dat.svg
+        .. image:: lpips_small.plot.py.svg
            :align: center
 
         >>> from imgutils.metrics import lpips_difference
@@ -154,7 +154,7 @@ def lpips_clustering(images: MultiImagesTyping, threshold: float = 0.45) -> List
     Example:
         Here are some images for example
 
-        .. image:: lpips_full.dat.svg
+        .. image:: lpips_full.plot.py.svg
            :align: center
 
         >>> from imgutils.metrics import lpips_clustering

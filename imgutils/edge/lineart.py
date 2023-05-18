@@ -65,12 +65,12 @@ def edge_image_with_lineart(image: ImageTyping, coarse: bool = False, detect_res
     :return: An image with the extracted edge from ``image``.
 
     Examples::
-        .. image:: lineart.dat.svg
+        .. image:: lineart.plot.py.svg
             :align: center
 
         When ``coarse`` is used:
 
-        .. image:: lineart_coarse.dat.svg
+        .. image:: lineart_coarse.plot.py.svg
             :align: center
     """
     return _get_image_edge(

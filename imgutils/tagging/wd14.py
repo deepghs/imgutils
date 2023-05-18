@@ -97,7 +97,7 @@ def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
     Example:
         Here are some images for example
 
-        .. image:: tagging_demo.dat.svg
+        .. image:: tagging_demo.plot.py.svg
            :align: center
 
         >>> import os

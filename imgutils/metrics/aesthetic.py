@@ -3,12 +3,12 @@ Overview:
     A tool for measuring the aesthetic level of anime images, with the model
     obtained from `skytnt/anime-aesthetic <https://huggingface.co/skytnt/anime-aesthetic>`_.
 
-    .. image:: aesthetic_full.dat.svg
+    .. image:: aesthetic_full.plot.py.svg
         :align: center
 
     This is an overall benchmark of all the operations in aesthetic models:
 
-    .. image:: aesthetic.benchmark.py.svg
+    .. image:: aesthetic_benchmark.plot.py.svg
         :align: center
 """
 from functools import lru_cache

@@ -76,7 +76,7 @@ def istack(*items: Union[ImageTyping, str, Tuple[ImageTyping, _AlphaTyping], Tup
 
         The result should be
 
-        .. image:: grid_istack.dat.svg
+        .. image:: grid_istack.plot.py.svg
            :align: center
     """
     if size is None:

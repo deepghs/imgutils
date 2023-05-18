@@ -4,7 +4,7 @@ Overview:
 
     This is an overall benchmark of all the danbooru models:
 
-    .. image:: tagging.benchmark.py.svg
+    .. image:: tagging_benchmark.plot.py.svg
         :align: center
 
 """
