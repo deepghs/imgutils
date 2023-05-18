@@ -58,7 +58,7 @@ def grid_transparent(image: ImageTyping, step: Optional[int] = None,
         In this document, :func:`grid_transparent` is the default option used to
         accurately present the state of the generated image, as shown in the following figure
 
-        .. image:: grid_transparent.dat.svg
+        .. image:: grid_transparent.plot.py.svg
            :align: center
 
     """

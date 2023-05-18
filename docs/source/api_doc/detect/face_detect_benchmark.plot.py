@@ -1,10 +1,10 @@
-from imgutils.detect import detect_person
+from imgutils.detect import detect_faces
 from imgutils.detect.visual import detection_visualize
 from plot import image_plot
 
 
 def _detect(img, **kwargs):
-    return detection_visualize(img, detect_person(img, **kwargs))
+    return detection_visualize(img, detect_faces(img, **kwargs))
 
 
 if __name__ == '__main__':
@@ -12,8 +12,7 @@ if __name__ == '__main__':
         (_detect('nian.png'), 'large scale'),
         (_detect('two_bikini_girls.png'), 'closed faces'),
         (_detect('genshin_post.jpg'), 'multiple'),
-        (_detect('soldiers.jpg'), 'multiple++'),
-        save_as='person_detect.dat.svg',
+        (_detect('mostima_post.jpg'), 'anime style'),
         columns=2,
         figsize=(12, 9),
     )

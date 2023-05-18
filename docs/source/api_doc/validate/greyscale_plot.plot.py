@@ -6,6 +6,5 @@ if __name__ == '__main__':
         '6125901.jpg',
         '6125785.png',
         '6124220.jpg',
-        save_as='greyscale.dat.svg',
         columns=2,
     )

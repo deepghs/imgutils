@@ -3,6 +3,7 @@ from typing import Tuple, List
 import matplotlib.pyplot as plt
 from PIL import Image
 
+from cli import _wrap_func_as_cli
 from imgutils.data import load_image, grid_transparent, ImageTyping
 from imgutils.validate.truncate import _mock_load_truncated_images
 
@@ -22,6 +23,7 @@ def _image_input_process(img) -> Tuple[Image.Image, str]:
     return grid_transparent(image), label
 
 
+@_wrap_func_as_cli
 @_mock_load_truncated_images(True)
 def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False, figsize=(6, 6)):
     plt.cla()
@@ -54,6 +56,7 @@ def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False, figsiz
     plt.savefig(save_as, bbox_inches='tight', pad_inches=0.1, dpi=300, transparent=True)
 
 
+@_wrap_func_as_cli
 @_mock_load_truncated_images(True)
 def image_table(images: List[List[ImageTyping]], columns: List[str], rows: List[str], save_as: str,
                 keep_axis: bool = False, figsize=(720, 600), dpi: int = 300, fontsize: int = 18, padsize: int = 5):

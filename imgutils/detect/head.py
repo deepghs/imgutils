@@ -4,12 +4,12 @@ Overview:
 
     Trained on dataset `ani_face_detection <https://universe.roboflow.com/linog/ani_face_detection>`_ with YOLOv8.
 
-    .. image:: head_detect.dat.svg
+    .. image:: head_detect_demo.plot.py.svg
         :align: center
 
     This is an overall benchmark of all the head detect models:
 
-    .. image:: head_detect.benchmark.py.svg
+    .. image:: head_detect_benchmark.plot.py.svg
         :align: center
 
 """

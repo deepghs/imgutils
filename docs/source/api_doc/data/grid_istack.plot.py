@@ -15,7 +15,6 @@ if __name__ == '__main__':
         (istack('lime', 'nian.png'), 'nian_lime.png'),
         (istack(('yellow', 0.5), ('nian.png', 0.9)), 'nian_trans.png'),
         (istack(('nian.png', nian_mask)), 'nian_mask.png'),
-        save_as='grid_istack.dat.svg',
         columns=2,
         figsize=(12, 12),
     )

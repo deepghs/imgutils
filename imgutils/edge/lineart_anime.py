@@ -59,7 +59,7 @@ def edge_image_with_lineart_anime(image: ImageTyping, detect_resolution: int = 5
     :return: An image with the extracted edge from ``image``.
 
     Examples::
-        .. image:: lineart_anime.dat.svg
+        .. image:: lineart_anime.plot.py.svg
             :align: center
     """
     return _get_image_edge(

@@ -14,7 +14,6 @@ if __name__ == '__main__':
 
     image_plot(
         *items,
-        save_as='aesthetic_full.dat.svg',
         columns=4,
         figsize=(11, 9),
     )

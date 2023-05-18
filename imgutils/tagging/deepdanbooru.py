@@ -78,7 +78,7 @@ def get_deepdanbooru_tags(image: ImageTyping, use_real_name: bool = False,
     Example:
         Here are some images for example
 
-        .. image:: tagging_demo.dat.svg
+        .. image:: tagging_demo.plot.py.svg
            :align: center
 
         >>> from imgutils.tagging import get_deepdanbooru_tags

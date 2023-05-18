@@ -20,6 +20,5 @@ if __name__ == '__main__':
         table,
         columns=['origin', *(name for name, _ in funcs)],
         rows=['' for _ in demo_images],
-        save_as='edge.dat.svg',
         figsize=(1800, 1350),
     )

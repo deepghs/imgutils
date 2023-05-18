@@ -5,12 +5,12 @@ Overview:
     Trained on dataset `Anime Face CreateML <https://universe.roboflow.com/my-workspace-mph8o/anime-face-createml>`_
     with YOLOv8.
 
-    .. image:: face_detect.dat.svg
+    .. image:: face_detect_demo.plot.py.svg
         :align: center
 
     This is an overall benchmark of all the face detect models:
 
-    .. image:: face_detect.benchmark.py.svg
+    .. image:: face_detect_benchmark.plot.py.svg
         :align: center
 
 """

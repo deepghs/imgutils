@@ -23,6 +23,5 @@ if __name__ == '__main__':
         table,
         columns=['origin', *(name for name, _ in funcs)],
         rows=['' for _ in demo_images],
-        save_as='lineart.dat.svg',
         figsize=(1600, 980),
     )

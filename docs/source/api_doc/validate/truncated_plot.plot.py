@@ -6,6 +6,5 @@ if __name__ == '__main__':
         'jpeg_truncated.jpeg',
         '6125785.png',
         '2216614_truncated.jpg',
-        save_as='truncated.dat.svg',
         columns=2,
     )

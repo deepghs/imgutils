@@ -5,12 +5,12 @@ Overview:
     The following are testing images. The top two rows are monochrome images, and the bottom two rows are color images.
     Please note that **monochrome images are not only those with all pixels in grayscale**.
 
-    .. image:: monochrome.dat.svg
+    .. image:: monochrome.plot.py.svg
         :align: center
 
     This is an overall benchmark of all the monochrome validation models:
 
-    .. image:: monochrome.benchmark.py.svg
+    .. image:: monochrome.plot.py.svg
         :align: center
 """
 from functools import lru_cache

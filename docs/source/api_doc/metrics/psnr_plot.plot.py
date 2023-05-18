@@ -35,7 +35,6 @@ if __name__ == '__main__':
         gaussian_noise(20),
         gaussian_noise(3),
         low_quality(),
-        save_as='psnr.dat.svg',
         columns=2,
         figsize=(6, 5)
     )

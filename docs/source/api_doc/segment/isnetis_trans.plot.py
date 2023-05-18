@@ -8,7 +8,6 @@ if __name__ == '__main__':
         (segment_rgba_with_isnetis(load_image('hutao.png'))[1], 'hutao_seg.png'),
         'skadi.jpg',
         (segment_rgba_with_isnetis(load_image('skadi.jpg'))[1], 'skadi_seg.png'),
-        save_as='isnetis_trans.dat.svg',
         columns=2,
         figsize=(8, 9),
     )
