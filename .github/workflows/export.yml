@@ -18,8 +18,8 @@ jobs:
         model-name:
           #          - 'lpips'
           #          - 'monochrome'
-          - 'person_detect'
-          #          - 'face_detect'
+          #          - 'person_detect'
+          - 'face_detect'
           #          - 'manbits_detect'
 
     steps:

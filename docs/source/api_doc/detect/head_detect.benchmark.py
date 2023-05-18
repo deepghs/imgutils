@@ -30,5 +30,5 @@ if __name__ == '__main__':
         ],
         title='Benchmark for Anime Head Detections',
         run_times=10,
-        try_times=5,
+        try_times=20,
     )()

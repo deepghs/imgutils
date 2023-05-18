@@ -1,15 +1,16 @@
 """
 Overview:
-    Detect human heads (including the entire head) in anime images.
+    Detect human faces in anime images.
 
-    Trained on dataset `ani_face_detection <https://universe.roboflow.com/linog/ani_face_detection>`_ with YOLOv8.
+    Trained on dataset `Anime Face CreateML <https://universe.roboflow.com/my-workspace-mph8o/anime-face-createml>`_
+    with YOLOv8.
 
-    .. image:: head_detect.dat.svg
+    .. image:: face_detect.dat.svg
         :align: center
 
-    This is an overall benchmark of all the head detect models:
+    This is an overall benchmark of all the face detect models:
 
-    .. image:: head_detect.benchmark.py.svg
+    .. image:: face_detect.benchmark.py.svg
         :align: center
 
 """
@@ -22,45 +23,51 @@ from ._yolo import _image_preprocess, _data_postprocess
 from ..data import ImageTyping, load_image, rgb_encode
 from ..utils import open_onnx_model
 
+_VERSIONS = {
+    'v0': '',
+    'v1': 'v1_',
+}
+
 
 @lru_cache()
-def _open_head_detect_model(level: str = 's'):
+def _open_face_detect_model(level: str = 's', version: str = 'v1'):
     return open_onnx_model(hf_hub_download(
         'deepghs/imgutils-models',
-        f'head_detect/head_detect_best_{level}.onnx'
+        f'face_detect/face_detect_{_VERSIONS[version]}best_{level}.onnx'
     ))
 
 
-def detect_heads(image: ImageTyping, level: str = 's', max_infer_size=640,
-                 conf_threshold: float = 0.3, iou_threshold: float = 0.7) \
+def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1', max_infer_size=640,
+                 conf_threshold: float = 0.45, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Overview:
-        Detect human heads in anime images.
+        Detect human faces in anime images.
 
     :param image: Image to detect.
     :param level: The model level being used can be either `s` or `n`.
-        The `n` model runs faster with smaller system overhead, while the `s` model achieves higher accuracy.
+        The `n` model runs faster with smaller system overface, while the `s` model achieves higher accuracy.
         The default value is `s`.
+    :param version: Version of model, default is ``v1``. Available versions are ``v0`` and ``v1``.
     :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
         the image will be resized and used for inference. The default value is `640` pixels.
     :param conf_threshold: The confidence threshold, only detection results with confidence scores above
-        this threshold will be returned. The default value is `0.3`.
+        this threshold will be returned. The default value is `0.45`.
     :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold
         will be discarded. The default value is `0.7`.
     :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
-        the target type (always `head`) and the target confidence score.
+        the target type (always `face`) and the target confidence score.
 
     Examples::
-        >>> from imgutils.detect import detect_heads, detection_visualize
+        >>> from imgutils.detect import detect_faces, detection_visualize
         >>>
         >>> image = 'mostima_post.jpg'
-        >>> result = detect_heads(image)  # detect it
+        >>> result = detect_faces(image)  # detect it
         >>> result
         [
-            ((29, 441, 204, 584), 'head', 0.7874319553375244),
-            ((346, 59, 529, 275), 'head', 0.7510495185852051),
-            ((606, 51, 895, 336), 'head', 0.6986488103866577)
+            ((29, 441, 204, 584), 'face', 0.7874319553375244),
+            ((346, 59, 529, 275), 'face', 0.7510495185852051),
+            ((606, 51, 895, 336), 'face', 0.6986488103866577)
         ]
         >>>
         >>> # visualize it
@@ -72,5 +79,5 @@ def detect_heads(image: ImageTyping, level: str = 's', max_infer_size=640,
     new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
 
     data = rgb_encode(new_image)[None, ...]
-    output, = _open_head_detect_model(level).run(['output0'], {'images': data})
-    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, ['head'])
+    output, = _open_face_detect_model(level, version).run(['output0'], {'images': data})
+    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, ['face'])

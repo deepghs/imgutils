@@ -4,10 +4,10 @@ from ultralytics import YOLO
 
 from ..base import _TRAIN_DIR as _GLOBAL_TRAIN_DIR
 
-_TRAIN_DIR = os.path.join(_GLOBAL_TRAIN_DIR, 'manbits_detect')
+_TRAIN_DIR = os.path.join(_GLOBAL_TRAIN_DIR, 'hand_detect')
 
 
-def train(train_cfg: str, session_name: str, level: str = 'm',
+def train(train_cfg: str, session_name: str, level: str = 's',
           max_epochs: int = 200, **kwargs):
     # Load a pretrained YOLO model (recommended for training)
     _last_pt = os.path.join(_TRAIN_DIR, session_name, 'weights', 'last.pt')
