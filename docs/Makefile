@@ -45,5 +45,5 @@ sourcedir:
 builddir:
 	@echo $(shell readlink -f ${BUILDDIR}/html)
 
-cleanbm:
-	$(ALL) cleanbm
+cleanplt:
+	$(ALL) cleanplt

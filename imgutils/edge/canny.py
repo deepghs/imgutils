@@ -46,7 +46,7 @@ def edge_image_with_canny(image: ImageTyping, low_threshold=100, high_threshold=
     :return: An image with the extracted edge from ``image``.
 
     Examples::
-        .. image:: canny.dat.svg
+        .. image:: canny.plot.py.svg
             :align: center
     """
     return _get_image_edge(

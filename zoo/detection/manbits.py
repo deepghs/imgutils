@@ -8,7 +8,7 @@ _TRAIN_DIR = os.path.join(_GLOBAL_TRAIN_DIR, 'manbits_detect')
 
 
 def train(train_cfg: str, session_name: str, level: str = 'm',
-          max_epochs: int = 300, save_per_epoch: int = 10, **kwargs):
+          max_epochs: int = 200, **kwargs):
     # Load a pretrained YOLO model (recommended for training)
     _last_pt = os.path.join(_TRAIN_DIR, session_name, 'weights', 'last.pt')
     if os.path.exists(_last_pt):
@@ -20,7 +20,7 @@ def train(train_cfg: str, session_name: str, level: str = 'm',
     model.train(
         data=train_cfg, epochs=max_epochs,
         name=session_name, project=_TRAIN_DIR,
-        save=True, save_period=save_per_epoch, plots=True,
+        save=True, plots=True,
         exist_ok=True, resume=resume,
         **kwargs
     )

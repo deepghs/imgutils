@@ -5,9 +5,10 @@ Overview:
     For example, you can detect the heads with :func:`imgutils.head.detect_heads` and visualize it
     with :func:`imgutils.visual.detection_visualize` like this
 
-    .. image:: head_detect.dat.svg
+    .. image:: head_detect_demo.plot.py.svg
         :align: center
 """
+from .face import detect_faces
 from .head import detect_heads
 from .manbits import detect_manbits
 from .person import detect_person

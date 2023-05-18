@@ -4,12 +4,12 @@ Overview:
 
     Here is the example and comparison:
 
-    .. image:: edge.dat.svg
+    .. image:: edge_demo.plot.py.svg
         :align: center
 
     This is an overall benchmark of all the outline models:
 
-    .. image:: edge.benchmark.py.svg
+    .. image:: edge_benchmark.plot.py.svg
         :align: center
 
 """
