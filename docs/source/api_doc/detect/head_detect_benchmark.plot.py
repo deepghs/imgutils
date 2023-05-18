@@ -1,18 +1,34 @@
+import random
+
+from benchmark import BaseBenchmark, create_plot_cli
 from imgutils.detect import detect_heads
-from imgutils.detect.visual import detection_visualize
-from plot import image_plot
 
 
-def _detect(img, **kwargs):
-    return detection_visualize(img, detect_heads(img, **kwargs))
+class HeadDetectBenchmark(BaseBenchmark):
+    def __init__(self, level):
+        BaseBenchmark.__init__(self)
+        self.level = level
+
+    def load(self):
+        from imgutils.detect.head import _open_head_detect_model
+        _ = _open_head_detect_model(level=self.level)
+
+    def unload(self):
+        from imgutils.detect.head import _open_head_detect_model
+        _open_head_detect_model.cache_clear()
+
+    def run(self):
+        image_file = random.choice(self.all_images)
+        _ = detect_heads(image_file, level=self.level)
 
 
 if __name__ == '__main__':
-    image_plot(
-        (_detect('nian.png'), 'large scale'),
-        (_detect('two_bikini_girls.png'), 'closed heads'),
-        (_detect('genshin_post.jpg'), 'multiple'),
-        (_detect('mostima_post.jpg'), 'anime style'),
-        columns=2,
-        figsize=(12, 9),
-    )
+    create_plot_cli(
+        [
+            ('head (yolov8s)', HeadDetectBenchmark('s')),
+            ('head (yolov8n)', HeadDetectBenchmark('n')),
+        ],
+        title='Benchmark for Anime Head Detections',
+        run_times=10,
+        try_times=20,
+    )()

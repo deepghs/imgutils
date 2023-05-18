@@ -10,7 +10,7 @@ Overview:
 
     This is an overall benchmark of all the monochrome validation models:
 
-    .. image:: monochrome.plot.py.svg
+    .. image:: monochrome_benchmark.plot.py.svg
         :align: center
 """
 from functools import lru_cache
