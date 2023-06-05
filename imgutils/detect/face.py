@@ -30,14 +30,14 @@ _VERSIONS = {
 
 
 @lru_cache()
-def _open_face_detect_model(level: str = 's', version: str = 'v1'):
+def _open_face_detect_model(level: str = 's', version: str = 'v1.3'):
     return open_onnx_model(hf_hub_download(
-        'deepghs/imgutils-models',
-        f'face_detect/face_detect_{_VERSIONS[version]}best_{level}.onnx'
+        f'deepghs/anime_face_detection',
+        f'face_detect_{version}_{level}/model.onnx'
     ))
 
 
-def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1', max_infer_size=640,
+def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1.3', max_infer_size=640,
                  conf_threshold: float = 0.45, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
