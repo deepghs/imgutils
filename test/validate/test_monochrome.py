@@ -38,6 +38,7 @@ class TestValidateMonochrome:
         ('type_', 'file'): get_samples(),
         ('model', 'safe'): [
             ('caformer_s36', False),
+            ('caformer_s36', True),
             ('mobilenetv3', False),
             ('mobilenetv3', True),
         ],

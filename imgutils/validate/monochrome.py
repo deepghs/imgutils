@@ -29,7 +29,8 @@ __all__ = [
 ]
 
 _MODELS: Mapping[Tuple[str, bool], str] = {
-    ('caformer_s36', False): 'caformer_s36',
+    ('caformer_s36', False): 'caformer_s36_plus',
+    ('caformer_s36', True): 'caformer_s36_plus_safe2',
     ('mobilenetv3', False): 'mobilenetv3_large_100',
     ('mobilenetv3', True): 'mobilenetv3_large_100_safe2',
 }
@@ -64,38 +65,38 @@ def get_monochrome_score(image: ImageTyping, model: str = 'mobilenetv3', safe: b
 
     :param image: Image to predict, can be a ``PIL.Image`` object or the path of the image file.
     :param model: The model used for inference. The default value is ``mobilenetv3``,
-        which offers high runtime performance.
+        which offers high runtime performance. If you need better accuracy, just use ``caformer_s36``.
     :param safe: Whether to enable the safe mode. When enabled, calculations will be performed using a model
         with higher precision but lower recall. The default value is ``True``.
 
     Examples::
-        >>> import os
         >>> from imgutils.validate import get_monochrome_score
         >>>
         >>> get_monochrome_score('mono/1.jpg')  # monochrome images
-        0.9789709448814392
+        0.9614395499229431
         >>> get_monochrome_score('mono/2.jpg')
-        0.973383903503418
+        0.9458909034729004
         >>> get_monochrome_score('mono/3.jpg')
-        0.9789378046989441
+        0.9559807777404785
         >>> get_monochrome_score('mono/4.jpg')
-        0.9920350909233093
+        0.9651952981948853
         >>> get_monochrome_score('mono/5.jpg')
-        0.9865685701370239
+        0.9379720687866211
         >>> get_monochrome_score('mono/6.jpg')
-        0.9589458703994751
+        0.8814834356307983
+        >>>
         >>> get_monochrome_score('colored/7.jpg')  # colored images
-        0.019315600395202637
+        0.03941023349761963
         >>> get_monochrome_score('colored/8.jpg')
-        0.008630834519863129
+        0.07492382079362869
         >>> get_monochrome_score('colored/9.jpg')
-        0.08635691553354263
+        0.09546589106321335
         >>> get_monochrome_score('colored/10.jpg')
-        0.01357574388384819
+        0.016521310433745384
         >>> get_monochrome_score('colored/11.jpg')
-        0.00710612116381526
+        0.005693843588232994
         >>> get_monochrome_score('colored/12.jpg')
-        0.025258518755435944
+        0.0315730981528759
     """
     safe = bool(safe)
     if (model, safe) not in _MODELS:
@@ -118,7 +119,7 @@ def is_monochrome(image: ImageTyping, threshold: float = 0.5,
     :param threshold: Threshold value during prediction. If the score is higher than the threshold,
         the image will be classified as monochrome.
     :param model: The model used for inference. The default value is ``mobilenetv3``,
-        which offers high runtime performance.
+        which offers high runtime performance. If you need better accuracy, just use ``caformer_s36``.
     :param safe: Safe level, with optional values including ``0``, ``2``, and ``4``,
         corresponding to different levels of the model. The default value is 2.
         For more technical details about this model, please refer to:
