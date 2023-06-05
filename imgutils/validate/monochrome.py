@@ -12,6 +12,8 @@ Overview:
 
     .. image:: monochrome_benchmark.plot.py.svg
         :align: center
+
+    The models are hosted on `huggingface - deepghs/monochrome_detect <https://huggingface.co/deepghs/monochrome_detect>`_.
 """
 from functools import lru_cache
 from typing import Optional, Tuple, Mapping
