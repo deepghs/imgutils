@@ -27,6 +27,7 @@ if __name__ == '__main__':
     create_plot_cli(
         [
             ('face v1.3 (yolov8s)', FaceDetectBenchmark('s', 'v1.3')),
+            ('face v1.3 (yolov8n)', FaceDetectBenchmark('n', 'v1.3')),
             ('face v1 (yolov8s)', FaceDetectBenchmark('s', 'v1')),
             ('face v1 (yolov8n)', FaceDetectBenchmark('n', 'v1')),
             ('face v0 (yolov8s)', FaceDetectBenchmark('s', 'v0')),
