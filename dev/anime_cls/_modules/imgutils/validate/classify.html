@@ -174,7 +174,24 @@
     
     
   <h1>Source code for imgutils.validate.classify</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    A model for classifying anime images into 4 classes (``3d``, ``bangumi``, ``comic`` and ``illustration``).</span>
+
+<span class="sd">    The following are sample images for testing.</span>
+
+<span class="sd">    .. image:: classify.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    This is an overall benchmark of all the classification validation models:</span>
+
+<span class="sd">    .. image:: classify_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    The models are hosted on</span>
+<span class="sd">    `huggingface - deepghs/anime_classification &lt;https://huggingface.co/deepghs/anime_classification&gt;`_.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
