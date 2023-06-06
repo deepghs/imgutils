@@ -21,8 +21,6 @@ jobs:
           - '3.9'
           - '3.10'
           - '3.11'
-        exclude:
-          - python-version: '3.11'
 
     steps:
       - name: Get system version for Linux
