@@ -13,6 +13,9 @@ Overview:
     .. image:: face_detect_benchmark.plot.py.svg
         :align: center
 
+    The models are hosted on
+    `huggingface - deepghs/anime_face_detection <https://huggingface.co/deepghs/anime_face_detection>`_.
+
 """
 from functools import lru_cache
 from typing import List, Tuple
@@ -22,11 +25,6 @@ from huggingface_hub import hf_hub_download
 from ._yolo import _image_preprocess, _data_postprocess
 from ..data import ImageTyping, load_image, rgb_encode
 from ..utils import open_onnx_model
-
-_VERSIONS = {
-    'v0': '',
-    'v1': 'v1_',
-}
 
 
 @lru_cache()
