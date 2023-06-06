@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import Tuple, Optional, Dict, Union, Mapping
+from typing import Tuple, Optional, Dict
 
 import numpy as np
 from PIL import Image
@@ -9,26 +9,26 @@ from imgutils.data import rgb_encode, ImageTyping, load_image
 from imgutils.utils import open_onnx_model
 
 __all__ = [
+    'anime_classify_scores',
     'anime_classify',
-    'is_3d', 'is_bangumi', 'is_comic', 'is_illustration',
 ]
 
-_MODEL_METAS = [
-    ('mobilenetv3_large_100', 0.533, 0.438, 0.440, 0.446),
-    ('mobilevitv2_150', 0.315, 0.354, 0.595, 0.511),
-]
 _LABELS = ['3d', 'bangumi', 'comic', 'illustration']
-
-_MODEL_NAMES = [name for name, *_ in _MODEL_METAS]
-_DEFAULT_MODEL_NAME = _MODEL_NAMES[0]
-_MODEL_THRESHOLDS = {name: dict(zip(_LABELS, thresholds)) for name, *thresholds in _MODEL_METAS}
+_MODEL_NAMES = [
+    'caformer_s36',
+    'caformer_s36_plus',
+    'mobilenetv3',
+    'mobilenetv3_sce',
+    'mobilevitv2_150',
+]
+_DEFAULT_MODEL_NAME = 'mobilenetv3_sce'
 
 
 @lru_cache()
 def _open_anime_classify_model(model_name):
     return open_onnx_model(hf_hub_download(
-        f'deepghs/imgutils-models',
-        f'anime_cls/anime_cls_{model_name}.onnx',
+        f'deepghs/anime_classification',
+        f'{model_name}/model.onnx',
     ))
 
 
@@ -46,43 +46,22 @@ def _img_encode(image: Image.Image, size: Tuple[int, int] = (384, 384),
     return data.astype(np.float32)
 
 
-def _default_thresholds(model_name: str = _DEFAULT_MODEL_NAME) -> Mapping[str, float]:
-    return _MODEL_THRESHOLDS[model_name]
-
-
-def anime_classify(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME,
-                   check: bool = False, thresholds: Optional[Mapping[str, float]] = None) \
-        -> Dict[str, Union[float, bool]]:
+def _raw_anime_classify(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME):
     image = load_image(image, force_background='white', mode='RGB')
     input_ = _img_encode(image)[None, ...]
     output, = _open_anime_classify_model(model_name).run(['output'], {'input': input_})
+
+    return output
+
+
+def anime_classify_scores(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) \
+        -> Dict[str, float]:
+    output = _raw_anime_classify(image, model_name)
     values = dict(zip(_LABELS, map(lambda x: x.item(), output[0])))
-    thresholds = thresholds or _default_thresholds(model_name)
-    if check:
-        return {label: values[label] >= thresholds[label] for label in _LABELS}
-    else:
-        return values
+    return values
 
 
-def _is_cls(image: ImageTyping, cls_name: str, model_name: str = _DEFAULT_MODEL_NAME, threshold: float = None):
-    thresholds = dict(_default_thresholds(model_name))
-    if thresholds is not None:
-        thresholds[cls_name] = threshold
-
-    return anime_classify(image, model_name, check=True, thresholds=thresholds)[cls_name]
-
-
-def is_3d(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME, threshold: float = None):
-    return _is_cls(image, '3d', model_name, threshold)
-
-
-def is_bangumi(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME, threshold: float = None):
-    return _is_cls(image, 'bangumi', model_name, threshold)
-
-
-def is_comic(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME, threshold: float = None):
-    return _is_cls(image, 'comic', model_name, threshold)
-
-
-def is_illustration(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME, threshold: float = None):
-    return _is_cls(image, 'illustration', model_name, threshold)
+def anime_classify(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) -> Tuple[str, float]:
+    output = _raw_anime_classify(image, model_name)[0]
+    max_id = np.argmax(output)
+    return _LABELS[max_id], output[max_id].item()
