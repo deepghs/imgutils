@@ -9,6 +9,7 @@ imgutils.validate
 .. toctree::
     :maxdepth: 3
 
+    classify
     color
     monochrome
     truncate
