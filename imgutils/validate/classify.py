@@ -1,3 +1,20 @@
+"""
+Overview:
+    A model for classifying anime images into 4 classes (``3d``, ``bangumi``, ``comic`` and ``illustration``).
+
+    The following are sample images for testing.
+
+    .. image:: classify.plot.py.svg
+        :align: center
+
+    This is an overall benchmark of all the classification validation models:
+
+    .. image:: classify_benchmark.plot.py.svg
+        :align: center
+
+    The models are hosted on
+    `huggingface - deepghs/anime_classification <https://huggingface.co/deepghs/anime_classification>`_.
+"""
 from functools import lru_cache
 from typing import Tuple, Optional, Dict
 
