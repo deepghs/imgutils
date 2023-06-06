@@ -4,7 +4,7 @@ import os.path
 import pytest
 
 from imgutils.validate import anime_classify
-from imgutils.validate.classify import _open_anime_classify_model
+from imgutils.validate.classify import _open_anime_classify_model, anime_classify_score
 from test.testings import get_testfile
 
 _ROOT_DIR = get_testfile('anime_cls')
@@ -29,3 +29,9 @@ class TestValidateClassify:
         image_file = get_testfile('anime_cls', image)
         tag, score = anime_classify(image_file)
         assert tag == label
+
+    @pytest.mark.parametrize(['image', 'label'], _EXAMPLE_FILES)
+    def test_anime_classify_score(self, image, label):
+        image_file = get_testfile('anime_cls', image)
+        scores = anime_classify_score(image_file)
+        assert scores[label] > 0.5
