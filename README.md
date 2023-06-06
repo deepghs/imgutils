@@ -71,13 +71,17 @@ print(lpips_clustering(images))  # -1 means noises, the same as that in sklearn
 
 Currently, object detection is supported for anime heads and person, as shown below
 
+* Face Detection
+
+![face detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/face_detect_demo.plot.py.svg)
+
 * Head Detection
 
-![head detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/head_detect.plot.py.svg)
+![head detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/head_detect_demo.plot.py.svg)
 
 * Person Detection
 
-![person detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/person_detect.plot.py.svg)
+![person detection](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/person_detect_demo.plot.py.svg)
 
 Based on practical tests, head detection currently has a very stable performance and can be used for automation tasks.
 However, person detection is still being further iterated and will focus on enhancing detection capabilities for
@@ -88,7 +92,7 @@ artistic illustrations in the future.
 Anime images can be converted to line drawings using the model provided
 by [patrickvonplaten/controlnet_aux](https://github.com/patrickvonplaten/controlnet_aux), as shown below.
 
-![edge example](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/edge.plot.py.svg)
+![edge example](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/edge_demo.plot.py.svg)
 
 It is worth noting that the `lineart` model may consume more computational resources, while `canny` is the fastest but
 has average effect. Therefore, `lineart_anime` may be the most balanced choice in most cases.
