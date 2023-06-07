@@ -30,6 +30,8 @@ if __name__ == '__main__':
             ('caformer_s36 (safe)', MonochromeBenchmark('caformer_s36', True)),
             ('mobilenetv3 (unsafe)', MonochromeBenchmark('mobilenetv3', False)),
             ('mobilenetv3 (safe)', MonochromeBenchmark('mobilenetv3', True)),
+            ('mobilenetv3_dist (unsafe)', MonochromeBenchmark('mobilenetv3_dist', False)),
+            ('mobilenetv3_dist (safe)', MonochromeBenchmark('mobilenetv3_dist', True)),
         ],
         title='Benchmark for Monochrome Check Models',
         run_times=10,
