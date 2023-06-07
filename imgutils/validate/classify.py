@@ -35,10 +35,12 @@ _MODEL_NAMES = [
     'caformer_s36',
     'caformer_s36_plus',
     'mobilenetv3',
+    'mobilenetv3_dist',
     'mobilenetv3_sce',
+    'mobilenetv3_sce_dist',
     'mobilevitv2_150',
 ]
-_DEFAULT_MODEL_NAME = 'mobilenetv3_sce'
+_DEFAULT_MODEL_NAME = 'mobilenetv3_sce_dist'
 
 
 @lru_cache()
@@ -77,7 +79,7 @@ def anime_classify_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NA
         Predict the class of the given image, return the score with as a dict object.
 
     :param image: Image to classify.
-    :param model_name: Model to use. Default is ``mobilenetv3_sce``. All available models are listed
+    :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed
         on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.
     :return: A dict with classes and scores.
 
@@ -120,7 +122,7 @@ def anime_classify(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) ->
         Predict the class of the given image, return the class and its score.
 
     :param image: Image to classify.
-    :param model_name: Model to use. Default is ``mobilenetv3_sce``. All available models are listed
+    :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed
         on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.
     :return: A tuple contains the class and its score.
 
