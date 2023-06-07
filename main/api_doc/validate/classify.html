@@ -202,7 +202,7 @@
 <h2>anime_classify_score<a class="headerlink" href="#anime-classify-score" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.validate.classify.anime_classify_score">
-<code class="sig-prename descclassname">imgutils.validate.classify.</code><code class="sig-name descname">anime_classify_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'mobilenetv3_sce'</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/validate/classify.html#anime_classify_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.classify.anime_classify_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">imgutils.validate.classify.</code><code class="sig-name descname">anime_classify_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'mobilenetv3_sce_dist'</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/validate/classify.html#anime_classify_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.classify.anime_classify_score" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Overview:</dt><dd><p>Predict the class of the given image, return the score with as a dict object.</p>
 </dd>
@@ -211,7 +211,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>image</strong> – Image to classify.</p></li>
-<li><p><strong>model_name</strong> – Model to use. Default is <code class="docutils literal notranslate"><span class="pre">mobilenetv3_sce</span></code>. All available models are listed
+<li><p><strong>model_name</strong> – Model to use. Default is <code class="docutils literal notranslate"><span class="pre">mobilenetv3_sce_dist</span></code>. All available models are listed
 on the benchmark plot above. If you need better accuracy, just set this to <code class="docutils literal notranslate"><span class="pre">caformer_s36_plus</span></code>.</p></li>
 </ul>
 </dd>
@@ -257,7 +257,7 @@ on the benchmark plot above. If you need better accuracy, just set this to <code
 <h2>anime_classify<a class="headerlink" href="#anime-classify" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.validate.classify.anime_classify">
-<code class="sig-prename descclassname">imgutils.validate.classify.</code><code class="sig-name descname">anime_classify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'mobilenetv3_sce'</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/validate/classify.html#anime_classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.classify.anime_classify" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">imgutils.validate.classify.</code><code class="sig-name descname">anime_classify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'mobilenetv3_sce_dist'</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/validate/classify.html#anime_classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.classify.anime_classify" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Overview:</dt><dd><p>Predict the class of the given image, return the class and its score.</p>
 </dd>
@@ -266,7 +266,7 @@ on the benchmark plot above. If you need better accuracy, just set this to <code
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>image</strong> – Image to classify.</p></li>
-<li><p><strong>model_name</strong> – Model to use. Default is <code class="docutils literal notranslate"><span class="pre">mobilenetv3_sce</span></code>. All available models are listed
+<li><p><strong>model_name</strong> – Model to use. Default is <code class="docutils literal notranslate"><span class="pre">mobilenetv3_sce_dist</span></code>. All available models are listed
 on the benchmark plot above. If you need better accuracy, just set this to <code class="docutils literal notranslate"><span class="pre">caformer_s36_plus</span></code>.</p></li>
 </ul>
 </dd>
@@ -361,7 +361,6 @@ on the benchmark plot above. If you need better accuracy, just set this to <code
                     <dt>Branches</dt>
                         <dd><a href="classify.html">main</a></dd>
                         <dd><a href="../../../ccip/index.html">ccip</a></dd>
-                        <dd><a href="../../../dev/cls/api_doc/validate/classify.html">dev/cls</a></dd>
                         <dd><a href="../../../dev/operate/index.html">dev/operate</a></dd>
                 </dl>
         </div>

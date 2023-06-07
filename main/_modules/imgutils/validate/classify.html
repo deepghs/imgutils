@@ -211,10 +211,12 @@
     <span class="s1">&#39;caformer_s36&#39;</span><span class="p">,</span>
     <span class="s1">&#39;caformer_s36_plus&#39;</span><span class="p">,</span>
     <span class="s1">&#39;mobilenetv3&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mobilenetv3_dist&#39;</span><span class="p">,</span>
     <span class="s1">&#39;mobilenetv3_sce&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mobilenetv3_sce_dist&#39;</span><span class="p">,</span>
     <span class="s1">&#39;mobilevitv2_150&#39;</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">_DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3_sce&#39;</span>
+<span class="n">_DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3_sce_dist&#39;</span>
 
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
@@ -253,7 +255,7 @@
 <span class="sd">        Predict the class of the given image, return the score with as a dict object.</span>
 
 <span class="sd">    :param image: Image to classify.</span>
-<span class="sd">    :param model_name: Model to use. Default is ``mobilenetv3_sce``. All available models are listed</span>
+<span class="sd">    :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed</span>
 <span class="sd">        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.</span>
 <span class="sd">    :return: A dict with classes and scores.</span>
 
@@ -296,7 +298,7 @@
 <span class="sd">        Predict the class of the given image, return the class and its score.</span>
 
 <span class="sd">    :param image: Image to classify.</span>
-<span class="sd">    :param model_name: Model to use. Default is ``mobilenetv3_sce``. All available models are listed</span>
+<span class="sd">    :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed</span>
 <span class="sd">        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.</span>
 <span class="sd">    :return: A tuple contains the class and its score.</span>
 
@@ -374,7 +376,6 @@
                     <dt>Branches</dt>
                         <dd><a href="classify.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
-                        <dd><a href="../../../../dev/cls/index.html">dev/cls</a></dd>
                         <dd><a href="../../../../dev/operate/index.html">dev/operate</a></dd>
                 </dl>
         </div>
