@@ -9,6 +9,7 @@ imgutils.validate
 .. toctree::
     :maxdepth: 3
 
+    aicheck
     classify
     color
     monochrome
