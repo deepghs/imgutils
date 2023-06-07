@@ -41,6 +41,8 @@ class TestValidateMonochrome:
             ('caformer_s36', True),
             ('mobilenetv3', False),
             ('mobilenetv3', True),
+            ('mobilenetv3_dist', False),
+            ('mobilenetv3_dist', True),
         ],
     }))
     def test_monochrome_test(self, type_: str, file: str, model: str, safe: bool):
