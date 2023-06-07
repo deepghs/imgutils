@@ -28,14 +28,14 @@ from ..utils import open_onnx_model
 
 
 @lru_cache()
-def _open_face_detect_model(level: str = 's', version: str = 'v1.3'):
+def _open_face_detect_model(level: str = 's', version: str = 'v1.4'):
     return open_onnx_model(hf_hub_download(
         f'deepghs/anime_face_detection',
         f'face_detect_{version}_{level}/model.onnx'
     ))
 
 
-def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1.3', max_infer_size=640,
+def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1.4', max_infer_size=640,
                  conf_threshold: float = 0.25, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
@@ -46,7 +46,8 @@ def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1.3', ma
     :param level: The model level being used can be either `s` or `n`.
         The `n` model runs faster with smaller system overface, while the `s` model achieves higher accuracy.
         The default value is `s`.
-    :param version: Version of model, default is ``v1.3``. Available versions are ``v0``, ``v1`` and ``v1.3``.
+    :param version: Version of model, default is ``v1.4``.
+        Available versions are ``v0``, ``v1``, ``v1.3`` and ``v1.4``.
     :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
         the image will be resized and used for inference. The default value is `640` pixels.
     :param conf_threshold: The confidence threshold, only detection results with confidence scores above

@@ -26,6 +26,8 @@ class FaceDetectBenchmark(BaseBenchmark):
 if __name__ == '__main__':
     create_plot_cli(
         [
+            ('face v1.4 (yolov8s)', FaceDetectBenchmark('s', 'v1.4')),
+            ('face v1.4 (yolov8n)', FaceDetectBenchmark('n', 'v1.4')),
             ('face v1.3 (yolov8s)', FaceDetectBenchmark('s', 'v1.3')),
             ('face v1.3 (yolov8n)', FaceDetectBenchmark('n', 'v1.3')),
             ('face v1 (yolov8s)', FaceDetectBenchmark('s', 'v1')),
