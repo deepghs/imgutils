@@ -211,6 +211,8 @@
     <span class="p">(</span><span class="s1">&#39;caformer_s36&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span> <span class="s1">&#39;caformer_s36_plus_safe2&#39;</span><span class="p">,</span>
     <span class="p">(</span><span class="s1">&#39;mobilenetv3&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span> <span class="s1">&#39;mobilenetv3_large_100&#39;</span><span class="p">,</span>
     <span class="p">(</span><span class="s1">&#39;mobilenetv3&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span> <span class="s1">&#39;mobilenetv3_large_100_safe2&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;mobilenetv3_dist&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span> <span class="s1">&#39;mobilenetv3_large_100_dist&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;mobilenetv3_dist&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span> <span class="s1">&#39;mobilenetv3_large_100_dist_safe2&#39;</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -236,13 +238,13 @@
     <span class="k">return</span> <span class="n">data</span>
 
 
-<div class="viewcode-block" id="get_monochrome_score"><a class="viewcode-back" href="../../../api_doc/validate/monochrome.html#imgutils.validate.monochrome.get_monochrome_score">[docs]</a><span class="k">def</span> <span class="nf">get_monochrome_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3&#39;</span><span class="p">,</span> <span class="n">safe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="get_monochrome_score"><a class="viewcode-back" href="../../../api_doc/validate/monochrome.html#imgutils.validate.monochrome.get_monochrome_score">[docs]</a><span class="k">def</span> <span class="nf">get_monochrome_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3_dist&#39;</span><span class="p">,</span> <span class="n">safe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overview:</span>
 <span class="sd">        Get monochrome score of the given image.</span>
 
 <span class="sd">    :param image: Image to predict, can be a ``PIL.Image`` object or the path of the image file.</span>
-<span class="sd">    :param model: The model used for inference. The default value is ``mobilenetv3``,</span>
+<span class="sd">    :param model: The model used for inference. The default value is ``mobilenetv3_dist``,</span>
 <span class="sd">        which offers high runtime performance. If you need better accuracy, just use ``caformer_s36``.</span>
 <span class="sd">    :param safe: Whether to enable the safe mode. When enabled, calculations will be performed using a model</span>
 <span class="sd">        with higher precision but lower recall. The default value is ``True``.</span>
@@ -288,7 +290,7 @@
 
 
 <div class="viewcode-block" id="is_monochrome"><a class="viewcode-back" href="../../../api_doc/validate/monochrome.html#imgutils.validate.monochrome.is_monochrome">[docs]</a><span class="k">def</span> <span class="nf">is_monochrome</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-                  <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3&#39;</span><span class="p">,</span> <span class="n">safe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+                  <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3_dist&#39;</span><span class="p">,</span> <span class="n">safe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overview:</span>
 <span class="sd">        Predict if the image is monochrome.</span>
@@ -296,7 +298,7 @@
 <span class="sd">    :param image: Image to predict, can be a ``PIL.Image`` object or the path of the image file.</span>
 <span class="sd">    :param threshold: Threshold value during prediction. If the score is higher than the threshold,</span>
 <span class="sd">        the image will be classified as monochrome.</span>
-<span class="sd">    :param model: The model used for inference. The default value is ``mobilenetv3``,</span>
+<span class="sd">    :param model: The model used for inference. The default value is ``mobilenetv3_dist``,</span>
 <span class="sd">        which offers high runtime performance. If you need better accuracy, just use ``caformer_s36``.</span>
 <span class="sd">    :param safe: Safe level, with optional values including ``0``, ``2``, and ``4``,</span>
 <span class="sd">        corresponding to different levels of the model. The default value is 2.</span>
@@ -374,7 +376,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/monochrome/index.html">dev/monochrome</a></dd>
+                        <dd><a href="../../../../dev/cls/index.html">dev/cls</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/operate/index.html">dev/operate</a></dd>
                         <dd><a href="monochrome.html">main</a></dd>
