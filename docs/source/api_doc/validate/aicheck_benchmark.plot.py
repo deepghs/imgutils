@@ -16,7 +16,7 @@ class AnimeAICheckBenchmark(BaseBenchmark):
 
     def unload(self):
         from imgutils.validate.aicheck import _open_anime_aicheck_model
-        _open_anime_aicheck_model.clear()
+        _open_anime_aicheck_model.cache_clear()
 
     def run(self):
         image_file = random.choice(self.all_images)
