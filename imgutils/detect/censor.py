@@ -13,7 +13,6 @@ Overview:
         :align: center
 
 """
-import json
 from functools import lru_cache
 from typing import List, Tuple
 
@@ -32,13 +31,7 @@ def _open_censor_detect_model(level: str = 's', version: str = 'v1.0'):
     ))
 
 
-@lru_cache()
-def _open_censor_detect_labels(level: str = 's', version: str = 'v1.0'):
-    with open(hf_hub_download(
-            f'deepghs/anime_censor_detection',
-            f'censor_detect_{version}_{level}/model_artifacts.json'
-    ), 'r') as f:
-        return json.load(f)['names']
+_LABELS = ["nipple_f", "penis", "pussy"]
 
 
 def detect_censors(image: ImageTyping, level: str = 's', version: str = 'v1.0', max_infer_size=640,
@@ -67,5 +60,4 @@ def detect_censors(image: ImageTyping, level: str = 's', version: str = 'v1.0', 
 
     data = rgb_encode(new_image)[None, ...]
     output, = _open_censor_detect_model(level).run(['output0'], {'images': data})
-    labels = _open_censor_detect_labels(level, version)
-    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, labels)
+    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, _LABELS)
