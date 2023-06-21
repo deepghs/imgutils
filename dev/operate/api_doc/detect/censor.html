@@ -191,9 +191,10 @@
   <section id="module-imgutils.detect.censor">
 <span id="imgutils-detect-censor"></span><h1>imgutils.detect.censor<a class="headerlink" href="#module-imgutils.detect.censor" title="Permalink to this headline">¶</a></h1>
 <dl>
-<dt>Overview:</dt><dd><p>Detect human censor points (including female’s nipples and genitals) in anime images.</p>
-<p>Trained on dataset <a class="reference external" href="https://universe.roboflow.com/linog/ani_face_detection">ani_face_detection</a> with YOLOv8.</p>
-<img alt="api_doc/detect/censor_detect_demo.plot.py.svg" class="align-center" src="api_doc/detect/censor_detect_demo.plot.py.svg" /><p>This is an overall benchmark of all the censor detect models:</p>
+<dt>Overview:</dt><dd><p>Detect human censor points (including female’s nipples and genitals of both male and female) in anime images.</p>
+<p>Trained on dataset <a class="reference external" href="https://huggingface.co/datasets/deepghs/anime_censor_detection">deepghs/anime_censor_detection</a> with YOLOv8.</p>
+<details class="summary-overview-of-censor-detect-nsfw-warning">
+<summary>Overview of Censor Detect (NSFW Warning!!!)</summary><img alt="../../_images/censor_detect_demo.plot.py.svg" class="align-center" src="../../_images/censor_detect_demo.plot.py.svg" /></details><p>This is an overall benchmark of all the censor detect models:</p>
 <img alt="../../_images/censor_detect_benchmark.plot.py.svg" class="align-center" src="../../_images/censor_detect_benchmark.plot.py.svg" /></dd>
 </dl>
 <section id="detect-censors">
@@ -224,6 +225,26 @@ will be discarded. The default value is <cite>0.7</cite>.</p></li>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The detection results list, each item includes the detected area <cite>(x0, y0, x1, y1)</cite>,
 the target type (always <cite>censor</cite>) and the target confidence score.</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.detect</span> <span class="kn">import</span> <span class="n">detect_censors</span><span class="p">,</span> <span class="n">detection_visualize</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="s1">&#39;nude_girl.png&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">detect_censors</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>  <span class="c1"># detect it</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>
+<span class="go">[</span>
+<span class="go">    ((365, 264, 399, 289), &#39;nipple_f&#39;, 0.7473511695861816),</span>
+<span class="go">    ((224, 260, 252, 285), &#39;nipple_f&#39;, 0.6830288171768188),</span>
+<span class="go">    ((206, 523, 240, 608), &#39;pussy&#39;, 0.6799028515815735)</span>
+<span class="go">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># visualize it</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">detection_visualize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>

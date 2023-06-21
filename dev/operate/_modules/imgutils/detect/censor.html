@@ -176,12 +176,14 @@
   <h1>Source code for imgutils.detect.censor</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Overview:</span>
-<span class="sd">    Detect human censor points (including female&#39;s nipples and genitals) in anime images.</span>
+<span class="sd">    Detect human censor points (including female&#39;s nipples and genitals of both male and female) in anime images.</span>
 
-<span class="sd">    Trained on dataset `ani_face_detection &lt;https://universe.roboflow.com/linog/ani_face_detection&gt;`_ with YOLOv8.</span>
+<span class="sd">    Trained on dataset `deepghs/anime_censor_detection &lt;https://huggingface.co/datasets/deepghs/anime_censor_detection&gt;`_ with YOLOv8.</span>
 
-<span class="sd">    .. image:: censor_detect_demo.plot.py.svg</span>
-<span class="sd">        :align: center</span>
+<span class="sd">    .. collapse:: Overview of Censor Detect (NSFW Warning!!!)</span>
+
+<span class="sd">        .. image:: censor_detect_demo.plot.py.svg</span>
+<span class="sd">            :align: center</span>
 
 <span class="sd">    This is an overall benchmark of all the censor detect models:</span>
 
@@ -230,6 +232,23 @@
 <span class="sd">        will be discarded. The default value is `0.7`.</span>
 <span class="sd">    :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,</span>
 <span class="sd">        the target type (always `censor`) and the target confidence score.</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.detect import detect_censors, detection_visualize</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; image = &#39;nude_girl.png&#39;</span>
+<span class="sd">        &gt;&gt;&gt; result = detect_censors(image)  # detect it</span>
+<span class="sd">        &gt;&gt;&gt; result</span>
+<span class="sd">        [</span>
+<span class="sd">            ((365, 264, 399, 289), &#39;nipple_f&#39;, 0.7473511695861816),</span>
+<span class="sd">            ((224, 260, 252, 285), &#39;nipple_f&#39;, 0.6830288171768188),</span>
+<span class="sd">            ((206, 523, 240, 608), &#39;pussy&#39;, 0.6799028515815735)</span>
+<span class="sd">        ]</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # visualize it</span>
+<span class="sd">        &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; plt.imshow(detection_visualize(image, result))</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
     <span class="n">new_image</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span> <span class="o">=</span> <span class="n">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">)</span>
