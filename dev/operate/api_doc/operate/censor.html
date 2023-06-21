@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.operate.censor_ &mdash; imgutils 0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.operate.imgcensor" href="imgcensor.html" />
+    <link rel="prev" title="imgutils.operate.align" href="align.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.operate</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="align.html">imgutils.operate.align</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.operate.censor_</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#censor-areas">censor_areas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#censor">censor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basecensor">BaseCensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#colorcensor">ColorCensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blurcensor">BlurCensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pixelatecensor">PixelateCensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#register-censor-method">register_censor_method</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="imgcensor.html">imgutils.operate.imgcensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="squeeze.html">imgutils.operate.squeeze</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">imgutils.operate</a> &raquo;</li>
+        
+      <li>imgutils.operate.censor_</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api_doc/operate/censor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <section id="module-imgutils.operate.censor_">
+<span id="imgutils-operate-censor"></span><h1>imgutils.operate.censor_<a class="headerlink" href="#module-imgutils.operate.censor_" title="Permalink to this headline">¶</a></h1>
+<section id="censor-areas">
+<h2>censor_areas<a class="headerlink" href="#censor-areas" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.operate.censor_.censor_areas">
+<code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">censor_areas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">areas</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Tuple<span class="p">[</span>float<span class="p">, </span>float<span class="p">, </span>float<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#censor_areas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.censor_areas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="censor">
+<h2>censor<a class="headerlink" href="#censor" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.operate.censor_.censor">
+<code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">censor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">nipple_f</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">penis</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">pussy</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'s'</span></em>, <em class="sig-param"><span class="n">version</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'v1.0'</span></em>, <em class="sig-param"><span class="n">max_infer_size</span><span class="o">=</span><span class="default_value">640</span></em>, <em class="sig-param"><span class="n">conf_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">iou_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#censor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.censor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="basecensor">
+<h2>BaseCensor<a class="headerlink" href="#basecensor" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="imgutils.operate.censor_.BaseCensor">
+<em class="property">class </em><code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">BaseCensor</code><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#BaseCensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.BaseCensor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="colorcensor">
+<h2>ColorCensor<a class="headerlink" href="#colorcensor" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="imgutils.operate.censor_.ColorCensor">
+<em class="property">class </em><code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">ColorCensor</code><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#ColorCensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.ColorCensor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="blurcensor">
+<h2>BlurCensor<a class="headerlink" href="#blurcensor" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="imgutils.operate.censor_.BlurCensor">
+<em class="property">class </em><code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">BlurCensor</code><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#BlurCensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.BlurCensor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="pixelatecensor">
+<h2>PixelateCensor<a class="headerlink" href="#pixelatecensor" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="imgutils.operate.censor_.PixelateCensor">
+<em class="property">class </em><code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">PixelateCensor</code><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#PixelateCensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.PixelateCensor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="register-censor-method">
+<h2>register_censor_method<a class="headerlink" href="#register-censor-method" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.operate.censor_.register_censor_method">
+<code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">register_censor_method</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">cls</span><span class="p">:</span> <span class="n">Type<span class="p">[</span><a class="reference internal" href="#imgutils.operate.censor_.BaseCensor" title="imgutils.operate.censor_.BaseCensor">imgutils.operate.censor_.BaseCensor</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#register_censor_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.register_censor_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="imgcensor.html" class="btn btn-neutral float-right" title="imgutils.operate.imgcensor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="align.html" class="btn btn-neutral float-left" title="imgutils.operate.align" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/operate
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../v0.1.1/index.html">v0.1.1</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="censor.html">dev/operate</a></dd>
+                        <dd><a href="../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
