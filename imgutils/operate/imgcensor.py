@@ -6,7 +6,7 @@ import numpy as np
 from PIL import Image
 from scipy import ndimage
 
-from .align import align
+from .align import align_maxsize
 from .censor_ import BaseCensor, register_censor_method
 from .squeeze import squeeze_with_transparency, _get_mask_of_transparency
 from ..data import MultiImagesTyping, load_images
@@ -18,7 +18,7 @@ def _image_rotate_and_sq(image: Image.Image, degrees: float):
 
 class SingleImage:
     def __init__(self, image: Image.Image):
-        mask = _get_mask_of_transparency(align(image, 300))
+        mask = _get_mask_of_transparency(align_maxsize(image, 300))
         mask = mask.transpose((1, 0)).astype(np.uint64)
         prefix = np.zeros((mask.shape[0] + 1, mask.shape[1] + 1), dtype=mask.dtype)
         prefix[1:, 1:] = np.cumsum(np.cumsum(mask, axis=1), axis=0)
