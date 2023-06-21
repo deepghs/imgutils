@@ -26,8 +26,8 @@ class CensorDetectBenchmark(BaseBenchmark):
 if __name__ == '__main__':
     create_plot_cli(
         [
-            ('censor v1 (yolov8s)', CensorDetectBenchmark('s', 'v1')),
-            ('censor v1 (yolov8n)', CensorDetectBenchmark('n', 'v1')),
+            ('censor v1.0 (yolov8s)', CensorDetectBenchmark('s', 'v1.0')),
+            ('censor v1.0 (yolov8n)', CensorDetectBenchmark('n', 'v1.0')),
             ('censor v0.10 (yolov8s)', CensorDetectBenchmark('s', 'v0.10')),
             ('censor v0.9 (yolov8s)', CensorDetectBenchmark('s', 'v0.9')),
             # ('censor v0.8 (yolov8s)', CensorDetectBenchmark('s', 'v0.8')),
