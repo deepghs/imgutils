@@ -5,6 +5,8 @@ from PIL import Image
 
 from cli import _wrap_func_as_cli
 from imgutils.data import load_image, grid_transparent, ImageTyping
+from imgutils.detect import detect_censors
+from imgutils.operate.censor_ import censor_areas
 from imgutils.validate.truncate import _mock_load_truncated_images
 
 INCHES_TO_PIXELS = 96
@@ -20,7 +22,15 @@ def _image_input_process(img) -> Tuple[Image.Image, str]:
     else:
         raise TypeError(f'Unknown type of img - {img!r}.')
 
-    return grid_transparent(image), label
+    image = grid_transparent(image)
+    label = label.rstrip()
+
+    detection = detect_censors(image)
+    if detection:
+        image = censor_areas(image, method='emoji', areas=[area for area, _, _ in detection])
+        label = f'{label}\n(Censored)'
+
+    return image, label
 
 
 @_wrap_func_as_cli
