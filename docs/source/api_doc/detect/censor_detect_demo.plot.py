@@ -1,10 +1,10 @@
-from imgutils.detect import detect_faces
+from imgutils.detect import detect_censors
 from imgutils.detect.visual import detection_visualize
 from plot import image_plot
 
 
 def _detect(img, **kwargs):
-    return detection_visualize(img, detect_faces(img, **kwargs))
+    return detection_visualize(img, detect_censors(img, **kwargs))
 
 
 if __name__ == '__main__':
