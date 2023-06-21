@@ -1,10 +1,11 @@
 from imgutils.detect import detect_censors
+from imgutils.detect.censor import _LABELS
 from imgutils.detect.visual import detection_visualize
 from plot import image_plot
 
 
 def _detect(img, **kwargs):
-    return detection_visualize(img, detect_censors(img, **kwargs))
+    return detection_visualize(img, detect_censors(img, **kwargs), _LABELS)
 
 
 if __name__ == '__main__':
