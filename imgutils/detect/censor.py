@@ -1,11 +1,13 @@
 """
 Overview:
-    Detect human censor points (including female's nipples and genitals) in anime images.
+    Detect human censor points (including female's nipples and genitals of both male and female) in anime images.
 
-    Trained on dataset `ani_face_detection <https://universe.roboflow.com/linog/ani_face_detection>`_ with YOLOv8.
+    Trained on dataset `deepghs/anime_censor_detection <https://huggingface.co/datasets/deepghs/anime_censor_detection>`_ with YOLOv8.
 
-    .. image:: censor_detect_demo.plot.py.svg
-        :align: center
+    .. collapse:: Overview of Censor Detect (NSFW Warning!!!)
+
+        .. image:: censor_detect_demo.plot.py.svg
+            :align: center
 
     This is an overall benchmark of all the censor detect models:
 
@@ -54,6 +56,23 @@ def detect_censors(image: ImageTyping, level: str = 's', version: str = 'v1.0', 
         will be discarded. The default value is `0.7`.
     :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
         the target type (always `censor`) and the target confidence score.
+
+    Examples::
+        >>> from imgutils.detect import detect_censors, detection_visualize
+        >>>
+        >>> image = 'nude_girl.png'
+        >>> result = detect_censors(image)  # detect it
+        >>> result
+        [
+            ((365, 264, 399, 289), 'nipple_f', 0.7473511695861816),
+            ((224, 260, 252, 285), 'nipple_f', 0.6830288171768188),
+            ((206, 523, 240, 608), 'pussy', 0.6799028515815735)
+        ]
+        >>>
+        >>> # visualize it
+        >>> from matplotlib import pyplot as plt
+        >>> plt.imshow(detection_visualize(image, result))
+        >>> plt.show()
     """
     image = load_image(image, mode='RGB')
     new_image, old_size, new_size = _image_preprocess(image, max_infer_size)

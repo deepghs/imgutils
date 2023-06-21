@@ -12,7 +12,7 @@ from imgutils.validate.truncate import _mock_load_truncated_images
 INCHES_TO_PIXELS = 96
 
 
-def _image_input_process(img) -> Tuple[Image.Image, str]:
+def _image_input_process(img, autocensor: bool = True) -> Tuple[Image.Image, str]:
     if isinstance(img, tuple):
         img_file, label = img
         image = load_image(img_file, force_background=None)
@@ -25,17 +25,18 @@ def _image_input_process(img) -> Tuple[Image.Image, str]:
     image = grid_transparent(image)
     label = label.rstrip()
 
-    detection = detect_censors(image)
-    if detection:
-        image = censor_areas(image, method='emoji', areas=[area for area, _, _ in detection])
-        label = f'{label}\n(Censored)'
+    if autocensor:
+        detection = detect_censors(image)
+        if detection:
+            image = censor_areas(image, method='emoji', areas=[area for area, _, _ in detection])
+            label = f'{label}\n(Censored)'
 
     return image, label
 
 
 @_wrap_func_as_cli
 @_mock_load_truncated_images(True)
-def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False, figsize=(6, 6)):
+def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False, figsize=(6, 6), autocensor: bool = True):
     plt.cla()
     plt.tight_layout()
 
@@ -46,7 +47,7 @@ def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False, figsiz
     plt.subplots_adjust(wspace=0.2, hspace=0.15)
     for i, img in enumerate(images, start=0):
         xi, yi = i // columns, i % columns
-        image, label = _image_input_process(img)
+        image, label = _image_input_process(img, autocensor)
         if rows == 1 and columns == 1:
             ax = axs
         elif rows == 1:
