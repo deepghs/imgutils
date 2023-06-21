@@ -1,0 +1,71 @@
+"""
+Overview:
+    Detect human censor points (including female's nipples and genitals) in anime images.
+
+    Trained on dataset `ani_face_detection <https://universe.roboflow.com/linog/ani_face_detection>`_ with YOLOv8.
+
+    .. image:: censor_detect_demo.plot.py.svg
+        :align: center
+
+    This is an overall benchmark of all the censor detect models:
+
+    .. image:: censor_detect_benchmark.plot.py.svg
+        :align: center
+
+"""
+import json
+from functools import lru_cache
+from typing import List, Tuple
+
+from huggingface_hub import hf_hub_download
+
+from ._yolo import _image_preprocess, _data_postprocess
+from ..data import ImageTyping, load_image, rgb_encode
+from ..utils import open_onnx_model
+
+
+@lru_cache()
+def _open_censor_detect_model(level: str = 's', version: str = 'v1.0'):
+    return open_onnx_model(hf_hub_download(
+        f'deepghs/anime_censor_detection',
+        f'censor_detect_{version}_{level}/model.onnx'
+    ))
+
+
+@lru_cache()
+def _open_censor_detect_labels(level: str = 's', version: str = 'v1.0'):
+    with open(hf_hub_download(
+            f'deepghs/anime_censor_detection',
+            f'censor_detect_{version}_{level}/model_artifacts.json'
+    ), 'r') as f:
+        return json.load(f)['names']
+
+
+def detect_censors(image: ImageTyping, level: str = 's', version: str = 'v1.0', max_infer_size=640,
+                   conf_threshold: float = 0.3, iou_threshold: float = 0.7) \
+        -> List[Tuple[Tuple[int, int, int, int], str, float]]:
+    """
+    Overview:
+        Detect human censor points in anime images.
+
+    :param image: Image to detect.
+    :param level: The model level being used can be either `s` or `n`.
+        The `n` model runs faster with smaller system overhead, while the `s` model achieves higher accuracy.
+        The default value is `s`.
+    :param version: Version of model, default is ``v1.0``.
+    :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
+        the image will be resized and used for inference. The default value is `640` pixels.
+    :param conf_threshold: The confidence threshold, only detection results with confidence scores above
+        this threshold will be returned. The default value is `0.3`.
+    :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold
+        will be discarded. The default value is `0.7`.
+    :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
+        the target type (always `censor`) and the target confidence score.
+    """
+    image = load_image(image, mode='RGB')
+    new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
+
+    data = rgb_encode(new_image)[None, ...]
+    output, = _open_censor_detect_model(level).run(['output0'], {'images': data})
+    labels = _open_censor_detect_labels(level, version)
+    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, labels)
