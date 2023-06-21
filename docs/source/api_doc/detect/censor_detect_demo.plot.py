@@ -15,6 +15,6 @@ if __name__ == '__main__':
         (_detect('censor/complex_pose.jpg'), 'complex pose'),
         (_detect('censor/complex_sex.jpg'), 'complex sex'),
         columns=2,
-        figsize=(12, 9),
+        figsize=(9, 9),
         autocensor=False,
     )
