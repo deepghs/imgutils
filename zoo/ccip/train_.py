@@ -145,7 +145,7 @@ def train(dataset_dir: str, session_name: Optional[str] = None, from_ckpt: Optio
         steps_per_epoch=len(train_dataloader)//accelerator.num_processes, epochs=max_epochs,
         pct_start=0.15, final_div_factor=20.
     )
-    # model = torch.compile(model)
+    model = torch.compile(model)
 
     model, optimizer, train_dataloader, test_dataloader, scheduler = \
         accelerator.prepare(model, optimizer, train_dataloader, test_dataloader, scheduler)

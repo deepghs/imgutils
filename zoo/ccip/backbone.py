@@ -5,7 +5,7 @@ import clip
 import torch
 from torchvision.transforms import Compose
 
-from .caformer import get_caformer, get_caformer_s18
+from .caformer import get_caformer, get_caformer_s18, get_caformer_query
 
 
 def get_clip_backbone(name="ViT-B/32") -> Tuple[torch.nn.Module, Compose]:
@@ -22,6 +22,7 @@ def register_backbone(name, func, *args, **kwargs):
 
 
 register_backbone('caformer', get_caformer)
+register_backbone('caformer_query', get_caformer_query)
 register_backbone('caformer_s18', get_caformer_s18)
 
 
