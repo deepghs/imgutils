@@ -19,5 +19,4 @@ if __name__ == '__main__':
         (censor_areas(image, 'smile', areas, emoji=':grinning_face_with_sweat:'), 'smile\n(grinning_face_with_sweat)'),
         columns=2,
         figsize=(9.5, 6),
-        autocensor=False,
     )

@@ -19,5 +19,4 @@ if __name__ == '__main__':
         (censor_areas(image, 'emoji', areas), 'emoji'),
         columns=2,
         figsize=(9.5, 6),
-        autocensor=False,
     )
