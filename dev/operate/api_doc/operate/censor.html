@@ -110,7 +110,7 @@
 <li class="toctree-l2"><a class="reference internal" href="align.html">imgutils.operate.align</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.operate.censor_</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#censor-areas">censor_areas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#censor">censor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#censor-nsfw">censor_nsfw</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#basecensor">BaseCensor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#colorcensor">ColorCensor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blurcensor">BlurCensor</a></li>
@@ -201,15 +201,58 @@
 <dl class="py function">
 <dt id="imgutils.operate.censor_.censor_areas">
 <code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">censor_areas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">areas</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Tuple<span class="p">[</span>float<span class="p">, </span>float<span class="p">, </span>float<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#censor_areas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.censor_areas" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Applies censoring to specific areas of an image using the registered censor method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image to be censored.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – The name of the registered censor method to be used.</p></li>
+<li><p><strong>areas</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em>) – A list of tuples representing the rectangular areas to be censored
+in the format <code class="docutils literal notranslate"><span class="pre">(x0,</span> <span class="pre">y0,</span> <span class="pre">x1,</span> <span class="pre">y1)</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to be passed to the censor method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the censored areas.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
-<section id="censor">
-<h2>censor<a class="headerlink" href="#censor" title="Permalink to this headline">¶</a></h2>
+<section id="censor-nsfw">
+<h2>censor_nsfw<a class="headerlink" href="#censor-nsfw" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="imgutils.operate.censor_.censor">
-<code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">censor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">nipple_f</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">penis</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">pussy</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'s'</span></em>, <em class="sig-param"><span class="n">version</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'v1.0'</span></em>, <em class="sig-param"><span class="n">max_infer_size</span><span class="o">=</span><span class="default_value">640</span></em>, <em class="sig-param"><span class="n">conf_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">iou_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#censor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.censor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="imgutils.operate.censor_.censor_nsfw">
+<code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">censor_nsfw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">nipple_f</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">penis</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">pussy</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'s'</span></em>, <em class="sig-param"><span class="n">version</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'v1.0'</span></em>, <em class="sig-param"><span class="n">max_infer_size</span><span class="o">=</span><span class="default_value">640</span></em>, <em class="sig-param"><span class="n">conf_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">iou_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#censor_nsfw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.censor_nsfw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies censoring to sensitive areas in NSFW images based on object detection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image to be censored.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – The name of the registered censor method to be used.</p></li>
+<li><p><strong>nipple_f</strong> (<em>bool</em>) – Whether to censor female nipples. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>penis</strong> (<em>bool</em>) – Whether to censor penises. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>pussy</strong> (<em>bool</em>) – Whether to censor vaginas. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>level</strong> (<em>str</em>) – The scale for NSFW object detection model.
+Options are <code class="docutils literal notranslate"><span class="pre">s</span></code> (small), <code class="docutils literal notranslate"><span class="pre">n</span></code> (nano, faster than <code class="docutils literal notranslate"><span class="pre">s</span></code>). Default is <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) – The version of the NSFW object detection model. Default is <code class="docutils literal notranslate"><span class="pre">v1.0</span></code>.</p></li>
+<li><p><strong>max_infer_size</strong> (<em>int</em>) – The maximum size for inference. Default is <code class="docutils literal notranslate"><span class="pre">640</span></code>.</p></li>
+<li><p><strong>conf_threshold</strong> (<em>float</em>) – The confidence threshold for object detection. Default is <code class="docutils literal notranslate"><span class="pre">0.3</span></code>.</p></li>
+<li><p><strong>iou_threshold</strong> (<em>float</em>) – The IoU (Intersection over Union) threshold for non-maximum suppression. Default is <code class="docutils literal notranslate"><span class="pre">0.7</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to be passed to the censor method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the sensitive areas censored.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="basecensor">
@@ -217,7 +260,31 @@
 <dl class="py class">
 <dt id="imgutils.operate.censor_.BaseCensor">
 <em class="property">class </em><code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">BaseCensor</code><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#BaseCensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.BaseCensor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The Censor base class serves as the foundation for creating custom censor methods by inheriting
+from this class and registering them using the <a class="reference internal" href="#imgutils.operate.censor_.register_censor_method" title="imgutils.operate.censor_.register_censor_method"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_censor_method()</span></code></a> function.</p>
+<dl class="py method">
+<dt id="imgutils.operate.censor_.BaseCensor.censor_area">
+<code class="sig-name descname">censor_area</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">PIL.Image.Image</span></em>, <em class="sig-param"><span class="n">area</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#BaseCensor.censor_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.BaseCensor.censor_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies censoring to a specific area within the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>Image.Image</em>) – An instance of PIL Image representing the input image.</p></li>
+<li><p><strong>area</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em>) – A tuple representing the rectangular area to be censored
+in the format <code class="docutils literal notranslate"><span class="pre">(left,</span> <span class="pre">upper,</span> <span class="pre">right,</span> <span class="pre">lower)</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for customization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the censored area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
 
 </section>
 <section id="colorcensor">
@@ -225,7 +292,33 @@
 <dl class="py class">
 <dt id="imgutils.operate.censor_.ColorCensor">
 <em class="property">class </em><code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">ColorCensor</code><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#ColorCensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.ColorCensor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>A class that performs color censoring by filling a specific area of an image with a solid color.</p>
+<p>Inherits from <a class="reference internal" href="#imgutils.operate.censor_.BaseCensor" title="imgutils.operate.censor_.BaseCensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCensor</span></code></a>.</p>
+<dl class="py method">
+<dt id="imgutils.operate.censor_.ColorCensor.censor_area">
+<code class="sig-name descname">censor_area</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">PIL.Image.Image</span></em>, <em class="sig-param"><span class="n">area</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">color</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'black'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#ColorCensor.censor_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.ColorCensor.censor_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fills a specific area within the image with a solid color for censoring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>Image.Image</em>) – An instance of PIL Image representing the input image.</p></li>
+<li><p><strong>area</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em>) – A tuple representing the rectangular area to be censored
+in the format <code class="docutils literal notranslate"><span class="pre">(left,</span> <span class="pre">upper,</span> <span class="pre">right,</span> <span class="pre">lower)</span></code>.</p></li>
+<li><p><strong>color</strong> (<em>str</em>) – The color used to fill the censor area. Default is <code class="docutils literal notranslate"><span class="pre">black</span></code>.
+Can be any valid color name or RGB value.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for customization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the censored area filled with the specified color.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
 
 </section>
 <section id="blurcensor">
@@ -233,7 +326,32 @@
 <dl class="py class">
 <dt id="imgutils.operate.censor_.BlurCensor">
 <em class="property">class </em><code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">BlurCensor</code><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#BlurCensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.BlurCensor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>A class that performs blurring censoring on a specific area of an image.</p>
+<p>Inherits from <a class="reference internal" href="#imgutils.operate.censor_.BaseCensor" title="imgutils.operate.censor_.BaseCensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCensor</span></code></a>.</p>
+<dl class="py method">
+<dt id="imgutils.operate.censor_.BlurCensor.censor_area">
+<code class="sig-name descname">censor_area</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">PIL.Image.Image</span></em>, <em class="sig-param"><span class="n">area</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">radius</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">4</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#BlurCensor.censor_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.BlurCensor.censor_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies blurring censoring to a specific area within the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>Image.Image</em>) – An instance of PIL Image representing the input image.</p></li>
+<li><p><strong>area</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em>) – A tuple representing the rectangular area to be censored
+in the format <code class="docutils literal notranslate"><span class="pre">(left,</span> <span class="pre">upper,</span> <span class="pre">right,</span> <span class="pre">lower)</span></code>.</p></li>
+<li><p><strong>radius</strong> (<em>int</em>) – The radius of the blurring effect. Default is <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for customization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the blurred area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
 
 </section>
 <section id="pixelatecensor">
@@ -241,7 +359,32 @@
 <dl class="py class">
 <dt id="imgutils.operate.censor_.PixelateCensor">
 <em class="property">class </em><code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">PixelateCensor</code><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#PixelateCensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.PixelateCensor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>A class that performs pixelization censoring on a specific area of an image.</p>
+<p>Inherits from <a class="reference internal" href="#imgutils.operate.censor_.BaseCensor" title="imgutils.operate.censor_.BaseCensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCensor</span></code></a>.</p>
+<dl class="py method">
+<dt id="imgutils.operate.censor_.PixelateCensor.censor_area">
+<code class="sig-name descname">censor_area</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">PIL.Image.Image</span></em>, <em class="sig-param"><span class="n">area</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">radius</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">4</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#PixelateCensor.censor_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.PixelateCensor.censor_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies pixelization censoring to a specific area within the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>Image.Image</em>) – An instance of PIL Image representing the input image.</p></li>
+<li><p><strong>area</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em>) – A tuple representing the rectangular area to be censored
+in the format <code class="docutils literal notranslate"><span class="pre">(left,</span> <span class="pre">upper,</span> <span class="pre">right,</span> <span class="pre">lower)</span></code>.</p></li>
+<li><p><strong>radius</strong> (<em>int</em>) – The radius of the pixelation effect. Default is <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for customization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the pixelated area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
 
 </section>
 <section id="register-censor-method">
@@ -249,7 +392,24 @@
 <dl class="py function">
 <dt id="imgutils.operate.censor_.register_censor_method">
 <code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">register_censor_method</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">cls</span><span class="p">:</span> <span class="n">Type<span class="p">[</span><a class="reference internal" href="#imgutils.operate.censor_.BaseCensor" title="imgutils.operate.censor_.BaseCensor">imgutils.operate.censor_.BaseCensor</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#register_censor_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.register_censor_method" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="simple">
+<dt>Overview:</dt><dd><p>Registers a censor method for subsequent censoring tasks.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the censor method.</p></li>
+<li><p><strong>cls</strong> (<em>Type</em><em>[</em><a class="reference internal" href="#imgutils.operate.censor_.BaseCensor" title="imgutils.operate.censor_.BaseCensor"><em>BaseCensor</em></a><em>]</em>) – The class representing the censor method. It should be a subclass of BaseCensor.</p></li>
+<li><p><strong>args</strong> – Positional arguments to be passed when initializing the censor method.</p></li>
+<li><p><strong>kwargs</strong> – Keyword arguments to be passed when initializing the censor method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the censor method name already exists.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>

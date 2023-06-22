@@ -185,49 +185,158 @@
 
 
 <div class="viewcode-block" id="BaseCensor"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.BaseCensor">[docs]</a><span class="k">class</span> <span class="nc">BaseCensor</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>  <span class="c1"># pragma: no cover</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Censor base class serves as the foundation for creating custom censor methods by inheriting</span>
+<span class="sd">    from this class and registering them using the :func:`register_censor_method` function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BaseCensor.censor_area"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.BaseCensor.censor_area">[docs]</a>    <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies censoring to a specific area within the image.</span>
+
+<span class="sd">        :param image: An instance of PIL Image representing the input image.</span>
+<span class="sd">        :type image: Image.Image</span>
+
+<span class="sd">        :param area: A tuple representing the rectangular area to be censored</span>
+<span class="sd">            in the format ``(left, upper, right, lower)``.</span>
+<span class="sd">        :type area: Tuple[int, int, int, int]</span>
+
+<span class="sd">        :param kwargs: Additional keyword arguments for customization.</span>
+
+<span class="sd">        :return: An instance of PIL Image with the censored area.</span>
+<span class="sd">        :rtype: Image.Image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>  <span class="c1"># pragma: no cover</span></div></div>
 
 
 <div class="viewcode-block" id="PixelateCensor"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.PixelateCensor">[docs]</a><span class="k">class</span> <span class="nc">PixelateCensor</span><span class="p">(</span><span class="n">BaseCensor</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class that performs pixelization censoring on a specific area of an image.</span>
+
+<span class="sd">    Inherits from :class:`BaseCensor`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PixelateCensor.censor_area"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.PixelateCensor.censor_area">[docs]</a>    <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
                     <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies pixelization censoring to a specific area within the image.</span>
+
+<span class="sd">        :param image: An instance of PIL Image representing the input image.</span>
+<span class="sd">        :type image: Image.Image</span>
+
+<span class="sd">        :param area: A tuple representing the rectangular area to be censored</span>
+<span class="sd">            in the format ``(left, upper, right, lower)``.</span>
+<span class="sd">        :type area: Tuple[int, int, int, int]</span>
+
+<span class="sd">        :param radius: The radius of the pixelation effect. Default is ``4``.</span>
+<span class="sd">        :type radius: int</span>
+
+<span class="sd">        :param kwargs: Additional keyword arguments for customization.</span>
+
+<span class="sd">        :return: An instance of PIL Image with the pixelated area.</span>
+<span class="sd">        :rtype: Image.Image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">area</span>
         <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span>
         <span class="n">censor_area</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span>
         <span class="n">censor_area</span> <span class="o">=</span> <span class="n">censor_area</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">width</span> <span class="o">//</span> <span class="n">radius</span><span class="p">,</span> <span class="n">height</span> <span class="o">//</span> <span class="n">radius</span><span class="p">))</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">NEAREST</span><span class="p">)</span>
         <span class="n">image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">censor_area</span><span class="p">,</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">image</span></div>
+        <span class="k">return</span> <span class="n">image</span></div></div>
 
 
 <div class="viewcode-block" id="BlurCensor"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.BlurCensor">[docs]</a><span class="k">class</span> <span class="nc">BlurCensor</span><span class="p">(</span><span class="n">BaseCensor</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class that performs blurring censoring on a specific area of an image.</span>
+
+<span class="sd">    Inherits from :class:`BaseCensor`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BlurCensor.censor_area"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.BlurCensor.censor_area">[docs]</a>    <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
                     <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies blurring censoring to a specific area within the image.</span>
+
+<span class="sd">        :param image: An instance of PIL Image representing the input image.</span>
+<span class="sd">        :type image: Image.Image</span>
+
+<span class="sd">        :param area: A tuple representing the rectangular area to be censored</span>
+<span class="sd">            in the format ``(left, upper, right, lower)``.</span>
+<span class="sd">        :type area: Tuple[int, int, int, int]</span>
+
+<span class="sd">        :param radius: The radius of the blurring effect. Default is ``4``.</span>
+<span class="sd">        :type radius: int</span>
+
+<span class="sd">        :param kwargs: Additional keyword arguments for customization.</span>
+
+<span class="sd">        :return: An instance of PIL Image with the blurred area.</span>
+<span class="sd">        :rtype: Image.Image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">area</span>
         <span class="n">censor_area</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span>
         <span class="n">censor_area</span> <span class="o">=</span> <span class="n">censor_area</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ImageFilter</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">radius</span><span class="p">))</span>
         <span class="n">image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">censor_area</span><span class="p">,</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">image</span></div>
+        <span class="k">return</span> <span class="n">image</span></div></div>
 
 
 <div class="viewcode-block" id="ColorCensor"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.ColorCensor">[docs]</a><span class="k">class</span> <span class="nc">ColorCensor</span><span class="p">(</span><span class="n">BaseCensor</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class that performs color censoring by filling a specific area of an image with a solid color.</span>
+
+<span class="sd">    Inherits from :class:`BaseCensor`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ColorCensor.censor_area"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.ColorCensor.censor_area">[docs]</a>    <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span>
                     <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fills a specific area within the image with a solid color for censoring.</span>
+
+<span class="sd">        :param image: An instance of PIL Image representing the input image.</span>
+<span class="sd">        :type image: Image.Image</span>
+
+<span class="sd">        :param area: A tuple representing the rectangular area to be censored</span>
+<span class="sd">            in the format ``(left, upper, right, lower)``.</span>
+<span class="sd">        :type area: Tuple[int, int, int, int]</span>
+
+<span class="sd">        :param color: The color used to fill the censor area. Default is ``black``.</span>
+<span class="sd">            Can be any valid color name or RGB value.</span>
+<span class="sd">        :type color: str</span>
+
+<span class="sd">        :param kwargs: Additional keyword arguments for customization.</span>
+
+<span class="sd">        :return: An instance of PIL Image with the censored area filled with the specified color.</span>
+<span class="sd">        :rtype: Image.Image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">area</span>
         <span class="n">censor_area</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span>
         <span class="c1"># noinspection PyTypeChecker</span>
         <span class="n">censor_area</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="n">censor_area</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
         <span class="n">image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">censor_area</span><span class="p">,</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">image</span></div>
+        <span class="k">return</span> <span class="n">image</span></div></div>
 
 
 <span class="n">_KNOWN_CENSORS</span> <span class="o">=</span> <span class="p">{}</span>
 
 
 <div class="viewcode-block" id="register_censor_method"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.register_censor_method">[docs]</a><span class="k">def</span> <span class="nf">register_censor_method</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseCensor</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Overview:</span>
+<span class="sd">        Registers a censor method for subsequent censoring tasks.</span>
+
+<span class="sd">    :param name: The name of the censor method.</span>
+<span class="sd">    :type name: str</span>
+
+<span class="sd">    :param cls: The class representing the censor method. It should be a subclass of BaseCensor.</span>
+<span class="sd">    :type cls: Type[BaseCensor]</span>
+
+<span class="sd">    :param args: Positional arguments to be passed when initializing the censor method.</span>
+<span class="sd">    :param kwargs: Keyword arguments to be passed when initializing the censor method.</span>
+
+<span class="sd">    :raises KeyError: If the censor method name already exists.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_KNOWN_CENSORS</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Censor method </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s1"> already exist, please use another name.&#39;</span><span class="p">)</span>
     <span class="n">_KNOWN_CENSORS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span></div>
@@ -249,6 +358,24 @@
 
 <div class="viewcode-block" id="censor_areas"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.censor_areas">[docs]</a><span class="k">def</span> <span class="nf">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">areas</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies censoring to specific areas of an image using the registered censor method.</span>
+
+<span class="sd">    :param image: The input image to be censored.</span>
+<span class="sd">    :type image: ImageTyping</span>
+
+<span class="sd">    :param method: The name of the registered censor method to be used.</span>
+<span class="sd">    :type method: str</span>
+
+<span class="sd">    :param areas: A list of tuples representing the rectangular areas to be censored</span>
+<span class="sd">        in the format ``(x0, y0, x1, y1)``.</span>
+<span class="sd">    :type areas: List[Tuple[float, float, float, float]]</span>
+
+<span class="sd">    :param kwargs: Additional keyword arguments to be passed to the censor method.</span>
+
+<span class="sd">    :return: An instance of PIL Image with the censored areas.</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">_get_censor_instance</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="ow">in</span> <span class="n">areas</span><span class="p">:</span>
@@ -257,9 +384,48 @@
     <span class="k">return</span> <span class="n">image</span></div>
 
 
-<div class="viewcode-block" id="censor"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.censor">[docs]</a><span class="k">def</span> <span class="nf">censor</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nipple_f</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">penis</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">pussy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-           <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v1.0&#39;</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="o">=</span><span class="mi">640</span><span class="p">,</span>
-           <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="censor_nsfw"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.censor_nsfw">[docs]</a><span class="k">def</span> <span class="nf">censor_nsfw</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nipple_f</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">penis</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">pussy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v1.0&#39;</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="o">=</span><span class="mi">640</span><span class="p">,</span>
+                <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies censoring to sensitive areas in NSFW images based on object detection.</span>
+
+<span class="sd">    :param image: The input image to be censored.</span>
+<span class="sd">    :type image: ImageTyping</span>
+
+<span class="sd">    :param method: The name of the registered censor method to be used.</span>
+<span class="sd">    :type method: str</span>
+
+<span class="sd">    :param nipple_f: Whether to censor female nipples. Default is ``False``.</span>
+<span class="sd">    :type nipple_f: bool</span>
+
+<span class="sd">    :param penis: Whether to censor penises. Default is ``True``.</span>
+<span class="sd">    :type penis: bool</span>
+
+<span class="sd">    :param pussy: Whether to censor vaginas. Default is ``True``.</span>
+<span class="sd">    :type pussy: bool</span>
+
+<span class="sd">    :param level: The scale for NSFW object detection model.</span>
+<span class="sd">        Options are ``s`` (small), ``n`` (nano, faster than ``s``). Default is ``s``.</span>
+<span class="sd">    :type level: str</span>
+
+<span class="sd">    :param version: The version of the NSFW object detection model. Default is ``v1.0``.</span>
+<span class="sd">    :type version: str</span>
+
+<span class="sd">    :param max_infer_size: The maximum size for inference. Default is ``640``.</span>
+<span class="sd">    :type max_infer_size: int</span>
+
+<span class="sd">    :param conf_threshold: The confidence threshold for object detection. Default is ``0.3``.</span>
+<span class="sd">    :type conf_threshold: float</span>
+
+<span class="sd">    :param iou_threshold: The IoU (Intersection over Union) threshold for non-maximum suppression. Default is ``0.7``.</span>
+<span class="sd">    :type iou_threshold: float</span>
+
+<span class="sd">    :param kwargs: Additional keyword arguments to be passed to the censor method.</span>
+
+<span class="sd">    :return: An instance of PIL Image with the sensitive areas censored.</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
     <span class="n">areas</span> <span class="o">=</span> <span class="n">detect_censors</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">)</span>
 

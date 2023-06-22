@@ -14,10 +14,10 @@ censor_areas
 
 
 
-censor
+censor_nsfw
 --------------------------------------------
 
-.. autofunction:: censor
+.. autofunction:: censor_nsfw
 
 
 
@@ -25,7 +25,7 @@ BaseCensor
 --------------------------------------------
 
 .. autoclass:: BaseCensor
-    :members:
+    :members: censor_area
 
 
 
@@ -33,7 +33,7 @@ ColorCensor
 --------------------------------------------
 
 .. autoclass:: ColorCensor
-    :members:
+    :members: censor_area
 
 
 
@@ -41,7 +41,7 @@ BlurCensor
 --------------------------------------------
 
 .. autoclass:: BlurCensor
-    :members:
+    :members: censor_area
 
 
 
@@ -49,7 +49,7 @@ PixelateCensor
 --------------------------------------------
 
 .. autoclass:: PixelateCensor
-    :members:
+    :members: censor_area
 
 
 
