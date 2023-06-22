@@ -1,5 +1,6 @@
 import math
 import os.path
+import warnings
 from functools import lru_cache
 from typing import Tuple, Optional
 
@@ -7,6 +8,7 @@ import numpy as np
 from PIL import Image
 from emoji import emojize
 from hbutils.system import TemporaryDirectory
+from hbutils.testing import vpython
 from pilmoji.source import EmojiCDNSource
 from scipy import ndimage
 
@@ -178,7 +180,7 @@ _EmojiStyleTyping = Literal[
 class _NativeEmojiBasedCensor(ImageBasedCensor):
     def __init__(self, emoji: str = ':smiling_face_with_heart-eyes:', style: _EmojiStyleTyping = 'twitter',
                  rotate: Tuple[int, int] = (-30, 30), step: int = 10):
-        ImageBasedCensor.__init__(self, [_get_emoji_img(emoji)], rotate, step)
+        ImageBasedCensor.__init__(self, [_get_emoji_img(emoji, style)], rotate, step)
 
 
 @lru_cache()
@@ -199,4 +201,26 @@ class EmojiBasedCensor(BaseCensor):
             .censor_area(image, area, ratio_threshold, **kwargs)
 
 
-register_censor_method('emoji', EmojiBasedCensor)
+if vpython >= '3.8':
+    register_censor_method('emoji', EmojiBasedCensor)
+
+else:
+    @lru_cache()
+    def _py37_fallback():
+        warnings.warn('Due to compatibility issues with the pilmoji library, '
+                      'the emoji censor method is not supported in Python 3.7. '
+                      'A pre-defined single emoji image will be used for rendering, '
+                      'and the emoji and style parameters will be ignored.')
+
+
+    class _Python37FallbackCensor(ImageBasedCensor):
+        def __init__(self):
+            ImageBasedCensor.__init__(self, [_get_file_in_censor_assets('emoji_censor.png')])
+
+        def censor_area(self, image: Image.Image, area: Tuple[int, int, int, int], ratio_threshold: float = 0.5,
+                        **kwargs) -> Image.Image:
+            _py37_fallback()
+            return ImageBasedCensor.censor_area(self, image, area, ratio_threshold, **kwargs)
+
+
+    register_censor_method('emoji', _Python37FallbackCensor)
