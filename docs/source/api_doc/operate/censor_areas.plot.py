@@ -18,6 +18,6 @@ if __name__ == '__main__':
         (censor_areas(image, 'pixelate', areas, radius=12), 'pixelate'),
         (censor_areas(image, 'emoji', areas), 'emoji'),
         columns=2,
-        figsize=(12, 8),
+        figsize=(9.5, 6),
         autocensor=False,
     )
