@@ -219,6 +219,31 @@ in the format <code class="docutils literal notranslate"><span class="pre">(x0,<
 <dd class="field-odd"><p>Image.Image</p>
 </dd>
 </dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.operate</span> <span class="kn">import</span> <span class="n">censor_areas</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;genshin_post.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">areas</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># areas to censor</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">967</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">1084</span><span class="p">,</span> <span class="mi">261</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">246</span><span class="p">,</span> <span class="mi">208</span><span class="p">,</span> <span class="mi">331</span><span class="p">,</span> <span class="mi">287</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">662</span><span class="p">,</span> <span class="mi">466</span><span class="p">,</span> <span class="mi">705</span><span class="p">,</span> <span class="mi">514</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">479</span><span class="p">,</span> <span class="mi">283</span><span class="p">,</span> <span class="mi">523</span><span class="p">,</span> <span class="mi">326</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with black color</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_black</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with pixelate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pixelate</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;pixelate&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with emoji</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emoji</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;emoji&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result:</p>
+<img alt="../../_images/censor_areas.plot.py.svg" class="align-center" src="../../_images/censor_areas.plot.py.svg" /></dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -228,6 +253,7 @@ in the format <code class="docutils literal notranslate"><span class="pre">(x0,<
 <dt id="imgutils.operate.censor_.censor_nsfw">
 <code class="sig-prename descclassname">imgutils.operate.censor_.</code><code class="sig-name descname">censor_nsfw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">nipple_f</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">penis</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">pussy</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'s'</span></em>, <em class="sig-param"><span class="n">version</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'v1.0'</span></em>, <em class="sig-param"><span class="n">max_infer_size</span><span class="o">=</span><span class="default_value">640</span></em>, <em class="sig-param"><span class="n">conf_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">iou_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#censor_nsfw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.censor_.censor_nsfw" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applies censoring to sensitive areas in NSFW images based on object detection.</p>
+<p>The censor area selected by this function is provided by the <a class="reference internal" href="../detect/censor.html#imgutils.detect.censor.detect_censors" title="imgutils.detect.censor.detect_censors"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.detect.censor.detect_censors()</span></code></a> function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -251,6 +277,25 @@ Options are <code class="docutils literal notranslate"><span class="pre">s</span
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Image.Image</p>
 </dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.operate</span> <span class="kn">import</span> <span class="n">censor_nsfw</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;nude_girl.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with black color</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_black</span> <span class="o">=</span> <span class="n">censor_nsfw</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">nipple_f</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with pixelate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pixelate</span> <span class="o">=</span> <span class="n">censor_nsfw</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;pixelate&#39;</span><span class="p">,</span> <span class="n">nipple_f</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with emoji</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emoji</span> <span class="o">=</span> <span class="n">censor_nsfw</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;emoji&#39;</span><span class="p">,</span> <span class="n">nipple_f</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<details class="summary-this-is-the-result-warning-nsfw">
+<summary>This is the result (Warning: NSFW!!!)</summary><img alt="../../_images/censor_nsfw.plot.py.svg" class="align-center" src="../../_images/censor_nsfw.plot.py.svg" /></details></dd>
 </dl>
 </dd></dl>
 

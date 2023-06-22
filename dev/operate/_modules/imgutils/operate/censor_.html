@@ -375,6 +375,33 @@
 
 <span class="sd">    :return: An instance of PIL Image with the censored areas.</span>
 <span class="sd">    :rtype: Image.Image</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.operate import censor_areas</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; origin = Image.open(&#39;genshin_post.jpg&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; areas = [  # areas to censor</span>
+<span class="sd">        &gt;&gt;&gt;     (967, 143, 1084, 261),</span>
+<span class="sd">        &gt;&gt;&gt;     (246, 208, 331, 287),</span>
+<span class="sd">        &gt;&gt;&gt;     (662, 466, 705, 514),</span>
+<span class="sd">        &gt;&gt;&gt;     (479, 283, 523, 326)</span>
+<span class="sd">        &gt;&gt;&gt; ]</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # censor with black color</span>
+<span class="sd">        &gt;&gt;&gt; color_black = censor_areas(origin, &#39;color&#39;, areas, color=&#39;black&#39;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # censor with pixelate</span>
+<span class="sd">        &gt;&gt;&gt; pixelate = censor_areas(origin, &#39;pixelate&#39;, areas, radius=12)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # censor with emoji</span>
+<span class="sd">        &gt;&gt;&gt; emoji = censor_areas(origin, &#39;emoji&#39;, areas)</span>
+
+<span class="sd">        This is the result:</span>
+
+<span class="sd">        .. image:: censor_areas.plot.py.svg</span>
+<span class="sd">            :align: center</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">_get_censor_instance</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
@@ -389,6 +416,8 @@
                 <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Applies censoring to sensitive areas in NSFW images based on object detection.</span>
+
+<span class="sd">    The censor area selected by this function is provided by the :func:`imgutils.detect.censor.detect_censors` function.</span>
 
 <span class="sd">    :param image: The input image to be censored.</span>
 <span class="sd">    :type image: ImageTyping</span>
@@ -425,6 +454,27 @@
 
 <span class="sd">    :return: An instance of PIL Image with the sensitive areas censored.</span>
 <span class="sd">    :rtype: Image.Image</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.operate import censor_nsfw</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; origin = Image.open(&#39;nude_girl.png&#39;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # censor with black color</span>
+<span class="sd">        &gt;&gt;&gt; color_black = censor_nsfw(origin, &#39;color&#39;, nipple_f=True, color=&#39;black&#39;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # censor with pixelate</span>
+<span class="sd">        &gt;&gt;&gt; pixelate = censor_nsfw(origin, &#39;pixelate&#39;, nipple_f=True, radius=12)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # censor with emoji</span>
+<span class="sd">        &gt;&gt;&gt; emoji = censor_nsfw(origin, &#39;emoji&#39;, nipple_f=True)</span>
+
+<span class="sd">        .. collapse:: This is the result (Warning: NSFW!!!)</span>
+
+<span class="sd">            .. image:: censor_nsfw.plot.py.svg</span>
+<span class="sd">                :align: center</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
     <span class="n">areas</span> <span class="o">=</span> <span class="n">detect_censors</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">)</span>
