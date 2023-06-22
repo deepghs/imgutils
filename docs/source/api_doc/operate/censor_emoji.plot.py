@@ -15,8 +15,8 @@ if __name__ == '__main__':
     image_plot(
         (image, 'origin'),
         (censor_areas(image, 'emoji', areas), 'emoji'),
-        (censor_areas(image, 'emoji', areas, emoji=':cat_face:'), 'heart (cat_face)'),
-        (censor_areas(image, 'smile', areas, emoji=':grinning_face_with_sweat:'), 'smile\n(grinning_face_with_sweat)'),
+        (censor_areas(image, 'emoji', areas, emoji=':cat_face:'), 'emoji (cat_face)'),
+        (censor_areas(image, 'smile', areas, emoji=':grinning_face_with_sweat:'), 'emoji\n(grinning_face_with_sweat)'),
         columns=2,
         figsize=(9.5, 6),
     )
