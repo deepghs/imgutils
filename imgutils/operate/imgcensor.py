@@ -9,7 +9,6 @@ from PIL import Image
 from emoji import emojize
 from hbutils.system import TemporaryDirectory
 from hbutils.testing import vpython
-from pilmoji.source import EmojiCDNSource
 from scipy import ndimage
 
 try:
@@ -158,6 +157,8 @@ register_censor_method(
 
 @lru_cache()
 def _get_emoji_img(emoji: str, style: str = 'twitter') -> Image.Image:
+    from pilmoji.source import EmojiCDNSource
+
     class _CustomSource(EmojiCDNSource):
         STYLE = style
 
