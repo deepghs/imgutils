@@ -1,10 +1,19 @@
 import math
 import os.path
+from functools import lru_cache
 from typing import Tuple, Optional
 
 import numpy as np
 from PIL import Image
+from emoji import emojize
+from hbutils.system import TemporaryDirectory
+from pilmoji.source import EmojiCDNSource
 from scipy import ndimage
+
+try:
+    from typing import Literal
+except (ImportError, ModuleNotFoundError):
+    from typing_extensions import Literal
 
 from .align import align_maxsize
 from .censor_ import BaseCensor, register_censor_method
@@ -136,10 +145,6 @@ def _get_file_in_censor_assets(file):
 
 
 register_censor_method(
-    'emoji', ImageBasedCensor,
-    images=[_get_file_in_censor_assets('emoji_censor.png')]
-)
-register_censor_method(
     'heart', ImageBasedCensor,
     images=[_get_file_in_censor_assets('heart_censor.png')]
 )
@@ -147,3 +152,51 @@ register_censor_method(
     'smile', ImageBasedCensor,
     images=[_get_file_in_censor_assets('smile_censor.png')]
 )
+
+
+@lru_cache()
+def _get_emoji_img(emoji: str, style: str = 'twitter') -> Image.Image:
+    class _CustomSource(EmojiCDNSource):
+        STYLE = style
+
+    with TemporaryDirectory() as td:
+        imgfile = os.path.join(td, 'emoji.png')
+        with open(imgfile, 'wb') as f:
+            f.write(_CustomSource().get_emoji(emojize(emoji)).read())
+
+        img = Image.open(imgfile)
+        img.load()
+        return img
+
+
+_EmojiStyleTyping = Literal[
+    'twitter', 'apple', 'google', 'microsoft', 'samsung', 'whatsapp', 'facebook', 'messenger',
+    'joypixels', 'openmoji', 'emojidex', 'mozilla'
+]
+
+
+class _NativeEmojiBasedCensor(ImageBasedCensor):
+    def __init__(self, emoji: str = ':smiling_face_with_heart-eyes:', style: _EmojiStyleTyping = 'twitter',
+                 rotate: Tuple[int, int] = (-30, 30), step: int = 10):
+        ImageBasedCensor.__init__(self, [_get_emoji_img(emoji)], rotate, step)
+
+
+@lru_cache()
+def _get_native_emoji_censor(emoji: str = ':smiling_face_with_heart-eyes:', style: _EmojiStyleTyping = 'twitter',
+                             rotate: Tuple[int, int] = (-30, 30), step: int = 10):
+    return _NativeEmojiBasedCensor(emoji, style, rotate, step)
+
+
+class EmojiBasedCensor(BaseCensor):
+    def __init__(self, rotate: Tuple[int, int] = (-30, 30), step: int = 10):
+        self.rotate = rotate
+        self.step = step
+
+    def censor_area(self, image: Image.Image, area: Tuple[int, int, int, int],
+                    emoji: str = ':smiling_face_with_heart-eyes:', style: _EmojiStyleTyping = 'twitter',
+                    ratio_threshold: float = 0.5, **kwargs) -> Image.Image:
+        return _get_native_emoji_censor(emoji, style, self.rotate, self.step) \
+            .censor_area(image, area, ratio_threshold, **kwargs)
+
+
+register_censor_method('emoji', EmojiBasedCensor)

@@ -10,7 +10,15 @@ ImageBasedCensor
 --------------------------------------------
 
 .. autoclass:: ImageBasedCensor
-    :members:
+    :members: censor_area
+
+
+
+EmojiBasedCensor
+--------------------------------------------
+
+.. autoclass:: EmojiBasedCensor
+    :members: censor_area
 
 
 
