@@ -16,7 +16,7 @@ if __name__ == '__main__':
         (image, 'origin'),
         (censor_areas(image, 'emoji', areas), 'emoji'),
         (censor_areas(image, 'emoji', areas, emoji=':cat_face:'), 'emoji (cat_face)'),
-        (censor_areas(image, 'smile', areas, emoji=':grinning_face_with_sweat:'), 'emoji\n(grinning_face_with_sweat)'),
+        (censor_areas(image, 'emoji', areas, emoji=':grinning_face_with_sweat:'), 'emoji\n(grinning_face_with_sweat)'),
         columns=2,
         figsize=(9.5, 6),
     )
