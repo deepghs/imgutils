@@ -6,7 +6,7 @@ from imgutils.data import ImageTyping, load_image
 def align_maxsize(image: ImageTyping, max_size: int) -> Image.Image:
     """
     Resizes the image while maintaining its aspect ratio, ensuring that the length of its longer side
-    does not exceed the specified maximum size.
+    aligns with the given ``max_size``.
 
     :param image: The input image to be resized.
     :param max_size: The maximum length of the longer side after resizing.
