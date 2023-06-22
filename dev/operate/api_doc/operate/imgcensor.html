@@ -111,6 +111,7 @@
 <li class="toctree-l2"><a class="reference internal" href="censor.html">imgutils.operate.censor_</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.operate.imgcensor</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#imagebasedcensor">ImageBasedCensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emojibasedcensor">EmojiBasedCensor</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="squeeze.html">imgutils.operate.squeeze</a></li>
@@ -198,6 +199,36 @@
 <dd><dl class="py method">
 <dt id="imgutils.operate.imgcensor.ImageBasedCensor.censor_area">
 <code class="sig-name descname">censor_area</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">PIL.Image.Image</span></em>, <em class="sig-param"><span class="n">area</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">ratio_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="reference internal" href="../../_modules/imgutils/operate/imgcensor.html#ImageBasedCensor.censor_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.imgcensor.ImageBasedCensor.censor_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies censoring to a specific area within the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>Image.Image</em>) – An instance of PIL Image representing the input image.</p></li>
+<li><p><strong>area</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em>) – A tuple representing the rectangular area to be censored
+in the format <code class="docutils literal notranslate"><span class="pre">(left,</span> <span class="pre">upper,</span> <span class="pre">right,</span> <span class="pre">lower)</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for customization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the censored area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="emojibasedcensor">
+<h2>EmojiBasedCensor<a class="headerlink" href="#emojibasedcensor" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="imgutils.operate.imgcensor.EmojiBasedCensor">
+<em class="property">class </em><code class="sig-prename descclassname">imgutils.operate.imgcensor.</code><code class="sig-name descname">EmojiBasedCensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rotate</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">- 30, 30</span></em>, <em class="sig-param"><span class="n">step</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/imgcensor.html#EmojiBasedCensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.imgcensor.EmojiBasedCensor" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="imgutils.operate.imgcensor.EmojiBasedCensor.censor_area">
+<code class="sig-name descname">censor_area</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">PIL.Image.Image</span></em>, <em class="sig-param"><span class="n">area</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">emoji</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">':smiling_face_with_heart-eyes:'</span></em>, <em class="sig-param"><span class="n">style</span><span class="p">:</span> <span class="n">Literal<span class="p">[</span>twitter<span class="p">, </span>apple<span class="p">, </span>google<span class="p">, </span>microsoft<span class="p">, </span>samsung<span class="p">, </span>whatsapp<span class="p">, </span>facebook<span class="p">, </span>messenger<span class="p">, </span>joypixels<span class="p">, </span>openmoji<span class="p">, </span>emojidex<span class="p">, </span>mozilla<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'twitter'</span></em>, <em class="sig-param"><span class="n">ratio_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="reference internal" href="../../_modules/imgutils/operate/imgcensor.html#EmojiBasedCensor.censor_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.imgcensor.EmojiBasedCensor.censor_area" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applies censoring to a specific area within the image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

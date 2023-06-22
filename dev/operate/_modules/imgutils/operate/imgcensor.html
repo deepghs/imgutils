@@ -177,11 +177,22 @@
   <h1>Source code for imgutils.operate.imgcensor</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">emoji</span> <span class="kn">import</span> <span class="n">emojize</span>
+<span class="kn">from</span> <span class="nn">hbutils.system</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+<span class="kn">from</span> <span class="nn">hbutils.testing</span> <span class="kn">import</span> <span class="n">vpython</span>
+<span class="kn">from</span> <span class="nn">pilmoji.source</span> <span class="kn">import</span> <span class="n">EmojiCDNSource</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
 
 <span class="kn">from</span> <span class="nn">.align</span> <span class="kn">import</span> <span class="n">align_maxsize</span>
 <span class="kn">from</span> <span class="nn">.censor_</span> <span class="kn">import</span> <span class="n">BaseCensor</span><span class="p">,</span> <span class="n">register_censor_method</span>
@@ -313,10 +324,6 @@
 
 
 <span class="n">register_censor_method</span><span class="p">(</span>
-    <span class="s1">&#39;emoji&#39;</span><span class="p">,</span> <span class="n">ImageBasedCensor</span><span class="p">,</span>
-    <span class="n">images</span><span class="o">=</span><span class="p">[</span><span class="n">_get_file_in_censor_assets</span><span class="p">(</span><span class="s1">&#39;emoji_censor.png&#39;</span><span class="p">)]</span>
-<span class="p">)</span>
-<span class="n">register_censor_method</span><span class="p">(</span>
     <span class="s1">&#39;heart&#39;</span><span class="p">,</span> <span class="n">ImageBasedCensor</span><span class="p">,</span>
     <span class="n">images</span><span class="o">=</span><span class="p">[</span><span class="n">_get_file_in_censor_assets</span><span class="p">(</span><span class="s1">&#39;heart_censor.png&#39;</span><span class="p">)]</span>
 <span class="p">)</span>
@@ -324,6 +331,76 @@
     <span class="s1">&#39;smile&#39;</span><span class="p">,</span> <span class="n">ImageBasedCensor</span><span class="p">,</span>
     <span class="n">images</span><span class="o">=</span><span class="p">[</span><span class="n">_get_file_in_censor_assets</span><span class="p">(</span><span class="s1">&#39;smile_censor.png&#39;</span><span class="p">)]</span>
 <span class="p">)</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_get_emoji_img</span><span class="p">(</span><span class="n">emoji</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;twitter&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+    <span class="k">class</span> <span class="nc">_CustomSource</span><span class="p">(</span><span class="n">EmojiCDNSource</span><span class="p">):</span>
+        <span class="n">STYLE</span> <span class="o">=</span> <span class="n">style</span>
+
+    <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">td</span><span class="p">:</span>
+        <span class="n">imgfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="s1">&#39;emoji.png&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">imgfile</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">_CustomSource</span><span class="p">()</span><span class="o">.</span><span class="n">get_emoji</span><span class="p">(</span><span class="n">emojize</span><span class="p">(</span><span class="n">emoji</span><span class="p">))</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">imgfile</span><span class="p">)</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">img</span>
+
+
+<span class="n">_EmojiStyleTyping</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span>
+    <span class="s1">&#39;twitter&#39;</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;google&#39;</span><span class="p">,</span> <span class="s1">&#39;microsoft&#39;</span><span class="p">,</span> <span class="s1">&#39;samsung&#39;</span><span class="p">,</span> <span class="s1">&#39;whatsapp&#39;</span><span class="p">,</span> <span class="s1">&#39;facebook&#39;</span><span class="p">,</span> <span class="s1">&#39;messenger&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;joypixels&#39;</span><span class="p">,</span> <span class="s1">&#39;openmoji&#39;</span><span class="p">,</span> <span class="s1">&#39;emojidex&#39;</span><span class="p">,</span> <span class="s1">&#39;mozilla&#39;</span>
+<span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">_NativeEmojiBasedCensor</span><span class="p">(</span><span class="n">ImageBasedCensor</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">emoji</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;:smiling_face_with_heart-eyes:&#39;</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">_EmojiStyleTyping</span> <span class="o">=</span> <span class="s1">&#39;twitter&#39;</span><span class="p">,</span>
+                 <span class="n">rotate</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+        <span class="n">ImageBasedCensor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">_get_emoji_img</span><span class="p">(</span><span class="n">emoji</span><span class="p">,</span> <span class="n">style</span><span class="p">)],</span> <span class="n">rotate</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_get_native_emoji_censor</span><span class="p">(</span><span class="n">emoji</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;:smiling_face_with_heart-eyes:&#39;</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">_EmojiStyleTyping</span> <span class="o">=</span> <span class="s1">&#39;twitter&#39;</span><span class="p">,</span>
+                             <span class="n">rotate</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_NativeEmojiBasedCensor</span><span class="p">(</span><span class="n">emoji</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">rotate</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="EmojiBasedCensor"><a class="viewcode-back" href="../../../api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.EmojiBasedCensor">[docs]</a><span class="k">class</span> <span class="nc">EmojiBasedCensor</span><span class="p">(</span><span class="n">BaseCensor</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotate</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span> <span class="o">=</span> <span class="n">rotate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="n">step</span>
+
+<div class="viewcode-block" id="EmojiBasedCensor.censor_area"><a class="viewcode-back" href="../../../api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.EmojiBasedCensor.censor_area">[docs]</a>    <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+                    <span class="n">emoji</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;:smiling_face_with_heart-eyes:&#39;</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">_EmojiStyleTyping</span> <span class="o">=</span> <span class="s1">&#39;twitter&#39;</span><span class="p">,</span>
+                    <span class="n">ratio_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_get_native_emoji_censor</span><span class="p">(</span><span class="n">emoji</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">censor_area</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">ratio_threshold</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<span class="k">if</span> <span class="n">vpython</span> <span class="o">&gt;=</span> <span class="s1">&#39;3.8&#39;</span><span class="p">:</span>
+    <span class="n">register_censor_method</span><span class="p">(</span><span class="s1">&#39;emoji&#39;</span><span class="p">,</span> <span class="n">EmojiBasedCensor</span><span class="p">)</span>
+
+<span class="k">else</span><span class="p">:</span>
+    <span class="nd">@lru_cache</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">_py37_fallback</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Due to compatibility issues with the pilmoji library, &#39;</span>
+                      <span class="s1">&#39;the emoji censor method is not supported in Python 3.7. &#39;</span>
+                      <span class="s1">&#39;A pre-defined single emoji image will be used for rendering, &#39;</span>
+                      <span class="s1">&#39;and the emoji and style parameters will be ignored.&#39;</span><span class="p">)</span>
+
+
+    <span class="k">class</span> <span class="nc">_Python37FallbackCensor</span><span class="p">(</span><span class="n">ImageBasedCensor</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">ImageBasedCensor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">_get_file_in_censor_assets</span><span class="p">(</span><span class="s1">&#39;emoji_censor.png&#39;</span><span class="p">)])</span>
+
+        <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">ratio_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+                        <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+            <span class="n">_py37_fallback</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">ImageBasedCensor</span><span class="o">.</span><span class="n">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">ratio_threshold</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+    <span class="n">register_censor_method</span><span class="p">(</span><span class="s1">&#39;emoji&#39;</span><span class="p">,</span> <span class="n">_Python37FallbackCensor</span><span class="p">)</span>
 </pre></div>
 
 
