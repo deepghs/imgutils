@@ -198,6 +198,33 @@ def censor_areas(image: ImageTyping, method: str,
 
     :return: An instance of PIL Image with the censored areas.
     :rtype: Image.Image
+
+    Examples::
+        >>> from PIL import Image
+        >>> from imgutils.operate import censor_areas
+        >>>
+        >>> origin = Image.open('genshin_post.jpg')
+        >>> areas = [  # areas to censor
+        >>>     (967, 143, 1084, 261),
+        >>>     (246, 208, 331, 287),
+        >>>     (662, 466, 705, 514),
+        >>>     (479, 283, 523, 326)
+        >>> ]
+        >>>
+        >>> # censor with black color
+        >>> color_black = censor_areas(origin, 'color', areas, color='black')
+        >>>
+        >>> # censor with pixelate
+        >>> pixelate = censor_areas(origin, 'pixelate', areas, radius=12)
+        >>>
+        >>> # censor with emoji
+        >>> emoji = censor_areas(origin, 'emoji', areas)
+
+        This is the result:
+
+        .. image:: censor_areas.plot.py.svg
+            :align: center
+
     """
     image = load_image(image, mode='RGB')
     c = _get_censor_instance(method)
@@ -212,6 +239,8 @@ def censor_nsfw(image: ImageTyping, method: str, nipple_f: bool = False, penis: 
                 conf_threshold: float = 0.3, iou_threshold: float = 0.7, **kwargs):
     """
     Applies censoring to sensitive areas in NSFW images based on object detection.
+
+    The censor area selected by this function is provided by the :func:`imgutils.detect.censor.detect_censors` function.
 
     :param image: The input image to be censored.
     :type image: ImageTyping
@@ -248,6 +277,27 @@ def censor_nsfw(image: ImageTyping, method: str, nipple_f: bool = False, penis: 
 
     :return: An instance of PIL Image with the sensitive areas censored.
     :rtype: Image.Image
+
+    Examples::
+        >>> from PIL import Image
+        >>> from imgutils.operate import censor_nsfw
+        >>>
+        >>> origin = Image.open('nude_girl.png')
+        >>>
+        >>> # censor with black color
+        >>> color_black = censor_nsfw(origin, 'color', nipple_f=True, color='black')
+        >>>
+        >>> # censor with pixelate
+        >>> pixelate = censor_nsfw(origin, 'pixelate', nipple_f=True, radius=12)
+        >>>
+        >>> # censor with emoji
+        >>> emoji = censor_nsfw(origin, 'emoji', nipple_f=True)
+
+        .. collapse:: This is the result (Warning: NSFW!!!)
+
+            .. image:: censor_nsfw.plot.py.svg
+                :align: center
+
     """
     image = load_image(image, mode='RGB')
     areas = detect_censors(image, level, version, max_infer_size, conf_threshold, iou_threshold)
