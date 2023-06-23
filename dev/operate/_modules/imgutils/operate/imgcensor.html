@@ -414,6 +414,33 @@
 
 <span class="sd">        :return: The censored image.</span>
 <span class="sd">        :rtype: Image.Image</span>
+
+<span class="sd">        Examples::</span>
+<span class="sd">            &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">            &gt;&gt;&gt; from imgutils.operate import censor_areas</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; origin = Image.open(&#39;genshin_post.jpg&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; areas = [  # areas to censor</span>
+<span class="sd">            &gt;&gt;&gt;     (967, 143, 1084, 261),</span>
+<span class="sd">            &gt;&gt;&gt;     (246, 208, 331, 287),</span>
+<span class="sd">            &gt;&gt;&gt;     (662, 466, 705, 514),</span>
+<span class="sd">            &gt;&gt;&gt;     (479, 283, 523, 326)</span>
+<span class="sd">            &gt;&gt;&gt; ]</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # register the star image</span>
+<span class="sd">            &gt;&gt;&gt; register_censor_method(&#39;star&#39;, ImageBasedCensor, images=[&#39;star.png&#39;])</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # default</span>
+<span class="sd">            &gt;&gt;&gt; censored = censor_areas(image, &#39;star&#39;, areas)</span>
+
+<span class="sd">            .. image:: censor_image.plot.py.svg</span>
+<span class="sd">                :align: center</span>
+
+<span class="sd">            .. note::</span>
+<span class="sd">                It is important to note that when using :class:`ImageBasedCensor` to censor an image,</span>
+<span class="sd">                you need to manually register the image used for censoring</span>
+<span class="sd">                using the :func:`register_censor_method` function.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">area</span>
         <span class="n">ratio</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">r_fx</span><span class="p">,</span> <span class="n">r_fy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_censor</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="n">ratio_threshold</span><span class="p">)</span>
