@@ -1,3 +1,4 @@
+#file: noinspection YAMLSchemaValidation
 name: Code Test
 
 on:
@@ -7,7 +8,7 @@ jobs:
   unittest:
     name: Code test
     runs-on: ${{ matrix.os }}
-    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    if: ${{ !contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'test skip') }}
     strategy:
       fail-fast: false
       matrix:
@@ -21,6 +22,9 @@ jobs:
           - '3.9'
           - '3.10'
           - '3.11'
+        exclude:
+          - os: 'macos-latest'
+            python-version: '3.7'
 
     steps:
       - name: Get system version for Linux
