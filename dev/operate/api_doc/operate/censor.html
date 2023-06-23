@@ -361,6 +361,31 @@ Can be any valid color name or RGB value.</p></li>
 <dd class="field-odd"><p>Image.Image</p>
 </dd>
 </dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.operate</span> <span class="kn">import</span> <span class="n">censor_areas</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;genshin_post.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">areas</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># areas to censor</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">967</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">1084</span><span class="p">,</span> <span class="mi">261</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">246</span><span class="p">,</span> <span class="mi">208</span><span class="p">,</span> <span class="mi">331</span><span class="p">,</span> <span class="mi">287</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">662</span><span class="p">,</span> <span class="mi">466</span><span class="p">,</span> <span class="mi">705</span><span class="p">,</span> <span class="mi">514</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">479</span><span class="p">,</span> <span class="mi">283</span><span class="p">,</span> <span class="mi">523</span><span class="p">,</span> <span class="mi">326</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># default</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_default</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># green</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_green</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># #ffff00</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_ffff00</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#ffff00&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result:</p>
+<img alt="../../_images/censor_color.plot.py.svg" class="align-center" src="../../_images/censor_color.plot.py.svg" /></dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -394,6 +419,31 @@ in the format <code class="docutils literal notranslate"><span class="pre">(left
 <dd class="field-odd"><p>Image.Image</p>
 </dd>
 </dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.operate</span> <span class="kn">import</span> <span class="n">censor_areas</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;genshin_post.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">areas</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># areas to censor</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">967</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">1084</span><span class="p">,</span> <span class="mi">261</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">246</span><span class="p">,</span> <span class="mi">208</span><span class="p">,</span> <span class="mi">331</span><span class="p">,</span> <span class="mi">287</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">662</span><span class="p">,</span> <span class="mi">466</span><span class="p">,</span> <span class="mi">705</span><span class="p">,</span> <span class="mi">514</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">479</span><span class="p">,</span> <span class="mi">283</span><span class="p">,</span> <span class="mi">523</span><span class="p">,</span> <span class="mi">326</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># default</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blur_4</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;blur&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># radius=8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blur_8</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;blur&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># radius=12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blur_12</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;blur&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result:</p>
+<img alt="../../_images/censor_blur.plot.py.svg" class="align-center" src="../../_images/censor_blur.plot.py.svg" /></dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -426,6 +476,31 @@ in the format <code class="docutils literal notranslate"><span class="pre">(left
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Image.Image</p>
 </dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.operate</span> <span class="kn">import</span> <span class="n">censor_areas</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;genshin_post.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">areas</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># areas to censor</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">967</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">1084</span><span class="p">,</span> <span class="mi">261</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">246</span><span class="p">,</span> <span class="mi">208</span><span class="p">,</span> <span class="mi">331</span><span class="p">,</span> <span class="mi">287</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">662</span><span class="p">,</span> <span class="mi">466</span><span class="p">,</span> <span class="mi">705</span><span class="p">,</span> <span class="mi">514</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">479</span><span class="p">,</span> <span class="mi">283</span><span class="p">,</span> <span class="mi">523</span><span class="p">,</span> <span class="mi">326</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># default</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pixelate_4</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;pixelate&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># radius=8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pixelate_8</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;pixelate&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># radius=12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pixelate_12</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;pixelate&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result:</p>
+<img alt="../../_images/censor_pixelate.plot.py.svg" class="align-center" src="../../_images/censor_pixelate.plot.py.svg" /></dd>
 </dl>
 </dd></dl>
 
