@@ -27,6 +27,36 @@ def _image_rotate_and_sq(image: Image.Image, degrees: float):
 
 
 class SingleImage:
+    """
+    A class that attempts to find a solution to completely cover a given area of an image while minimizing the covered area.
+
+    :param image: The input image.
+    :type image: Image.Image
+
+    :ivar image: The original image for censoring.
+    :vartype image: Image.Image
+
+    :ivar mask: The mask of the image. True means this pixel is not transparent and able to cover some area.
+    :vartype mask: np.ndarray
+
+    :ivar prefix: The prefix sum of the mask.
+    :vartype prefix: np.ndarray
+
+    :ivar cx: The X-coordinate of the mass center of this image. The position of the occlusion should be as close as
+               possible to the mass center of the image.
+    :vartype cx: float
+
+    :ivar cy: The Y-coordinate of the mass center of this image. The position of the occlusion should be as close as
+               possible to the mass center of the image.
+    :vartype cy: float
+
+    :ivar width: The width of the image.
+    :vartype width: int
+
+    :ivar height: The height of the image.
+    :vartype height: int
+    """
+
     def __init__(self, image: Image.Image):
         mask = _get_mask_of_transparency(align_maxsize(image, 300))
         mask = mask.transpose((1, 0)).astype(np.uint64)
@@ -51,13 +81,37 @@ class SingleImage:
 
     @property
     def width(self):
+        """
+        The width of the image.
+
+        :return: The width of the image.
+        :rtype: int
+        """
         return self.mask.shape[0]
 
     @property
     def height(self):
+        """
+        The height of the image.
+
+        :return: The height of the image.
+        :rtype: int
+        """
         return self.mask.shape[1]
 
     def _find_for_fixed_area(self, width: int, height: int) -> Tuple[Optional[int], Optional[int]]:
+        """
+        Finds a solution for a fixed area (width and height) that can completely cover the given area.
+
+        :param width: The width of the fixed area.
+        :type width: int
+
+        :param height: The height of the fixed area.
+        :type height: int
+
+        :return: The coordinates of the found solution (top-left corner) or None if no solution is found.
+        :rtype: Tuple[Optional[int], Optional[int]]
+        """
         if width > self.mask.shape[0] or height > self.mask.shape[1]:
             return None, None
 
@@ -75,6 +129,19 @@ class SingleImage:
         return int(fx), int(fy)
 
     def find_for_area(self, width: int, height: int) -> Tuple[float, float, float, float]:
+        """
+        Finds a solution to completely cover a given area with a rectangle while minimizing the covered area.
+
+        :param width: The width of the target area to cover.
+        :type width: int
+
+        :param height: The height of the target area to cover.
+        :type height: int
+
+        :return: The coordinates (x, y) of the found solution (top-left corner), the scaling factor applied to the
+                 width and height, and the ratio of the covered area to the total mask area.
+        :rtype: Tuple[float, float, float, float]
+        """
         l, r = 0.0, 1.0 / max(*self.mask.shape)
         while True:
             new_width, new_height = int(math.ceil(width * r)), int(math.ceil(height * r))
@@ -101,6 +168,19 @@ class SingleImage:
 
 
 class ImageBasedCensor(BaseCensor):
+    """
+    A class that performs censoring on a given area using images by finding the best solution based on rotation.
+
+    :param images: The input images for censoring.
+    :type images: MultiImagesTyping
+
+    :param rotate: The range of rotation angles in degrees (start, end) to consider.
+    :type rotate: Tuple[int, int]
+
+    :param step: The step size between rotation angles.
+    :type step: int
+    """
+
     def __init__(self, images: MultiImagesTyping, rotate: Tuple[int, int] = (-30, 30), step: int = 10):
         origin_images = load_images(images, mode='RGBA', force_background=None)
         degrees = sorted(list(range(rotate[0], rotate[1], step)), key=lambda x: (abs(x), x))
@@ -110,6 +190,21 @@ class ImageBasedCensor(BaseCensor):
         ]
 
     def _find_censor(self, area: Tuple[int, int, int, int], ratio_threshold: float = 0.5):
+        """
+        Finds the best censoring solution for the given area using the available images.
+
+        :param area: The coordinates of the target area to censor (x0, y0, x1, y1).
+        :type area: Tuple[int, int, int, int]
+
+        :param ratio_threshold: The minimum ratio of the covered area to the total mask area required for a solution
+                                to be considered valid.
+        :type ratio_threshold: float
+
+        :return: The ratio of the covered area to the total mask area, the index of the selected image, the scaling
+                 factor applied to the image, the X-coordinate of the top-left corner of the censoring area, and the
+                 Y-coordinate of the top-left corner of the censoring area.
+        :rtype: Tuple[float, int, float, float, float]
+        """
         x0, y0, x1, y1 = area
         width, height = x1 - x0, y1 - y0
 
@@ -125,6 +220,24 @@ class ImageBasedCensor(BaseCensor):
 
     def censor_area(self, image: Image.Image, area: Tuple[int, int, int, int], ratio_threshold: float = 0.5,
                     **kwargs) -> Image.Image:
+        """
+        Censors the specified area of the input image using the available images.
+
+        :param image: The input image to be censored.
+        :type image: Image.Image
+
+        :param area: The coordinates of the target area to censor (x0, y0, x1, y1).
+        :type area: Tuple[int, int, int, int]
+
+        :param ratio_threshold: The minimum ratio of the covered area to the total mask area required for a solution
+                                to be considered valid.
+        :type ratio_threshold: float
+
+        :param kwargs: Additional keyword arguments to be passed.
+
+        :return: The censored image.
+        :rtype: Image.Image
+        """
         x0, y0, x1, y1 = area
         ratio, idx, scale, r_fx, r_fy = self._find_censor(area, ratio_threshold)
         fm_image = self.images[idx]
@@ -191,6 +304,16 @@ def _get_native_emoji_censor(emoji: str = ':smiling_face_with_heart-eyes:', styl
 
 
 class EmojiBasedCensor(BaseCensor):
+    """
+    Performs censoring on a given area of an image using emoji images.
+
+    :param rotate: The range of rotation angles in degrees (start, end) to consider.
+    :type rotate: Tuple[int, int]
+
+    :param step: The step size between rotation angles.
+    :type step: int
+    """
+
     def __init__(self, rotate: Tuple[int, int] = (-30, 30), step: int = 10):
         self.rotate = rotate
         self.step = step
@@ -198,6 +321,58 @@ class EmojiBasedCensor(BaseCensor):
     def censor_area(self, image: Image.Image, area: Tuple[int, int, int, int],
                     emoji: str = ':smiling_face_with_heart-eyes:', style: _EmojiStyleTyping = 'twitter',
                     ratio_threshold: float = 0.5, **kwargs) -> Image.Image:
+        """
+        Censors the specified area of the input image using emoji expressions.
+
+        :param image: The input image to be censored.
+        :type image: Image.Image
+
+        :param area: The coordinates of the target area to censor (x0, y0, x1, y1).
+        :type area: Tuple[int, int, int, int]
+
+        :param emoji: The emoji expression to use for censoring.
+                      Emoji code in `emoji <https://github.com/carpedm20/emoji>`_ is supported.
+                      (default: ``:smiling_face_with_heart-eyes:``, which equals to 😍)
+        :type emoji: str
+
+        :param style: The style of the emoji expression. (default: ``twitter``)
+        :type style: _EmojiStyleTyping
+
+        :param ratio_threshold: The minimum ratio of the covered area to the total mask area required for a solution
+                                to be considered valid.
+        :type ratio_threshold: float
+
+        :param kwargs: Additional keyword arguments to be passed.
+
+        :return: The censored image.
+        :rtype: Image.Image
+
+        Examples::
+            >>> from PIL import Image
+            >>> from imgutils.operate import censor_areas
+            >>>
+            >>> origin = Image.open('genshin_post.jpg')
+            >>> areas = [  # areas to censor
+            >>>     (967, 143, 1084, 261),
+            >>>     (246, 208, 331, 287),
+            >>>     (662, 466, 705, 514),
+            >>>     (479, 283, 523, 326)
+            >>> ]
+            >>>
+            >>> # default
+            >>> emoji_default = censor_areas(image, 'emoji', areas)
+            >>>
+            >>> # cat_face (use emoji code)
+            >>> emoji_green = censor_areas(image, 'emoji', areas, emoji=':cat_face:')
+            >>>
+            >>> # grinning_face_with_sweat (use emoji)
+            >>> emoji_liuhanhuangdou = censor_areas(image, 'emoji', areas, emoji='😅')
+
+            This is the result:
+
+            .. image:: censor_emoji.plot.py.svg
+                :align: center
+        """
         return _get_native_emoji_censor(emoji, style, self.rotate, self.step) \
             .censor_area(image, area, ratio_threshold, **kwargs)
 

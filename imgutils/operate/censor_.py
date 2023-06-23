@@ -58,6 +58,32 @@ class PixelateCensor(BaseCensor):
 
         :return: An instance of PIL Image with the pixelated area.
         :rtype: Image.Image
+
+        Examples::
+            >>> from PIL import Image
+            >>> from imgutils.operate import censor_areas
+            >>>
+            >>> origin = Image.open('genshin_post.jpg')
+            >>> areas = [  # areas to censor
+            >>>     (967, 143, 1084, 261),
+            >>>     (246, 208, 331, 287),
+            >>>     (662, 466, 705, 514),
+            >>>     (479, 283, 523, 326)
+            >>> ]
+            >>>
+            >>> # default
+            >>> pixelate_4 = censor_areas(image, 'pixelate', areas)
+            >>>
+            >>> # radius=8
+            >>> pixelate_8 = censor_areas(image, 'pixelate', areas, radius=8)
+            >>>
+            >>> # radius=12
+            >>> pixelate_12 = censor_areas(image, 'pixelate', areas, radius=12)
+
+            This is the result:
+
+            .. image:: censor_pixelate.plot.py.svg
+                :align: center
         """
         image = image.copy()
         x0, y0, x1, y1 = area
@@ -94,6 +120,32 @@ class BlurCensor(BaseCensor):
 
         :return: An instance of PIL Image with the blurred area.
         :rtype: Image.Image
+
+        Examples::
+            >>> from PIL import Image
+            >>> from imgutils.operate import censor_areas
+            >>>
+            >>> origin = Image.open('genshin_post.jpg')
+            >>> areas = [  # areas to censor
+            >>>     (967, 143, 1084, 261),
+            >>>     (246, 208, 331, 287),
+            >>>     (662, 466, 705, 514),
+            >>>     (479, 283, 523, 326)
+            >>> ]
+            >>>
+            >>> # default
+            >>> blur_4 = censor_areas(image, 'blur', areas)
+            >>>
+            >>> # radius=8
+            >>> blur_8 = censor_areas(image, 'blur', areas, radius=8)
+            >>>
+            >>> # radius=12
+            >>> blur_12 = censor_areas(image, 'blur', areas, radius=12)
+
+            This is the result:
+
+            .. image:: censor_blur.plot.py.svg
+                :align: center
         """
         image = image.copy()
         x0, y0, x1, y1 = area
@@ -130,6 +182,32 @@ class ColorCensor(BaseCensor):
 
         :return: An instance of PIL Image with the censored area filled with the specified color.
         :rtype: Image.Image
+
+        Examples::
+            >>> from PIL import Image
+            >>> from imgutils.operate import censor_areas
+            >>>
+            >>> origin = Image.open('genshin_post.jpg')
+            >>> areas = [  # areas to censor
+            >>>     (967, 143, 1084, 261),
+            >>>     (246, 208, 331, 287),
+            >>>     (662, 466, 705, 514),
+            >>>     (479, 283, 523, 326)
+            >>> ]
+            >>>
+            >>> # default
+            >>> color_default = censor_areas(image, 'color', areas)
+            >>>
+            >>> # green
+            >>> color_green = censor_areas(image, 'color', areas, color='green')
+            >>>
+            >>> # #ffff00
+            >>> color_ffff00 = censor_areas(image, 'color', areas, color='#ffff00')
+
+            This is the result:
+
+            .. image:: censor_color.plot.py.svg
+                :align: center
         """
         image = image.copy()
         x0, y0, x1, y1 = area

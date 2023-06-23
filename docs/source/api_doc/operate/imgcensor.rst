@@ -22,3 +22,11 @@ EmojiBasedCensor
 
 
 
+SingleImage
+--------------------------------------------
+
+.. autoclass:: SingleImage
+    :members: __init__, width, height, find_for_area
+
+
+
