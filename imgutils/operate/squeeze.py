@@ -7,6 +7,21 @@ from ..data import ImageTyping, load_image
 
 
 def squeeze(image: ImageTyping, mask: np.ndarray):
+    """
+    Extracts the corresponding region from the original image based on the provided mask (HxW format)
+    and crops the image to fit the mask tightly.
+
+    :param image: The input image.
+    :type image: ImageTyping
+
+    :param mask: The mask representing the region of interest. It should be a NumPy array with shape ``(H, W)``.
+    :type mask: np.ndarray
+
+    :raises ValueError: If the shape of the image and mask do not match.
+
+    :return: The cropped image that fits the mask tightly.
+    :rtype: Image.Image
+    """
     image = load_image(image, force_background=None)
     if (image.height, image.width) != mask.shape:
         raise ValueError(f'Image shape not matched, '
@@ -31,4 +46,21 @@ def _get_mask_of_transparency(image: ImageTyping, threshold: float = 0.7, median
 
 
 def squeeze_with_transparency(image: ImageTyping, threshold: float = 0.7, median_filter: Optional[int] = 5):
+    """
+    Automatically crops the image based on the transparency of each pixel using the :func:`squeeze` function.
+
+    :param image: The input image.
+    :type image: ImageTyping
+
+    :param threshold: The threshold value for pixel transparency. Pixels with transparency above this threshold
+        will be considered as part of the region of interest. Default is ``0.7``.
+    :type threshold: float
+
+    :param median_filter: The size of the median filter kernel to apply to the transparency mask.
+        A larger value helps reduce noise in the mask. Set to None or 0 to disable median filtering. Default is ``5``.
+    :type median_filter: Optional[int]
+
+    :return: The cropped image based on the transparency of each pixel.
+    :rtype: Image.Image
+    """
     return squeeze(image, _get_mask_of_transparency(image, threshold, median_filter))
