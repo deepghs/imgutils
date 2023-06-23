@@ -44,6 +44,7 @@ class Infer:
             device=self.device,
             fp16=args.fp16
         )
+        self.model.eval()
 
     def load_img(self, path):
         image = load_image(path, mode='RGB')
