@@ -190,7 +190,7 @@
 <span class="kn">from</span> <span class="nn">emoji</span> <span class="kn">import</span> <span class="n">emojize</span>
 <span class="kn">from</span> <span class="nn">hbutils.system</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
 <span class="kn">from</span> <span class="nn">hbutils.testing</span> <span class="kn">import</span> <span class="n">vpython</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">center_of_mass</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
@@ -258,7 +258,7 @@
 
         <span class="c1"># mass center of this image, the position of the occlusion</span>
         <span class="c1"># should be as close as possible to the mass center of the image</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">center_of_mass</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">=</span> <span class="n">center_of_mass</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
