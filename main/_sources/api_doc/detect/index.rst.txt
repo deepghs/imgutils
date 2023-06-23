@@ -9,6 +9,7 @@ imgutils.detect
 .. toctree::
     :maxdepth: 3
 
+    censor
     face
     head
     person
