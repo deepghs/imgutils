@@ -1,3 +1,7 @@
+"""
+Overview:
+    Censors a specified area of an image using a custom image or emoji.
+"""
 import math
 import os.path
 import warnings
@@ -399,6 +403,13 @@ class EmojiBasedCensor(BaseCensor):
 
             .. image:: censor_emoji.plot.py.svg
                 :align: center
+
+        .. warning::
+            Due to compatibility issues with pilmoji library in Python 3.7, and the fact that
+            Python 3.7 reached its end of life on June 27, 2023, custom emojis cannot be used in Python 3.7.
+            To ensure that the code can still be executed, the :class:`ImageBasedCensor` with
+            a pre-defined smiley face image will be used instead.
+            When used, the values of the ``emoji`` and ``style`` parameters will be ignored.
         """
         return _get_native_emoji_censor(emoji, style, self.rotate, self.step) \
             .censor_area(image, area, ratio_threshold, **kwargs)

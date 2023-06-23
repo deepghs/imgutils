@@ -1,3 +1,7 @@
+"""
+Overview:
+    A tool for obscuring specified regions on an image.
+"""
 from functools import lru_cache
 from typing import Tuple, Type, List
 
