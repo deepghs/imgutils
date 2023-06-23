@@ -175,7 +175,11 @@
     
     
   <h1>Source code for imgutils.operate.imgcensor</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    Censors a specified area of an image using a custom image or emoji.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
@@ -576,6 +580,13 @@
 
 <span class="sd">            .. image:: censor_emoji.plot.py.svg</span>
 <span class="sd">                :align: center</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            Due to compatibility issues with pilmoji library in Python 3.7, and the fact that</span>
+<span class="sd">            Python 3.7 reached its end of life on June 27, 2023, custom emojis cannot be used in Python 3.7.</span>
+<span class="sd">            To ensure that the code can still be executed, the :class:`ImageBasedCensor` with</span>
+<span class="sd">            a pre-defined smiley face image will be used instead.</span>
+<span class="sd">            When used, the values of the ``emoji`` and ``style`` parameters will be ignored.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_get_native_emoji_censor</span><span class="p">(</span><span class="n">emoji</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">)</span> \
             <span class="o">.</span><span class="n">censor_area</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">ratio_threshold</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
