@@ -12,8 +12,8 @@ class CaformerBackbone(torch.nn.Module):
         self.caformer = CAFormerBuilder(**kwargs)()
         if pool_with_query:
             self.attnpool = nn.Sequential(
-                AttentionPool2d_query(self.input_resolution // 32, self.caformer.output_dim, heads, out_dims, n_query=8),
-                AttentionPool2d_flat(8, out_dims, heads, out_dims),
+                AttentionPool2d_query(self.input_resolution // 32, self.caformer.output_dim, heads, self.caformer.output_dim, n_query=8),
+                AttentionPool2d_flat(8, self.caformer.output_dim, heads, out_dims),
             )
         else:
             self.attnpool = AttentionPool2d(self.input_resolution//32, self.caformer.output_dim, heads, out_dims)

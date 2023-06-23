@@ -103,7 +103,7 @@ class AttentionPool2d_flat(nn.Module):
         self.num_heads = num_heads
 
     def forward(self, x):
-        x = torch.cat([x.mean(dim=0, keepdim=True), x], dim=0)  # (HW+1)NC
+        x = torch.cat([x.mean(dim=0, keepdim=True), x[1:]], dim=0)  # (HW+1)NC
         x = x + self.positional_embedding[:, None, :].to(x.dtype)  # (HW+1)NC
         x, _ = F.multi_head_attention_forward(
             query=x[:1], key=x, value=x,
