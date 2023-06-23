@@ -18,8 +18,8 @@ if __name__ == '__main__':
 
     image_plot(
         (image, 'origin'),
-        (censor_img, 'censor_img'),
-        (censor_areas(image, 'star', areas), 'star_censored'),
+        (censor_img, 'star.png'),
+        (censor_areas(image, 'star', areas), 'censored'),
         columns=2,
         figsize=(8, 6),
     )

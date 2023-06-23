@@ -237,6 +237,33 @@ class ImageBasedCensor(BaseCensor):
 
         :return: The censored image.
         :rtype: Image.Image
+
+        Examples::
+            >>> from PIL import Image
+            >>> from imgutils.operate import censor_areas
+            >>>
+            >>> origin = Image.open('genshin_post.jpg')
+            >>> areas = [  # areas to censor
+            >>>     (967, 143, 1084, 261),
+            >>>     (246, 208, 331, 287),
+            >>>     (662, 466, 705, 514),
+            >>>     (479, 283, 523, 326)
+            >>> ]
+            >>>
+            >>> # register the star image
+            >>> register_censor_method('star', ImageBasedCensor, images=['star.png'])
+            >>>
+            >>> # default
+            >>> censored = censor_areas(image, 'star', areas)
+
+            .. image:: censor_image.plot.py.svg
+                :align: center
+
+            .. note::
+                It is important to note that when using :class:`ImageBasedCensor` to censor an image,
+                you need to manually register the image used for censoring
+                using the :func:`register_censor_method` function.
+
         """
         x0, y0, x1, y1 = area
         ratio, idx, scale, r_fx, r_fy = self._find_censor(area, ratio_threshold)
