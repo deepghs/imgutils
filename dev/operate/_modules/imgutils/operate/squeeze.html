@@ -175,7 +175,11 @@
     
     
   <h1>Source code for imgutils.operate.squeeze</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    A utility for squeezing a specified region of an image.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">ndimage</span>
@@ -198,6 +202,20 @@
 
 <span class="sd">    :return: The cropped image that fits the mask tightly.</span>
 <span class="sd">    :rtype: Image.Image</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.operate import squeeze</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; origin = Image.open(&#39;jerry_with_space.png&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; mask = ...  # set your custom mask, format: bool[H, W]</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; squeezed = squeeze(origin, mask)</span>
+
+<span class="sd">        This is the result:</span>
+
+<span class="sd">        .. image:: squeeze.plot.py.svg</span>
+<span class="sd">            :align: center</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span><span class="p">)</span> <span class="o">!=</span> <span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
@@ -239,6 +257,19 @@
 
 <span class="sd">    :return: The cropped image based on the transparency of each pixel.</span>
 <span class="sd">    :rtype: Image.Image</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.operate import squeeze_with_transparency</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; origin = Image.open(&#39;jerry_with_space.png&#39;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; squeezed = squeeze_with_transparency(origin)</span>
+
+<span class="sd">        This is the result:</span>
+
+<span class="sd">        .. image:: squeeze_with_transparency.plot.py.svg</span>
+<span class="sd">            :align: center</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">squeeze</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_get_mask_of_transparency</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">median_filter</span><span class="p">))</span></div>
 </pre></div>
