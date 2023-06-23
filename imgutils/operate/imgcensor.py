@@ -13,7 +13,7 @@ from PIL import Image
 from emoji import emojize
 from hbutils.system import TemporaryDirectory
 from hbutils.testing import vpython
-from scipy import ndimage
+from scipy.ndimage import center_of_mass
 
 try:
     from typing import Literal
@@ -81,7 +81,7 @@ class SingleImage:
 
         # mass center of this image, the position of the occlusion
         # should be as close as possible to the mass center of the image
-        self.cx, self.cy = ndimage.measurements.center_of_mass(mask)
+        self.cx, self.cy = center_of_mass(mask)
 
     @property
     def width(self):
