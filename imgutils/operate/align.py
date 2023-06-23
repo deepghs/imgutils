@@ -1,3 +1,7 @@
+"""
+Overview:
+    A utility for aligning dimensions based on the size of an image.
+"""
 from PIL import Image
 
 from imgutils.data import ImageTyping, load_image

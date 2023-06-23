@@ -1,3 +1,7 @@
+"""
+Overview:
+    A utility for squeezing a specified region of an image.
+"""
 from typing import Optional
 
 import numpy as np
@@ -21,6 +25,20 @@ def squeeze(image: ImageTyping, mask: np.ndarray):
 
     :return: The cropped image that fits the mask tightly.
     :rtype: Image.Image
+
+    Examples::
+        >>> from PIL import Image
+        >>> from imgutils.operate import squeeze
+        >>>
+        >>> origin = Image.open('jerry_with_space.png')
+        >>> mask = ...  # set your custom mask, format: bool[H, W]
+        >>>
+        >>> squeezed = squeeze(origin, mask)
+
+        This is the result:
+
+        .. image:: squeeze.plot.py.svg
+            :align: center
     """
     image = load_image(image, force_background=None)
     if (image.height, image.width) != mask.shape:
@@ -62,5 +80,18 @@ def squeeze_with_transparency(image: ImageTyping, threshold: float = 0.7, median
 
     :return: The cropped image based on the transparency of each pixel.
     :rtype: Image.Image
+
+    Examples::
+        >>> from PIL import Image
+        >>> from imgutils.operate import squeeze_with_transparency
+        >>>
+        >>> origin = Image.open('jerry_with_space.png')
+        >>>
+        >>> squeezed = squeeze_with_transparency(origin)
+
+        This is the result:
+
+        .. image:: squeeze_with_transparency.plot.py.svg
+            :align: center
     """
     return squeeze(image, _get_mask_of_transparency(image, threshold, median_filter))

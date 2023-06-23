@@ -16,4 +16,5 @@ if __name__ == '__main__':
         (squeeze(image, mask), 'squeezed'),
         columns=3,
         figsize=(10, 4),
+        keep_axis=True,
     )

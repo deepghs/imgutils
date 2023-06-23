@@ -11,4 +11,5 @@ if __name__ == '__main__':
         (squeeze_with_transparency(image), 'squeezed'),
         columns=2,
         figsize=(7, 4),
+        keep_axis=True,
     )
