@@ -20,6 +20,6 @@ if __name__ == '__main__':
         (image, 'origin'),
         (censor_img, 'censor_img'),
         (censor_areas(image, 'star', areas), 'star_censored'),
-        columns=3,
-        figsize=(10, 4),
+        columns=2,
+        figsize=(8, 6),
     )
