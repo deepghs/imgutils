@@ -184,6 +184,21 @@
 
 
 <div class="viewcode-block" id="squeeze"><a class="viewcode-back" href="../../../api_doc/operate/squeeze.html#imgutils.operate.squeeze.squeeze">[docs]</a><span class="k">def</span> <span class="nf">squeeze</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts the corresponding region from the original image based on the provided mask (HxW format)</span>
+<span class="sd">    and crops the image to fit the mask tightly.</span>
+
+<span class="sd">    :param image: The input image.</span>
+<span class="sd">    :type image: ImageTyping</span>
+
+<span class="sd">    :param mask: The mask representing the region of interest. It should be a NumPy array with shape ``(H, W)``.</span>
+<span class="sd">    :type mask: np.ndarray</span>
+
+<span class="sd">    :raises ValueError: If the shape of the image and mask do not match.</span>
+
+<span class="sd">    :return: The cropped image that fits the mask tightly.</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span><span class="p">)</span> <span class="o">!=</span> <span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Image shape not matched, &#39;</span>
@@ -208,6 +223,23 @@
 
 
 <div class="viewcode-block" id="squeeze_with_transparency"><a class="viewcode-back" href="../../../api_doc/operate/squeeze.html#imgutils.operate.squeeze.squeeze_with_transparency">[docs]</a><span class="k">def</span> <span class="nf">squeeze_with_transparency</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">median_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Automatically crops the image based on the transparency of each pixel using the :func:`squeeze` function.</span>
+
+<span class="sd">    :param image: The input image.</span>
+<span class="sd">    :type image: ImageTyping</span>
+
+<span class="sd">    :param threshold: The threshold value for pixel transparency. Pixels with transparency above this threshold</span>
+<span class="sd">        will be considered as part of the region of interest. Default is ``0.7``.</span>
+<span class="sd">    :type threshold: float</span>
+
+<span class="sd">    :param median_filter: The size of the median filter kernel to apply to the transparency mask.</span>
+<span class="sd">        A larger value helps reduce noise in the mask. Set to None or 0 to disable median filtering. Default is ``5``.</span>
+<span class="sd">    :type median_filter: Optional[int]</span>
+
+<span class="sd">    :return: The cropped image based on the transparency of each pixel.</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">squeeze</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_get_mask_of_transparency</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">median_filter</span><span class="p">))</span></div>
 </pre></div>
 
@@ -251,8 +283,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="squeeze.html">dev/operate</a></dd>
+                        <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../../main/index.html">main</a></dd>
                 </dl>
         </div>

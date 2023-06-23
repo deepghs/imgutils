@@ -196,7 +196,26 @@
 <dl class="py function">
 <dt id="imgutils.operate.squeeze.squeeze">
 <code class="sig-prename descclassname">imgutils.operate.squeeze.</code><code class="sig-name descname">squeeze</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">mask</span><span class="p">:</span> <span class="n">numpy.ndarray</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/squeeze.html#squeeze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.squeeze.squeeze" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Extracts the corresponding region from the original image based on the provided mask (HxW format)
+and crops the image to fit the mask tightly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>mask</strong> (<em>np.ndarray</em>) – The mask representing the region of interest. It should be a NumPy array with shape <code class="docutils literal notranslate"><span class="pre">(H,</span> <span class="pre">W)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the shape of the image and mask do not match.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The cropped image that fits the mask tightly.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="squeeze-with-transparency">
@@ -204,7 +223,25 @@
 <dl class="py function">
 <dt id="imgutils.operate.squeeze.squeeze_with_transparency">
 <code class="sig-prename descclassname">imgutils.operate.squeeze.</code><code class="sig-name descname">squeeze_with_transparency</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">median_filter</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">5</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/squeeze.html#squeeze_with_transparency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.operate.squeeze.squeeze_with_transparency" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Automatically crops the image based on the transparency of each pixel using the <a class="reference internal" href="#imgutils.operate.squeeze.squeeze" title="imgutils.operate.squeeze.squeeze"><code class="xref py py-func docutils literal notranslate"><span class="pre">squeeze()</span></code></a> function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – The threshold value for pixel transparency. Pixels with transparency above this threshold
+will be considered as part of the region of interest. Default is <code class="docutils literal notranslate"><span class="pre">0.7</span></code>.</p></li>
+<li><p><strong>median_filter</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – The size of the median filter kernel to apply to the transparency mask.
+A larger value helps reduce noise in the mask. Set to None or 0 to disable median filtering. Default is <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cropped image based on the transparency of each pixel.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>
@@ -259,8 +296,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="squeeze.html">dev/operate</a></dd>
+                        <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
