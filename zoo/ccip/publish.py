@@ -87,7 +87,7 @@ def _get_dist_matrix(model: CCIP, scale: float, batch: int = 32):
 
 
 def clustering_metrics(dist, cids, method: Literal['dbscan', 'optics'] = 'dbscan',
-                       init_steps: int = 40, max_steps: int = 200,
+                       init_steps: int = 50, max_steps: int = 350,
                        min_samples_range: Tuple[int, int] = (2, 5)):
     assert method in {'dbscan', 'optics'}, f'Method {method!r} not found.'
 
