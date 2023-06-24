@@ -8,6 +8,7 @@ Overview:
     .. image:: head_detect_demo.plot.py.svg
         :align: center
 """
+from .censor import detect_censors
 from .face import detect_faces
 from .head import detect_heads
 from .person import detect_person

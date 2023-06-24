@@ -6,3 +6,6 @@ huggingface_hub
 tqdm
 opencv-python
 pandas
+scipy
+emoji>=2.5.0
+pilmoji>=1.3.0
