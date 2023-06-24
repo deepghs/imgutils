@@ -2,7 +2,6 @@ import numpy as np
 import torch.nn
 from torch import nn
 
-# from zoo.utils import get_testfile
 from .backbone import get_backbone
 
 
@@ -53,15 +52,14 @@ class CCIP(nn.Module):
         return x
 
 
-class LogitToConfidence(nn.Module):
-    def __init__(self, threshold):
+class LogitToDiff(nn.Module):
+    def __init__(self, scale):
         nn.Module.__init__(self)
-        self.register_buffer('threshold', torch.tensor(threshold))
-        self.threshold: torch.Tensor
+        self.register_buffer('scale', torch.tensor(scale))
+        self.scale: torch.Tensor
 
     def forward(self, x):
-        ex = x - self.threshold
-        return torch.exp(ex) / (torch.exp(ex) + 1.0)
+        return (self.scale - x) / (self.scale * 2)
 
 
 if __name__ == '__main__':

@@ -8,18 +8,18 @@ from torch import nn
 from torchvision import transforms
 
 from .dataset import TEST_TRANSFORM
-from .model import CCIP, LogitToConfidence
+from .model import CCIP, LogitToDiff
 from ..utils import get_testfile, onnx_optimize
 
 
-class ModelWithConfidence(nn.Module):
-    def __init__(self, model, threshold):
+class ModelWithScaleAlign(nn.Module):
+    def __init__(self, model, scale):
         nn.Module.__init__(self)
         self.model = model
-        self.logit_to_conf = LogitToConfidence(threshold)
+        self.logit_to_diff = LogitToDiff(scale)
 
     def forward(self, x):
-        return self.logit_to_conf(self.model(x))
+        return torch.clip(self.logit_to_diff(self.model(x)), min=0.0, max=1.0)
 
 
 def get_batch_images(preprocess) -> torch.Tensor:
@@ -34,6 +34,21 @@ def get_batch_images(preprocess) -> torch.Tensor:
         preprocess(Image.open(img))
         for img in image_files
     ])
+
+
+@torch.no_grad()
+def get_scale_for_model(model: CCIP):
+    example_input = get_batch_images(model.preprocess)
+    model = model.float()
+    if torch.cuda.is_available():
+        example_input = example_input.cuda()
+        model = model.cuda()
+    else:
+        example_input = example_input.cpu()
+        model = model.cpu()
+
+    dist = model(example_input)
+    return dist[0, 0].detach().cpu().item()
 
 
 def _onnx_export(model, example_input, onnx_filename, opset_version: int = 14, verbose: bool = True,
@@ -70,11 +85,11 @@ def _onnx_export(model, example_input, onnx_filename, opset_version: int = 14, v
         onnx.save(model, onnx_filename)
 
 
-def export_full_model_to_onnx(model: CCIP, threshold: float, onnx_filename, opset_version: int = 14,
+def export_full_model_to_onnx(model: CCIP, scale: float, onnx_filename, opset_version: int = 14,
                               verbose: bool = True, no_optimize: bool = False):
     example_input = get_batch_images(model.preprocess)
     return _onnx_export(
-        ModelWithConfidence(model, threshold), example_input,
+        ModelWithScaleAlign(model, scale), example_input,
         onnx_filename, opset_version, verbose, no_optimize,
         dynamic_axes={
             "input": {0: "batch"},
@@ -83,9 +98,9 @@ def export_full_model_to_onnx(model: CCIP, threshold: float, onnx_filename, opse
     )
 
 
-def export_feat_model_to_onnx(model: CCIP, threshold: float, onnx_filename, opset_version: int = 14,
+def export_feat_model_to_onnx(model: CCIP, scale: float, onnx_filename, opset_version: int = 14,
                               verbose: bool = True, no_optimize: bool = False):
-    _ = threshold
+    _ = scale
     example_input = get_batch_images(model.preprocess)
     return _onnx_export(
         model.feature, example_input,
@@ -97,14 +112,14 @@ def export_feat_model_to_onnx(model: CCIP, threshold: float, onnx_filename, opse
     )
 
 
-def export_metrics_model_to_onnx(model: CCIP, threshold: float, onnx_filename, opset_version: int = 14,
+def export_metrics_model_to_onnx(model: CCIP, scale: float, onnx_filename, opset_version: int = 14,
                                  verbose: bool = True, no_optimize: bool = False):
     origin = get_batch_images(model.preprocess)
     with torch.no_grad():
         example_input = model.feature(origin)
 
     return _onnx_export(
-        ModelWithConfidence(model.metrics, threshold), example_input,
+        ModelWithScaleAlign(model.metrics, scale), example_input,
         onnx_filename, opset_version, verbose, no_optimize,
         dynamic_axes={
             "input": {0: "batch"},
