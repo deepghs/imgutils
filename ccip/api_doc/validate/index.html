@@ -9,7 +9,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>imgutils.validate &mdash; imgutils 0.0.4 documentation</title>
+  <title>imgutils.validate &mdash; imgutils 0.1.1 documentation</title>
   
 
   
@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="imgutils.validate.color" href="color.html" />
+    <link rel="next" title="imgutils.validate.aicheck" href="aicheck.html" />
     <link rel="prev" title="imgutils.utils.onnxruntime" href="../utils/onnxruntime.html" /> 
 </head>
 
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.0.4
+                0.1.1
               </div>
             
           
@@ -106,10 +106,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">imgutils.validate</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aicheck.html">imgutils.validate.aicheck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classify.html">imgutils.validate.classify</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color.html">imgutils.validate.color</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monochrome.html">imgutils.validate.monochrome</a></li>
 <li class="toctree-l2"><a class="reference internal" href="truncate.html">imgutils.validate.truncate</a></li>
@@ -189,6 +192,16 @@
 </dl>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="aicheck.html">imgutils.validate.aicheck</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aicheck.html#get-ai-created-score">get_ai_created_score</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aicheck.html#is-ai-created">is_ai_created</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="classify.html">imgutils.validate.classify</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classify.html#anime-classify-score">anime_classify_score</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classify.html#anime-classify">anime_classify</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="color.html">imgutils.validate.color</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="color.html#is-greyscale">is_greyscale</a></li>
 </ul>
@@ -215,7 +228,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="color.html" class="btn btn-neutral float-right" title="imgutils.validate.color" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="aicheck.html" class="btn btn-neutral float-right" title="imgutils.validate.aicheck" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../utils/onnxruntime.html" class="btn btn-neutral float-left" title="imgutils.utils.onnxruntime" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -256,8 +269,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../main/api_doc/validate/index.html">main</a></dd>
                         <dd><a href="index.html">ccip</a></dd>
+                        <dd><a href="../../../main/api_doc/validate/index.html">main</a></dd>
                 </dl>
         </div>
     </div>

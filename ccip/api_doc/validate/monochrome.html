@@ -9,7 +9,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>imgutils.validate.monochrome &mdash; imgutils 0.0.4 documentation</title>
+  <title>imgutils.validate.monochrome &mdash; imgutils 0.1.1 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.0.4
+                0.1.1
               </div>
             
           
@@ -106,10 +106,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.validate</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aicheck.html">imgutils.validate.aicheck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classify.html">imgutils.validate.classify</a></li>
 <li class="toctree-l2"><a class="reference internal" href="color.html">imgutils.validate.color</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.validate.monochrome</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#get-monochrome-score">get_monochrome_score</a></li>
@@ -194,13 +197,14 @@
 <p>The following are testing images. The top two rows are monochrome images, and the bottom two rows are color images.
 Please note that <strong>monochrome images are not only those with all pixels in grayscale</strong>.</p>
 <img alt="../../_images/monochrome.plot.py.svg" class="align-center" src="../../_images/monochrome.plot.py.svg" /><p>This is an overall benchmark of all the monochrome validation models:</p>
-<img alt="../../_images/monochrome_benchmark.plot.py.svg" class="align-center" src="../../_images/monochrome_benchmark.plot.py.svg" /></dd>
+<img alt="../../_images/monochrome_benchmark.plot.py.svg" class="align-center" src="../../_images/monochrome_benchmark.plot.py.svg" /><p>The models are hosted on <a class="reference external" href="https://huggingface.co/deepghs/monochrome_detect">huggingface - deepghs/monochrome_detect</a>.</p>
+</dd>
 </dl>
 <section id="get-monochrome-score">
 <h2>get_monochrome_score<a class="headerlink" href="#get-monochrome-score" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.validate.monochrome.get_monochrome_score">
-<code class="sig-prename descclassname">imgutils.validate.monochrome.</code><code class="sig-name descname">get_monochrome_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">safe</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">2</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../_modules/imgutils/validate/monochrome.html#get_monochrome_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.monochrome.get_monochrome_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">imgutils.validate.monochrome.</code><code class="sig-name descname">get_monochrome_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'mobilenetv3_dist'</span></em>, <em class="sig-param"><span class="n">safe</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../_modules/imgutils/validate/monochrome.html#get_monochrome_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.monochrome.get_monochrome_score" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Overview:</dt><dd><p>Get monochrome score of the given image.</p>
 </dd>
@@ -209,41 +213,41 @@ Please note that <strong>monochrome images are not only those with all pixels in
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>image</strong> – Image to predict, can be a <code class="docutils literal notranslate"><span class="pre">PIL.Image</span></code> object or the path of the image file.</p></li>
-<li><p><strong>safe</strong> – Safe level, with optional values including <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, and <code class="docutils literal notranslate"><span class="pre">4</span></code>,
-corresponding to different levels of the model. The default value is 2.
-For more technical details about this model, please refer to:
-<a class="reference external" href="https://huggingface.co/deepghs/imgutils-models#monochrome">https://huggingface.co/deepghs/imgutils-models#monochrome</a> .</p></li>
+<li><p><strong>model</strong> – The model used for inference. The default value is <code class="docutils literal notranslate"><span class="pre">mobilenetv3_dist</span></code>,
+which offers high runtime performance. If you need better accuracy, just use <code class="docutils literal notranslate"><span class="pre">caformer_s36</span></code>.</p></li>
+<li><p><strong>safe</strong> – Whether to enable the safe mode. When enabled, calculations will be performed using a model
+with higher precision but lower recall. The default value is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.validate</span> <span class="kn">import</span> <span class="n">get_monochrome_score</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.validate</span> <span class="kn">import</span> <span class="n">get_monochrome_score</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;mono/1.jpg&#39;</span><span class="p">)</span>  <span class="c1"># monochrome images</span>
-<span class="go">0.9789709448814392</span>
+<span class="go">0.9614395499229431</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;mono/2.jpg&#39;</span><span class="p">)</span>
-<span class="go">0.973383903503418</span>
+<span class="go">0.9458909034729004</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;mono/3.jpg&#39;</span><span class="p">)</span>
-<span class="go">0.9789378046989441</span>
+<span class="go">0.9559807777404785</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;mono/4.jpg&#39;</span><span class="p">)</span>
-<span class="go">0.9920350909233093</span>
+<span class="go">0.9651952981948853</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;mono/5.jpg&#39;</span><span class="p">)</span>
-<span class="go">0.9865685701370239</span>
+<span class="go">0.9379720687866211</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;mono/6.jpg&#39;</span><span class="p">)</span>
-<span class="go">0.9589458703994751</span>
+<span class="go">0.8814834356307983</span>
+<span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;colored/7.jpg&#39;</span><span class="p">)</span>  <span class="c1"># colored images</span>
-<span class="go">0.019315600395202637</span>
+<span class="go">0.03941023349761963</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;colored/8.jpg&#39;</span><span class="p">)</span>
-<span class="go">0.008630834519863129</span>
+<span class="go">0.07492382079362869</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;colored/9.jpg&#39;</span><span class="p">)</span>
-<span class="go">0.08635691553354263</span>
+<span class="go">0.09546589106321335</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;colored/10.jpg&#39;</span><span class="p">)</span>
-<span class="go">0.01357574388384819</span>
+<span class="go">0.016521310433745384</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;colored/11.jpg&#39;</span><span class="p">)</span>
-<span class="go">0.00710612116381526</span>
+<span class="go">0.005693843588232994</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">get_monochrome_score</span><span class="p">(</span><span class="s1">&#39;colored/12.jpg&#39;</span><span class="p">)</span>
-<span class="go">0.025258518755435944</span>
+<span class="go">0.0315730981528759</span>
 </pre></div>
 </div>
 </dd>
@@ -255,7 +259,7 @@ For more technical details about this model, please refer to:
 <h2>is_monochrome<a class="headerlink" href="#is-monochrome" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.validate.monochrome.is_monochrome">
-<code class="sig-prename descclassname">imgutils.validate.monochrome.</code><code class="sig-name descname">is_monochrome</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">safe</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">2</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/imgutils/validate/monochrome.html#is_monochrome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.monochrome.is_monochrome" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">imgutils.validate.monochrome.</code><code class="sig-name descname">is_monochrome</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'mobilenetv3_dist'</span></em>, <em class="sig-param"><span class="n">safe</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/imgutils/validate/monochrome.html#is_monochrome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.monochrome.is_monochrome" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Overview:</dt><dd><p>Predict if the image is monochrome.</p>
 </dd>
@@ -266,6 +270,8 @@ For more technical details about this model, please refer to:
 <li><p><strong>image</strong> – Image to predict, can be a <code class="docutils literal notranslate"><span class="pre">PIL.Image</span></code> object or the path of the image file.</p></li>
 <li><p><strong>threshold</strong> – Threshold value during prediction. If the score is higher than the threshold,
 the image will be classified as monochrome.</p></li>
+<li><p><strong>model</strong> – The model used for inference. The default value is <code class="docutils literal notranslate"><span class="pre">mobilenetv3_dist</span></code>,
+which offers high runtime performance. If you need better accuracy, just use <code class="docutils literal notranslate"><span class="pre">caformer_s36</span></code>.</p></li>
 <li><p><strong>safe</strong> – Safe level, with optional values including <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, and <code class="docutils literal notranslate"><span class="pre">4</span></code>,
 corresponding to different levels of the model. The default value is 2.
 For more technical details about this model, please refer to:
@@ -360,8 +366,8 @@ For more technical details about this model, please refer to:
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../main/api_doc/validate/monochrome.html">main</a></dd>
                         <dd><a href="monochrome.html">ccip</a></dd>
+                        <dd><a href="../../../main/api_doc/validate/monochrome.html">main</a></dd>
                 </dl>
         </div>
     </div>
