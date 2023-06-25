@@ -4,7 +4,7 @@ from typing import Tuple
 import numpy as np
 import torch
 from PIL import Image
-from hbutils.random import keep_global_state
+from hbutils.random import keep_global_state, global_seed
 from hbutils.system import TemporaryDirectory
 from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
@@ -37,8 +37,9 @@ def plt_confusion_matrix(ax, y_true, y_pred, title: str = 'Confusion Matrix',
 
 
 @keep_global_state()
-def _create_score_curve(ax, name, func, pos, neg, title=None, units: int = 500,
-                        xrange: Tuple[float, float] = (0.0, 1.0)):
+def _create_score_curve(ax, name, func, pos, neg, title=None, units: int = 2000,
+                        xrange: Tuple[float, float] = (0.0, 1.0), seed=0):
+    global_seed(seed)
     y_true, y_score = _pos_neg_to_true_score(pos, neg)
     y_true = 1 - y_true
     xs, ys = [], []
@@ -109,7 +110,9 @@ def plt_roc_curve(ax, pos, neg, title: str = 'ROC Curve'):
     ax.legend()
 
 
-def get_threshold_with_f1(pos, neg, units: int = 500):
+@keep_global_state()
+def get_threshold_with_f1(pos, neg, units: int = 2000, seed: int = 0):
+    global_seed(seed)
     y_true, y_score = _pos_neg_to_true_score(pos, neg)
     y_true = 1 - y_true
     xs, ys = [], []
