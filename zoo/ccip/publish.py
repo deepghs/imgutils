@@ -145,8 +145,8 @@ def create_plots(dist, cmatrix):
     threshold, _ = get_threshold_with_f1(pos, neg)
     plots = {}
 
-    y_true = cmatrix.reshape(-1).type(torch.int).numpy()
-    y_pred = (dist <= threshold).reshape(-1).type(torch.int).numpy()
+    y_true = (~cmatrix).reshape(-1).type(torch.int).numpy()
+    y_pred = (dist >= threshold).reshape(-1).type(torch.int).numpy()
     accuracy = (y_true == y_pred).sum() / y_true.shape[0]
     f1 = f1_score(y_true, y_pred, pos_label=1)
     precision = precision_score(y_true, y_pred, pos_label=1)
