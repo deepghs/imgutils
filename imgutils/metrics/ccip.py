@@ -1,19 +1,33 @@
 import json
 from functools import lru_cache
-from typing import Union, List
+from typing import Union, List, Optional, Tuple
 
 import numpy as np
 from PIL import Image
 from huggingface_hub import hf_hub_download
+from sklearn.cluster import DBSCAN, OPTICS
+from tqdm.auto import tqdm
+
+try:
+    from typing import Literal
+except (ModuleNotFoundError, ImportError):
+    from typing_extensions import Literal
 
 from ..data import MultiImagesTyping, load_images, ImageTyping
 from ..utils import open_onnx_model
 
 __all__ = [
-    'get_ccip_feature',
-    'batch_ccip_features',
-    'get_ccip_difference',
-    'batch_ccip_differences',
+    'ccip_extract_feature',
+    'ccip_batch_extract_features',
+
+    'ccip_default_threshold',
+    'ccip_difference',
+    'ccip_same',
+    'ccip_batch_differences',
+    'ccip_batch_same',
+
+    'ccip_default_clustering_params',
+    'ccip_clustering',
 ]
 
 
@@ -59,46 +73,96 @@ def _open_cluster_metrics(model_name):
         return json.load(f)
 
 
+_VALID_MODEL_NAMES = [
+    'ccip-caformer-24-randaug-pruned',
+    'ccip-caformer-6-randaug-pruned_fp32',
+    'ccip-caformer-5_fp32',
+]
 _DEFAULT_MODEL_NAMES = 'ccip-caformer-24-randaug-pruned'
 
 
-def get_ccip_feature(image: ImageTyping, size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
-    return batch_ccip_features([image], size, model_name)[0]
+def ccip_extract_feature(image: ImageTyping, size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
+    return ccip_batch_extract_features([image], size, model_name)[0]
 
 
-def batch_ccip_features(images: MultiImagesTyping, size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
+def ccip_batch_extract_features(images: MultiImagesTyping, size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
     images = load_images(images, mode='RGB')
     data = np.stack([_preprocess_image(item, size=size) for item in images]).astype(np.float32)
     output, = _open_feat_model(model_name).run(['output'], {'input': data})
     return output
 
 
-def _preprocess_feats(x, size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
-    if isinstance(x, np.ndarray):
-        return x
-    elif isinstance(x, (list, tuple)):
-        feats = []
-        for item in x:
-            if isinstance(item, np.ndarray):
-                feats.append(item)
-            else:
-                feats.append(batch_ccip_features(load_images([item]), size, model_name)[0])
-
-        return np.stack(feats)
-    else:
-        raise TypeError(f'Unknown feature batch type - {x!r}.')
-
-
 _FeatureOrImage = Union[ImageTyping, np.ndarray]
 
 
-def get_ccip_difference(x: _FeatureOrImage, y: _FeatureOrImage,
-                        size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES) -> float:
-    return batch_ccip_differences([x, y], size, model_name)[0, 1].item()
+def _p_feature(x: _FeatureOrImage, size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
+    if isinstance(x, np.ndarray):  # if feature
+        return x
+    else:  # is image or path
+        return ccip_extract_feature(x, size, model_name)
 
 
-def batch_ccip_differences(images: Union[np.ndarray, List[_FeatureOrImage]],
-                           size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
-    input_ = _preprocess_feats(images, size, model_name).astype(np.float32)
+def ccip_default_threshold(model_name: str = _DEFAULT_MODEL_NAMES) -> float:
+    return _open_metrics(model_name)['threshold']
+
+
+def ccip_difference(x: _FeatureOrImage, y: _FeatureOrImage,
+                    size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES) -> float:
+    return ccip_batch_differences([x, y], size, model_name)[0, 1].item()
+
+
+def ccip_same(x: _FeatureOrImage, y: _FeatureOrImage, threshold: Optional[float] = None,
+              size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES) -> float:
+    diff = ccip_difference(x, y, size, model_name)
+    threshold = threshold if threshold is not None else ccip_default_threshold(model_name)
+    return diff <= threshold
+
+
+def ccip_batch_differences(images: List[_FeatureOrImage],
+                           size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES) -> np.ndarray:
+    input_ = np.stack([_p_feature(img, size, model_name) for img in images]).astype(np.float32)
     output, = _open_metric_model(model_name).run(['output'], {'input': input_})
     return output
+
+
+def ccip_batch_same(images: List[_FeatureOrImage], threshold: Optional[float] = None,
+                    size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES) -> np.ndarray:
+    batch_diff = ccip_batch_differences(images, size, model_name)
+    threshold = threshold if threshold is not None else ccip_default_threshold(model_name)
+    return batch_diff <= threshold
+
+
+CCIPClusterModeTyping = Literal['dbscane', 'dbscan_2', 'dbscan_free', 'optics']
+
+
+def ccip_default_clustering_params(model_name: str = _DEFAULT_MODEL_NAMES,
+                                   mode: CCIPClusterModeTyping = 'dbscan') -> Tuple[float, int]:
+    if mode == 'dbscan':
+        return ccip_default_threshold(model_name), 2
+    else:
+        _info = _open_cluster_metrics(model_name)[mode]
+        return _info['eps'], _info['min_samples']
+
+
+def ccip_clustering(images: List[_FeatureOrImage], mode: CCIPClusterModeTyping = 'dbscan',
+                    eps: Optional[float] = None, min_samples: Optional[int] = None,
+                    size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES) -> np.ndarray:
+    _default_eps, _default_min_samples = ccip_default_clustering_params(model_name, mode)
+    eps = eps or _default_eps
+    min_samples = min_samples or _default_min_samples
+
+    images = [_p_feature(img, size, model_name) for img in tqdm(images, desc='Extract features')]
+    batch_diff = ccip_batch_differences(images, size, model_name)
+
+    def _metric(x, y):
+        return batch_diff[int(x), int(y)].item()
+
+    samples = np.arange(len(images)).reshape(-1, 1)
+    if 'dbscan' in mode:
+        clustering = DBSCAN(eps=eps, min_samples=min_samples, metric=_metric).fit(samples)
+    elif mode == 'optics':
+        clustering = OPTICS(max_eps=eps, min_samples=min_samples, metric=_metric).fit(samples)
+    else:
+        raise ValueError(f'Unknown mode for CCIP clustering - {mode!r}.')
+
+    return clustering.labels_.tolist()
