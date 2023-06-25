@@ -1,20 +1,19 @@
+import json
 from functools import lru_cache
 from typing import Union, List
 
 import numpy as np
 from PIL import Image
 from huggingface_hub import hf_hub_download
-from sklearn.cluster import DBSCAN
-from tqdm.auto import tqdm
 
 from ..data import MultiImagesTyping, load_images, ImageTyping
 from ..utils import open_onnx_model
 
 __all__ = [
-    'get_ccip_features',
-    'get_ccip_similarity',
-    'batch_ccip_similarity',
-    'ccip_clustering',
+    'get_ccip_feature',
+    'batch_ccip_features',
+    'get_ccip_difference',
+    'batch_ccip_differences',
 ]
 
 
@@ -35,29 +34,39 @@ def _preprocess_image(image: Image.Image, size: int = 384):
 @lru_cache()
 def _open_feat_model(model_name):
     return open_onnx_model(hf_hub_download(
-        f'deepghs/imgutils-models',
-        f'ccip/{model_name}_feat.onnx',
+        f'deepghs/ccip_onnx',
+        f'{model_name}/model_feat.onnx',
     ))
 
 
 @lru_cache()
-def _open_metric_model(model_name, safe: bool = False):
+def _open_metric_model(model_name):
     return open_onnx_model(hf_hub_download(
-        f'deepghs/imgutils-models',
-        f'ccip/{model_name}_{"safe_" if safe else ""}metrics.onnx',
+        f'deepghs/ccip_onnx',
+        f'{model_name}/model_metrics.onnx',
     ))
 
 
-_VALID_MODEL_NAMES = [
-    # 'ccip-caformer-23_randaug_fp32',
-    'ccip-caformer-5_fp32',
-    'ccip-caformer-4_fp32',
-    'ccip-caformer-2_fp32',
-]
-_DEFAULT_MODEL_NAMES = _VALID_MODEL_NAMES[0]
+@lru_cache()
+def _open_metrics(model_name):
+    with open(hf_hub_download(f'deepghs/ccip_onnx', f'{model_name}/metrics.json'), 'r') as f:
+        return json.load(f)
 
 
-def get_ccip_features(images: MultiImagesTyping, size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
+@lru_cache()
+def _open_cluster_metrics(model_name):
+    with open(hf_hub_download(f'deepghs/ccip_onnx', f'{model_name}/cluster.json'), 'r') as f:
+        return json.load(f)
+
+
+_DEFAULT_MODEL_NAMES = 'ccip-caformer-24-randaug-pruned'
+
+
+def get_ccip_feature(image: ImageTyping, size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
+    return batch_ccip_features([image], size, model_name)[0]
+
+
+def batch_ccip_features(images: MultiImagesTyping, size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
     images = load_images(images, mode='RGB')
     data = np.stack([_preprocess_image(item, size=size) for item in images]).astype(np.float32)
     output, = _open_feat_model(model_name).run(['output'], {'input': data})
@@ -73,7 +82,7 @@ def _preprocess_feats(x, size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES
             if isinstance(item, np.ndarray):
                 feats.append(item)
             else:
-                feats.append(get_ccip_features(load_images([item]), size, model_name)[0])
+                feats.append(batch_ccip_features(load_images([item]), size, model_name)[0])
 
         return np.stack(feats)
     else:
@@ -83,33 +92,13 @@ def _preprocess_feats(x, size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES
 _FeatureOrImage = Union[ImageTyping, np.ndarray]
 
 
-def get_ccip_similarity(x: _FeatureOrImage, y: _FeatureOrImage, safe: bool = False,
+def get_ccip_difference(x: _FeatureOrImage, y: _FeatureOrImage,
                         size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES) -> float:
-    return batch_ccip_similarity([x, y], safe, size, model_name)[0, 1].item()
+    return batch_ccip_differences([x, y], size, model_name)[0, 1].item()
 
 
-def batch_ccip_similarity(images: Union[np.ndarray, List[_FeatureOrImage]], safe: bool = False,
-                          size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
+def batch_ccip_differences(images: Union[np.ndarray, List[_FeatureOrImage]],
+                           size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
     input_ = _preprocess_feats(images, size, model_name).astype(np.float32)
-    output, = _open_metric_model(model_name, safe=safe).run(['output'], {'input': input_})
+    output, = _open_metric_model(model_name).run(['output'], {'input': input_})
     return output
-
-
-def ccip_clustering(images: MultiImagesTyping, threshold: float = 0.6, min_samples: int = 2, safe: bool = True,
-                    size: int = 384, model_name: str = _DEFAULT_MODEL_NAMES):
-    images = load_images(images, mode='RGB')
-    features = []
-    for image in tqdm(images, desc='Feature Extract'):
-        features.append(get_ccip_features([image], size, model_name)[0])
-
-    if not features:
-        return []
-    feats = np.stack(features)
-    differences = 1 - batch_ccip_similarity(feats, safe, size, model_name)
-
-    def _metric(x, y):
-        return differences[int(x), int(y)]
-
-    samples = np.array(range(len(images))).reshape(-1, 1)
-    clustering = DBSCAN(eps=1 - threshold, min_samples=min_samples, metric=_metric).fit(samples)
-    return clustering.labels_.tolist()

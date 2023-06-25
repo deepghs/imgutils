@@ -29,7 +29,7 @@ def plt_confusion_matrix(ax, y_true, y_pred, title: str = 'Confusion Matrix',
     cm = confusion_matrix(y_true, y_pred, normalize=normalize)
     disp = ConfusionMatrixDisplay(
         confusion_matrix=cm,
-        display_labels=['Similar', 'Diff'],
+        display_labels=['Diff', 'Similar'],
     )
     disp.plot(ax=ax, cmap=cmap or plt.cm.Blues)
     ax.set_yticklabels(ax.get_yticklabels(), rotation=90)

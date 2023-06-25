@@ -8,12 +8,13 @@ from typing import Tuple
 
 import click
 import numpy as np
+import pandas as pd
 import torch
 from PIL import Image
 from ditk import logging
 from hbutils.system import TemporaryDirectory
 from hbutils.testing import disable_output
-from huggingface_hub import hf_hub_download, HfApi, CommitOperationAdd
+from huggingface_hub import hf_hub_download, HfApi, CommitOperationAdd, HfFileSystem
 from lighttuner.hpo import hpo, R, uniform, randint
 from natsort import natsorted
 from sklearn.cluster import OPTICS, DBSCAN
@@ -207,18 +208,18 @@ def export_model_to_dir(file_in_repo: str, output_dir: str, repository: str = 'd
     with open(metrics_file, 'w') as f:
         json.dump(metrics, fp=f, indent=4, sort_keys=True, ensure_ascii=False)
 
-    clustering_file = os.path.join(output_dir, 'cluster.json')
-    logging.info(f'Creating clustering measurement {clustering_file!r} ...')
-    c_results = {}
-    for cname, method, xrange in [
-        ('dbscan_free', 'dbscan', (2, 5)),
-        ('dbscan_2', 'dbscan', (2, 2)),
-        ('optics', 'optics', (2, 5)),
-    ]:
-        params, score = clustering_metrics(dist, cids, method=method, min_samples_range=xrange)
-        c_results[cname] = {**params, 'score': score}
-    with open(clustering_file, 'w') as f:
-        json.dump(c_results, fp=f, indent=4, sort_keys=True, ensure_ascii=False)
+    # clustering_file = os.path.join(output_dir, 'cluster.json')
+    # logging.info(f'Creating clustering measurement {clustering_file!r} ...')
+    # c_results = {}
+    # for cname, method, xrange in [
+    #     ('dbscan_free', 'dbscan', (2, 5)),
+    #     ('dbscan_2', 'dbscan', (2, 2)),
+    #     ('optics', 'optics', (2, 5)),
+    # ]:
+    #     params, score = clustering_metrics(dist, cids, method=method, min_samples_range=xrange)
+    #     c_results[cname] = {**params, 'score': score}
+    # with open(clustering_file, 'w') as f:
+    #     json.dump(c_results, fp=f, indent=4, sort_keys=True, ensure_ascii=False)
 
     for name, img in plots.items():
         plt_file = os.path.join(output_dir, f'plt_{name}.png')
@@ -279,6 +280,31 @@ def huggingface(model_repository: str, model_file, model_name, name, target_repo
             repo_type='model',
             revision=revision,
         )
+
+
+@cli.command('list', help='List models in repository')
+@click.option('--repository', '-r', 'repository', type=str, default='deepghs/ccip_onnx',
+              help='Target repository.', show_default=True)
+def list_(repository: str):
+    hf_fs = HfFileSystem(token=os.environ.get('HF_TOKEN'))
+    models = [os.path.basename(os.path.dirname(item)) for item in hf_fs.glob(f'{repository}/*/model.ckpt')]
+
+    columns = ['Model', 'F1 Score', 'Precision', 'Recall', 'Threshold', 'Cluster_2', 'Cluster_Free']
+    data = []
+    for model_name in tqdm(models):
+        with open(hf_hub_download(repository, f'{model_name}/metrics.json'), 'r') as f:
+            metrics = json.load(f)
+        with open(hf_hub_download(repository, f'{model_name}/cluster.json'), 'r') as f:
+            cluster_info = json.load(f)
+
+        data.append((
+            model_name,
+            metrics['f1_score'], metrics['precision'], metrics['recall'], metrics['threshold'],
+            cluster_info['dbscan_2']['score'], cluster_info['optics']['score'],
+        ))
+
+    df = pd.DataFrame(data=data, columns=columns)
+    print(df.to_markdown(index=False, numalign="center", stralign="center"))
 
 
 if __name__ == '__main__':
