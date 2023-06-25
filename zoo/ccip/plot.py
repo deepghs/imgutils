@@ -37,7 +37,7 @@ def plt_confusion_matrix(ax, y_true, y_pred, title: str = 'Confusion Matrix',
 
 
 @keep_global_state()
-def _create_score_curve(ax, name, func, pos, neg, title=None, units: int = 500,
+def _create_score_curve(ax, name, func, pos, neg, title=None, units: int = 2000,
                         xrange: Tuple[float, float] = (0.0, 1.0)):
     y_true, y_score = _pos_neg_to_true_score(pos, neg)
     xs, ys = [], []
@@ -64,17 +64,17 @@ def _create_score_curve(ax, name, func, pos, neg, title=None, units: int = 500,
     ax.legend()
 
 
-def plt_f1_curve(ax, pos, neg, title='F1 Curve', units: int = 500,
+def plt_f1_curve(ax, pos, neg, title='F1 Curve', units: int = 2000,
                  xrange: Tuple[float, float] = (0.0, 1.0)):
     _create_score_curve(ax, 'F1', f1_score, pos, neg, title, units, xrange)
 
 
-def plt_p_curve(ax, pos, neg, title='Precision Curve', units: int = 500,
+def plt_p_curve(ax, pos, neg, title='Precision Curve', units: int = 2000,
                 xrange: Tuple[float, float] = (0.0, 1.0)):
     _create_score_curve(ax, 'precision', precision_score, pos, neg, title, units, xrange)
 
 
-def plt_r_curve(ax, pos, neg, title='Recall Curve', units: int = 500,
+def plt_r_curve(ax, pos, neg, title='Recall Curve', units: int = 2000,
                 xrange: Tuple[float, float] = (0.0, 1.0)):
     _create_score_curve(ax, 'recall', recall_score, pos, neg, title, units, xrange)
 
@@ -108,7 +108,7 @@ def plt_roc_curve(ax, pos, neg, title: str = 'ROC Curve'):
     ax.legend()
 
 
-def get_threshold_with_f1(pos, neg, units: int = 500):
+def get_threshold_with_f1(pos, neg, units: int = 2000):
     y_true, y_score = _pos_neg_to_true_score(pos, neg)
     xs, ys = [], []
     scores = np.sort(y_score, kind='heapsort')
