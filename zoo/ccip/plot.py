@@ -25,7 +25,7 @@ def _pos_neg_to_true_score(pos, neg):
 
 
 def plt_confusion_matrix(ax, y_true, y_pred, title: str = 'Confusion Matrix',
-                         normalize: Literal['true', 'pred', None] = None, cmap=None):
+                         normalize: Literal['true', 'pred', None] = 'true', cmap=None):
     cm = confusion_matrix(y_true, y_pred, normalize=normalize)
     disp = ConfusionMatrixDisplay(
         confusion_matrix=cm,
