@@ -19,7 +19,7 @@ class CCIPFeatureBenchmark(BaseBenchmark):
 
     def run(self):
         image_file = random.choice(self.all_images)
-        _ = ccip_batch_extract_features([image_file], model_name=self.model_name)
+        _ = ccip_batch_extract_features([image_file], model=self.model_name)
 
 
 class CCIPDiffBenchmark(BaseBenchmark):
@@ -28,7 +28,7 @@ class CCIPDiffBenchmark(BaseBenchmark):
         self.model_name = model_name
 
     def prepare(self):
-        self.feats = list(ccip_batch_extract_features(random.sample(self.all_images, k=30), model_name=self.model_name))
+        self.feats = list(ccip_batch_extract_features(random.sample(self.all_images, k=30), model=self.model_name))
 
     def load(self):
         from imgutils.metrics.ccip import _open_metric_model
@@ -41,7 +41,7 @@ class CCIPDiffBenchmark(BaseBenchmark):
     def run(self):
         feat1 = random.choice(self.feats)
         feat2 = random.choice(self.feats)
-        _ = ccip_difference(feat1, feat2, model_name=self.model_name)
+        _ = ccip_difference(feat1, feat2, model=self.model_name)
 
 
 if __name__ == '__main__':
