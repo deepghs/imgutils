@@ -263,6 +263,7 @@ def huggingface(model_repository: str, model_file, model_name, name, target_repo
 
     name = name or os.path.splitext(os.path.basename(model_file))[0]
     with TemporaryDirectory() as td:
+        logging.info(f'Exporting to {model_file!r}({model_name}) ...')
         export_model_to_dir(model_file, td, model_repository, model_name, verbose)
 
         current_time = datetime.datetime.now().astimezone().strftime('%Y-%m-%d %H:%M:%S %Z')
