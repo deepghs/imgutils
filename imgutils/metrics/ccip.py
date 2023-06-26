@@ -519,6 +519,6 @@ def ccip_clustering(images: List[_FeatureOrImage], method: CCIPClusterMethodTypi
     elif 'optics' in method:
         clustering = OPTICS(max_eps=eps, min_samples=min_samples, metric=_metric).fit(samples)
     else:
-        raise ValueError(f'Unknown mode for CCIP clustering - {method!r}.')
+        assert False, f'Unknown mode for CCIP clustering - {method!r}.'  # pragma: no cover
 
     return clustering.labels_.tolist()
