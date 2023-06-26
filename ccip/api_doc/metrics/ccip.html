@@ -206,8 +206,9 @@ they should have a smaller difference value.</p>
 and each model along with its corresponding metric data and thresholds are hosted in the
 repository <a class="reference external" href="https://huggingface.co/deepghs/ccip_onnx">deepghs/ccip_onnx</a>.</p>
 <p>This is an overall benchmark of all the operations in CCIP models:</p>
-<img alt="../../_images/ccip_benchmark.plot.py.svg" class="align-center" src="../../_images/ccip_benchmark.plot.py.svg" /><div class="admonition warning">
-<p class="admonition-title">Warning</p>
+<img alt="../../_images/ccip_benchmark.plot.py.svg" class="align-center" src="../../_images/ccip_benchmark.plot.py.svg" /><p>Here are some example images</p>
+<img alt="../../_images/ccip_small.plot.py.svg" class="align-center" src="../../_images/ccip_small.plot.py.svg" /><div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>Due to <strong>significant differences in thresholds and optimal clustering parameters among the CCIP models</strong>,
 it is recommended to refer to the relevant measurement data in the aforementioned
 model repository <a class="reference external" href="https://huggingface.co/deepghs/ccip_onnx">deepghs/ccip_onnx</a>
@@ -220,7 +221,35 @@ before performing any manual operations.</p>
 <dl class="py function">
 <dt id="imgutils.metrics.ccip.ccip_extract_feature">
 <code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_extract_feature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_extract_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_extract_feature" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Extracts the feature vector of the character from the given anime image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The anime image containing a single character.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – The size of the input image to be used for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">384</span></code>)</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – The name of the model to use for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>)
+The available model names are: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ccip-caformer-6-randaug-pruned_fp32</span></code>, <code class="docutils literal notranslate"><span class="pre">ccip-caformer-5_fp32</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The feature vector of the character.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">ccip_extract_feature</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feat</span> <span class="o">=</span> <span class="n">ccip_extract_feature</span><span class="p">(</span><span class="s1">&#39;ccip/1.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feat</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">feat</span><span class="o">.</span><span class="n">dtype</span>
+<span class="go">((768,), dtype(&#39;float32&#39;))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="ccip-batch-extract-features">
@@ -228,7 +257,35 @@ before performing any manual operations.</p>
 <dl class="py function">
 <dt id="imgutils.metrics.ccip.ccip_batch_extract_features">
 <code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_batch_extract_features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span><span class="p">]</span><span class="p">, </span>Tuple<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span><span class="p">, </span><span class="p">…</span><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_extract_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_extract_features" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Extracts the feature vectors of multiple images using the specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> (<em>MultiImagesTyping</em>) – The input images from which to extract the feature vectors.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – The size of the input image to be used for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">384</span></code>)</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – The name of the model to use for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>)
+The available model names are: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ccip-caformer-6-randaug-pruned_fp32</span></code>, <code class="docutils literal notranslate"><span class="pre">ccip-caformer-5_fp32</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The feature vectors of the input images.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">ccip_batch_extract_features</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feat</span> <span class="o">=</span> <span class="n">ccip_batch_extract_features</span><span class="p">([</span><span class="s1">&#39;ccip/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/2.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/6.jpg&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feat</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">feat</span><span class="o">.</span><span class="n">dtype</span>
+<span class="go">((3, 768), dtype(&#39;float32&#39;))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="ccip-default-threshold">
@@ -236,7 +293,34 @@ before performing any manual operations.</p>
 <dl class="py function">
 <dt id="imgutils.metrics.ccip.ccip_default_threshold">
 <code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_default_threshold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_default_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_default_threshold" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the default threshold value obtained from model metrics in the Hugging Face model repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> (<em>str</em>) – The name of the model to use for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>)
+The available model names are: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ccip-caformer-6-randaug-pruned_fp32</span></code>, <code class="docutils literal notranslate"><span class="pre">ccip-caformer-5_fp32</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The default threshold value obtained from model metrics.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">ccip_default_threshold</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_default_threshold</span><span class="p">()</span>
+<span class="go">0.17847511429108218</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_default_threshold</span><span class="p">(</span><span class="s1">&#39;ccip-caformer-6-randaug-pruned_fp32&#39;</span><span class="p">)</span>
+<span class="go">0.1951224011983088</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_default_threshold</span><span class="p">(</span><span class="s1">&#39;ccip-caformer-5_fp32&#39;</span><span class="p">)</span>
+<span class="go">0.18397327797685215</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="ccip-difference">
@@ -244,7 +328,47 @@ before performing any manual operations.</p>
 <dl class="py function">
 <dt id="imgutils.metrics.ccip.ccip_difference">
 <code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_difference</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_difference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_difference" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculates the difference value between two anime characters based on their images or feature vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>Union</em><em>[</em><em>ImageTyping</em><em>, </em><em>np.ndarray</em><em>]</em>) – The image or feature vector of the first anime character.</p></li>
+<li><p><strong>y</strong> (<em>Union</em><em>[</em><em>ImageTyping</em><em>, </em><em>np.ndarray</em><em>]</em>) – The image or feature vector of the second anime character.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – The size of the input image to be used for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">384</span></code>)</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – The name of the model to use for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>)
+The available model names are: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ccip-caformer-6-randaug-pruned_fp32</span></code>, <code class="docutils literal notranslate"><span class="pre">ccip-caformer-5_fp32</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The difference value between the two anime characters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">ccip_difference</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_difference</span><span class="p">(</span><span class="s1">&#39;ccip/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/2.jpg&#39;</span><span class="p">)</span>  <span class="c1"># same character</span>
+<span class="go">0.16583099961280823</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># different characters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_difference</span><span class="p">(</span><span class="s1">&#39;ccip/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">0.42947039008140564</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_difference</span><span class="p">(</span><span class="s1">&#39;ccip/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">0.4037521779537201</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_difference</span><span class="p">(</span><span class="s1">&#39;ccip/2.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">0.4371533691883087</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_difference</span><span class="p">(</span><span class="s1">&#39;ccip/2.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">0.40748104453086853</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_difference</span><span class="p">(</span><span class="s1">&#39;ccip/6.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">0.392294704914093</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="ccip-same">
@@ -252,7 +376,49 @@ before performing any manual operations.</p>
 <dl class="py function">
 <dt id="imgutils.metrics.ccip.ccip_same">
 <code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_same</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_same"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_same" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Determines whether two given images or feature vectors belong to the same anime character based on the CCIP model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>Union</em><em>[</em><em>ImageTyping</em><em>, </em><em>np.ndarray</em><em>]</em>) – The image or feature vector of the first anime character.</p></li>
+<li><p><strong>y</strong> (<em>Union</em><em>[</em><em>ImageTyping</em><em>, </em><em>np.ndarray</em><em>]</em>) – The image or feature vector of the second anime character.</p></li>
+<li><p><strong>threshold</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – The threshold value for determining similarity.
+If not provided, the default threshold for the model from <a class="reference internal" href="#imgutils.metrics.ccip.ccip_default_threshold" title="imgutils.metrics.ccip.ccip_default_threshold"><code class="xref py py-func docutils literal notranslate"><span class="pre">ccip_default_threshold()</span></code></a> is used.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – The size of the input image to be used for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">384</span></code>)</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – The name of the model to use for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>)
+The available model names are: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ccip-caformer-6-randaug-pruned_fp32</span></code>, <code class="docutils literal notranslate"><span class="pre">ccip-caformer-5_fp32</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the images or feature vectors are determined to belong to the same anime character, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">ccip_same</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_same</span><span class="p">(</span><span class="s1">&#39;ccip/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/2.jpg&#39;</span><span class="p">)</span>  <span class="c1"># same character</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># different characters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_same</span><span class="p">(</span><span class="s1">&#39;ccip/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_same</span><span class="p">(</span><span class="s1">&#39;ccip/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_same</span><span class="p">(</span><span class="s1">&#39;ccip/2.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_same</span><span class="p">(</span><span class="s1">&#39;ccip/2.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_same</span><span class="p">(</span><span class="s1">&#39;ccip/6.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="ccip-batch-differences">
@@ -260,7 +426,38 @@ before performing any manual operations.</p>
 <dl class="py function">
 <dt id="imgutils.metrics.ccip.ccip_batch_differences">
 <code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_batch_differences</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_differences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_differences" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculates the pairwise differences between a given list of images or feature vectors representing anime characters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>ImageTyping</em><em>, </em><em>np.ndarray</em><em>]</em><em>]</em>) – The list of images or feature vectors representing anime characters.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – The size of the input image to be used for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">384</span></code>)</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – The name of the model to use for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>)
+The available model names are: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ccip-caformer-6-randaug-pruned_fp32</span></code>, <code class="docutils literal notranslate"><span class="pre">ccip-caformer-5_fp32</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The matrix of pairwise differences between the given images or feature vectors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">ccip_batch_differences</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_batch_differences</span><span class="p">([</span><span class="s1">&#39;ccip/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/2.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/6.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/7.jpg&#39;</span><span class="p">])</span>
+<span class="go">array([[6.5350548e-08, 1.6583106e-01, 4.2947042e-01, 4.0375218e-01],</span>
+<span class="go">       [1.6583106e-01, 9.8025822e-08, 4.3715334e-01, 4.0748104e-01],</span>
+<span class="go">       [4.2947042e-01, 4.3715334e-01, 3.2675274e-08, 3.9229470e-01],</span>
+<span class="go">       [4.0375218e-01, 4.0748104e-01, 3.9229470e-01, 6.5350548e-08]],</span>
+<span class="go">      dtype=float32)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="ccip-batch-same">
@@ -268,7 +465,41 @@ before performing any manual operations.</p>
 <dl class="py function">
 <dt id="imgutils.metrics.ccip.ccip_batch_same">
 <code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_batch_same</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_same"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_same" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculates whether the given list of images or feature vectors representing anime characters are
+the same characters, based on the pairwise differences matrix and a given threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>ImageTyping</em><em>, </em><em>np.ndarray</em><em>]</em><em>]</em>) – The list of images or feature vectors representing anime characters.</p></li>
+<li><p><strong>threshold</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – The threshold value for determining similarity.
+If not provided, the default threshold for the model from <a class="reference internal" href="#imgutils.metrics.ccip.ccip_default_threshold" title="imgutils.metrics.ccip.ccip_default_threshold"><code class="xref py py-func docutils literal notranslate"><span class="pre">ccip_default_threshold()</span></code></a> is used.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – The size of the input image to be used for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">384</span></code>)</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – The name of the model to use for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>)
+The available model names are: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ccip-caformer-6-randaug-pruned_fp32</span></code>, <code class="docutils literal notranslate"><span class="pre">ccip-caformer-5_fp32</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A boolean matrix of shape (N, N), where N is the length of the <cite>images</cite> list. The value at position (i, j)
+indicates whether the i-th and j-th characters are considered the same.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">ccip_batch_same</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_batch_same</span><span class="p">([</span><span class="s1">&#39;ccip/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/2.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/6.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;ccip/7.jpg&#39;</span><span class="p">])</span>
+<span class="go">array([[ True,  True, False, False],</span>
+<span class="go">       [ True,  True, False, False],</span>
+<span class="go">       [False, False,  True, False],</span>
+<span class="go">       [False, False, False,  True]])</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="ccip-default-clustering-params">
@@ -276,7 +507,49 @@ before performing any manual operations.</p>
 <dl class="py function">
 <dt id="imgutils.metrics.ccip.ccip_default_clustering_params">
 <code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_default_clustering_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">Literal<span class="p">[</span>dbscan<span class="p">, </span>dbscan_2<span class="p">, </span>dbscan_free<span class="p">, </span>optics<span class="p">, </span>optics_best<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'optics'</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_default_clustering_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_default_clustering_params" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the default configuration for clustering operations.</p>
+<p>When the <code class="docutils literal notranslate"><span class="pre">method</span></code> is <code class="docutils literal notranslate"><span class="pre">dbscan</span></code>, the epsilon (eps) value is obtained from
+<a class="reference internal" href="#imgutils.metrics.ccip.ccip_default_threshold" title="imgutils.metrics.ccip.ccip_default_threshold"><code class="xref py py-func docutils literal notranslate"><span class="pre">ccip_default_threshold()</span></code></a> as the default threshold value, and the min_samples value is set to <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p>
+<p>When the <code class="docutils literal notranslate"><span class="pre">method</span></code> is <code class="docutils literal notranslate"><span class="pre">optics</span></code>, the epsilon (eps) value is set to <code class="docutils literal notranslate"><span class="pre">0.5</span></code>,
+and the min_samples value is set to <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p>
+<p>For other values of <code class="docutils literal notranslate"><span class="pre">method</span></code>, the function automatically retrieves the recommended parameter
+configuration from the optimized models in the HuggingFace model repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>str</em>) – The name of the model to use for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>)
+The available model names are: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ccip-caformer-6-randaug-pruned_fp32</span></code>, <code class="docutils literal notranslate"><span class="pre">ccip-caformer-5_fp32</span></code>.</p></li>
+<li><p><strong>method</strong> (<em>CCIPClusterMethodTyping</em>) – The clustering method for which the default parameters are retrieved.
+(default: <code class="docutils literal notranslate"><span class="pre">optics</span></code>)
+The available options are: <code class="docutils literal notranslate"><span class="pre">dbscan</span></code>, <code class="docutils literal notranslate"><span class="pre">dbscan_2</span></code>, <code class="docutils literal notranslate"><span class="pre">dbscan_free</span></code>, <code class="docutils literal notranslate"><span class="pre">optics</span></code>, <code class="docutils literal notranslate"><span class="pre">optics_best</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the default clustering parameters: (eps, min_samples).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[float, int]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">ccip_default_clustering_params</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_default_clustering_params</span><span class="p">()</span>
+<span class="go">(0.5, 5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_default_clustering_params</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;dbscan&#39;</span><span class="p">)</span>
+<span class="go">(0.17847511429108218, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_default_clustering_params</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;dbscan_2&#39;</span><span class="p">)</span>
+<span class="go">(0.12921094122454668, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_default_clustering_params</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;dbscan_free&#39;</span><span class="p">)</span>
+<span class="go">(0.1291187648928262, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_default_clustering_params</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;optics_best&#39;</span><span class="p">)</span>
+<span class="go">(0.1836453739562513, 5)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="ccip-clustering">
@@ -284,7 +557,74 @@ before performing any manual operations.</p>
 <dl class="py function">
 <dt id="imgutils.metrics.ccip.ccip_clustering">
 <code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_clustering</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">Literal<span class="p">[</span>dbscan<span class="p">, </span>dbscan_2<span class="p">, </span>dbscan_free<span class="p">, </span>optics<span class="p">, </span>optics_best<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'optics'</span></em>, <em class="sig-param"><span class="n">eps</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_samples</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_clustering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_clustering" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Performs clustering on the given list of images or feature vectors.</p>
+<p>The function applies the selected clustering method (<code class="docutils literal notranslate"><span class="pre">method</span></code>) with
+the specified parameters (<code class="docutils literal notranslate"><span class="pre">eps</span></code> and <code class="docutils literal notranslate"><span class="pre">min_samples</span></code>) to cluster the provided list of
+images or feature vectors (<code class="docutils literal notranslate"><span class="pre">images</span></code>).</p>
+<p>The default values for <code class="docutils literal notranslate"><span class="pre">eps</span></code> and <code class="docutils literal notranslate"><span class="pre">min_samples</span></code> are obtained from
+<a class="reference internal" href="#imgutils.metrics.ccip.ccip_default_clustering_params" title="imgutils.metrics.ccip.ccip_default_clustering_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">ccip_default_clustering_params()</span></code></a> based on the selected <code class="docutils literal notranslate"><span class="pre">method</span></code> and <code class="docutils literal notranslate"><span class="pre">model</span></code>.
+If no values are provided for <code class="docutils literal notranslate"><span class="pre">eps</span></code> and <code class="docutils literal notranslate"><span class="pre">min_samples</span></code>, the default values will be used.</p>
+<p>The images or feature vectors are preprocessed and converted to feature representations using
+the specified <code class="docutils literal notranslate"><span class="pre">size</span></code> and <code class="docutils literal notranslate"><span class="pre">model</span></code> parameters. The pairwise differences between the feature vectors
+are calculated using <a class="reference internal" href="#imgutils.metrics.ccip.ccip_batch_differences" title="imgutils.metrics.ccip.ccip_batch_differences"><code class="xref py py-func docutils literal notranslate"><span class="pre">ccip_batch_differences()</span></code></a> to define the distance metric for clustering.</p>
+<p>The clustering is performed using either the DBSCAN algorithm or the OPTICS algorithm
+based on the selected <code class="docutils literal notranslate"><span class="pre">method</span></code>.
+The clustering labels are returned as a NumPy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> (<em>List</em><em>[</em><em>_FeatureOrImage</em><em>]</em>) – A list of images or feature vectors to be clustered.</p></li>
+<li><p><strong>method</strong> (<em>CCIPClusterMethodTyping</em>) – The clustering method for which the default parameters are retrieved.
+(default: <code class="docutils literal notranslate"><span class="pre">optics</span></code>)
+The available options are: <code class="docutils literal notranslate"><span class="pre">dbscan</span></code>, <code class="docutils literal notranslate"><span class="pre">dbscan_2</span></code>, <code class="docutils literal notranslate"><span class="pre">dbscan_free</span></code>, <code class="docutils literal notranslate"><span class="pre">optics</span></code>, <code class="docutils literal notranslate"><span class="pre">optics_best</span></code>.</p></li>
+<li><p><strong>eps</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – The maximum distance between two samples to be considered in the same neighborhood. (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)
+If None, the default value is obtained from <a class="reference internal" href="#imgutils.metrics.ccip.ccip_default_clustering_params" title="imgutils.metrics.ccip.ccip_default_clustering_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">ccip_default_clustering_params()</span></code></a>.</p></li>
+<li><p><strong>min_samples</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – The number of samples in a neighborhood for a point to be considered as a core point.
+(default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)
+If None, the default value is obtained from <a class="reference internal" href="#imgutils.metrics.ccip.ccip_default_clustering_params" title="imgutils.metrics.ccip.ccip_default_clustering_params"><code class="xref py py-func docutils literal notranslate"><span class="pre">ccip_default_clustering_params()</span></code></a>.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – The size of the images to be used for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">384</span></code>)</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – The name of the model to use for feature extraction. (default: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>)
+The available model names are: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ccip-caformer-6-randaug-pruned_fp32</span></code>, <code class="docutils literal notranslate"><span class="pre">ccip-caformer-5_fp32</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An array of clustering labels indicating the cluster assignments for each image or feature vector.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><p>Here are all the images</p>
+<img alt="../../_images/ccip_full.plot.py.svg" class="align-center" src="../../_images/ccip_full.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">ccip_clustering</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;ccip/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">.jpg&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span>
+<span class="go">[&#39;ccip/1.jpg&#39;, &#39;ccip/2.jpg&#39;, &#39;ccip/3.jpg&#39;, &#39;ccip/4.jpg&#39;, &#39;ccip/5.jpg&#39;, &#39;ccip/6.jpg&#39;, &#39;ccip/7.jpg&#39;, &#39;ccip/8.jpg&#39;, &#39;ccip/9.jpg&#39;, &#39;ccip/10.jpg&#39;, &#39;ccip/11.jpg&#39;, &#39;ccip/12.jpg&#39;]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># few images, min_sample should not be too large</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ccip_clustering</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">[0, 0, 0, 3, 3, 3, 1, 1, 1, 1, 2, 2]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please note that the clustering process in <strong>CCIP is sensitive to parameters and may require tuning</strong>.
+Therefore, it is recommended to follow these guidelines:</p>
+<p>1. When dealing with a large number of samples, it is recommended to use the default parameters
+of the <code class="docutils literal notranslate"><span class="pre">optics</span></code> method for clustering. This helps ensure the robustness of the clustering solution.</p>
+<p>2. If the number of samples is small, it is advised to reduce the value of the <code class="docutils literal notranslate"><span class="pre">min_samples</span></code> parameter
+before performing clustering. However, it should be noted that this may significantly increase the possibility
+of separating slightly different instances of the same character into different clusters.</p>
+<p>3. In cases where the samples exhibit a regular pattern overall (e.g., characters with clear
+features and consistent poses and outfits), the <code class="docutils literal notranslate"><span class="pre">dbscan</span></code> method can be considered for clustering.
+However, please be aware that the dbscan method is highly sensitive to the <code class="docutils literal notranslate"><span class="pre">eps</span></code> value,
+so careful tuning is necessary.</p>
+</aside>
+</dd></dl>
 
 </section>
 </section>
