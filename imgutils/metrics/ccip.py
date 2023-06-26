@@ -1,3 +1,24 @@
+"""
+Overview:
+    A tool used to determine the visual differences between anime characters in two images
+    (limited to images containing only a single anime character). When the characters in the two images are the same,
+    they should have a smaller difference value.
+
+    The main models of CCIP are trained by `7eu7d7 <https://github.com/7eu7d7>`_,
+    and each model along with its corresponding metric data and thresholds are hosted in the
+    repository `deepghs/ccip_onnx <https://huggingface.co/deepghs/ccip_onnx>`_.
+
+    This is an overall benchmark of all the operations in CCIP models:
+
+    .. image:: ccip_benchmark.plot.py.svg
+        :align: center
+
+    .. warning::
+        Due to **significant differences in thresholds and optimal clustering parameters among the CCIP models**,
+        it is recommended to refer to the relevant measurement data in the aforementioned
+        model repository `deepghs/ccip_onnx <https://huggingface.co/deepghs/ccip_onnx>`_
+        before performing any manual operations.
+"""
 import json
 from functools import lru_cache
 from typing import Union, List, Optional, Tuple
@@ -132,19 +153,22 @@ def ccip_batch_same(images: List[_FeatureOrImage], threshold: Optional[float] = 
     return batch_diff <= threshold
 
 
-CCIPClusterMethodTyping = Literal['dbscane', 'dbscan_2', 'dbscan_free', 'optics']
+CCIPClusterMethodTyping = Literal['dbscan', 'dbscan_2', 'dbscan_free', 'optics', 'optics_best']
+_METHOD_MAPPING = {'optics_best': 'optics'}
 
 
 def ccip_default_clustering_params(model: str = _DEFAULT_MODEL_NAMES,
-                                   method: CCIPClusterMethodTyping = 'dbscan') -> Tuple[float, int]:
+                                   method: CCIPClusterMethodTyping = 'optics') -> Tuple[float, int]:
     if method == 'dbscan':
         return ccip_default_threshold(model), 2
+    if method == 'optics':
+        return 0.5, 5
     else:
-        _info = _open_cluster_metrics(model)[method]
+        _info = _open_cluster_metrics(model)[_METHOD_MAPPING.get(method, method)]
         return _info['eps'], _info['min_samples']
 
 
-def ccip_clustering(images: List[_FeatureOrImage], method: CCIPClusterMethodTyping = 'dbscan',
+def ccip_clustering(images: List[_FeatureOrImage], method: CCIPClusterMethodTyping = 'optics',
                     eps: Optional[float] = None, min_samples: Optional[int] = None,
                     size: int = 384, model: str = _DEFAULT_MODEL_NAMES) -> np.ndarray:
     _default_eps, _default_min_samples = ccip_default_clustering_params(model, method)
@@ -160,7 +184,7 @@ def ccip_clustering(images: List[_FeatureOrImage], method: CCIPClusterMethodTypi
     samples = np.arange(len(images)).reshape(-1, 1)
     if 'dbscan' in method:
         clustering = DBSCAN(eps=eps, min_samples=min_samples, metric=_metric).fit(samples)
-    elif method == 'optics':
+    elif 'optics' in method:
         clustering = OPTICS(max_eps=eps, min_samples=min_samples, metric=_metric).fit(samples)
     else:
         raise ValueError(f'Unknown mode for CCIP clustering - {method!r}.')
