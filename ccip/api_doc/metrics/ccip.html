@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.metrics.ccip &mdash; imgutils 0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.metrics.lpips" href="lpips.html" />
+    <link rel="prev" title="imgutils.metrics.aesthetic" href="aesthetic.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.metrics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aesthetic.html">imgutils.metrics.aesthetic</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.metrics.ccip</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-extract-feature">ccip_extract_feature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-batch-extract-features">ccip_batch_extract_features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-default-threshold">ccip_default_threshold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-difference">ccip_difference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-same">ccip_same</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-batch-differences">ccip_batch_differences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-batch-same">ccip_batch_same</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-default-clustering-params">ccip_default_clustering_params</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-clustering">ccip_clustering</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lpips.html">imgutils.metrics.lpips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="psnr_.html">imgutils.metrics.psnr_</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">imgutils.metrics</a> &raquo;</li>
+        
+      <li>imgutils.metrics.ccip</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api_doc/metrics/ccip.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <section id="module-imgutils.metrics.ccip">
+<span id="imgutils-metrics-ccip"></span><h1>imgutils.metrics.ccip<a class="headerlink" href="#module-imgutils.metrics.ccip" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>A tool used to determine the visual differences between anime characters in two images
+(limited to images containing only a single anime character). When the characters in the two images are the same,
+they should have a smaller difference value.</p>
+<p>The main models of CCIP are trained by <a class="reference external" href="https://github.com/7eu7d7">7eu7d7</a>,
+and each model along with its corresponding metric data and thresholds are hosted in the
+repository <a class="reference external" href="https://huggingface.co/deepghs/ccip_onnx">deepghs/ccip_onnx</a>.</p>
+<p>This is an overall benchmark of all the operations in CCIP models:</p>
+<img alt="../../_images/ccip_benchmark.plot.py.svg" class="align-center" src="../../_images/ccip_benchmark.plot.py.svg" /><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Due to <strong>significant differences in thresholds and optimal clustering parameters among the CCIP models</strong>,
+it is recommended to refer to the relevant measurement data in the aforementioned
+model repository <a class="reference external" href="https://huggingface.co/deepghs/ccip_onnx">deepghs/ccip_onnx</a>
+before performing any manual operations.</p>
+</aside>
+</dd>
+</dl>
+<section id="ccip-extract-feature">
+<h2>ccip_extract_feature<a class="headerlink" href="#ccip-extract-feature" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.metrics.ccip.ccip_extract_feature">
+<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_extract_feature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_extract_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_extract_feature" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="ccip-batch-extract-features">
+<h2>ccip_batch_extract_features<a class="headerlink" href="#ccip-batch-extract-features" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.metrics.ccip.ccip_batch_extract_features">
+<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_batch_extract_features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span><span class="p">]</span><span class="p">, </span>Tuple<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span><span class="p">, </span><span class="p">…</span><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_extract_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_extract_features" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="ccip-default-threshold">
+<h2>ccip_default_threshold<a class="headerlink" href="#ccip-default-threshold" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.metrics.ccip.ccip_default_threshold">
+<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_default_threshold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_default_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_default_threshold" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="ccip-difference">
+<h2>ccip_difference<a class="headerlink" href="#ccip-difference" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.metrics.ccip.ccip_difference">
+<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_difference</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_difference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_difference" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="ccip-same">
+<h2>ccip_same<a class="headerlink" href="#ccip-same" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.metrics.ccip.ccip_same">
+<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_same</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_same"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_same" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="ccip-batch-differences">
+<h2>ccip_batch_differences<a class="headerlink" href="#ccip-batch-differences" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.metrics.ccip.ccip_batch_differences">
+<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_batch_differences</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_differences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_differences" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="ccip-batch-same">
+<h2>ccip_batch_same<a class="headerlink" href="#ccip-batch-same" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.metrics.ccip.ccip_batch_same">
+<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_batch_same</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_same"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_same" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="ccip-default-clustering-params">
+<h2>ccip_default_clustering_params<a class="headerlink" href="#ccip-default-clustering-params" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.metrics.ccip.ccip_default_clustering_params">
+<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_default_clustering_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">Literal<span class="p">[</span>dbscan<span class="p">, </span>dbscan_2<span class="p">, </span>dbscan_free<span class="p">, </span>optics<span class="p">, </span>optics_best<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'optics'</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_default_clustering_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_default_clustering_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="ccip-clustering">
+<h2>ccip_clustering<a class="headerlink" href="#ccip-clustering" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.metrics.ccip.ccip_clustering">
+<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_clustering</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">Literal<span class="p">[</span>dbscan<span class="p">, </span>dbscan_2<span class="p">, </span>dbscan_free<span class="p">, </span>optics<span class="p">, </span>optics_best<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'optics'</span></em>, <em class="sig-param"><span class="n">eps</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_samples</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_clustering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_clustering" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="lpips.html" class="btn btn-neutral float-right" title="imgutils.metrics.lpips" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="aesthetic.html" class="btn btn-neutral float-left" title="imgutils.metrics.aesthetic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: ccip
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../v0.1.1/index.html">v0.1.1</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="ccip.html">ccip</a></dd>
+                        <dd><a href="../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
