@@ -275,6 +275,34 @@
 <span class="sd">    :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed</span>
 <span class="sd">        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.</span>
 <span class="sd">    :return: A dict with ratings and scores.</span>
+
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_rating_score</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/safe/1.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.9999998807907104, &#39;r15&#39;: 2.5863172936624323e-08, &#39;r18&#39;: 6.480062353375615e-08}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/safe/2.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.9924363493919373, &#39;r15&#39;: 0.007255776319652796, &#39;r18&#39;: 0.0003077814180869609}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/safe/3.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.996969997882843, &#39;r15&#39;: 0.0030054834205657244, &#39;r18&#39;: 2.4601260520284995e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/safe/4.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.9966891407966614, &#39;r15&#39;: 0.003293127752840519, &#39;r18&#39;: 1.770909148035571e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r15/5.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.00025384966284036636, &#39;r15&#39;: 0.9996721744537354, &#39;r18&#39;: 7.399192691082135e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r15/6.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 7.973351603141055e-05, &#39;r15&#39;: 0.9998563528060913, &#39;r18&#39;: 6.391309580067173e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r15/7.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.0018681309884414077, &#39;r15&#39;: 0.9827859997749329, &#39;r18&#39;: 0.015345841646194458}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r15/8.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.013710384257137775, &#39;r15&#39;: 0.8339558839797974, &#39;r18&#39;: 0.15233369171619415}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r18/9.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 3.951323833462084e-06, &#39;r15&#39;: 0.00029566374723799527, &#39;r18&#39;: 0.9997004270553589}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r18/10.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.00018434497178532183, &#39;r15&#39;: 4.568440272123553e-05, &#39;r18&#39;: 0.9997699856758118}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r18/11.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 9.11225129129889e-07, &#39;r15&#39;: 5.051862899563275e-05, &#39;r18&#39;: 0.9999485015869141}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r18/12.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 6.902020231791539e-06, &#39;r15&#39;: 0.0005639699520543218, &#39;r18&#39;: 0.9994290471076965}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">_raw_anime_rating</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
     <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">_open_anime_rating_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">),</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
@@ -291,6 +319,33 @@
 <span class="sd">        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.</span>
 <span class="sd">    :return: A tuple contains the rating and its score.</span>
 
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_rating</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/safe/1.jpg&#39;)</span>
+<span class="sd">        (&#39;safe&#39;, 0.9999998807907104)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/safe/2.jpg&#39;)</span>
+<span class="sd">        (&#39;safe&#39;, 0.9924363493919373)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/safe/3.jpg&#39;)</span>
+<span class="sd">        (&#39;safe&#39;, 0.996969997882843)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/safe/4.jpg&#39;)</span>
+<span class="sd">        (&#39;safe&#39;, 0.9966891407966614)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r15/5.jpg&#39;)</span>
+<span class="sd">        (&#39;r15&#39;, 0.9996721744537354)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r15/6.jpg&#39;)</span>
+<span class="sd">        (&#39;r15&#39;, 0.9998563528060913)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r15/7.jpg&#39;)</span>
+<span class="sd">        (&#39;r15&#39;, 0.9827859997749329)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r15/8.jpg&#39;)</span>
+<span class="sd">        (&#39;r15&#39;, 0.8339558839797974)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r18/9.jpg&#39;)</span>
+<span class="sd">        (&#39;r18&#39;, 0.9997004270553589)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r18/10.jpg&#39;)</span>
+<span class="sd">        (&#39;r18&#39;, 0.9997699856758118)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r18/11.jpg&#39;)</span>
+<span class="sd">        (&#39;r18&#39;, 0.9999485015869141)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r18/12.jpg&#39;)</span>
+<span class="sd">        (&#39;r18&#39;, 0.9994290471076965)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">_raw_anime_rating</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">max_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
