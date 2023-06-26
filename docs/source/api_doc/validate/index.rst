@@ -13,4 +13,5 @@ imgutils.validate
     classify
     color
     monochrome
+    rating
     truncate
