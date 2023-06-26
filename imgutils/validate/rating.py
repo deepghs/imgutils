@@ -14,6 +14,16 @@ Overview:
 
     The models are hosted on
     `huggingface - deepghs/anime_rating <https://huggingface.co/deepghs/anime_rating>`_.
+
+    .. note::
+        Please note that the classification of ``safe``, ``r15``, and ``r18`` types does not have clear boundaries,
+        making it challenging to clean the training data. As a result, there is no strict ground truth
+        for the rating classification problem. The judgment functionality provided by the current module
+        is intended as a quick and rough estimation.
+
+        **If you require an accurate filtering or judgment function specifically for R-18 images,
+        it is recommended to consider using object detection-based methods**,
+        such as using :func:`imgutils.detect.censor.detect_censors` to detect sensitive regions as the basis for judgment.
 """
 import json
 from functools import lru_cache
@@ -82,12 +92,12 @@ def _raw_anime_rating(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME)
 def anime_rating_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) -> Dict[str, float]:
     """
     Overview:
-        Predict the class of the given image, return the score with as a dict object.
+        Predict the rating of the given image, return the score with as a dict object.
 
     :param image: Image to rating.
     :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed
         on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.
-    :return: A dict with classes and scores.
+    :return: A dict with ratings and scores.
     """
     output = _raw_anime_rating(image, model_name)
     values = dict(zip(_open_anime_rating_labels(model_name), map(lambda x: x.item(), output[0])))
@@ -97,12 +107,12 @@ def anime_rating_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME
 def anime_rating(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) -> Tuple[str, float]:
     """
     Overview:
-        Predict the class of the given image, return the class and its score.
+        Predict the rating of the given image, return the class and its score.
 
     :param image: Image to rating.
     :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed
         on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.
-    :return: A tuple contains the class and its score.
+    :return: A tuple contains the rating and its score.
 
     """
     output = _raw_anime_rating(image, model_name)[0]
