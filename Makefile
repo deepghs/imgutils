@@ -55,3 +55,8 @@ dataset:
 	if [ ! -d ${DATASET_DIR}/monochrome_danbooru ]; then \
 		git clone https://${HF_NARUGO_USERNAME}:${HF_NARUGO_PASSWORD}@huggingface.co/datasets/deepghs/monochrome_danbooru.git ${DATASET_DIR}/monochrome_danbooru; \
 	fi
+	if [ ! -d ${DATASET_DIR}/images_test_v1 ]; then \
+		mkdir -p ${DATASET_DIR}/images_test_v1 && \
+		curl -L -o ${DATASET_DIR}/images_test_v1/images_test_v1.tar.xz https://huggingface.co/datasets/deepghs/character_similarity/resolve/main/images_test_v1.tar.xz && \
+		cd ${DATASET_DIR}/images_test_v1 && tar -xvf images_test_v1.tar.xz && rm -rf *.tar.xz; \
+	fi
