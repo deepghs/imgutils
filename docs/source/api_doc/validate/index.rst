@@ -13,5 +13,6 @@ imgutils.validate
     classify
     color
     monochrome
+    nsfw
     rating
     truncate
