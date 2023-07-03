@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>imgutils.data.image &mdash; imgutils 0.1.1 documentation</title>
+  <title>imgutils.data.image &mdash; imgutils 0.2.1 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.1.1
+                0.2.1
               </div>
             
           
@@ -196,6 +196,27 @@
 
 
 <div class="viewcode-block" id="load_image"><a class="viewcode-back" href="../../../api_doc/data/image.html#imgutils.data.image.load_image">[docs]</a><span class="k">def</span> <span class="nf">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads the image from the provided source and applies necessary transformations.</span>
+
+<span class="sd">    The function supports loading images from various sources, such as file paths, binary data, or file-like objects.</span>
+<span class="sd">    It opens the image using the PIL library and converts it to the specified mode if required.</span>
+<span class="sd">    If the image has an RGBA (4-channel) format and a ``force_background`` value is provided, a background of</span>
+<span class="sd">    the specified color will be added to avoid data anomalies during subsequent conversion processes.</span>
+
+<span class="sd">    :param image: The source of the image to be loaded.</span>
+<span class="sd">    :type image: Union[str, PathLike, bytes, bytearray, BinaryIO, Image.Image]</span>
+
+<span class="sd">    :param mode: The mode to convert the image to. If None, the original mode will be retained. (default: ``None``)</span>
+<span class="sd">    :type mode: str or None</span>
+
+<span class="sd">    :param force_background: The color of the background to be added for RGBA images.</span>
+<span class="sd">                             If None, no background will be added. (default: ``white``)</span>
+<span class="sd">    :type force_background: str or None</span>
+
+<span class="sd">    :return: The loaded and transformed image.</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">PathLike</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">))</span> <span class="ow">or</span> <span class="n">_is_readable</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
@@ -213,6 +234,25 @@
 
 
 <div class="viewcode-block" id="load_images"><a class="viewcode-back" href="../../../api_doc/data/image.html#imgutils.data.image.load_images">[docs]</a><span class="k">def</span> <span class="nf">load_images</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads a list of images from the provided sources and applies necessary transformations.</span>
+
+<span class="sd">    The function takes a single image or a list/tuple of multiple images and calls :func:`load_image` function</span>
+<span class="sd">    on each item to load and transform the images. The images are returned as a list of PIL Image objects.</span>
+
+<span class="sd">    :param images: The sources of the images to be loaded.</span>
+<span class="sd">    :type images: MultiImagesTyping</span>
+
+<span class="sd">    :param mode: The mode to convert the images to. If None, the original modes will be retained. (default: ``None``)</span>
+<span class="sd">    :type mode: str or None</span>
+
+<span class="sd">    :param force_background: The color of the background to be added for RGBA images.</span>
+<span class="sd">                             If None, no background will be added. (default: ``white``)</span>
+<span class="sd">    :type force_background: str or None</span>
+
+<span class="sd">    :return: A list of loaded and transformed images.</span>
+<span class="sd">    :rtype: List[Image.Image]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
         <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">images</span><span class="p">]</span>
 
@@ -220,6 +260,22 @@
 
 
 <span class="k">def</span> <span class="nf">add_background_for_rgba</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">background</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds a background color to the RGBA image if it has an alpha channel.</span>
+
+<span class="sd">    The function checks if the provided image is in RGBA format and has an alpha channel.</span>
+<span class="sd">    If it does, a background of the specified color will be added to the image using</span>
+<span class="sd">    the :func:`imgutils.data.layer.istack` function. The resulting image is then converted to RGB.</span>
+
+<span class="sd">    :param image: The RGBA image to add a background to.</span>
+<span class="sd">    :type image: ImageTyping</span>
+
+<span class="sd">    :param background: The color of the background to be added. (default: ``white``)</span>
+<span class="sd">    :type background: str</span>
+
+<span class="sd">    :return: The image with the added background, converted to RGB.</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">.layer</span> <span class="kn">import</span> <span class="n">istack</span>
     <span class="k">return</span> <span class="n">istack</span><span class="p">(</span><span class="n">background</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
 </pre></div>
