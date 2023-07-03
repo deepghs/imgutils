@@ -42,12 +42,18 @@ to [Installation](https://deepghs.github.io/imgutils/main/tutorials/installation
 ## Supported or Developing Features
 
 * [Tachie(差分) Detection and Clustering](https://github.com/deepghs/imgutils#tachie%E5%B7%AE%E5%88%86-detection-and-clustering)
+* [Contrastive Character Image Pretraining](https://github.com/deepghs/imgutils#contrastive-character-image-pretraining)
 * [Object Detection](https://github.com/deepghs/imgutils#object-detection)
 * [Edge Detection / Lineart Generation](https://github.com/deepghs/imgutils#edge-detection--lineart-generation)
 * [Monochrome Image Detection](https://github.com/deepghs/imgutils#monochrome-image-detection)
+* [Image Rating](https://github.com/deepghs/imgutils#image-rating)
 * [Truncated Image Check](https://github.com/deepghs/imgutils#truncated-image-check)
 * [Image Tagging](https://github.com/deepghs/imgutils#image-tagging)
 * [Character Extraction](https://github.com/deepghs/imgutils#character-extraction)
+
+`imgutils` also includes many other features besides that. For detailed descriptions and examples, please refer to
+the [official documentation](https://deepghs.github.io/imgutils/main/index.html). Here, we won't go into each of them
+individually.
 
 ### Tachie(差分) Detection and Clustering
 
@@ -66,6 +72,37 @@ print(images)
 print(lpips_clustering(images))  # -1 means noises, the same as that in sklearn
 # [0, 0, 0, 1, 1, -1, -1, -1, -1]
 ```
+
+### Contrastive Character Image Pretraining
+
+We can use `imgutils` to extract features from anime character images (containing only a single character), calculate
+the visual dissimilarity between two characters, and determine whether two images depict the same character. We can also
+perform clustering operations based on this metric, as shown below
+
+![ccip](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/ccip_full.plot.py.svg)
+
+```python
+from imgutils.metrics import ccip_difference, ccip_clustering
+
+# same character
+print(ccip_difference('ccip/1.jpg', 'ccip/2.jpg'))  # 0.16583099961280823
+
+# different characters
+print(ccip_difference('ccip/1.jpg', 'ccip/6.jpg'))  # 0.42947039008140564
+print(ccip_difference('ccip/1.jpg', 'ccip/7.jpg'))  # 0.4037521779537201
+print(ccip_difference('ccip/2.jpg', 'ccip/6.jpg'))  # 0.4371533691883087
+print(ccip_difference('ccip/2.jpg', 'ccip/7.jpg'))  # 0.40748104453086853
+print(ccip_difference('ccip/6.jpg', 'ccip/7.jpg'))  # 0.392294704914093
+
+images = [f'ccip/{i}.jpg' for i in range(1, 13)]
+print(images)
+# ['ccip/1.jpg', 'ccip/2.jpg', 'ccip/3.jpg', 'ccip/4.jpg', 'ccip/5.jpg', 'ccip/6.jpg', 'ccip/7.jpg', 'ccip/8.jpg', 'ccip/9.jpg', 'ccip/10.jpg', 'ccip/11.jpg', 'ccip/12.jpg']
+print(ccip_clustering(images, min_samples=2))  # few images, min_sample should not be too large
+# [0, 0, 0, 3, 3, 3, 1, 1, 1, 1, 2, 2]
+```
+
+For more usage, please refer
+to [official documentation of CCIP](https://deepghs.github.io/imgutils/main/api_doc/metrics/ccip.html).
 
 ### Object Detection
 
@@ -139,6 +176,30 @@ print(is_monochrome('colored/12.jpg'))
 For more details, please refer to
 the [official documentation](https://deepghs.github.io/imgutils/main/api_doc/validate/monochrome.html#module-imgutils.validate.monochrome)
 .
+
+### Image Rating
+
+We can use `imgutils` to perform a rough and quick determination of the rating (`safe`, `r15`, or `r18`) of anime
+images, as shown below.
+
+![rating](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/rating.plot.py.svg)
+
+```python
+from imgutils.validate import anime_rating
+
+print(anime_rating('rating/safe/1.jpg'))  # ('safe', 0.9999998807907104)
+print(anime_rating('rating/safe/2.jpg'))  # ('safe', 0.9924363493919373)
+print(anime_rating('rating/safe/3.jpg'))  # ('safe', 0.996969997882843)
+print(anime_rating('rating/safe/4.jpg'))  # ('safe', 0.9966891407966614)
+print(anime_rating('rating/r15/5.jpg'))  # ('r15', 0.9996721744537354)
+print(anime_rating('rating/r15/6.jpg'))  # ('r15', 0.9998563528060913)
+print(anime_rating('rating/r15/7.jpg'))  # ('r15', 0.9827859997749329)
+print(anime_rating('rating/r15/8.jpg'))  # ('r15', 0.8339558839797974)
+print(anime_rating('rating/r18/9.jpg'))  # ('r18', 0.9997004270553589)
+print(anime_rating('rating/r18/10.jpg'))  # ('r18', 0.9997699856758118)
+print(anime_rating('rating/r18/11.jpg'))  # ('r18', 0.9999485015869141)
+print(anime_rating('rating/r18/12.jpg'))  # ('r18', 0.9994290471076965)
+```
 
 ### Truncated Image Check
 
