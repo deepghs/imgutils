@@ -52,3 +52,10 @@ def get_caformer_s18(input_resolution: int = 384, heads: int = 8, feat_dims: int
     ]
 
     return CaformerBackbone(input_resolution, heads, feat_dims, arch='caformer_s18_384_in21ft1k', **kwargs), transform
+
+def get_caformer_b36(input_resolution: int = 384, heads: int = 8, feat_dims: int = 768, **kwargs):
+    transform = [
+        Normalize((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711)),
+    ]
+
+    return CaformerBackbone(input_resolution, heads, feat_dims, arch='caformer_b36_384_in21ft1k', **kwargs), transform
