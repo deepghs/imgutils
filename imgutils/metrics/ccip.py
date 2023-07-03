@@ -100,6 +100,7 @@ def _open_cluster_metrics(model):
 
 
 _VALID_MODEL_NAMES = [
+    'ccip-caformer_b36-24',
     'ccip-caformer-24-randaug-pruned',
     'ccip-caformer-6-randaug-pruned_fp32',
     'ccip-caformer-5_fp32',
