@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.data.image &mdash; imgutils 0.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/nbsphinx-code-cells.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/nbsphinx-code-cells.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>imgutils.data.image</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <h1>Source code for imgutils.data.image</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">PathLike</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;ImageTyping&#39;</span><span class="p">,</span> <span class="s1">&#39;load_image&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;MultiImagesTyping&#39;</span><span class="p">,</span> <span class="s1">&#39;load_images&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;add_background_for_rgba&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_is_readable</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;read&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;seek&#39;</span><span class="p">)</span>
+
+
+<span class="n">ImageTyping</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PathLike</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">]</span>
+<span class="n">MultiImagesTyping</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">ImageTyping</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">ImageTyping</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ImageTyping</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="load_image"><a class="viewcode-back" href="../../../api_doc/data/image.html#imgutils.data.image.load_image">[docs]</a><span class="k">def</span> <span class="nf">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads the image from the provided source and applies necessary transformations.</span>
+
+<span class="sd">    The function supports loading images from various sources, such as file paths, binary data, or file-like objects.</span>
+<span class="sd">    It opens the image using the PIL library and converts it to the specified mode if required.</span>
+<span class="sd">    If the image has an RGBA (4-channel) format and a ``force_background`` value is provided, a background of</span>
+<span class="sd">    the specified color will be added to avoid data anomalies during subsequent conversion processes.</span>
+
+<span class="sd">    :param image: The source of the image to be loaded.</span>
+<span class="sd">    :type image: Union[str, PathLike, bytes, bytearray, BinaryIO, Image.Image]</span>
+
+<span class="sd">    :param mode: The mode to convert the image to. If None, the original mode will be retained. (default: ``None``)</span>
+<span class="sd">    :type mode: str or None</span>
+
+<span class="sd">    :param force_background: The color of the background to be added for RGBA images.</span>
+<span class="sd">                             If None, no background will be added. (default: ``white``)</span>
+<span class="sd">    :type force_background: str or None</span>
+
+<span class="sd">    :return: The loaded and transformed image.</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">PathLike</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">))</span> <span class="ow">or</span> <span class="n">_is_readable</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># just do nothing</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown image type - </span><span class="si">{</span><span class="n">image</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">force_background</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">add_background_for_rgba</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">image</span></div>
+
+
+<div class="viewcode-block" id="load_images"><a class="viewcode-back" href="../../../api_doc/data/image.html#imgutils.data.image.load_images">[docs]</a><span class="k">def</span> <span class="nf">load_images</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads a list of images from the provided sources and applies necessary transformations.</span>
+
+<span class="sd">    The function takes a single image or a list/tuple of multiple images and calls :func:`load_image` function</span>
+<span class="sd">    on each item to load and transform the images. The images are returned as a list of PIL Image objects.</span>
+
+<span class="sd">    :param images: The sources of the images to be loaded.</span>
+<span class="sd">    :type images: MultiImagesTyping</span>
+
+<span class="sd">    :param mode: The mode to convert the images to. If None, the original modes will be retained. (default: ``None``)</span>
+<span class="sd">    :type mode: str or None</span>
+
+<span class="sd">    :param force_background: The color of the background to be added for RGBA images.</span>
+<span class="sd">                             If None, no background will be added. (default: ``white``)</span>
+<span class="sd">    :type force_background: str or None</span>
+
+<span class="sd">    :return: A list of loaded and transformed images.</span>
+<span class="sd">    :rtype: List[Image.Image]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">images</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">load_image</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">force_background</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span></div>
+
+
+<span class="k">def</span> <span class="nf">add_background_for_rgba</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">background</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds a background color to the RGBA image if it has an alpha channel.</span>
+
+<span class="sd">    The function checks if the provided image is in RGBA format and has an alpha channel.</span>
+<span class="sd">    If it does, a background of the specified color will be added to the image using</span>
+<span class="sd">    the :func:`imgutils.data.layer.istack` function. The resulting image is then converted to RGB.</span>
+
+<span class="sd">    :param image: The RGBA image to add a background to.</span>
+<span class="sd">    :type image: ImageTyping</span>
+
+<span class="sd">    :param background: The color of the background to be added. (default: ``white``)</span>
+<span class="sd">    :type background: str</span>
+
+<span class="sd">    :return: The image with the added background, converted to RGB.</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.layer</span> <span class="kn">import</span> <span class="n">istack</span>
+    <span class="k">return</span> <span class="n">istack</span><span class="p">(</span><span class="n">background</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/resolution
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../../v0.1.1/index.html">v0.1.1</a></dd>
+                        <dd><a href="../../../../../v0.2.0/index.html">v0.2.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="image.html">dev/resolution</a></dd>
+                        <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
