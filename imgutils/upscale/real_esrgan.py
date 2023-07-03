@@ -1,3 +1,12 @@
+"""
+Overview:
+    Tools for performing super-resolution processing on anime images based on the RealESRGAN model.
+
+    This is an overall benchmark of all the operations in RealESRGAN models:
+
+    .. image:: real_esrgan_benchmark.plot.py.svg
+        :align: center
+"""
 import math
 from functools import lru_cache
 from typing import Tuple
@@ -23,6 +32,13 @@ _MODELS = [
 
 @lru_cache()
 def _open_real_esrgan_model(model: str):
+    """
+    Open the RealESRGAN model specified by the given model name.
+
+    :param model: The name of the RealESRGAN model.
+    :type model: str
+    :returns: The opened RealESRGAN model.
+    """
     return open_onnx_model(hf_hub_download(
         f'deepghs/imgutils-models',
         f'real_esrgan/{model}.onnx'
@@ -30,6 +46,16 @@ def _open_real_esrgan_model(model: str):
 
 
 def _upscale_4x_for_rgb(array_rgb, model: str) -> Image:
+    """
+    Upscale the RGB image array 4 times using the specified RealESRGAN model.
+
+    :param array_rgb: The RGB image array to upscale.
+    :type array_rgb: np.ndarray
+    :param model: The name of the RealESRGAN model.
+    :type model: str
+    :returns: The upscaled image.
+    :rtype: Image
+    """
     input_ = array_rgb[:, :, ::-1].astype(np.float32) / 255.0
     input_ = input_.transpose(2, 0, 1)[None, ...]
 
@@ -40,6 +66,16 @@ def _upscale_4x_for_rgb(array_rgb, model: str) -> Image:
 
 
 def _upscale_4x_for_alpha(array_alpha, model: str) -> Image:
+    """
+    Upscale the alpha channel array 4 times using the specified RealESRGAN model.
+
+    :param array_alpha: The alpha channel array to upscale.
+    :type array_alpha: np.ndarray
+    :param model: The name of the RealESRGAN model.
+    :type model: str
+    :returns: The upscaled alpha channel.
+    :rtype: Image
+    """
     array_rgb = np.stack([array_alpha, array_alpha, array_alpha]).transpose(1, 2, 0)
     upscaled_rgb = _upscale_4x_for_rgb(array_rgb, model)
     return upscaled_rgb[:, :, 0]
@@ -47,6 +83,18 @@ def _upscale_4x_for_alpha(array_alpha, model: str) -> Image:
 
 def real_esrgan_upscape_4x(image: ImageTyping, model: str = 'RealESRGAN_x4plus_anime_6B',
                            keep_alpha_for_rgba: bool = True) -> Image.Image:
+    """
+    Upscale the input image 4 times using the specified RealESRGAN model.
+
+    :param image: The input image to upscale.
+    :type image: ImageTyping
+    :param model: The name of the RealESRGAN model. (default: 'RealESRGAN_x4plus_anime_6B')
+    :type model: str
+    :param keep_alpha_for_rgba: Whether to keep the alpha channel for RGBA images. (default: True)
+    :type keep_alpha_for_rgba: bool
+    :returns: The upscaled image.
+    :rtype: Image.Image
+    """
     img = load_image(image, force_background=None)
     if img.mode == 'RGBA' and keep_alpha_for_rgba:
         array = np.array(img)
@@ -65,6 +113,20 @@ def real_esrgan_upscape_4x(image: ImageTyping, model: str = 'RealESRGAN_x4plus_a
 
 def real_esrgan_upscale(image: ImageTyping, ratio: float, model: str = 'RealESRGAN_x4plus_anime_6B',
                         keep_alpha_for_rgba: bool = True) -> Image.Image:
+    """
+    Upscale the input image by the specified ratio using the specified RealESRGAN model.
+
+    :param image: The input image to upscale.
+    :type image: ImageTyping
+    :param ratio: The upscale ratio.
+    :type ratio: float
+    :param model: The name of the RealESRGAN model. (default: 'RealESRGAN_x4plus_anime_6B')
+    :type model: str
+    :param keep_alpha_for_rgba: Whether to keep the alpha channel for RGBA images. (default: True)
+    :type keep_alpha_for_rgba: bool
+    :returns: The upscaled image.
+    :rtype: Image.Image
+    """
     image = load_image(image, force_background=None)
     cnt_4x = 0
     while ratio > 1:
@@ -80,6 +142,20 @@ def real_esrgan_upscale(image: ImageTyping, ratio: float, model: str = 'RealESRG
 
 def real_esrgan_resize(image: ImageTyping, size: Tuple[int, int], model: str = 'RealESRGAN_x4plus_anime_6B',
                        keep_alpha_for_rgba: bool = True) -> Image.Image:
+    """
+    Resize the input image to the specified size using the specified RealESRGAN model.
+
+    :param image: The input image to resize.
+    :type image: ImageTyping
+    :param size: The target size of the image (width, height).
+    :type size: Tuple[int, int]
+    :param model: The name of the RealESRGAN model. (default: 'RealESRGAN_x4plus_anime_6B')
+    :type model: str
+    :param keep_alpha_for_rgba: Whether to keep the alpha channel for RGBA images. (default: True)
+    :type keep_alpha_for_rgba: bool
+    :returns: The resized image.
+    :rtype: Image.Image
+    """
     image = load_image(image, force_background=None)
     width, height = image.size
     twidth, theight = size
