@@ -33,7 +33,7 @@ if __name__ == '__main__':
                 f'{model} ({size}x{size})',
                 RealESRGANBenchmark(model, size),
             )
-            for size in (224, 384, 512)
+            for size in (224, 384)
             for model in _MODELS
         ],
         title='Benchmark for Real ESRGAN Models',
