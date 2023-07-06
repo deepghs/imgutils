@@ -1,0 +1,976 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Index &mdash; imgutils 0.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/nbsphinx-code-cells.css" type="text/css" />
+  <link rel="stylesheet" href="_static/nbsphinx-code-cells.css" type="text/css" />
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Index</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/config/meta.html#imgutils.config.meta.__AUTHOR__">__AUTHOR__ (in module imgutils.config.meta)</a>
+</li>
+      <li><a href="api_doc/config/meta.html#imgutils.config.meta.__AUTHOR_EMAIL__">__AUTHOR_EMAIL__ (in module imgutils.config.meta)</a>
+</li>
+      <li><a href="api_doc/config/meta.html#imgutils.config.meta.__DESCRIPTION__">__DESCRIPTION__ (in module imgutils.config.meta)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage.__init__">__init__() (imgutils.operate.imgcensor.SingleImage method)</a>
+</li>
+      <li><a href="api_doc/config/meta.html#imgutils.config.meta.__TITLE__">__TITLE__ (in module imgutils.config.meta)</a>
+</li>
+      <li><a href="api_doc/config/meta.html#imgutils.config.meta.__VERSION__">__VERSION__ (in module imgutils.config.meta)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/align.html#imgutils.operate.align.align_maxsize">align_maxsize() (in module imgutils.operate.align)</a>
+</li>
+      <li><a href="api_doc/validate/classify.html#imgutils.validate.classify.anime_classify">anime_classify() (in module imgutils.validate.classify)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/validate/classify.html#imgutils.validate.classify.anime_classify_score">anime_classify_score() (in module imgutils.validate.classify)</a>
+</li>
+      <li><a href="api_doc/validate/rating.html#imgutils.validate.rating.anime_rating">anime_rating() (in module imgutils.validate.rating)</a>
+</li>
+      <li><a href="api_doc/validate/rating.html#imgutils.validate.rating.anime_rating_score">anime_rating_score() (in module imgutils.validate.rating)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.BaseCensor">BaseCensor (class in imgutils.operate.censor_)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.BlurCensor">BlurCensor (class in imgutils.operate.censor_)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_batch_differences">ccip_batch_differences() (in module imgutils.metrics.ccip)</a>
+</li>
+      <li><a href="api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_batch_extract_features">ccip_batch_extract_features() (in module imgutils.metrics.ccip)</a>
+</li>
+      <li><a href="api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_batch_same">ccip_batch_same() (in module imgutils.metrics.ccip)</a>
+</li>
+      <li><a href="api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_clustering">ccip_clustering() (in module imgutils.metrics.ccip)</a>
+</li>
+      <li><a href="api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_default_clustering_params">ccip_default_clustering_params() (in module imgutils.metrics.ccip)</a>
+</li>
+      <li><a href="api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_default_threshold">ccip_default_threshold() (in module imgutils.metrics.ccip)</a>
+</li>
+      <li><a href="api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_difference">ccip_difference() (in module imgutils.metrics.ccip)</a>
+</li>
+      <li><a href="api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_extract_feature">ccip_extract_feature() (in module imgutils.metrics.ccip)</a>
+</li>
+      <li><a href="api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_same">ccip_same() (in module imgutils.metrics.ccip)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.BaseCensor.censor_area">censor_area() (imgutils.operate.censor_.BaseCensor method)</a>
+
+      <ul>
+        <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.BlurCensor.censor_area">(imgutils.operate.censor_.BlurCensor method)</a>
+</li>
+        <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.ColorCensor.censor_area">(imgutils.operate.censor_.ColorCensor method)</a>
+</li>
+        <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.PixelateCensor.censor_area">(imgutils.operate.censor_.PixelateCensor method)</a>
+</li>
+        <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.EmojiBasedCensor.censor_area">(imgutils.operate.imgcensor.EmojiBasedCensor method)</a>
+</li>
+        <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.ImageBasedCensor.censor_area">(imgutils.operate.imgcensor.ImageBasedCensor method)</a>
+</li>
+      </ul></li>
+      <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.censor_areas">censor_areas() (in module imgutils.operate.censor_)</a>
+</li>
+      <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.censor_nsfw">censor_nsfw() (in module imgutils.operate.censor_)</a>
+</li>
+      <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.ColorCensor">ColorCensor (class in imgutils.operate.censor_)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/detect/censor.html#imgutils.detect.censor.detect_censors">detect_censors() (in module imgutils.detect.censor)</a>
+</li>
+      <li><a href="api_doc/detect/face.html#imgutils.detect.face.detect_faces">detect_faces() (in module imgutils.detect.face)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/detect/head.html#imgutils.detect.head.detect_heads">detect_heads() (in module imgutils.detect.head)</a>
+</li>
+      <li><a href="api_doc/detect/person.html#imgutils.detect.person.detect_person">detect_person() (in module imgutils.detect.person)</a>
+</li>
+      <li><a href="api_doc/detect/visual.html#imgutils.detect.visual.detection_visualize">detection_visualize() (in module imgutils.detect.visual)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/edge/canny.html#imgutils.edge.canny.edge_image_with_canny">edge_image_with_canny() (in module imgutils.edge.canny)</a>
+</li>
+      <li><a href="api_doc/edge/lineart.html#imgutils.edge.lineart.edge_image_with_lineart">edge_image_with_lineart() (in module imgutils.edge.lineart)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/edge/lineart_anime.html#imgutils.edge.lineart_anime.edge_image_with_lineart_anime">edge_image_with_lineart_anime() (in module imgutils.edge.lineart_anime)</a>
+</li>
+      <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.EmojiBasedCensor">EmojiBasedCensor (class in imgutils.operate.imgcensor)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage.find_for_area">find_for_area() (imgutils.operate.imgcensor.SingleImage method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/metrics/aesthetic.html#imgutils.metrics.aesthetic.get_aesthetic_score">get_aesthetic_score() (in module imgutils.metrics.aesthetic)</a>
+</li>
+      <li><a href="api_doc/validate/aicheck.html#imgutils.validate.aicheck.get_ai_created_score">get_ai_created_score() (in module imgutils.validate.aicheck)</a>
+</li>
+      <li><a href="api_doc/tagging/deepdanbooru.html#imgutils.tagging.deepdanbooru.get_deepdanbooru_tags">get_deepdanbooru_tags() (in module imgutils.tagging.deepdanbooru)</a>
+</li>
+      <li><a href="api_doc/edge/canny.html#imgutils.edge.canny.get_edge_by_canny">get_edge_by_canny() (in module imgutils.edge.canny)</a>
+</li>
+      <li><a href="api_doc/edge/lineart.html#imgutils.edge.lineart.get_edge_by_lineart">get_edge_by_lineart() (in module imgutils.edge.lineart)</a>
+</li>
+      <li><a href="api_doc/edge/lineart_anime.html#imgutils.edge.lineart_anime.get_edge_by_lineart_anime">get_edge_by_lineart_anime() (in module imgutils.edge.lineart_anime)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/segment/isnetis.html#imgutils.segment.isnetis.get_isnetis_mask">get_isnetis_mask() (in module imgutils.segment.isnetis)</a>
+</li>
+      <li><a href="api_doc/tagging/mldanbooru.html#imgutils.tagging.mldanbooru.get_mldanbooru_tags">get_mldanbooru_tags() (in module imgutils.tagging.mldanbooru)</a>
+</li>
+      <li><a href="api_doc/validate/monochrome.html#imgutils.validate.monochrome.get_monochrome_score">get_monochrome_score() (in module imgutils.validate.monochrome)</a>
+</li>
+      <li><a href="api_doc/utils/onnxruntime.html#imgutils.utils.onnxruntime.get_onnx_provider">get_onnx_provider() (in module imgutils.utils.onnxruntime)</a>
+</li>
+      <li><a href="api_doc/tagging/wd14.html#imgutils.tagging.wd14.get_wd14_tags">get_wd14_tags() (in module imgutils.tagging.wd14)</a>
+</li>
+      <li><a href="api_doc/data/background.html#imgutils.data.background.grid_background">grid_background() (in module imgutils.data.background)</a>
+</li>
+      <li><a href="api_doc/data/background.html#imgutils.data.background.grid_transparent">grid_transparent() (in module imgutils.data.background)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage.height">height() (imgutils.operate.imgcensor.SingleImage property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.ImageBasedCensor">ImageBasedCensor (class in imgutils.operate.imgcensor)</a>
+</li>
+      <li>
+    imgutils.config
+
+      <ul>
+        <li><a href="api_doc/config/index.html#module-imgutils.config">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.config.meta
+
+      <ul>
+        <li><a href="api_doc/config/meta.html#module-imgutils.config.meta">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.data
+
+      <ul>
+        <li><a href="api_doc/data/index.html#module-imgutils.data">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.data.background
+
+      <ul>
+        <li><a href="api_doc/data/background.html#module-imgutils.data.background">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.data.decode
+
+      <ul>
+        <li><a href="api_doc/data/decode.html#module-imgutils.data.decode">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.data.encode
+
+      <ul>
+        <li><a href="api_doc/data/encode.html#module-imgutils.data.encode">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.data.image
+
+      <ul>
+        <li><a href="api_doc/data/image.html#module-imgutils.data.image">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.data.layer
+
+      <ul>
+        <li><a href="api_doc/data/layer.html#module-imgutils.data.layer">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.detect
+
+      <ul>
+        <li><a href="api_doc/detect/index.html#module-imgutils.detect">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.detect.censor
+
+      <ul>
+        <li><a href="api_doc/detect/censor.html#module-imgutils.detect.censor">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.detect.face
+
+      <ul>
+        <li><a href="api_doc/detect/face.html#module-imgutils.detect.face">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.detect.head
+
+      <ul>
+        <li><a href="api_doc/detect/head.html#module-imgutils.detect.head">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.detect.person
+
+      <ul>
+        <li><a href="api_doc/detect/person.html#module-imgutils.detect.person">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.detect.visual
+
+      <ul>
+        <li><a href="api_doc/detect/visual.html#module-imgutils.detect.visual">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.edge
+
+      <ul>
+        <li><a href="api_doc/edge/index.html#module-imgutils.edge">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.edge.canny
+
+      <ul>
+        <li><a href="api_doc/edge/canny.html#module-imgutils.edge.canny">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.edge.lineart
+
+      <ul>
+        <li><a href="api_doc/edge/lineart.html#module-imgutils.edge.lineart">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.edge.lineart_anime
+
+      <ul>
+        <li><a href="api_doc/edge/lineart_anime.html#module-imgutils.edge.lineart_anime">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.metrics
+
+      <ul>
+        <li><a href="api_doc/metrics/index.html#module-imgutils.metrics">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.metrics.aesthetic
+
+      <ul>
+        <li><a href="api_doc/metrics/aesthetic.html#module-imgutils.metrics.aesthetic">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.metrics.ccip
+
+      <ul>
+        <li><a href="api_doc/metrics/ccip.html#module-imgutils.metrics.ccip">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.metrics.lpips
+
+      <ul>
+        <li><a href="api_doc/metrics/lpips.html#module-imgutils.metrics.lpips">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.metrics.psnr_
+
+      <ul>
+        <li><a href="api_doc/metrics/psnr_.html#module-imgutils.metrics.psnr_">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.operate
+
+      <ul>
+        <li><a href="api_doc/operate/index.html#module-imgutils.operate">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    imgutils.operate.align
+
+      <ul>
+        <li><a href="api_doc/operate/align.html#module-imgutils.operate.align">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.operate.censor_
+
+      <ul>
+        <li><a href="api_doc/operate/censor.html#module-imgutils.operate.censor_">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.operate.imgcensor
+
+      <ul>
+        <li><a href="api_doc/operate/imgcensor.html#module-imgutils.operate.imgcensor">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.operate.squeeze
+
+      <ul>
+        <li><a href="api_doc/operate/squeeze.html#module-imgutils.operate.squeeze">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.segment
+
+      <ul>
+        <li><a href="api_doc/segment/index.html#module-imgutils.segment">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.segment.isnetis
+
+      <ul>
+        <li><a href="api_doc/segment/isnetis.html#module-imgutils.segment.isnetis">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.tagging
+
+      <ul>
+        <li><a href="api_doc/tagging/index.html#module-imgutils.tagging">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.tagging.deepdanbooru
+
+      <ul>
+        <li><a href="api_doc/tagging/deepdanbooru.html#module-imgutils.tagging.deepdanbooru">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.tagging.format
+
+      <ul>
+        <li><a href="api_doc/tagging/format.html#module-imgutils.tagging.format">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.tagging.mldanbooru
+
+      <ul>
+        <li><a href="api_doc/tagging/mldanbooru.html#module-imgutils.tagging.mldanbooru">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.tagging.wd14
+
+      <ul>
+        <li><a href="api_doc/tagging/wd14.html#module-imgutils.tagging.wd14">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.utils
+
+      <ul>
+        <li><a href="api_doc/utils/index.html#module-imgutils.utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.utils.onnxruntime
+
+      <ul>
+        <li><a href="api_doc/utils/onnxruntime.html#module-imgutils.utils.onnxruntime">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.validate
+
+      <ul>
+        <li><a href="api_doc/validate/index.html#module-imgutils.validate">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.validate.aicheck
+
+      <ul>
+        <li><a href="api_doc/validate/aicheck.html#module-imgutils.validate.aicheck">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.validate.classify
+
+      <ul>
+        <li><a href="api_doc/validate/classify.html#module-imgutils.validate.classify">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.validate.color
+
+      <ul>
+        <li><a href="api_doc/validate/color.html#module-imgutils.validate.color">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.validate.monochrome
+
+      <ul>
+        <li><a href="api_doc/validate/monochrome.html#module-imgutils.validate.monochrome">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.validate.nsfw
+
+      <ul>
+        <li><a href="api_doc/validate/nsfw.html#module-imgutils.validate.nsfw">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.validate.rating
+
+      <ul>
+        <li><a href="api_doc/validate/rating.html#module-imgutils.validate.rating">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.validate.truncate
+
+      <ul>
+        <li><a href="api_doc/validate/truncate.html#module-imgutils.validate.truncate">module</a>
+</li>
+      </ul></li>
+      <li><a href="api_doc/validate/aicheck.html#imgutils.validate.aicheck.is_ai_created">is_ai_created() (in module imgutils.validate.aicheck)</a>
+</li>
+      <li><a href="api_doc/validate/color.html#imgutils.validate.color.is_greyscale">is_greyscale() (in module imgutils.validate.color)</a>
+</li>
+      <li><a href="api_doc/validate/monochrome.html#imgutils.validate.monochrome.is_monochrome">is_monochrome() (in module imgutils.validate.monochrome)</a>
+</li>
+      <li><a href="api_doc/validate/truncate.html#imgutils.validate.truncate.is_truncated_file">is_truncated_file() (in module imgutils.validate.truncate)</a>
+</li>
+      <li><a href="api_doc/data/layer.html#imgutils.data.layer.istack">istack() (in module imgutils.data.layer)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/data/image.html#imgutils.data.image.load_image">load_image() (in module imgutils.data.image)</a>
+</li>
+      <li><a href="api_doc/data/image.html#imgutils.data.image.load_images">load_images() (in module imgutils.data.image)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/metrics/lpips.html#imgutils.metrics.lpips.lpips_clustering">lpips_clustering() (in module imgutils.metrics.lpips)</a>
+</li>
+      <li><a href="api_doc/metrics/lpips.html#imgutils.metrics.lpips.lpips_difference">lpips_difference() (in module imgutils.metrics.lpips)</a>
+</li>
+      <li><a href="api_doc/metrics/lpips.html#imgutils.metrics.lpips.lpips_extract_feature">lpips_extract_feature() (in module imgutils.metrics.lpips)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    module
+
+      <ul>
+        <li><a href="api_doc/config/index.html#module-imgutils.config">imgutils.config</a>
+</li>
+        <li><a href="api_doc/config/meta.html#module-imgutils.config.meta">imgutils.config.meta</a>
+</li>
+        <li><a href="api_doc/data/index.html#module-imgutils.data">imgutils.data</a>
+</li>
+        <li><a href="api_doc/data/background.html#module-imgutils.data.background">imgutils.data.background</a>
+</li>
+        <li><a href="api_doc/data/decode.html#module-imgutils.data.decode">imgutils.data.decode</a>
+</li>
+        <li><a href="api_doc/data/encode.html#module-imgutils.data.encode">imgutils.data.encode</a>
+</li>
+        <li><a href="api_doc/data/image.html#module-imgutils.data.image">imgutils.data.image</a>
+</li>
+        <li><a href="api_doc/data/layer.html#module-imgutils.data.layer">imgutils.data.layer</a>
+</li>
+        <li><a href="api_doc/detect/index.html#module-imgutils.detect">imgutils.detect</a>
+</li>
+        <li><a href="api_doc/detect/censor.html#module-imgutils.detect.censor">imgutils.detect.censor</a>
+</li>
+        <li><a href="api_doc/detect/face.html#module-imgutils.detect.face">imgutils.detect.face</a>
+</li>
+        <li><a href="api_doc/detect/head.html#module-imgutils.detect.head">imgutils.detect.head</a>
+</li>
+        <li><a href="api_doc/detect/person.html#module-imgutils.detect.person">imgutils.detect.person</a>
+</li>
+        <li><a href="api_doc/detect/visual.html#module-imgutils.detect.visual">imgutils.detect.visual</a>
+</li>
+        <li><a href="api_doc/edge/index.html#module-imgutils.edge">imgutils.edge</a>
+</li>
+        <li><a href="api_doc/edge/canny.html#module-imgutils.edge.canny">imgutils.edge.canny</a>
+</li>
+        <li><a href="api_doc/edge/lineart.html#module-imgutils.edge.lineart">imgutils.edge.lineart</a>
+</li>
+        <li><a href="api_doc/edge/lineart_anime.html#module-imgutils.edge.lineart_anime">imgutils.edge.lineart_anime</a>
+</li>
+        <li><a href="api_doc/metrics/index.html#module-imgutils.metrics">imgutils.metrics</a>
+</li>
+        <li><a href="api_doc/metrics/aesthetic.html#module-imgutils.metrics.aesthetic">imgutils.metrics.aesthetic</a>
+</li>
+        <li><a href="api_doc/metrics/ccip.html#module-imgutils.metrics.ccip">imgutils.metrics.ccip</a>
+</li>
+        <li><a href="api_doc/metrics/lpips.html#module-imgutils.metrics.lpips">imgutils.metrics.lpips</a>
+</li>
+        <li><a href="api_doc/metrics/psnr_.html#module-imgutils.metrics.psnr_">imgutils.metrics.psnr_</a>
+</li>
+        <li><a href="api_doc/operate/index.html#module-imgutils.operate">imgutils.operate</a>
+</li>
+        <li><a href="api_doc/operate/align.html#module-imgutils.operate.align">imgutils.operate.align</a>
+</li>
+        <li><a href="api_doc/operate/censor.html#module-imgutils.operate.censor_">imgutils.operate.censor_</a>
+</li>
+        <li><a href="api_doc/operate/imgcensor.html#module-imgutils.operate.imgcensor">imgutils.operate.imgcensor</a>
+</li>
+        <li><a href="api_doc/operate/squeeze.html#module-imgutils.operate.squeeze">imgutils.operate.squeeze</a>
+</li>
+        <li><a href="api_doc/segment/index.html#module-imgutils.segment">imgutils.segment</a>
+</li>
+        <li><a href="api_doc/segment/isnetis.html#module-imgutils.segment.isnetis">imgutils.segment.isnetis</a>
+</li>
+        <li><a href="api_doc/tagging/index.html#module-imgutils.tagging">imgutils.tagging</a>
+</li>
+        <li><a href="api_doc/tagging/deepdanbooru.html#module-imgutils.tagging.deepdanbooru">imgutils.tagging.deepdanbooru</a>
+</li>
+        <li><a href="api_doc/tagging/format.html#module-imgutils.tagging.format">imgutils.tagging.format</a>
+</li>
+        <li><a href="api_doc/tagging/mldanbooru.html#module-imgutils.tagging.mldanbooru">imgutils.tagging.mldanbooru</a>
+</li>
+        <li><a href="api_doc/tagging/wd14.html#module-imgutils.tagging.wd14">imgutils.tagging.wd14</a>
+</li>
+        <li><a href="api_doc/utils/index.html#module-imgutils.utils">imgutils.utils</a>
+</li>
+        <li><a href="api_doc/utils/onnxruntime.html#module-imgutils.utils.onnxruntime">imgutils.utils.onnxruntime</a>
+</li>
+        <li><a href="api_doc/validate/index.html#module-imgutils.validate">imgutils.validate</a>
+</li>
+        <li><a href="api_doc/validate/aicheck.html#module-imgutils.validate.aicheck">imgutils.validate.aicheck</a>
+</li>
+        <li><a href="api_doc/validate/classify.html#module-imgutils.validate.classify">imgutils.validate.classify</a>
+</li>
+        <li><a href="api_doc/validate/color.html#module-imgutils.validate.color">imgutils.validate.color</a>
+</li>
+        <li><a href="api_doc/validate/monochrome.html#module-imgutils.validate.monochrome">imgutils.validate.monochrome</a>
+</li>
+        <li><a href="api_doc/validate/nsfw.html#module-imgutils.validate.nsfw">imgutils.validate.nsfw</a>
+</li>
+        <li><a href="api_doc/validate/rating.html#module-imgutils.validate.rating">imgutils.validate.rating</a>
+</li>
+        <li><a href="api_doc/validate/truncate.html#module-imgutils.validate.truncate">imgutils.validate.truncate</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/validate/nsfw.html#imgutils.validate.nsfw.nsfw_pred">nsfw_pred() (in module imgutils.validate.nsfw)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/validate/nsfw.html#imgutils.validate.nsfw.nsfw_pred_score">nsfw_pred_score() (in module imgutils.validate.nsfw)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/utils/onnxruntime.html#imgutils.utils.onnxruntime.open_onnx_model">open_onnx_model() (in module imgutils.utils.onnxruntime)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.PixelateCensor">PixelateCensor (class in imgutils.operate.censor_)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/metrics/psnr_.html#imgutils.metrics.psnr_.psnr">psnr() (in module imgutils.metrics.psnr_)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.register_censor_method">register_censor_method() (in module imgutils.operate.censor_)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/data/decode.html#imgutils.data.decode.rgb_decode">rgb_decode() (in module imgutils.data.decode)</a>
+</li>
+      <li><a href="api_doc/data/encode.html#imgutils.data.encode.rgb_encode">rgb_encode() (in module imgutils.data.encode)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/segment/isnetis.html#imgutils.segment.isnetis.segment_rgba_with_isnetis">segment_rgba_with_isnetis() (in module imgutils.segment.isnetis)</a>
+</li>
+      <li><a href="api_doc/segment/isnetis.html#imgutils.segment.isnetis.segment_with_isnetis">segment_with_isnetis() (in module imgutils.segment.isnetis)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage">SingleImage (class in imgutils.operate.imgcensor)</a>
+</li>
+      <li><a href="api_doc/operate/squeeze.html#imgutils.operate.squeeze.squeeze">squeeze() (in module imgutils.operate.squeeze)</a>
+</li>
+      <li><a href="api_doc/operate/squeeze.html#imgutils.operate.squeeze.squeeze_with_transparency">squeeze_with_transparency() (in module imgutils.operate.squeeze)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/tagging/format.html#imgutils.tagging.format.tags_to_text">tags_to_text() (in module imgutils.tagging.format)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage.width">width() (imgutils.operate.imgcensor.SingleImage property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.2.1
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../v0.1.1/index.html">v0.1.1</a></dd>
+                        <dd><a href="../v0.2.0/index.html">v0.2.0</a></dd>
+                        <dd><a href="genindex.html">v0.2.1</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../dev/resolution/index.html">dev/resolution</a></dd>
+                        <dd><a href="../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
