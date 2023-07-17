@@ -192,7 +192,7 @@
 <h2>ascii_drawing<a class="headerlink" href="#ascii-drawing" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.ascii.drawing.ascii_drawing">
-<code class="sig-prename descclassname">imgutils.ascii.drawing.</code><code class="sig-name descname">ascii_drawing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">max_width</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Ellipsis</span></em>, <em class="sig-param"><span class="n">max_height</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Ellipsis</span></em>, <em class="sig-param"><span class="n">resample</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">levels</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'&#64;%#*+=-:. '</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/ascii/drawing.html#ascii_drawing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.ascii.drawing.ascii_drawing" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">imgutils.ascii.drawing.</code><code class="sig-name descname">ascii_drawing</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">max_width</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Ellipsis</span></em>, <em class="sig-param"><span class="n">max_height</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">Ellipsis</span></em>, <em class="sig-param"><span class="n">resample</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">levels</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'&#64;%#*+=-:. '</span></em>, <em class="sig-param"><span class="n">aspect</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.8</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/ascii/drawing.html#ascii_drawing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.ascii.drawing.ascii_drawing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate ASCII art drawing based on the given image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -204,6 +204,9 @@ determined based on the terminal size.</p></li>
 determined based on the terminal size.</p></li>
 <li><p><strong>resample</strong> (<em>int</em>) – The resampling filter to use when resizing the image.</p></li>
 <li><p><strong>levels</strong> (<em>str</em>) – The characters used to represent different intensity levels in the ASCII art.</p></li>
+<li><p><strong>aspect</strong> (<em>float</em>) – Proportional correction for ASCII art output, which should approximate the aspect ratio of
+ASCII characters on your terminal. This value ensures that the aspect ratio of the output ASCII art is
+as close as possible to the original image. The default value is <cite>1.8</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -215,56 +218,58 @@ determined based on the terminal size.</p></li>
 </dl>
 <dl>
 <dt>Examples::</dt><dd><p>Here is an image of jerry</p>
-<img alt="../../_images/ascii_drawing_demo.plot.py.svg" class="align-center" src="../../_images/ascii_drawing_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ascii</span> <span class="kn">import</span> <span class="n">ascii_drawing</span>                                                                                                                                                      <span class="p">[</span><span class="mi">50</span><span class="o">/</span><span class="mi">1847</span><span class="p">]</span>
+<img alt="../../_images/ascii_drawing_demo.plot.py.svg" class="align-center" src="../../_images/ascii_drawing_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ascii</span> <span class="kn">import</span> <span class="n">ascii_drawing</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ascii_drawing</span><span class="p">(</span><span class="s1">&#39;jerry.png&#39;</span><span class="p">))</span>
-<span class="go">              :+- .</span>
-<span class="go">             .===.-</span>
-<span class="go">             ==-=:=:        .::</span>
-<span class="go">           .-*+++-:+.     :+++==.</span>
-<span class="go">           .-++***+++:   -+==-::=</span>
-<span class="go">           .+*++======:.====-:::-:</span>
-<span class="go">         .=+==--===---====+:::::-=</span>
-<span class="go">        .+*+=-==+=+=-==-=+-::::::=</span>
-<span class="go">        ++===-=++-==----+-:::::::+</span>
-<span class="go">       :*++=--=++==----=+::::::::=</span>
-<span class="go">       -+=-=-==..=-----=-:::::::-=</span>
-<span class="go">       -+:.=-=: :=-----=-:-:::::=-</span>
-<span class="go">       :+ :===  ==-----==-+:::::+.</span>
-<span class="go">       .= --=: .=-------===::::-+</span>
-<span class="go">       .+---=- -=-------==:::::+:</span>
-<span class="go">    .:==+===+=.---------=:::::==</span>
-<span class="go">     =++:=-=::-===-----=-::::-+.</span>
-<span class="go">   ..+++.=+- .=++++===-=::::-+.</span>
-<span class="go">     :+=... .:+==--=====:::==.</span>
-<span class="go">      =+:     =+===--=+--==:</span>
-<span class="go">       ==...  .=+++==+-::.      .</span>
-<span class="go">        :::.   .-==+**+**++=-..--</span>
-<span class="go">          .:.--+++*+==--====++++:</span>
-<span class="go">            :=======-----------==--...</span>
-<span class="go">           .===--=-----------------====:</span>
-<span class="go">           =====--=-----=========-----=+.</span>
-<span class="go">          .+-+-=:.-=--=+==-:::+=-==---==-</span>
-<span class="go">          -+-+-:...==-=+:     :=-===-==+:</span>
-<span class="go">          ==-=++=:..==--==-:   :=+-  -=-</span>
-<span class="go">          ==----==--:==---=++-. :+=</span>
-<span class="go">          ==------====+==---=++: ++.</span>
-<span class="go">          .+==-------==:==----=*+=+.</span>
-<span class="go">           .-==+===--=-..-=----=*+-</span>
-<span class="go">               :-:=-==-...==----=*</span>
-<span class="go">                -:====-...:=-----+-</span>
-<span class="go">                .=-:.-:....=-----=+</span>
-<span class="go">                 :=:.......=------+-</span>
-<span class="go">                 .++-:....-=------=+</span>
-<span class="go">                .+==++===++=-------=-</span>
-<span class="go">                +=----==++--==------=</span>
-<span class="go">               .+-----==.   .-==----=:</span>
-<span class="go">               .+----==       .-==---=.</span>
-<span class="go">                -=---=:         :==--===--:</span>
-<span class="go">               .-+=---=           -=----====</span>
-<span class="go">               -===---=:           :=----==+</span>
-<span class="go">               :=----=+:            -==---=-</span>
-<span class="go">                -=+++*-              :++++=</span>
+<span class="go">                           :=++:  :</span>
+<span class="go">                          =+===+: =:</span>
+<span class="go">                         ++----== -*:                ..:..</span>
+<span class="go">                     .::=*++++==+. =+-.           :=++++++==:</span>
+<span class="go">                     .:-*++++****+==+++=.      .-++=====--::==</span>
+<span class="go">                      .=*++++++++++++===+=.  .=++==++=:::::::==</span>
+<span class="go">                   :=+++====----===--=---==-=+=-=++-::::::::::*:</span>
+<span class="go">                .-***+=---==-=+++++=----=====--=*=::::::::::::*=</span>
+<span class="go">               :***+=++=---+=++=--=+----=-----+*-:::::::::::::++</span>
+<span class="go">              .**+*+=-==---=+***=-==---------+*-::::::::::::::*+</span>
+<span class="go">              =*==*===----=+=:.:+-=---------=*-:::::::::::::::#-</span>
+<span class="go">              ++=+: -=---=+-   :+-----------++:::::::::::::::=#.</span>
+<span class="go">              +++.  ==--=*-    ++-----------=+:::-+::::::::::*+</span>
+<span class="go">              -+=  .+---+-    -+=------------====+=:::::::::+#.</span>
+<span class="go">              .++. ==---+.   :+=--------------==+=:::::::::=#-</span>
+<span class="go">             .:=*+.=---=*+  .==--------------=+=-:::::::::=#-</span>
+<span class="go">         .=++++==+======*= .=====------------==::::::::::+*-</span>
+<span class="go">         .#+==+:.=---+:..::-+++======-------=+:::::::::-*+:</span>
+<span class="go">    .....:**==+. :++=-. ..:++=======+=====-=+-:::::::-++-</span>
+<span class="go">          :*+=+.  ..   ..::*+====------====+=:::::-=+=:</span>
+<span class="go">           .=++=.   .      =*+==++===---=++=---===-:</span>
+<span class="go">             :=+=.  -:     .:=+++++++===*+-::::..           ...</span>
+<span class="go">                :::::.      ..-=====+****+++*****+++=-::..-==-.</span>
+<span class="go">                    .::.:--=++++++*#+==-==------======++++++-..</span>
+<span class="go">                       :============-----------------------====--:..  ..</span>
+<span class="go">                      -+==+==--==--------------------------------=======+=:</span>
+<span class="go">                     -*=-=+-+-==-===-----------===============----------==+-</span>
+<span class="go">                    :*=--++.===:..-==-----==++++===-----=*++---=+=------===+-</span>
+<span class="go">                    *+---++..::....:=+=--===+=.          -==-.:+====-==-=++=-</span>
+<span class="go">                   -#=--=++=+==-:....-+=-----===-:..      .===++=-.  :=+==+.</span>
+<span class="go">                   =#=------======-::::===------==++++=:.   .-+==:     ...</span>
+<span class="go">                   -#=------------=====--=+==-------==++*+:   -*=*:</span>
+<span class="go">                    +*==--------------====+=-===--------==**=-++=*-</span>
+<span class="go">                     -=+++========------=+=:..:===---------=*#+=+=</span>
+<span class="go">                        ..:::+=::===---==+:.....:==---------=+#+.</span>
+<span class="go">                             .=-..====++=+=.......==----------+#-</span>
+<span class="go">                               ==:-===--=+-........+=----------+#-</span>
+<span class="go">                                -+=:....::.........+=-----------=*-</span>
+<span class="go">                                 .+*=:............-+-------------=*:</span>
+<span class="go">                                .=+=+++=-:::..::-=+=--------------=*:</span>
+<span class="go">                              .=+=----==++++++++*++===-------------=+.</span>
+<span class="go">                              ++=----------=+++=-:..:-=+==----------=+.</span>
+<span class="go">                             .#=---------=++-.         .-=+==--------==.</span>
+<span class="go">                              ++---------+-               .-=+==------==:.</span>
+<span class="go">                               =+=-------+:                  .-=+=-----=========-.</span>
+<span class="go">                             :-=++==-----=+-                    .-==----------===++</span>
+<span class="go">                            :++=====------=+.                      -+=--------==+++</span>
+<span class="go">                             -+=--------==++                        :++==-------=+.</span>
+<span class="go">                              .-=++++++**+-.                          :=+++++++=-.</span>
 </pre></div>
 </div>
 </dd>
