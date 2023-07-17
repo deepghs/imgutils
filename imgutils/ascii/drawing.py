@@ -15,6 +15,82 @@ __all__ = [
 
 def ascii_drawing(img: ImageTyping, max_width: Optional[int] = ..., max_height: Optional[int] = ...,
                   resample=Image.BILINEAR, levels: str = "@%#*+=-:. "):
+    """
+    Generate ASCII art drawing based on the given image.
+
+    :param img: The input image.
+    :type img: ImageTyping
+    :param max_width: The maximum width of the ASCII art. If set to `None` or `...`, it will be automatically
+        determined based on the terminal size.
+    :type max_width: Optional[int]
+    :param max_height: The maximum height of the ASCII art. If set to `None` or `...`, it will be automatically
+        determined based on the terminal size.
+    :type max_height: Optional[int]
+    :param resample: The resampling filter to use when resizing the image.
+    :type resample: int
+    :param levels: The characters used to represent different intensity levels in the ASCII art.
+    :type levels: str
+    :return: The ASCII art representation of the image.
+    :rtype: str
+
+    Examples::
+        Here is an image of jerry
+
+        .. image:: ascii_drawing_demo.plot.py.svg
+            :align: center
+
+        >>> from imgutils.ascii import ascii_drawing                                                                                                                                                      [50/1847]
+        >>>
+        >>> print(ascii_drawing('jerry.png'))
+                      :+- .
+                     .===.-
+                     ==-=:=:        .::
+                   .-*+++-:+.     :+++==.
+                   .-++***+++:   -+==-::=
+                   .+*++======:.====-:::-:
+                 .=+==--===---====+:::::-=
+                .+*+=-==+=+=-==-=+-::::::=
+                ++===-=++-==----+-:::::::+
+               :*++=--=++==----=+::::::::=
+               -+=-=-==..=-----=-:::::::-=
+               -+:.=-=: :=-----=-:-:::::=-
+               :+ :===  ==-----==-+:::::+.
+               .= --=: .=-------===::::-+
+               .+---=- -=-------==:::::+:
+            .:==+===+=.---------=:::::==
+             =++:=-=::-===-----=-::::-+.
+           ..+++.=+- .=++++===-=::::-+.
+             :+=... .:+==--=====:::==.
+              =+:     =+===--=+--==:
+               ==...  .=+++==+-::.      .
+                :::.   .-==+**+**++=-..--
+                  .:.--+++*+==--====++++:
+                    :=======-----------==--...
+                   .===--=-----------------====:
+                   =====--=-----=========-----=+.
+                  .+-+-=:.-=--=+==-:::+=-==---==-
+                  -+-+-:...==-=+:     :=-===-==+:
+                  ==-=++=:..==--==-:   :=+-  -=-
+                  ==----==--:==---=++-. :+=
+                  ==------====+==---=++: ++.
+                  .+==-------==:==----=*+=+.
+                   .-==+===--=-..-=----=*+-
+                       :-:=-==-...==----=*
+                        -:====-...:=-----+-
+                        .=-:.-:....=-----=+
+                         :=:.......=------+-
+                         .++-:....-=------=+
+                        .+==++===++=-------=-
+                        +=----==++--==------=
+                       .+-----==.   .-==----=:
+                       .+----==       .-==---=.
+                        -=---=:         :==--===--:
+                       .-+=---=           -=----====
+                       -===---=:           :=----==+
+                       :=----=+:            -==---=-
+                        -=+++*-              :++++=
+
+    """
     if max_width is ... or max_height is ...:
         terminal = shutil.get_terminal_size(fallback=(80, 40))
         max_width = terminal.columns - 5 if max_width is ... else max_width

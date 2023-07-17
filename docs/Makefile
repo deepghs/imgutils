@@ -28,8 +28,7 @@ help:
 contents:
 	@$(ALL) build
 build: html
-#html: contents
-html:
+html: contents
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	@touch "$(BUILDDIR)/html/.nojekyll"
 prod:
