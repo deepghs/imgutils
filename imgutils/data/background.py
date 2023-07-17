@@ -4,6 +4,7 @@ import numpy as np
 from PIL import ImageColor, Image
 
 from .image import ImageTyping
+from .image import load_image
 from .layer import istack
 
 __all__ = [
@@ -62,5 +63,6 @@ def grid_transparent(image: ImageTyping, step: Optional[int] = None,
            :align: center
 
     """
+    image = load_image(image, force_background=None)
     retval = grid_background(image.height, image.width, step, forecolor, backcolor)
     return istack(retval, image).convert('RGB')
