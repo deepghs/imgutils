@@ -11,6 +11,7 @@ imgutils.detect
 
     censor
     face
+    hand
     head
     person
     visual
