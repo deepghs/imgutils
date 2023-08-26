@@ -198,13 +198,14 @@
 <dt>Overview:</dt><dd><p>Detect upper-half body in anime images.</p>
 <p>Trained on dataset <a class="reference external" href="https://huggingface.co/datasets/deepghs/anime_halfbody_detection">deepghs/anime_halfbody_detection</a> with YOLOv8.</p>
 <img alt="../../_images/halfbody_detect_demo.plot.py.svg" class="align-center" src="../../_images/halfbody_detect_demo.plot.py.svg" /><p>This is an overall benchmark of all the halfbody detect models:</p>
-<img alt="../../_images/halfbody_detect_benchmark.plot.py.svg" class="align-center" src="../../_images/halfbody_detect_benchmark.plot.py.svg" /><div class="admonition warning">
-<p class="admonition-title">Warning</p>
+<img alt="../../_images/halfbody_detect_benchmark.plot.py.svg" class="align-center" src="../../_images/halfbody_detect_benchmark.plot.py.svg" /><div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>Please note that the primary purpose of this tool is to crop upper-body images from illustrations.
-Therefore, the training data used mostly consists of single-person images, and the performance
-on images with multiple people is not guaranteed. <strong>If you indeed need to process images with multiple people,
-the recommended approach is to first use the :func:`imgutils.detect.detect_person` function to
-crop individuals, and then use this tool to obtain upper-body images</strong>.</p>
+Therefore, the training data used mostly consists of single-person images, and <strong>the performance
+on images with multiple people is not guaranteed</strong>. If you indeed need to process
+images with multiple people, the recommended approach is to first use
+the <a class="reference internal" href="person.html#imgutils.detect.person.detect_person" title="imgutils.detect.person.detect_person"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.detect.person.detect_person()</span></code></a> function to crop individuals,
+and then use this tool to obtain upper-body images.</p>
 </aside>
 </dd>
 </dl>
@@ -212,7 +213,7 @@ crop individuals, and then use this tool to obtain upper-body images</strong>.</
 <h2>detect_halfbody<a class="headerlink" href="#detect-halfbody" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.detect.halfbody.detect_halfbody">
-<code class="sig-prename descclassname">imgutils.detect.halfbody.</code><code class="sig-name descname">detect_halfbody</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'s'</span></em>, <em class="sig-param"><span class="n">version</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'v0.4'</span></em>, <em class="sig-param"><span class="n">max_infer_size</span><span class="o">=</span><span class="default_value">640</span></em>, <em class="sig-param"><span class="n">conf_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">iou_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Tuple<span class="p">[</span>Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span><span class="p">, </span>str<span class="p">, </span>float<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/detect/halfbody.html#detect_halfbody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.detect.halfbody.detect_halfbody" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">imgutils.detect.halfbody.</code><code class="sig-name descname">detect_halfbody</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">level</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'s'</span></em>, <em class="sig-param"><span class="n">version</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'v1.0'</span></em>, <em class="sig-param"><span class="n">max_infer_size</span><span class="o">=</span><span class="default_value">640</span></em>, <em class="sig-param"><span class="n">conf_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">iou_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Tuple<span class="p">[</span>Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span><span class="p">, </span>str<span class="p">, </span>float<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/detect/halfbody.html#detect_halfbody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.detect.halfbody.detect_halfbody" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Overview:</dt><dd><p>Detect human upper-half body in anime images.</p>
 </dd>
@@ -241,14 +242,10 @@ the target type (always <cite>halfbody</cite>) and the target confidence score.<
 <dl>
 <dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.detect</span> <span class="kn">import</span> <span class="n">detect_halfbody</span><span class="p">,</span> <span class="n">detection_visualize</span>
 <span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="s1">&#39;nude_girl.png&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="s1">&#39;squat.jpg&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">detect_halfbody</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>  <span class="c1"># detect it</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>
-<span class="go">[</span>
-<span class="go">    ((365, 264, 399, 289), &#39;nipple_f&#39;, 0.7473511695861816),</span>
-<span class="go">    ((224, 260, 252, 285), &#39;nipple_f&#39;, 0.6830288171768188),</span>
-<span class="go">    ((206, 523, 240, 608), &#39;pussy&#39;, 0.6799028515815735)</span>
-<span class="go">]</span>
+<span class="go">[((127, 21, 629, 637), &#39;halfbody&#39;, 0.9040350914001465)]</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># visualize it</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
