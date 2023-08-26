@@ -11,6 +11,7 @@ imgutils.detect
 
     censor
     face
+    halfbody
     hand
     head
     person

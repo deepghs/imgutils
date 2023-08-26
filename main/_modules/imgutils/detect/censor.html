@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>imgutils.detect.censor &mdash; imgutils 0.2.2 documentation</title>
+  <title>imgutils.detect.censor &mdash; imgutils 0.2.3 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
             
           
@@ -233,7 +233,7 @@
 <span class="sd">    :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold</span>
 <span class="sd">        will be discarded. The default value is `0.7`.</span>
 <span class="sd">    :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,</span>
-<span class="sd">        the target type (always `censor`) and the target confidence score.</span>
+<span class="sd">        the target type (one of `nipple_f`, `penis` and `pussy`) and the target confidence score.</span>
 
 <span class="sd">    Examples::</span>
 <span class="sd">        &gt;&gt;&gt; from imgutils.detect import detect_censors, detection_visualize</span>
@@ -256,7 +256,7 @@
     <span class="n">new_image</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span> <span class="o">=</span> <span class="n">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">)</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">new_image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-    <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_censor_detect_model</span><span class="p">(</span><span class="n">level</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output0&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;images&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
+    <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_censor_detect_model</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output0&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;images&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
     <span class="k">return</span> <span class="n">_data_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">conf_threshold</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">,</span> <span class="n">_LABELS</span><span class="p">)</span></div>
 </pre></div>
 
@@ -303,10 +303,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/halfbody/index.html">dev/halfbody</a></dd>
+                        <dd><a href="censor.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/resolution/index.html">dev/resolution</a></dd>
-                        <dd><a href="censor.html">main</a></dd>
                 </dl>
         </div>
     </div>
