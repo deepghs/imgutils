@@ -1,7 +1,7 @@
 """
 Overview:
     Detect upper-half body in anime images.
-
+ 
     Trained on dataset `deepghs/anime_halfbody_detection <https://huggingface.co/datasets/deepghs/anime_halfbody_detection>`_ with YOLOv8.
 
     .. image:: halfbody_detect_demo.plot.py.svg
