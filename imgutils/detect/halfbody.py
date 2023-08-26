@@ -65,14 +65,10 @@ def detect_halfbody(image: ImageTyping, level: str = 's', version: str = 'v0.4',
     Examples::
         >>> from imgutils.detect import detect_halfbody, detection_visualize
         >>>
-        >>> image = 'nude_girl.png'
+        >>> image = 'squat.jpg'
         >>> result = detect_halfbody(image)  # detect it
         >>> result
-        [
-            ((365, 264, 399, 289), 'nipple_f', 0.7473511695861816),
-            ((224, 260, 252, 285), 'nipple_f', 0.6830288171768188),
-            ((206, 523, 240, 608), 'pussy', 0.6799028515815735)
-        ]
+        [((127, 21, 629, 637), 'halfbody', 0.9040350914001465)]
         >>>
         >>> # visualize it
         >>> from matplotlib import pyplot as plt
