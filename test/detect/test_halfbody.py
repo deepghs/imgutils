@@ -1,6 +1,6 @@
 import pytest
 
-from imgutils.detect.halfbody import _open_halfbody_detect_model, detect_halfbodies
+from imgutils.detect.halfbody import _open_halfbody_detect_model, detect_halfbody
 from test.testings import get_testfile
 
 
@@ -14,8 +14,8 @@ def _release_model_after_run():
 
 @pytest.mark.unittest
 class TestDetectHead:
-    def test_detect_halfbodies(self):
-        detections = detect_halfbodies(get_testfile('nude_girl.png'))
+    def test_detect_halfbody(self):
+        detections = detect_halfbody(get_testfile('nude_girl.png'))
         assert len(detections) == 1
 
         values = []
@@ -27,5 +27,5 @@ class TestDetectHead:
             ((106, 0, 512, 478), 0.916),
         ])
 
-    def test_detect_halfbodies_none(self):
-        assert detect_halfbodies(get_testfile('png_full.png')) == []
+    def test_detect_halfbody_none(self):
+        assert detect_halfbody(get_testfile('png_full.png')) == []

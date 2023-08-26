@@ -10,7 +10,7 @@ Overview:
 """
 from .censor import detect_censors
 from .face import detect_faces
-from .halfbody import detect_halfbodies
+from .halfbody import detect_halfbody
 from .hand import detect_hands
 from .head import detect_heads
 from .person import detect_person

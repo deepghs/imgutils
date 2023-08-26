@@ -1,6 +1,6 @@
 """
 Overview:
-    Detect human halfbody points (including female's nipples and genitals of both male and female) in anime images.
+    Detect upper-half body in anime images.
 
     Trained on dataset `deepghs/anime_halfbody_detection <https://huggingface.co/datasets/deepghs/anime_halfbody_detection>`_ with YOLOv8.
 
@@ -11,6 +11,13 @@ Overview:
 
     .. image:: halfbody_detect_benchmark.plot.py.svg
         :align: center
+
+    .. warning::
+        Please note that the primary purpose of this tool is to crop upper-body images from illustrations.
+        Therefore, the training data used mostly consists of single-person images, and the performance
+        on images with multiple people is not guaranteed. **If you indeed need to process images with multiple people,
+        the recommended approach is to first use the :func:`imgutils.detect.detect_person` function to
+        crop individuals, and then use this tool to obtain upper-body images**.
 
 """
 from functools import lru_cache
@@ -34,12 +41,12 @@ def _open_halfbody_detect_model(level: str = 's', version: str = 'v1.0'):
 _LABELS = ["halfbody"]
 
 
-def detect_halfbodies(image: ImageTyping, level: str = 's', version: str = 'v0.4', max_infer_size=640,
-                      conf_threshold: float = 0.5, iou_threshold: float = 0.7) \
+def detect_halfbody(image: ImageTyping, level: str = 's', version: str = 'v0.4', max_infer_size=640,
+                    conf_threshold: float = 0.5, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Overview:
-        Detect human halfbodies in anime images.
+        Detect human upper-half body in anime images.
 
     :param image: Image to detect.
     :param level: The model level being used can be either `s` or `n`.
@@ -56,10 +63,10 @@ def detect_halfbodies(image: ImageTyping, level: str = 's', version: str = 'v0.4
         the target type (always `halfbody`) and the target confidence score.
 
     Examples::
-        >>> from imgutils.detect import detect_halfbodies, detection_visualize
+        >>> from imgutils.detect import detect_halfbody, detection_visualize
         >>>
         >>> image = 'nude_girl.png'
-        >>> result = detect_halfbodies(image)  # detect it
+        >>> result = detect_halfbody(image)  # detect it
         >>> result
         [
             ((365, 264, 399, 289), 'nipple_f', 0.7473511695861816),

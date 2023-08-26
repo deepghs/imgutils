@@ -1,7 +1,7 @@
 import random
 
 from benchmark import BaseBenchmark, create_plot_cli
-from imgutils.detect import detect_halfbodies
+from imgutils.detect import detect_halfbody
 
 
 class HalfBodyDetectBenchmark(BaseBenchmark):
@@ -20,7 +20,7 @@ class HalfBodyDetectBenchmark(BaseBenchmark):
 
     def run(self):
         image_file = random.choice(self.all_images)
-        _ = detect_halfbodies(image_file, level=self.level, version=self.version)
+        _ = detect_halfbody(image_file, level=self.level, version=self.version)
 
 
 if __name__ == '__main__':

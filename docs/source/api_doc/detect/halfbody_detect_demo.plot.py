@@ -1,11 +1,11 @@
-from imgutils.detect import detect_halfbodies
+from imgutils.detect import detect_halfbody
 from imgutils.detect.halfbody import _LABELS
 from imgutils.detect.visual import detection_visualize
 from plot import image_plot
 
 
 def _detect(img, **kwargs):
-    return detection_visualize(img, detect_halfbodies(img, **kwargs), _LABELS)
+    return detection_visualize(img, detect_halfbody(img, **kwargs), _LABELS)
 
 
 if __name__ == '__main__':
