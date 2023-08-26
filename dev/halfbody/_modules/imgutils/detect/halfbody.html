@@ -178,7 +178,7 @@
   <h1>Source code for imgutils.detect.halfbody</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Overview:</span>
-<span class="sd">    Detect human halfbody points (including female&#39;s nipples and genitals of both male and female) in anime images.</span>
+<span class="sd">    Detect upper-half body in anime images.</span>
 
 <span class="sd">    Trained on dataset `deepghs/anime_halfbody_detection &lt;https://huggingface.co/datasets/deepghs/anime_halfbody_detection&gt;`_ with YOLOv8.</span>
 
@@ -189,6 +189,13 @@
 
 <span class="sd">    .. image:: halfbody_detect_benchmark.plot.py.svg</span>
 <span class="sd">        :align: center</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        Please note that the primary purpose of this tool is to crop upper-body images from illustrations.</span>
+<span class="sd">        Therefore, the training data used mostly consists of single-person images, and the performance</span>
+<span class="sd">        on images with multiple people is not guaranteed. **If you indeed need to process images with multiple people,</span>
+<span class="sd">        the recommended approach is to first use the :func:`imgutils.detect.detect_person` function to</span>
+<span class="sd">        crop individuals, and then use this tool to obtain upper-body images**.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
@@ -212,12 +219,12 @@
 <span class="n">_LABELS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;halfbody&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="detect_halfbodies"><a class="viewcode-back" href="../../../api_doc/detect/halfbody.html#imgutils.detect.halfbody.detect_halfbodies">[docs]</a><span class="k">def</span> <span class="nf">detect_halfbodies</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v0.4&#39;</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="o">=</span><span class="mi">640</span><span class="p">,</span>
-                      <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
+<div class="viewcode-block" id="detect_halfbody"><a class="viewcode-back" href="../../../api_doc/detect/halfbody.html#imgutils.detect.halfbody.detect_halfbody">[docs]</a><span class="k">def</span> <span class="nf">detect_halfbody</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v0.4&#39;</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="o">=</span><span class="mi">640</span><span class="p">,</span>
+                    <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overview:</span>
-<span class="sd">        Detect human halfbodies in anime images.</span>
+<span class="sd">        Detect human upper-half body in anime images.</span>
 
 <span class="sd">    :param image: Image to detect.</span>
 <span class="sd">    :param level: The model level being used can be either `s` or `n`.</span>
@@ -234,10 +241,10 @@
 <span class="sd">        the target type (always `halfbody`) and the target confidence score.</span>
 
 <span class="sd">    Examples::</span>
-<span class="sd">        &gt;&gt;&gt; from imgutils.detect import detect_halfbodies, detection_visualize</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.detect import detect_halfbody, detection_visualize</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; image = &#39;nude_girl.png&#39;</span>
-<span class="sd">        &gt;&gt;&gt; result = detect_halfbodies(image)  # detect it</span>
+<span class="sd">        &gt;&gt;&gt; result = detect_halfbody(image)  # detect it</span>
 <span class="sd">        &gt;&gt;&gt; result</span>
 <span class="sd">        [</span>
 <span class="sd">            ((365, 264, 399, 289), &#39;nipple_f&#39;, 0.7473511695861816),</span>

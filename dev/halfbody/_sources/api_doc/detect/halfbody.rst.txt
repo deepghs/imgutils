@@ -6,9 +6,9 @@ imgutils.detect.halfbody
 .. automodule:: imgutils.detect.halfbody
 
 
-detect_halfbodies
+detect_halfbody
 ------------------------------
 
-.. autofunction:: detect_halfbodies
+.. autofunction:: detect_halfbody
 
 
