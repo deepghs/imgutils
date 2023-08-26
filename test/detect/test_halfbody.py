@@ -24,7 +24,7 @@ class TestDetectHead:
             values.append((bbox, int(score * 1000) / 1000))
 
         assert values == pytest.approx([
-            ((106, 0, 512, 478), 0.916),
+            ((105, 0, 511, 480), 0.918),
         ])
 
     def test_detect_halfbody_none(self):

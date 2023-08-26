@@ -12,12 +12,13 @@ Overview:
     .. image:: halfbody_detect_benchmark.plot.py.svg
         :align: center
 
-    .. warning::
+    .. note::
         Please note that the primary purpose of this tool is to crop upper-body images from illustrations.
-        Therefore, the training data used mostly consists of single-person images, and the performance
-        on images with multiple people is not guaranteed. **If you indeed need to process images with multiple people,
-        the recommended approach is to first use the :func:`imgutils.detect.detect_person` function to
-        crop individuals, and then use this tool to obtain upper-body images**.
+        Therefore, the training data used mostly consists of single-person images, and **the performance
+        on images with multiple people is not guaranteed**. If you indeed need to process
+        images with multiple people, the recommended approach is to first use
+        the :func:`imgutils.detect.person.detect_person` function to crop individuals,
+        and then use this tool to obtain upper-body images.
 
 """
 from functools import lru_cache
@@ -41,7 +42,7 @@ def _open_halfbody_detect_model(level: str = 's', version: str = 'v1.0'):
 _LABELS = ["halfbody"]
 
 
-def detect_halfbody(image: ImageTyping, level: str = 's', version: str = 'v0.4', max_infer_size=640,
+def detect_halfbody(image: ImageTyping, level: str = 's', version: str = 'v1.0', max_infer_size=640,
                     conf_threshold: float = 0.5, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
