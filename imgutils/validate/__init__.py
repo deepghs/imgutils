@@ -8,4 +8,5 @@ from .color import *
 from .monochrome import *
 from .nsfw import *
 from .rating import *
+from .teen import *
 from .truncate import *

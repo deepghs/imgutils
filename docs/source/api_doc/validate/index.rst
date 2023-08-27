@@ -15,4 +15,5 @@ imgutils.validate
     monochrome
     nsfw
     rating
+    teen
     truncate
