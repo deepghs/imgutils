@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.tagging.mldanbooru &mdash; imgutils 0.2.4 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/nbsphinx-code-cells.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/nbsphinx-code-cells.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>imgutils.tagging.mldanbooru</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <h1>Source code for imgutils.tagging.mldanbooru</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    Tagging utils based on ML-danbooru which is provided by 7eu7d. The code is here:</span>
+<span class="sd">    `7eu7d7/ML-Danbooru &lt;https://github.com/7eu7d7/ML-Danbooru&gt;`_ .</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_open_mldanbooru_model</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span><span class="s1">&#39;deepghs/ml-danbooru-onnx&#39;</span><span class="p">,</span> <span class="s1">&#39;ml_caformer_m36_dec-5-97527.onnx&#39;</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_resize_align</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">keep_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">align</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_ratio</span><span class="p">:</span>
+        <span class="n">target_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">min_edge</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">target_size</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">min_edge</span> <span class="o">*</span> <span class="n">size</span><span class="p">),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">min_edge</span> <span class="o">*</span> <span class="n">size</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="n">target_size</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">target_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">align</span><span class="p">)</span> <span class="o">*</span> <span class="n">align</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">target_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="n">align</span><span class="p">)</span> <span class="o">*</span> <span class="n">align</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">target_size</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_to_tensor</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+    <span class="c1"># noinspection PyTypeChecker</span>
+    <span class="n">img</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">image</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">getbands</span><span class="p">())))</span>
+
+    <span class="c1"># put it from HWC to CHW format</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_get_mldanbooru_labels</span><span class="p">(</span><span class="n">use_real_name</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span><span class="s1">&#39;deepghs/imgutils-models&#39;</span><span class="p">,</span> <span class="s1">&#39;mldanbooru/mldanbooru_tags.csv&#39;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">use_real_name</span> <span class="k">else</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;real_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="get_mldanbooru_tags"><a class="viewcode-back" href="../../../api_doc/tagging/mldanbooru.html#imgutils.tagging.mldanbooru.get_mldanbooru_tags">[docs]</a><span class="k">def</span> <span class="nf">get_mldanbooru_tags</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">use_real_name</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                        <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">448</span><span class="p">,</span> <span class="n">keep_ratio</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Overview:</span>
+<span class="sd">        Tagging image with ML-Danbooru, similar to</span>
+<span class="sd">        `deepghs/ml-danbooru-demo &lt;https://huggingface.co/spaces/deepghs/ml-danbooru-demo&gt;`_.</span>
+
+<span class="sd">    :param image: Image to tagging.</span>
+<span class="sd">    :param use_real_name: Use real name on danbooru. Due to the renaming and redirection of many tags</span>
+<span class="sd">        on the Danbooru website after the training of ``deepdanbooru``,</span>
+<span class="sd">        it may be necessary to use the latest tag names in some application scenarios.</span>
+<span class="sd">        The default value of ``False`` indicates the use of the original tag names.</span>
+<span class="sd">    :param threshold: Threshold for tags, default is ``0.7``.</span>
+<span class="sd">    :param size: Size when passing the resized image into model, default is ``448``.</span>
+<span class="sd">    :param keep_ratio: Keep the original ratio between height and width when passing the image into</span>
+<span class="sd">        model, default is ``False``.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Here are some images for example</span>
+
+<span class="sd">        .. image:: tagging_demo.plot.py.svg</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">        &gt;&gt;&gt; import os</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging import get_mldanbooru_tags</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; get_mldanbooru_tags(&#39;skadi.jpg&#39;)</span>
+<span class="sd">        {&#39;1girl&#39;: 0.9999984502792358, &#39;long_hair&#39;: 0.9999946355819702, &#39;red_eyes&#39;: 0.9994951486587524, &#39;navel&#39;: 0.998144268989563, &#39;breasts&#39;: 0.9978417158126831, &#39;solo&#39;: 0.9941409230232239, &#39;shorts&#39;: 0.9799384474754333, &#39;gloves&#39;: 0.979142427444458, &#39;very_long_hair&#39;: 0.961823582649231, &#39;looking_at_viewer&#39;: 0.961323618888855, &#39;silver_hair&#39;: 0.9490893483161926, &#39;large_breasts&#39;: 0.9450850486755371, &#39;midriff&#39;: 0.9425153136253357, &#39;sweat&#39;: 0.9409335255622864, &#39;thighs&#39;: 0.9319437146186829, &#39;crop_top&#39;: 0.9265308976173401, &#39;baseball_bat&#39;: 0.9259042143821716, &#39;sky&#39;: 0.922250509262085, &#39;holding&#39;: 0.9199565052986145, &#39;outdoors&#39;: 0.9175475835800171, &#39;day&#39;: 0.9102761745452881, &#39;black_gloves&#39;: 0.9076938629150391, &#39;stomach&#39;: 0.9052775502204895, &#39;shirt&#39;: 0.8938589692115784, &#39;cowboy_shot&#39;: 0.8894285559654236, &#39;bangs&#39;: 0.8891903162002563, &#39;blue_sky&#39;: 0.8845980763435364, &#39;parted_lips&#39;: 0.8842408061027527, &#39;hair_between_eyes&#39;: 0.8659475445747375, &#39;sportswear&#39;: 0.862621009349823, &#39;no_headwear&#39;: 0.8616052865982056, &#39;cloud&#39;: 0.8562789559364319, &#39;short_shorts&#39;: 0.8555729389190674, &#39;no_hat&#39;: 0.8533340096473694, &#39;black_shorts&#39;: 0.8477485775947571, &#39;short_sleeves&#39;: 0.8430152535438538, &#39;low-tied_long_hair&#39;: 0.8340626955032349, &#39;crop_top_overhang&#39;: 0.8266023397445679, &#39;holding_baseball_bat&#39;: 0.8222048282623291, &#39;standing&#39;: 0.8202669620513916, &#39;black_shirt&#39;: 0.8061150312423706, &#39;ass_visible_through_thighs&#39;: 0.7803354859352112, &#39;thigh_gap&#39;: 0.7789446711540222, &#39;arms_up&#39;: 0.7052110433578491}</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; get_mldanbooru_tags(&#39;hutao.jpg&#39;)</span>
+<span class="sd">        {&#39;1girl&#39;: 0.9999866485595703, &#39;skirt&#39;: 0.997043788433075, &#39;tongue&#39;: 0.9969649910926819, &#39;hair_ornament&#39;: 0.9957101345062256, &#39;tongue_out&#39;: 0.9928386807441711, &#39;flower&#39;: 0.9886980056762695, &#39;twintails&#39;: 0.9864778518676758, &#39;ghost&#39;: 0.9769423007965088, &#39;hair_flower&#39;: 0.9747489094734192, &#39;bag&#39;: 0.9736957550048828, &#39;long_hair&#39;: 0.9388670325279236, &#39;backpack&#39;: 0.9356311559677124, &#39;brown_hair&#39;: 0.91000896692276, &#39;cardigan&#39;: 0.8955123424530029, &#39;red_eyes&#39;: 0.8910233378410339, &#39;plaid&#39;: 0.8904104828834534, &#39;looking_at_viewer&#39;: 0.8881211280822754, &#39;school_uniform&#39;: 0.8876776695251465, &#39;outdoors&#39;: 0.8864808678627014, &#39;jacket&#39;: 0.8810517191886902, &#39;plaid_skirt&#39;: 0.8798807263374329, &#39;ahoge&#39;: 0.8765745162963867, &#39;pleated_skirt&#39;: 0.8737136125564575, &#39;nail_polish&#39;: 0.8650439381599426, &#39;solo&#39;: 0.8613706827163696, &#39;blue_cardigan&#39;: 0.8571277260780334, &#39;bangs&#39;: 0.8333670496940613, &#39;very_long_hair&#39;: 0.8160212635993958, &#39;eyebrows_visible_through_hair&#39;: 0.8122442364692688, &#39;hairclip&#39;: 0.8091571927070618, &#39;red_nails&#39;: 0.8082079887390137, &#39;:p&#39;: 0.8048468232154846, &#39;long_sleeves&#39;: 0.8042327165603638, &#39;shirt&#39;: 0.7984272241592407, &#39;blazer&#39;: 0.794708251953125, &#39;ribbon&#39;: 0.78981614112854, &#39;hair_ribbon&#39;: 0.7892146110534668, &#39;star-shaped_pupils&#39;: 0.7867060899734497, &#39;gradient_hair&#39;: 0.786359965801239, &#39;white_shirt&#39;: 0.7790888547897339, &#39;brown_skirt&#39;: 0.7760675549507141, &#39;symbol-shaped_pupils&#39;: 0.774523913860321, &#39;smile&#39;: 0.7721588015556335, &#39;hair_between_eyes&#39;: 0.7697228789329529, &#39;cowboy_shot&#39;: 0.755959689617157, &#39;multicolored_hair&#39;: 0.7477189898490906, &#39;blush&#39;: 0.7476690411567688, &#39;railing&#39;: 0.7476617693901062, &#39;blue_jacket&#39;: 0.7458406090736389, &#39;sleeves_past_wrists&#39;: 0.741143524646759, &#39;day&#39;: 0.7364678978919983, &#39;collared_shirt&#39;: 0.7193643450737, &#39;red_neckwear&#39;: 0.7108616828918457, &#39;flower-shaped_pupils&#39;: 0.7086325287818909, &#39;miniskirt&#39;: 0.7055293321609497, &#39;holding&#39;: 0.7039415836334229, &#39;open_clothes&#39;: 0.7018357515335083}</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        ML-Danbooru only contains generic tags, so the return value will not be splitted like that in</span>
+<span class="sd">        :func:`imgutils.tagging.deepdanbooru.get_deepdanbooru_tags` or</span>
+<span class="sd">        :func:`imgutils.tagging.wd14.get_wd14_tags`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+    <span class="n">real_input</span> <span class="o">=</span> <span class="n">_to_tensor</span><span class="p">(</span><span class="n">_resize_align</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">keep_ratio</span><span class="p">))</span>
+    <span class="n">real_input</span> <span class="o">=</span> <span class="n">real_input</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">real_input</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">_open_mldanbooru_model</span><span class="p">()</span>
+    <span class="n">native_output</span><span class="p">,</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">real_input</span><span class="p">})</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">native_output</span><span class="p">)))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="n">_get_mldanbooru_labels</span><span class="p">(</span><span class="n">use_real_name</span><span class="p">)</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">tags</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ratio</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ratio</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">output</span><span class="p">)],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">tag</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">ratio</span> <span class="ow">in</span> <span class="n">pairs</span> <span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">}</span></div>
+</pre></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.2.4
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../v0.1.1/index.html">v0.1.1</a></dd>
+                        <dd><a href="../../../../v0.2.0/index.html">v0.2.0</a></dd>
+                        <dd><a href="../../../../v0.2.1/index.html">v0.2.1</a></dd>
+                        <dd><a href="../../../../v0.2.2/index.html">v0.2.2</a></dd>
+                        <dd><a href="../../../../v0.2.3/index.html">v0.2.3</a></dd>
+                        <dd><a href="mldanbooru.html">v0.2.4</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../../dev/resolution/index.html">dev/resolution</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
