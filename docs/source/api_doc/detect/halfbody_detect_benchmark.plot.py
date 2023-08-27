@@ -27,7 +27,7 @@ if __name__ == '__main__':
     create_plot_cli(
         [
             ('halfbody v1.0 (yolov8s)', HalfBodyDetectBenchmark('s', 'v1.0')),
-            # ('halfbody v1.0 (yolov8n)', HalfBodyDetectBenchmark('n', 'v1.0')),
+            ('halfbody v1.0 (yolov8n)', HalfBodyDetectBenchmark('n', 'v1.0')),
             ('halfbody v0.4 (yolov8s)', HalfBodyDetectBenchmark('s', 'v0.4')),
             ('halfbody v0.3 (yolov8s)', HalfBodyDetectBenchmark('s', 'v0.3')),
         ],
