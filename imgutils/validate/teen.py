@@ -75,7 +75,7 @@ def anime_teen_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) 
 
     :param image: Image to teen.
     :param model_name: Model to use. Default is ``mobilenetv3_v0_dist``. All available models are listed
-        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.
+        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_v0``.
     :return: A dict with classes and scores.
 
     Examples::
