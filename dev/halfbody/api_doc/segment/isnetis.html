@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.segment.isnetis &mdash; imgutils 0.2.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.tagging" href="../tagging/index.html" />
+    <link rel="prev" title="imgutils.segment" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.segment</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.segment.isnetis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#get-isnetis-mask">get_isnetis_mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#segment-with-isnetis">segment_with_isnetis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#segment-rgba-with-isnetis">segment_rgba_with_isnetis</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">imgutils.segment</a> &raquo;</li>
+        
+      <li>imgutils.segment.isnetis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api_doc/segment/isnetis.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <section id="module-imgutils.segment.isnetis">
+<span id="imgutils-segment-isnetis"></span><h1>imgutils.segment.isnetis<a class="headerlink" href="#module-imgutils.segment.isnetis" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt>Overview:</dt><dd><p>Anime character segmentation, based on <a class="reference external" href="https://huggingface.co/skytnt/anime-seg">https://huggingface.co/skytnt/anime-seg</a> .</p>
+</dd>
+</dl>
+<section id="get-isnetis-mask">
+<h2>get_isnetis_mask<a class="headerlink" href="#get-isnetis-mask" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.segment.isnetis.get_isnetis_mask">
+<code class="sig-prename descclassname">imgutils.segment.isnetis.</code><code class="sig-name descname">get_isnetis_mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">scale</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1024</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/segment/isnetis.html#get_isnetis_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.segment.isnetis.get_isnetis_mask" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Overview:</dt><dd><p>Get mask with isnetis.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – Original image (assume its size is <code class="docutils literal notranslate"><span class="pre">(H,</span> <span class="pre">W)</span></code>).</p></li>
+<li><p><strong>scale</strong> – Scale when passing it into neural network. Default is <code class="docutils literal notranslate"><span class="pre">1024</span></code>,
+inspired by <a class="reference external" href="https://huggingface.co/spaces/skytnt/anime-remove-background/blob/main/app.py#L8">https://huggingface.co/spaces/skytnt/anime-remove-background/blob/main/app.py#L8</a> .</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Get a mask with all the pixels, which shape is <code class="docutils literal notranslate"><span class="pre">(H,</span> <span class="pre">W)</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="segment-with-isnetis">
+<h2>segment_with_isnetis<a class="headerlink" href="#segment-with-isnetis" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.segment.isnetis.segment_with_isnetis">
+<code class="sig-prename descclassname">imgutils.segment.isnetis.</code><code class="sig-name descname">segment_with_isnetis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">background</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'lime'</span></em>, <em class="sig-param"><span class="n">scale</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1024</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/segment/isnetis.html#segment_with_isnetis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.segment.isnetis.segment_with_isnetis" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Overview:</dt><dd><p>Segment image with pure color background.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – Original image (assume its size is <code class="docutils literal notranslate"><span class="pre">(H,</span> <span class="pre">W)</span></code>).</p></li>
+<li><p><strong>background</strong> – Background color for padding. Default is <code class="docutils literal notranslate"><span class="pre">lime</span></code> which represents <code class="docutils literal notranslate"><span class="pre">#00ff00</span></code>.</p></li>
+<li><p><strong>scale</strong> – Scale when passing it into neural network. Default is <code class="docutils literal notranslate"><span class="pre">1024</span></code>,
+inspired by <a class="reference external" href="https://huggingface.co/spaces/skytnt/anime-remove-background/blob/main/app.py#L8">https://huggingface.co/spaces/skytnt/anime-remove-background/blob/main/app.py#L8</a> .</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mask and An RGB image featuring a pure-colored background along with a segmented image.</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.segment</span> <span class="kn">import</span> <span class="n">segment_with_isnetis</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask_</span><span class="p">,</span> <span class="n">image_</span> <span class="o">=</span> <span class="n">segment_with_isnetis</span><span class="p">(</span><span class="s1">&#39;hutao.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;hutao_seg.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask_</span><span class="p">,</span> <span class="n">image_</span> <span class="o">=</span> <span class="n">segment_with_isnetis</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>  <span class="c1"># white background</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;skadi_seg.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result should be</p>
+<img alt="../../_images/isnetis_color.plot.py.svg" class="align-center" src="../../_images/isnetis_color.plot.py.svg" /></dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="segment-rgba-with-isnetis">
+<h2>segment_rgba_with_isnetis<a class="headerlink" href="#segment-rgba-with-isnetis" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.segment.isnetis.segment_rgba_with_isnetis">
+<code class="sig-prename descclassname">imgutils.segment.isnetis.</code><code class="sig-name descname">segment_rgba_with_isnetis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">scale</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1024</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/segment/isnetis.html#segment_rgba_with_isnetis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.segment.isnetis.segment_rgba_with_isnetis" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Overview:</dt><dd><p>Segment image with transparent background.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – Original image (assume its size is <code class="docutils literal notranslate"><span class="pre">(H,</span> <span class="pre">W)</span></code>).</p></li>
+<li><p><strong>scale</strong> – Scale when passing it into neural network. Default is <code class="docutils literal notranslate"><span class="pre">1024</span></code>,
+inspired by <a class="reference external" href="https://huggingface.co/spaces/skytnt/anime-remove-background/blob/main/app.py#L8">https://huggingface.co/spaces/skytnt/anime-remove-background/blob/main/app.py#L8</a> .</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mask and An RGBA image featuring a transparent background along with a segmented image.</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.segment</span> <span class="kn">import</span> <span class="n">segment_rgba_with_isnetis</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask_</span><span class="p">,</span> <span class="n">image_</span> <span class="o">=</span> <span class="n">segment_rgba_with_isnetis</span><span class="p">(</span><span class="s1">&#39;hutao.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;hutao_seg.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask_</span><span class="p">,</span> <span class="n">image_</span> <span class="o">=</span> <span class="n">segment_rgba_with_isnetis</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;skadi_seg.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result should be</p>
+<img alt="../../_images/isnetis_trans.plot.py.svg" class="align-center" src="../../_images/isnetis_trans.plot.py.svg" /></dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tagging/index.html" class="btn btn-neutral float-right" title="imgutils.tagging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="imgutils.segment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/halfbody
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.1.0/api_doc/segment/isnetis.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../v0.1.1/api_doc/segment/isnetis.html">v0.1.1</a></dd>
+                        <dd><a href="../../../../v0.2.0/api_doc/segment/isnetis.html">v0.2.0</a></dd>
+                        <dd><a href="../../../../v0.2.1/api_doc/segment/isnetis.html">v0.2.1</a></dd>
+                        <dd><a href="../../../../v0.2.2/api_doc/segment/isnetis.html">v0.2.2</a></dd>
+                        <dd><a href="../../../../v0.2.3/api_doc/segment/isnetis.html">v0.2.3</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="isnetis.html">dev/halfbody</a></dd>
+                        <dd><a href="../../../../ccip/api_doc/segment/isnetis.html">ccip</a></dd>
+                        <dd><a href="../../../resolution/api_doc/segment/isnetis.html">dev/resolution</a></dd>
+                        <dd><a href="../../../../main/api_doc/segment/isnetis.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
