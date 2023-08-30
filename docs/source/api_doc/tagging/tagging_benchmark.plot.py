@@ -58,6 +58,7 @@ if __name__ == '__main__':
             ('wd14-convnext', Wd14Benchmark("ConvNext")),
             ('wd14-convnextv2', Wd14Benchmark("ConvNextV2")),
             ('wd14-vit', Wd14Benchmark("ViT")),
+            ('wd14-moat', Wd14Benchmark("MOAT")),
             ('mldanbooru', MLDanbooruBenchmark()),
         ],
         title='Benchmark for Tagging Models',

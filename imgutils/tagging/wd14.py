@@ -48,6 +48,7 @@ SWIN_MODEL_REPO = "SmilingWolf/wd-v1-4-swinv2-tagger-v2"
 CONV_MODEL_REPO = "SmilingWolf/wd-v1-4-convnext-tagger-v2"
 CONV2_MODEL_REPO = "SmilingWolf/wd-v1-4-convnextv2-tagger-v2"
 VIT_MODEL_REPO = "SmilingWolf/wd-v1-4-vit-tagger-v2"
+MOAT_MODEL_REPO = "SmilingWolf/wd-v1-4-moat-tagger-v2"
 MODEL_FILENAME = "model.onnx"
 LABEL_FILENAME = "selected_tags.csv"
 
@@ -55,7 +56,8 @@ MODEL_NAMES = {
     "SwinV2": SWIN_MODEL_REPO,
     "ConvNext": CONV_MODEL_REPO,
     "ConvNextV2": CONV2_MODEL_REPO,
-    "ViT": VIT_MODEL_REPO
+    "ViT": VIT_MODEL_REPO,
+    "MOAT": MOAT_MODEL_REPO,
 }
 
 
@@ -80,7 +82,7 @@ def _get_wd14_labels() -> Tuple[List[str], List[int], List[int], List[int]]:
     return tag_names, rating_indexes, general_indexes, character_indexes
 
 
-def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
+def get_wd14_tags(image: ImageTyping, model_name: str = "MOAT",
                   general_threshold: float = 0.35, character_threshold: float = 0.85):
     """
     Overview:
@@ -89,7 +91,7 @@ def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
 
     :param image: Image to tagging.
     :param model_name: Name of the mode, should be one of the \
-        ``SwinV2``, ``ConvNext``, ``ConvNextV2`` or ``ViT``, default is ``ConvNextV2``.
+        ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``MOAT``.
     :param general_threshold: Threshold for default tags, default is ``0.35``.
     :param character_threshold: Threshold for character tags, default is ``0.85``.
     :return: Tagging results for levels, features and characters.
