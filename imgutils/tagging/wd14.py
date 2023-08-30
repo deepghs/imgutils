@@ -82,7 +82,7 @@ def _get_wd14_labels() -> Tuple[List[str], List[int], List[int], List[int]]:
     return tag_names, rating_indexes, general_indexes, character_indexes
 
 
-def get_wd14_tags(image: ImageTyping, model_name: str = "MOAT",
+def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
                   general_threshold: float = 0.35, character_threshold: float = 0.85):
     """
     Overview:
@@ -91,7 +91,7 @@ def get_wd14_tags(image: ImageTyping, model_name: str = "MOAT",
 
     :param image: Image to tagging.
     :param model_name: Name of the mode, should be one of the \
-        ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``MOAT``.
+        ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``ConvNextV2``.
     :param general_threshold: Threshold for default tags, default is ``0.35``.
     :param character_threshold: Threshold for character tags, default is ``0.85``.
     :return: Tagging results for levels, features and characters.

@@ -22,7 +22,7 @@ class TestTaggingWd14:
         assert not chars
 
         rating, tags, chars = get_wd14_tags(get_testfile('6125785.jpg'))
-        assert 0.55 <= rating['general']
-        assert 0.20 <= rating['sensitive']
+        assert 0.55 <= rating['general'] <= 0.65
+        assert 0.35 <= rating['sensitive'] <= 0.45
         assert tags['1girl'] >= 0.95
         assert chars['hu_tao_(genshin_impact)'] >= 0.95
