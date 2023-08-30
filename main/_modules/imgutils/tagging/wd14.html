@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>imgutils.tagging.wd14 &mdash; imgutils 0.2.4 documentation</title>
+  <title>imgutils.tagging.wd14 &mdash; imgutils 0.2.5 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
             
           
@@ -226,6 +226,7 @@
 <span class="n">CONV_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-convnext-tagger-v2&quot;</span>
 <span class="n">CONV2_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-convnextv2-tagger-v2&quot;</span>
 <span class="n">VIT_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-vit-tagger-v2&quot;</span>
+<span class="n">MOAT_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-moat-tagger-v2&quot;</span>
 <span class="n">MODEL_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;model.onnx&quot;</span>
 <span class="n">LABEL_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;selected_tags.csv&quot;</span>
 
@@ -233,7 +234,8 @@
     <span class="s2">&quot;SwinV2&quot;</span><span class="p">:</span> <span class="n">SWIN_MODEL_REPO</span><span class="p">,</span>
     <span class="s2">&quot;ConvNext&quot;</span><span class="p">:</span> <span class="n">CONV_MODEL_REPO</span><span class="p">,</span>
     <span class="s2">&quot;ConvNextV2&quot;</span><span class="p">:</span> <span class="n">CONV2_MODEL_REPO</span><span class="p">,</span>
-    <span class="s2">&quot;ViT&quot;</span><span class="p">:</span> <span class="n">VIT_MODEL_REPO</span>
+    <span class="s2">&quot;ViT&quot;</span><span class="p">:</span> <span class="n">VIT_MODEL_REPO</span><span class="p">,</span>
+    <span class="s2">&quot;MOAT&quot;</span><span class="p">:</span> <span class="n">MOAT_MODEL_REPO</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -267,7 +269,7 @@
 
 <span class="sd">    :param image: Image to tagging.</span>
 <span class="sd">    :param model_name: Name of the mode, should be one of the \</span>
-<span class="sd">        ``SwinV2``, ``ConvNext``, ``ConvNextV2`` or ``ViT``, default is ``ConvNextV2``.</span>
+<span class="sd">        ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``ConvNextV2``.</span>
 <span class="sd">    :param general_threshold: Threshold for default tags, default is ``0.35``.</span>
 <span class="sd">    :param character_threshold: Threshold for character tags, default is ``0.85``.</span>
 <span class="sd">    :return: Tagging results for levels, features and characters.</span>
@@ -378,10 +380,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/wd14/index.html">dev/wd14</a></dd>
+                        <dd><a href="wd14.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/resolution/index.html">dev/resolution</a></dd>
-                        <dd><a href="wd14.html">main</a></dd>
                 </dl>
         </div>
     </div>
