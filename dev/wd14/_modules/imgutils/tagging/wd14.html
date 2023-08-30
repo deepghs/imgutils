@@ -260,7 +260,7 @@
     <span class="k">return</span> <span class="n">tag_names</span><span class="p">,</span> <span class="n">rating_indexes</span><span class="p">,</span> <span class="n">general_indexes</span><span class="p">,</span> <span class="n">character_indexes</span>
 
 
-<div class="viewcode-block" id="get_wd14_tags"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.get_wd14_tags">[docs]</a><span class="k">def</span> <span class="nf">get_wd14_tags</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;MOAT&quot;</span><span class="p">,</span>
+<div class="viewcode-block" id="get_wd14_tags"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.get_wd14_tags">[docs]</a><span class="k">def</span> <span class="nf">get_wd14_tags</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ConvNextV2&quot;</span><span class="p">,</span>
                   <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">character_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overview:</span>
@@ -269,7 +269,7 @@
 
 <span class="sd">    :param image: Image to tagging.</span>
 <span class="sd">    :param model_name: Name of the mode, should be one of the \</span>
-<span class="sd">        ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``MOAT``.</span>
+<span class="sd">        ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``ConvNextV2``.</span>
 <span class="sd">    :param general_threshold: Threshold for default tags, default is ``0.35``.</span>
 <span class="sd">    :param character_threshold: Threshold for character tags, default is ``0.85``.</span>
 <span class="sd">    :return: Tagging results for levels, features and characters.</span>
