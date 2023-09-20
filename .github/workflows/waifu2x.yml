@@ -1,8 +1,10 @@
 name: Sync Waifu2x Models
 
 on:
-  push:
+  #  push:
   workflow_dispatch:
+  schedule:
+    - cron: '30 16 * * *'
 
 jobs:
   sync:
