@@ -36,8 +36,6 @@ def load_model_project():
             with zipfile.ZipFile(zip_file, 'r') as zf:
                 zf.extractall(version_dir)
 
-            break
-
         yield ptd
 
 
