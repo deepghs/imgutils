@@ -12,8 +12,8 @@ if __name__ == '__main__':
     image_plot(
         (_detect('nian.png'), 'large scale'),
         (_detect('two_bikini_girls.png'), 'closed heads'),
-        (_detect('genshin_post.jpg'), 'multiple'),
-        (_detect('mostima_post.jpg'), 'anime style'),
+        (_detect('halfbody/squat.jpg'), 'pose'),
+        (_detect('mostima_post.jpg'), 'multiple'),
         columns=2,
-        figsize=(12, 9),
+        figsize=(10, 9),
     )
