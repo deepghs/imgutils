@@ -61,7 +61,7 @@ def detect_eyes(image: ImageTyping, level: str = 's', version: str = 'v1.0', max
         >>> image = 'squat.jpg'
         >>> result = detect_eyes(image)  # detect it
         >>> result
-        [((127, 21, 629, 637), 'eye', 0.9040350914001465)]
+        [((297, 239, 341, 271), 'eye', 0.7760562896728516), ((230, 289, 263, 308), 'eye', 0.7682342529296875)]
         >>>
         >>> # visualize it
         >>> from matplotlib import pyplot as plt
