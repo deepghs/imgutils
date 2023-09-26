@@ -9,6 +9,7 @@ Overview:
         :align: center
 """
 from .censor import detect_censors
+from .eye import detect_eyes
 from .face import detect_faces
 from .halfbody import detect_halfbody
 from .hand import detect_hands
