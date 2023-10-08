@@ -285,7 +285,7 @@
 
 
 <div class="viewcode-block" id="detect_text"><a class="viewcode-back" href="../../../api_doc/detect/text.html#imgutils.detect.text.detect_text">[docs]</a><span class="k">def</span> <span class="nf">detect_text</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-                <span class="n">max_area_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1200</span><span class="p">):</span>
+                <span class="n">max_area_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">640</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Detect text regions in the given image using the specified model and threshold.</span>
 
@@ -295,8 +295,8 @@
 <span class="sd">    :type model: str</span>
 <span class="sd">    :param threshold: Confidence threshold for text detection.</span>
 <span class="sd">    :type threshold: float</span>
-<span class="sd">    :param max_area_size: Max area size when doing inference. Default is ``1200``, which means if</span>
-<span class="sd">        the image&#39;s area is over 1200x1200, it will be resized. When assigned to ``None``,</span>
+<span class="sd">    :param max_area_size: Max area size when doing inference. Default is ``640``, which means if</span>
+<span class="sd">        the image&#39;s area is over 640x640, it will be resized. When assigned to ``None``,</span>
 <span class="sd">        it means do not resize in any case.</span>
 <span class="sd">    :type max_area_size: Optional[int]</span>
 <span class="sd">    :return: List of detected text bounding boxes, labels, and scores.</span>
@@ -314,6 +314,8 @@
     <span class="k">for</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">_get_bounding_box_of_text</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
         <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x0</span> <span class="o">*</span> <span class="n">r</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y0</span> <span class="o">*</span> <span class="n">r</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">r</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y1</span> <span class="o">*</span> <span class="n">r</span><span class="p">)</span>
         <span class="n">bboxes</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
+
+    <span class="n">bboxes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">bboxes</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">bboxes</span></div>
 </pre></div>
 
