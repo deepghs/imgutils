@@ -39,6 +39,17 @@ def drop_overlap_tags(tags: List[str]) -> List[str]:
     :type tags: List[str]
     :return: A list of tags without overlaps.
     :rtype: List[str]
+
+    Examples::
+        >>> from imgutils.tagging import drop_overlap_tags
+        >>>
+        >>> tags = [
+        ...     '1girl', 'solo',
+        ...     'long_hair', 'very_long_hair', 'red_hair',
+        ...     'breasts', 'medium_breasts',
+        ... ]
+        >>> drop_overlap_tags(tags)
+        ['1girl', 'solo', 'very_long_hair', 'red_hair', 'medium_breasts']
     """
     overlap_tags_dict = _get_overlap_tags()
     result_tags = []
@@ -76,6 +87,27 @@ def drop_overlaps_for_dict(tags: Mapping[str, float]) -> Mapping[str, float]:
     :type tags: Mapping[str, float]
     :return: A dictionary with non-overlapping tags and their corresponding confidence scores.
     :rtype: Mapping[str, float]
+
+    Examples::
+        >>> from imgutils.tagging import drop_overlaps_for_dict
+        >>>
+        >>> tags = {
+        ...     '1girl': 0.8849405313291128,
+        ...     'solo': 0.8548297594823425,
+        ...     'long_hair': 0.03910296474461261,
+        ...     'very_long_hair': 0.6615180440330748,
+        ...     'red_hair': 0.21552028866308015,
+        ...     'breasts': 0.3165260620737027,
+        ...     'medium_breasts': 0.47744464927382957,
+        ... }
+        >>> drop_overlaps_for_dict(tags)
+        {
+            '1girl': 0.8849405313291128,
+            'solo': 0.8548297594823425,
+            'very_long_hair': 0.6615180440330748,
+            'red_hair': 0.21552028866308015,
+            'medium_breasts': 0.47744464927382957
+        }
     """
     key_set = set(drop_overlap_tags(list(tags.keys())))
     return {tag: confidence for tag, confidence in tags.items() if tag in key_set}
