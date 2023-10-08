@@ -29,10 +29,10 @@
    "execution_count": 1,
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-10-08T09:55:43.728234Z",
-     "iopub.status.busy": "2023-10-08T09:55:43.727915Z",
-     "iopub.status.idle": "2023-10-08T09:55:44.930194Z",
-     "shell.execute_reply": "2023-10-08T09:55:44.929394Z"
+     "iopub.execute_input": "2023-10-08T10:41:32.249308Z",
+     "iopub.status.busy": "2023-10-08T10:41:32.249028Z",
+     "iopub.status.idle": "2023-10-08T10:41:33.492317Z",
+     "shell.execute_reply": "2023-10-08T10:41:33.491336Z"
     },
     "pycharm": {
      "name": "#%%\n"
@@ -45,9 +45,9 @@
      "text": [
       "OS: Linux-6.2.0-1012-azure-x86_64-with-glibc2.34\n",
       "Python: CPython 3.8.18\n",
-      "CPU Brand: Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz\n",
+      "CPU Brand: Intel(R) Xeon(R) Platinum 8171M CPU @ 2.60GHz\n",
       "CPU Count: 2\n",
-      "CPU Freq: 2793.436 MHz\n",
+      "CPU Freq: 2095.157 MHz\n",
       "Memory Size: 6.760 GiB\n",
       "Has CUDA: No\n"
      ]

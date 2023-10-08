@@ -217,6 +217,17 @@
 <span class="sd">    :type tags: List[str]</span>
 <span class="sd">    :return: A list of tags without overlaps.</span>
 <span class="sd">    :rtype: List[str]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging import drop_overlap_tags</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tags = [</span>
+<span class="sd">        ...     &#39;1girl&#39;, &#39;solo&#39;,</span>
+<span class="sd">        ...     &#39;long_hair&#39;, &#39;very_long_hair&#39;, &#39;red_hair&#39;,</span>
+<span class="sd">        ...     &#39;breasts&#39;, &#39;medium_breasts&#39;,</span>
+<span class="sd">        ... ]</span>
+<span class="sd">        &gt;&gt;&gt; drop_overlap_tags(tags)</span>
+<span class="sd">        [&#39;1girl&#39;, &#39;solo&#39;, &#39;very_long_hair&#39;, &#39;red_hair&#39;, &#39;medium_breasts&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">overlap_tags_dict</span> <span class="o">=</span> <span class="n">_get_overlap_tags</span><span class="p">()</span>
     <span class="n">result_tags</span> <span class="o">=</span> <span class="p">[]</span>
@@ -254,6 +265,27 @@
 <span class="sd">    :type tags: Mapping[str, float]</span>
 <span class="sd">    :return: A dictionary with non-overlapping tags and their corresponding confidence scores.</span>
 <span class="sd">    :rtype: Mapping[str, float]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging import drop_overlaps_for_dict</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; tags = {</span>
+<span class="sd">        ...     &#39;1girl&#39;: 0.8849405313291128,</span>
+<span class="sd">        ...     &#39;solo&#39;: 0.8548297594823425,</span>
+<span class="sd">        ...     &#39;long_hair&#39;: 0.03910296474461261,</span>
+<span class="sd">        ...     &#39;very_long_hair&#39;: 0.6615180440330748,</span>
+<span class="sd">        ...     &#39;red_hair&#39;: 0.21552028866308015,</span>
+<span class="sd">        ...     &#39;breasts&#39;: 0.3165260620737027,</span>
+<span class="sd">        ...     &#39;medium_breasts&#39;: 0.47744464927382957,</span>
+<span class="sd">        ... }</span>
+<span class="sd">        &gt;&gt;&gt; drop_overlaps_for_dict(tags)</span>
+<span class="sd">        {</span>
+<span class="sd">            &#39;1girl&#39;: 0.8849405313291128,</span>
+<span class="sd">            &#39;solo&#39;: 0.8548297594823425,</span>
+<span class="sd">            &#39;very_long_hair&#39;: 0.6615180440330748,</span>
+<span class="sd">            &#39;red_hair&#39;: 0.21552028866308015,</span>
+<span class="sd">            &#39;medium_breasts&#39;: 0.47744464927382957</span>
+<span class="sd">        }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">key_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">drop_overlap_tags</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tags</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
     <span class="k">return</span> <span class="p">{</span><span class="n">tag</span><span class="p">:</span> <span class="n">confidence</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">confidence</span> <span class="ow">in</span> <span class="n">tags</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">key_set</span><span class="p">}</span></div>
