@@ -11,7 +11,7 @@ def _detect(img, **kwargs):
 if __name__ == '__main__':
     image_plot(
         (_detect('text/ml1.png'), 'Multiple Languages I'),
-        (_detect('text/ml2.png'), 'Multiple Languages II'),
+        (_detect('text/ml2.jpg'), 'Multiple Languages II'),
         columns=1,
         figsize=(8, 9),
     )
