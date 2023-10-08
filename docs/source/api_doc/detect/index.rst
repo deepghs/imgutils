@@ -16,5 +16,6 @@ imgutils.detect
     hand
     head
     person
+    text
     visual
 
