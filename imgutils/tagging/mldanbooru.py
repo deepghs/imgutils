@@ -74,6 +74,7 @@ def get_mldanbooru_tags(image: ImageTyping, use_real_name: bool = False,
     :param size: Size when passing the resized image into model, default is ``448``.
     :param keep_ratio: Keep the original ratio between height and width when passing the image into
         model, default is ``False``.
+    :param drop_overlap: Drop overlap tags or not, default is ``False``.
 
     Example:
         Here are some images for example

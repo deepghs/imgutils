@@ -96,6 +96,7 @@ def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
         ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``ConvNextV2``.
     :param general_threshold: Threshold for default tags, default is ``0.35``.
     :param character_threshold: Threshold for character tags, default is ``0.85``.
+    :param drop_overlap: Drop overlap tags or not, default is ``False``.
     :return: Tagging results for levels, features and characters.
 
     Example:

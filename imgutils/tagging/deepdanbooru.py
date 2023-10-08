@@ -75,6 +75,7 @@ def get_deepdanbooru_tags(image: ImageTyping, use_real_name: bool = False,
         The default value of ``False`` indicates the use of the original tag names.
     :param general_threshold: Threshold for default tags, default is ``0.35``.
     :param character_threshold: Threshold for character tags, default is ``0.85``.
+    :param drop_overlap: Drop overlap tags or not, default is ``False``.
     :return: Tagging results for levels, features and characters.
 
     Example:
