@@ -11,6 +11,7 @@ import pandas as pd
 from PIL import Image
 from huggingface_hub import hf_hub_download
 
+from .overlap import drop_overlaps_for_dict
 from ..data import load_image, ImageTyping
 from ..utils import open_onnx_model
 
@@ -57,7 +58,8 @@ def _get_mldanbooru_labels(use_real_name: bool = False) -> Tuple[List[str], List
 
 
 def get_mldanbooru_tags(image: ImageTyping, use_real_name: bool = False,
-                        threshold: float = 0.7, size: int = 448, keep_ratio: bool = False):
+                        threshold: float = 0.7, size: int = 448, keep_ratio: bool = False,
+                        drop_overlap: bool = False):
     """
     Overview:
         Tagging image with ML-Danbooru, similar to
@@ -72,6 +74,7 @@ def get_mldanbooru_tags(image: ImageTyping, use_real_name: bool = False,
     :param size: Size when passing the resized image into model, default is ``448``.
     :param keep_ratio: Keep the original ratio between height and width when passing the image into
         model, default is ``False``.
+    :param drop_overlap: Drop overlap tags or not, default is ``False``.
 
     Example:
         Here are some images for example
@@ -103,4 +106,8 @@ def get_mldanbooru_tags(image: ImageTyping, use_real_name: bool = False,
     output = (1 / (1 + np.exp(-native_output))).reshape(-1)
     tags = _get_mldanbooru_labels(use_real_name)
     pairs = sorted([(tags[i], ratio) for i, ratio in enumerate(output)], key=lambda x: (-x[1], x[0]))
-    return {tag: float(ratio) for tag, ratio in pairs if ratio >= threshold}
+
+    general_tags = {tag: float(ratio) for tag, ratio in pairs if ratio >= threshold}
+    if drop_overlap:
+        general_tags = drop_overlaps_for_dict(general_tags)
+    return general_tags
