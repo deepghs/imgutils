@@ -241,14 +241,18 @@
                          <span class="sa">f</span><span class="s1">&#39;but unsupported provider </span><span class="si">{</span><span class="n">provider</span><span class="si">!r}</span><span class="s1"> found.&#39;</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_open_onnx_model</span><span class="p">(</span><span class="n">ckpt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InferenceSession</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_open_onnx_model</span><span class="p">(</span><span class="n">ckpt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_cpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InferenceSession</span><span class="p">:</span>
     <span class="n">options</span> <span class="o">=</span> <span class="n">SessionOptions</span><span class="p">()</span>
     <span class="n">options</span><span class="o">.</span><span class="n">graph_optimization_level</span> <span class="o">=</span> <span class="n">GraphOptimizationLevel</span><span class="o">.</span><span class="n">ORT_ENABLE_ALL</span>
     <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">:</span>
         <span class="n">options</span><span class="o">.</span><span class="n">intra_op_num_threads</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
 
+    <span class="n">providers</span> <span class="o">=</span> <span class="p">[</span><span class="n">provider</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">use_cpu</span> <span class="ow">and</span> <span class="s2">&quot;CPUExecutionProvider&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">providers</span><span class="p">:</span>
+        <span class="n">providers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">)</span>
+
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Model </span><span class="si">{</span><span class="n">ckpt</span><span class="si">!r}</span><span class="s1"> loaded with provider </span><span class="si">{</span><span class="n">provider</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">InferenceSession</span><span class="p">(</span><span class="n">ckpt</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="p">[</span><span class="n">provider</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">InferenceSession</span><span class="p">(</span><span class="n">ckpt</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="n">providers</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="open_onnx_model"><a class="viewcode-back" href="../../../api_doc/utils/onnxruntime.html#imgutils.utils.onnxruntime.open_onnx_model">[docs]</a><span class="k">def</span> <span class="nf">open_onnx_model</span><span class="p">(</span><span class="n">ckpt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InferenceSession</span><span class="p">:</span>
@@ -317,11 +321,11 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/onnx/index.html">dev/onnx</a></dd>
+                        <dd><a href="onnxruntime.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../../dev/onnx/index.html">dev/onnx</a></dd>
                         <dd><a href="../../../../dev/resolution/index.html">dev/resolution</a></dd>
                         <dd><a href="../../../../dev/waifu2x/index.html">dev/waifu2x</a></dd>
-                        <dd><a href="onnxruntime.html">main</a></dd>
                 </dl>
         </div>
     </div>
