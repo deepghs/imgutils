@@ -5,7 +5,7 @@ from imgutils.tagging.wd14 import _get_wd14_model
 from test.testings import get_testfile
 
 
-@pytest.fixture()
+@pytest.fixture(autouse=True, scope='module')
 def _release_model_after_run():
     try:
         yield

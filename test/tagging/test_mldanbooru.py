@@ -5,7 +5,7 @@ from imgutils.tagging.mldanbooru import _open_mldanbooru_model
 from test.testings import get_testfile
 
 
-@pytest.fixture()
+@pytest.fixture(autouse=True, scope='module')
 def _release_model_after_run():
     try:
         yield

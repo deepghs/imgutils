@@ -5,7 +5,7 @@ from imgutils.tagging.deepdanbooru import _get_deepdanbooru_model
 from test.testings import get_testfile
 
 
-@pytest.fixture()
+@pytest.fixture(autouse=True, scope='module')
 def _release_model_after_run():
     try:
         yield
@@ -15,7 +15,7 @@ def _release_model_after_run():
 
 @pytest.mark.unittest
 class TestTaggingDeepdanbooru:
-    def test_get_deepdanbooru_tags(self, _release_model_after_run):
+    def test_get_deepdanbooru_tags(self):
         rating, tags, chars = get_deepdanbooru_tags(get_testfile('6124220.jpg'))
         assert rating['rating:safe'] > 0.9
         assert tags['greyscale'] >= 0.8
