@@ -11,6 +11,7 @@ import huggingface_hub
 import numpy as np
 import pandas as pd
 
+from .overlap import drop_overlaps_for_dict
 from ..data import load_image, ImageTyping
 from ..utils import open_onnx_model
 
@@ -83,7 +84,8 @@ def _get_wd14_labels() -> Tuple[List[str], List[int], List[int], List[int]]:
 
 
 def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
-                  general_threshold: float = 0.35, character_threshold: float = 0.85):
+                  general_threshold: float = 0.35, character_threshold: float = 0.85,
+                  drop_overlap: bool = False):
     """
     Overview:
         Tagging image by wd14 v2 model. Similar to
@@ -94,6 +96,7 @@ def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
         ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``ConvNextV2``.
     :param general_threshold: Threshold for default tags, default is ``0.35``.
     :param character_threshold: Threshold for character tags, default is ``0.85``.
+    :param drop_overlap: Drop overlap tags or not, default is ``False``.
     :return: Tagging results for levels, features and characters.
 
     Example:
@@ -148,6 +151,8 @@ def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
     general_names = [labels[i] for i in general_indexes]
     general_res = [x for x in general_names if x[1] > general_threshold]
     general_res = dict(general_res)
+    if drop_overlap:
+        general_res = drop_overlaps_for_dict(general_res)
 
     # Everything else is characters: pick anywhere prediction confidence > threshold
     character_names = [labels[i] for i in character_indexes]

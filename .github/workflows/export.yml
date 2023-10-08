@@ -44,8 +44,6 @@ jobs:
         uses: nick-fields/retry@v2
         env:
           CI: 'true'
-          HF_NARUGO_USERNAME: ${{ secrets.HF_NARUGO_USERNAME }}
-          HF_NARUGO_PASSWORD: ${{ secrets.HF_NARUGO_PASSWORD }}
         with:
           shell: bash
           timeout_minutes: 20

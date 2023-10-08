@@ -13,7 +13,7 @@ def _release_model_after_run():
 
 
 @pytest.mark.unittest
-class TestDetectHead:
+class TestDetectHalfBody:
     def test_detect_halfbody(self):
         detections = detect_halfbody(get_testfile('nude_girl.png'))
         assert len(detections) == 1

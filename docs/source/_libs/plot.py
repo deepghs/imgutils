@@ -1,6 +1,7 @@
 from typing import Tuple, List
 
 import matplotlib.pyplot as plt
+import numpy as np
 from PIL import Image
 
 from cli import _wrap_func_as_cli
@@ -44,6 +45,14 @@ def image_plot(*images, save_as: str, columns=2, keep_axis: bool = False, figsiz
     n = len(images)
     rows = (n + columns - 1) // columns
     fig, axs = plt.subplots(rows, columns, figsize=figsize)
+    if rows == 1 and columns == 1:
+        axs = np.array([[axs]])
+    elif rows == 1:
+        axs = axs[None, ...]
+    elif columns == 1:
+        axs = axs[..., None]
+    else:
+        pass
     plt.subplots_adjust(wspace=0.2, hspace=0.15)
     for i, img in enumerate(images, start=0):
         xi, yi = i // columns, i % columns

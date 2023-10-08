@@ -10,10 +10,12 @@ imgutils.detect
     :maxdepth: 3
 
     censor
+    eye
     face
     halfbody
     hand
     head
     person
+    text
     visual
 
