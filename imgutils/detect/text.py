@@ -107,7 +107,7 @@ def _get_bounding_box_of_text(image: ImageTyping, model: str, threshold: float) 
 
 
 def detect_text(image: ImageTyping, model: str = _DEFAULT_MODEL, threshold: float = 0.05,
-                max_area_size: Optional[int] = 1200):
+                max_area_size: Optional[int] = 640):
     """
     Detect text regions in the given image using the specified model and threshold.
 
@@ -117,8 +117,8 @@ def detect_text(image: ImageTyping, model: str = _DEFAULT_MODEL, threshold: floa
     :type model: str
     :param threshold: Confidence threshold for text detection.
     :type threshold: float
-    :param max_area_size: Max area size when doing inference. Default is ``1200``, which means if
-        the image's area is over 1200x1200, it will be resized. When assigned to ``None``,
+    :param max_area_size: Max area size when doing inference. Default is ``640``, which means if
+        the image's area is over 640x640, it will be resized. When assigned to ``None``,
         it means do not resize in any case.
     :type max_area_size: Optional[int]
     :return: List of detected text bounding boxes, labels, and scores.
@@ -136,4 +136,6 @@ def detect_text(image: ImageTyping, model: str = _DEFAULT_MODEL, threshold: floa
     for (x0, y0, x1, y1), score in _get_bounding_box_of_text(image, model, threshold):
         x0, y0, x1, y1 = int(x0 * r), int(y0 * r), int(x1 * r), int(y1 * r)
         bboxes.append(((x0, y0, x1, y1), 'text', score))
+
+    bboxes = sorted(bboxes, key=lambda x: x[2], reverse=True)
     return bboxes
