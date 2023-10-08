@@ -16,6 +16,7 @@ import pandas as pd
 from PIL import Image
 from huggingface_hub import hf_hub_download
 
+from .overlap import drop_overlaps_for_dict
 from ..data import ImageTyping, load_image
 from ..utils import open_onnx_model
 
@@ -31,7 +32,7 @@ def _get_deepdanbooru_labels():
     general_indexes = list(np.where(df["category"] == 0)[0])
     character_indexes = list(np.where(df["category"] == 4)[0])
     return tag_names, tag_real_names, \
-           rating_indexes, general_indexes, character_indexes
+        rating_indexes, general_indexes, character_indexes
 
 
 @lru_cache()
@@ -61,7 +62,8 @@ def _image_preprocess(image: Image.Image) -> np.ndarray:
 
 
 def get_deepdanbooru_tags(image: ImageTyping, use_real_name: bool = False,
-                          general_threshold: float = 0.5, character_threshold: float = 0.5):
+                          general_threshold: float = 0.5, character_threshold: float = 0.5,
+                          drop_overlap: bool = False):
     """
     Overview:
         Get tags for anime image based on ``deepdanbooru`` model.
@@ -73,6 +75,7 @@ def get_deepdanbooru_tags(image: ImageTyping, use_real_name: bool = False,
         The default value of ``False`` indicates the use of the original tag names.
     :param general_threshold: Threshold for default tags, default is ``0.35``.
     :param character_threshold: Threshold for character tags, default is ``0.85``.
+    :param drop_overlap: Drop overlap tags or not, default is ``False``.
     :return: Tagging results for levels, features and characters.
 
     Example:
@@ -120,6 +123,8 @@ def get_deepdanbooru_tags(image: ImageTyping, use_real_name: bool = False,
     general_names = [labels[i] for i in general_indexes]
     general_res = [x for x in general_names if x[1] > general_threshold]
     general_res = dict(general_res)
+    if drop_overlap:
+        general_res = drop_overlaps_for_dict(general_res)
 
     # Everything else is characters: pick anywhere prediction confidence > threshold
     character_names = [labels[i] for i in character_indexes]
