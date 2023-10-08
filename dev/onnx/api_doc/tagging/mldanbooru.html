@@ -117,6 +117,7 @@
 <li class="toctree-l2"><a class="reference internal" href="wd14.html">imgutils.tagging.wd14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deepdanbooru.html">imgutils.tagging.deepdanbooru</a></li>
 <li class="toctree-l2"><a class="reference internal" href="format.html">imgutils.tagging.format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overlap.html">imgutils.tagging.overlap</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
@@ -200,7 +201,7 @@
 <h2>get_mldanbooru_tags<a class="headerlink" href="#get-mldanbooru-tags" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.tagging.mldanbooru.get_mldanbooru_tags">
-<code class="sig-prename descclassname">imgutils.tagging.mldanbooru.</code><code class="sig-name descname">get_mldanbooru_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">use_real_name</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">448</span></em>, <em class="sig-param"><span class="n">keep_ratio</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/mldanbooru.html#get_mldanbooru_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.tagging.mldanbooru.get_mldanbooru_tags" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">imgutils.tagging.mldanbooru.</code><code class="sig-name descname">get_mldanbooru_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">use_real_name</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">448</span></em>, <em class="sig-param"><span class="n">keep_ratio</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">drop_overlap</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/mldanbooru.html#get_mldanbooru_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.tagging.mldanbooru.get_mldanbooru_tags" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Overview:</dt><dd><p>Tagging image with ML-Danbooru, similar to
 <a class="reference external" href="https://huggingface.co/spaces/deepghs/ml-danbooru-demo">deepghs/ml-danbooru-demo</a>.</p>
@@ -218,6 +219,7 @@ The default value of <code class="docutils literal notranslate"><span class="pre
 <li><p><strong>size</strong> – Size when passing the resized image into model, default is <code class="docutils literal notranslate"><span class="pre">448</span></code>.</p></li>
 <li><p><strong>keep_ratio</strong> – Keep the original ratio between height and width when passing the image into
 model, default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>drop_overlap</strong> – Drop overlap tags or not, default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -303,11 +305,11 @@ model, default is <code class="docutils literal notranslate"><span class="pre">F
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../main/api_doc/tagging/mldanbooru.html">main</a></dd>
-                        <dd><a href="../../../../ccip/api_doc/tagging/mldanbooru.html">ccip</a></dd>
                         <dd><a href="mldanbooru.html">dev/onnx</a></dd>
+                        <dd><a href="../../../../ccip/api_doc/tagging/mldanbooru.html">ccip</a></dd>
                         <dd><a href="../../../resolution/api_doc/tagging/mldanbooru.html">dev/resolution</a></dd>
                         <dd><a href="../../../waifu2x/api_doc/tagging/mldanbooru.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../../../main/api_doc/tagging/mldanbooru.html">main</a></dd>
                 </dl>
         </div>
     </div>

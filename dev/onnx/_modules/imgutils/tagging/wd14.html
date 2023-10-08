@@ -189,6 +189,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
+<span class="kn">from</span> <span class="nn">.overlap</span> <span class="kn">import</span> <span class="n">drop_overlaps_for_dict</span>
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
 
@@ -261,7 +262,8 @@
 
 
 <div class="viewcode-block" id="get_wd14_tags"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.get_wd14_tags">[docs]</a><span class="k">def</span> <span class="nf">get_wd14_tags</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ConvNextV2&quot;</span><span class="p">,</span>
-                  <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">character_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">):</span>
+                  <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">character_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">,</span>
+                  <span class="n">drop_overlap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overview:</span>
 <span class="sd">        Tagging image by wd14 v2 model. Similar to</span>
@@ -272,6 +274,7 @@
 <span class="sd">        ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``ConvNextV2``.</span>
 <span class="sd">    :param general_threshold: Threshold for default tags, default is ``0.35``.</span>
 <span class="sd">    :param character_threshold: Threshold for character tags, default is ``0.85``.</span>
+<span class="sd">    :param drop_overlap: Drop overlap tags or not, default is ``False``.</span>
 <span class="sd">    :return: Tagging results for levels, features and characters.</span>
 
 <span class="sd">    Example:</span>
@@ -326,6 +329,8 @@
     <span class="n">general_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">general_indexes</span><span class="p">]</span>
     <span class="n">general_res</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">general_names</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">general_threshold</span><span class="p">]</span>
     <span class="n">general_res</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">general_res</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">drop_overlap</span><span class="p">:</span>
+        <span class="n">general_res</span> <span class="o">=</span> <span class="n">drop_overlaps_for_dict</span><span class="p">(</span><span class="n">general_res</span><span class="p">)</span>
 
     <span class="c1"># Everything else is characters: pick anywhere prediction confidence &gt; threshold</span>
     <span class="n">character_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">character_indexes</span><span class="p">]</span>
@@ -382,11 +387,11 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../../main/index.html">main</a></dd>
-                        <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="wd14.html">dev/onnx</a></dd>
+                        <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../resolution/index.html">dev/resolution</a></dd>
                         <dd><a href="../../../../waifu2x/index.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div>
