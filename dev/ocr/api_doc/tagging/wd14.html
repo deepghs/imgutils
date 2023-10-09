@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.tagging.wd14 &mdash; imgutils 0.2.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.tagging.deepdanbooru" href="deepdanbooru.html" />
+    <link rel="prev" title="imgutils.tagging.mldanbooru" href="mldanbooru.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.tagging</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="mldanbooru.html">imgutils.tagging.mldanbooru</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.tagging.wd14</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#get-wd14-tags">get_wd14_tags</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deepdanbooru.html">imgutils.tagging.deepdanbooru</a></li>
+<li class="toctree-l2"><a class="reference internal" href="format.html">imgutils.tagging.format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overlap.html">imgutils.tagging.overlap</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">imgutils.tagging</a> &raquo;</li>
+        
+      <li>imgutils.tagging.wd14</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api_doc/tagging/wd14.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <section id="module-imgutils.tagging.wd14">
+<span id="imgutils-tagging-wd14"></span><h1>imgutils.tagging.wd14<a class="headerlink" href="#module-imgutils.tagging.wd14" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt>Overview:</dt><dd><p>Tagging utils based on wd14 v2, inspired by
+<a class="reference external" href="https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags">SmilingWolf/wd-v1-4-tags</a> .</p>
+</dd>
+</dl>
+<section id="get-wd14-tags">
+<h2>get_wd14_tags<a class="headerlink" href="#get-wd14-tags" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.tagging.wd14.get_wd14_tags">
+<code class="sig-prename descclassname">imgutils.tagging.wd14.</code><code class="sig-name descname">get_wd14_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ConvNextV2'</span></em>, <em class="sig-param"><span class="n">general_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.35</span></em>, <em class="sig-param"><span class="n">character_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.85</span></em>, <em class="sig-param"><span class="n">drop_overlap</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/wd14.html#get_wd14_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.tagging.wd14.get_wd14_tags" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Overview:</dt><dd><p>Tagging image by wd14 v2 model. Similar to
+<a class="reference external" href="https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags">SmilingWolf/wd-v1-4-tags</a> .</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – Image to tagging.</p></li>
+<li><p><strong>model_name</strong> – Name of the mode, should be one of the         <code class="docutils literal notranslate"><span class="pre">SwinV2</span></code>, <code class="docutils literal notranslate"><span class="pre">ConvNext</span></code>, <code class="docutils literal notranslate"><span class="pre">ConvNextV2</span></code>, <code class="docutils literal notranslate"><span class="pre">ViT</span></code> or <code class="docutils literal notranslate"><span class="pre">MOAT</span></code>, default is <code class="docutils literal notranslate"><span class="pre">ConvNextV2</span></code>.</p></li>
+<li><p><strong>general_threshold</strong> – Threshold for default tags, default is <code class="docutils literal notranslate"><span class="pre">0.35</span></code>.</p></li>
+<li><p><strong>character_threshold</strong> – Threshold for character tags, default is <code class="docutils literal notranslate"><span class="pre">0.85</span></code>.</p></li>
+<li><p><strong>drop_overlap</strong> – Drop overlap tags or not, default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tagging results for levels, features and characters.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><p>Here are some images for example</p>
+<img alt="../../_images/tagging_demo.plot.py.svg" class="align-center" src="../../_images/tagging_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">get_wd14_tags</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">chars</span> <span class="o">=</span> <span class="n">get_wd14_tags</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span>
+<span class="go">{&#39;general&#39;: 0.0011444687843322754, &#39;sensitive&#39;: 0.8876402974128723, &#39;questionable&#39;: 0.106781005859375, &#39;explicit&#39;: 0.000277101993560791}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span>
+<span class="go">{&#39;1girl&#39;: 0.997527003288269, &#39;solo&#39;: 0.9797663688659668, &#39;long_hair&#39;: 0.9905703663825989, &#39;breasts&#39;: 0.9761719703674316, &#39;looking_at_viewer&#39;: 0.8981098532676697, &#39;bangs&#39;: 0.8810765743255615, &#39;large_breasts&#39;: 0.9498510360717773, &#39;shirt&#39;: 0.8377365469932556, &#39;red_eyes&#39;: 0.945058286190033, &#39;gloves&#39;: 0.9457170367240906, &#39;navel&#39;: 0.969594419002533, &#39;holding&#39;: 0.7881088852882385, &#39;hair_between_eyes&#39;: 0.7687551379203796, &#39;very_long_hair&#39;: 0.9301245212554932, &#39;standing&#39;: 0.6703325510025024, &#39;white_hair&#39;: 0.5292627811431885, &#39;short_sleeves&#39;: 0.8677047491073608, &#39;grey_hair&#39;: 0.5859264731407166, &#39;thighs&#39;: 0.9536856412887573, &#39;cowboy_shot&#39;: 0.8056888580322266, &#39;sweat&#39;: 0.8394746780395508, &#39;outdoors&#39;: 0.9473626613616943, &#39;parted_lips&#39;: 0.8986269235610962, &#39;sky&#39;: 0.9385137557983398, &#39;shorts&#39;: 0.8408567905426025, &#39;alternate_costume&#39;: 0.4245271384716034, &#39;day&#39;: 0.931140661239624, &#39;black_gloves&#39;: 0.8830795884132385, &#39;midriff&#39;: 0.7279844284057617, &#39;artist_name&#39;: 0.5333830714225769, &#39;cloud&#39;: 0.64717698097229, &#39;stomach&#39;: 0.9516432285308838, &#39;blue_sky&#39;: 0.9655293226242065, &#39;crop_top&#39;: 0.9485014081001282, &#39;black_shirt&#39;: 0.7366660833358765, &#39;short_shorts&#39;: 0.7161656618118286, &#39;ass_visible_through_thighs&#39;: 0.5858667492866516, &#39;black_shorts&#39;: 0.6186309456825256, &#39;thigh_gap&#39;: 0.41193312406539917, &#39;no_headwear&#39;: 0.467605859041214, &#39;low-tied_long_hair&#39;: 0.36282333731651306, &#39;sportswear&#39;: 0.3756745457649231, &#39;motion_blur&#39;: 0.5091936588287354, &#39;baseball_bat&#39;: 0.951993465423584, &#39;baseball&#39;: 0.5634750723838806, &#39;holding_baseball_bat&#39;: 0.8232709169387817}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chars</span>
+<span class="go">{&#39;skadi_(arknights)&#39;: 0.9869340658187866}</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">chars</span> <span class="o">=</span> <span class="n">get_wd14_tags</span><span class="p">(</span><span class="s1">&#39;hutao.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span>
+<span class="go">{&#39;general&#39;: 0.49491602182388306, &#39;sensitive&#39;: 0.5193622708320618, &#39;questionable&#39;: 0.003406703472137451, &#39;explicit&#39;: 0.0007208287715911865}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span>
+<span class="go">{&#39;1girl&#39;: 0.9798132181167603, &#39;solo&#39;: 0.8046203851699829, &#39;long_hair&#39;: 0.7596215009689331, &#39;looking_at_viewer&#39;: 0.7620116472244263, &#39;blush&#39;: 0.46084529161453247, &#39;smile&#39;: 0.48454540967941284, &#39;bangs&#39;: 0.5152207016944885, &#39;skirt&#39;: 0.8023070096969604, &#39;brown_hair&#39;: 0.8653596639633179, &#39;hair_ornament&#39;: 0.7201820611953735, &#39;red_eyes&#39;: 0.7816740870475769, &#39;long_sleeves&#39;: 0.697688639163971, &#39;twintails&#39;: 0.8974947333335876, &#39;school_uniform&#39;: 0.7491052746772766, &#39;jacket&#39;: 0.5015512704849243, &#39;flower&#39;: 0.6401398181915283, &#39;ahoge&#39;: 0.43420469760894775, &#39;pleated_skirt&#39;: 0.4528769850730896, &#39;outdoors&#39;: 0.5730487704277039, &#39;tongue&#39;: 0.6739872694015503, &#39;hair_flower&#39;: 0.5545973181724548, &#39;tongue_out&#39;: 0.6946243047714233, &#39;bag&#39;: 0.5487751364707947, &#39;symbol-shaped_pupils&#39;: 0.7439308166503906, &#39;blazer&#39;: 0.4186026453971863, &#39;backpack&#39;: 0.47378358244895935, &#39;:p&#39;: 0.4690653085708618, &#39;ghost&#39;: 0.7565015554428101}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chars</span>
+<span class="go">{&#39;hu_tao_(genshin_impact)&#39;: 0.9262397289276123, &#39;boo_tao_(genshin_impact)&#39;: 0.942080020904541}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="deepdanbooru.html" class="btn btn-neutral float-right" title="imgutils.tagging.deepdanbooru" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mldanbooru.html" class="btn btn-neutral float-left" title="imgutils.tagging.mldanbooru" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/ocr
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.1.0/api_doc/tagging/wd14.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../v0.1.1/api_doc/tagging/wd14.html">v0.1.1</a></dd>
+                        <dd><a href="../../../../v0.2.0/api_doc/tagging/wd14.html">v0.2.0</a></dd>
+                        <dd><a href="../../../../v0.2.1/api_doc/tagging/wd14.html">v0.2.1</a></dd>
+                        <dd><a href="../../../../v0.2.2/api_doc/tagging/wd14.html">v0.2.2</a></dd>
+                        <dd><a href="../../../../v0.2.3/api_doc/tagging/wd14.html">v0.2.3</a></dd>
+                        <dd><a href="../../../../v0.2.4/api_doc/tagging/wd14.html">v0.2.4</a></dd>
+                        <dd><a href="../../../../v0.2.5/api_doc/tagging/wd14.html">v0.2.5</a></dd>
+                        <dd><a href="../../../../v0.2.6/api_doc/tagging/wd14.html">v0.2.6</a></dd>
+                        <dd><a href="../../../../v0.2.7/api_doc/tagging/wd14.html">v0.2.7</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="wd14.html">dev/ocr</a></dd>
+                        <dd><a href="../../../../ccip/api_doc/tagging/wd14.html">ccip</a></dd>
+                        <dd><a href="../../../onnx/api_doc/tagging/wd14.html">dev/onnx</a></dd>
+                        <dd><a href="../../../resolution/api_doc/tagging/wd14.html">dev/resolution</a></dd>
+                        <dd><a href="../../../waifu2x/api_doc/tagging/wd14.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../../../main/api_doc/tagging/wd14.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
