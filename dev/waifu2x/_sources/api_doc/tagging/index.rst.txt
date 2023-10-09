@@ -13,3 +13,4 @@ imgutils.tagging
     wd14
     deepdanbooru
     format
+    overlap

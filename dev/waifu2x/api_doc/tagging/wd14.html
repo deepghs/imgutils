@@ -9,7 +9,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>imgutils.tagging.wd14 &mdash; imgutils 0.2.5 documentation</title>
+  <title>imgutils.tagging.wd14 &mdash; imgutils 0.2.7 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.2.5
+                0.2.7
               </div>
             
           
@@ -117,6 +117,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="deepdanbooru.html">imgutils.tagging.deepdanbooru</a></li>
 <li class="toctree-l2"><a class="reference internal" href="format.html">imgutils.tagging.format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overlap.html">imgutils.tagging.overlap</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
@@ -200,7 +201,7 @@
 <h2>get_wd14_tags<a class="headerlink" href="#get-wd14-tags" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.tagging.wd14.get_wd14_tags">
-<code class="sig-prename descclassname">imgutils.tagging.wd14.</code><code class="sig-name descname">get_wd14_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ConvNextV2'</span></em>, <em class="sig-param"><span class="n">general_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.35</span></em>, <em class="sig-param"><span class="n">character_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.85</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/wd14.html#get_wd14_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.tagging.wd14.get_wd14_tags" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">imgutils.tagging.wd14.</code><code class="sig-name descname">get_wd14_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ConvNextV2'</span></em>, <em class="sig-param"><span class="n">general_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.35</span></em>, <em class="sig-param"><span class="n">character_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.85</span></em>, <em class="sig-param"><span class="n">drop_overlap</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/wd14.html#get_wd14_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.tagging.wd14.get_wd14_tags" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Overview:</dt><dd><p>Tagging image by wd14 v2 model. Similar to
 <a class="reference external" href="https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags">SmilingWolf/wd-v1-4-tags</a> .</p>
@@ -213,6 +214,7 @@
 <li><p><strong>model_name</strong> – Name of the mode, should be one of the         <code class="docutils literal notranslate"><span class="pre">SwinV2</span></code>, <code class="docutils literal notranslate"><span class="pre">ConvNext</span></code>, <code class="docutils literal notranslate"><span class="pre">ConvNextV2</span></code>, <code class="docutils literal notranslate"><span class="pre">ViT</span></code> or <code class="docutils literal notranslate"><span class="pre">MOAT</span></code>, default is <code class="docutils literal notranslate"><span class="pre">ConvNextV2</span></code>.</p></li>
 <li><p><strong>general_threshold</strong> – Threshold for default tags, default is <code class="docutils literal notranslate"><span class="pre">0.35</span></code>.</p></li>
 <li><p><strong>character_threshold</strong> – Threshold for character tags, default is <code class="docutils literal notranslate"><span class="pre">0.85</span></code>.</p></li>
+<li><p><strong>drop_overlap</strong> – Drop overlap tags or not, default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -306,10 +308,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="wd14.html">dev/waifu2x</a></dd>
                         <dd><a href="../../../../ccip/api_doc/tagging/wd14.html">ccip</a></dd>
                         <dd><a href="../../../onnx/api_doc/tagging/wd14.html">dev/onnx</a></dd>
                         <dd><a href="../../../resolution/api_doc/tagging/wd14.html">dev/resolution</a></dd>
-                        <dd><a href="wd14.html">dev/waifu2x</a></dd>
                         <dd><a href="../../../../main/api_doc/tagging/wd14.html">main</a></dd>
                 </dl>
         </div>

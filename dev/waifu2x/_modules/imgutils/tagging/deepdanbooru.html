@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>imgutils.tagging.deepdanbooru &mdash; imgutils 0.2.5 documentation</title>
+  <title>imgutils.tagging.deepdanbooru &mdash; imgutils 0.2.7 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.2.5
+                0.2.7
               </div>
             
           
@@ -194,6 +194,7 @@
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
 
+<span class="kn">from</span> <span class="nn">.overlap</span> <span class="kn">import</span> <span class="n">drop_overlaps_for_dict</span>
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
 
@@ -209,7 +210,7 @@
     <span class="n">general_indexes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">character_indexes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">tag_names</span><span class="p">,</span> <span class="n">tag_real_names</span><span class="p">,</span> \
-           <span class="n">rating_indexes</span><span class="p">,</span> <span class="n">general_indexes</span><span class="p">,</span> <span class="n">character_indexes</span>
+        <span class="n">rating_indexes</span><span class="p">,</span> <span class="n">general_indexes</span><span class="p">,</span> <span class="n">character_indexes</span>
 
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
@@ -239,7 +240,8 @@
 
 
 <div class="viewcode-block" id="get_deepdanbooru_tags"><a class="viewcode-back" href="../../../api_doc/tagging/deepdanbooru.html#imgutils.tagging.deepdanbooru.get_deepdanbooru_tags">[docs]</a><span class="k">def</span> <span class="nf">get_deepdanbooru_tags</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">use_real_name</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                          <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">character_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span>
+                          <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">character_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+                          <span class="n">drop_overlap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overview:</span>
 <span class="sd">        Get tags for anime image based on ``deepdanbooru`` model.</span>
@@ -251,6 +253,7 @@
 <span class="sd">        The default value of ``False`` indicates the use of the original tag names.</span>
 <span class="sd">    :param general_threshold: Threshold for default tags, default is ``0.35``.</span>
 <span class="sd">    :param character_threshold: Threshold for character tags, default is ``0.85``.</span>
+<span class="sd">    :param drop_overlap: Drop overlap tags or not, default is ``False``.</span>
 <span class="sd">    :return: Tagging results for levels, features and characters.</span>
 
 <span class="sd">    Example:</span>
@@ -298,6 +301,8 @@
     <span class="n">general_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">general_indexes</span><span class="p">]</span>
     <span class="n">general_res</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">general_names</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">general_threshold</span><span class="p">]</span>
     <span class="n">general_res</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">general_res</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">drop_overlap</span><span class="p">:</span>
+        <span class="n">general_res</span> <span class="o">=</span> <span class="n">drop_overlaps_for_dict</span><span class="p">(</span><span class="n">general_res</span><span class="p">)</span>
 
     <span class="c1"># Everything else is characters: pick anywhere prediction confidence &gt; threshold</span>
     <span class="n">character_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">character_indexes</span><span class="p">]</span>
@@ -355,10 +360,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="deepdanbooru.html">dev/waifu2x</a></dd>
                         <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../onnx/index.html">dev/onnx</a></dd>
                         <dd><a href="../../../../resolution/index.html">dev/resolution</a></dd>
-                        <dd><a href="deepdanbooru.html">dev/waifu2x</a></dd>
                         <dd><a href="../../../../../main/index.html">main</a></dd>
                 </dl>
         </div>

@@ -9,7 +9,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>imgutils.tagging.deepdanbooru &mdash; imgutils 0.2.5 documentation</title>
+  <title>imgutils.tagging.deepdanbooru &mdash; imgutils 0.2.7 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.2.5
+                0.2.7
               </div>
             
           
@@ -117,6 +117,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="format.html">imgutils.tagging.format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overlap.html">imgutils.tagging.overlap</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
@@ -206,7 +207,7 @@ and it is advisable to avoid using this model extensively in practical applicati
 <h2>get_deepdanbooru_tags<a class="headerlink" href="#get-deepdanbooru-tags" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.tagging.deepdanbooru.get_deepdanbooru_tags">
-<code class="sig-prename descclassname">imgutils.tagging.deepdanbooru.</code><code class="sig-name descname">get_deepdanbooru_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">use_real_name</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">general_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">character_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/deepdanbooru.html#get_deepdanbooru_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.tagging.deepdanbooru.get_deepdanbooru_tags" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">imgutils.tagging.deepdanbooru.</code><code class="sig-name descname">get_deepdanbooru_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">use_real_name</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">general_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">character_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">drop_overlap</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/deepdanbooru.html#get_deepdanbooru_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.tagging.deepdanbooru.get_deepdanbooru_tags" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Overview:</dt><dd><p>Get tags for anime image based on <code class="docutils literal notranslate"><span class="pre">deepdanbooru</span></code> model.</p>
 </dd>
@@ -221,6 +222,7 @@ it may be necessary to use the latest tag names in some application scenarios.
 The default value of <code class="docutils literal notranslate"><span class="pre">False</span></code> indicates the use of the original tag names.</p></li>
 <li><p><strong>general_threshold</strong> – Threshold for default tags, default is <code class="docutils literal notranslate"><span class="pre">0.35</span></code>.</p></li>
 <li><p><strong>character_threshold</strong> – Threshold for character tags, default is <code class="docutils literal notranslate"><span class="pre">0.85</span></code>.</p></li>
+<li><p><strong>drop_overlap</strong> – Drop overlap tags or not, default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -313,10 +315,10 @@ The default value of <code class="docutils literal notranslate"><span class="pre
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="deepdanbooru.html">dev/waifu2x</a></dd>
                         <dd><a href="../../../../ccip/api_doc/tagging/deepdanbooru.html">ccip</a></dd>
                         <dd><a href="../../../onnx/api_doc/tagging/deepdanbooru.html">dev/onnx</a></dd>
                         <dd><a href="../../../resolution/api_doc/tagging/deepdanbooru.html">dev/resolution</a></dd>
-                        <dd><a href="deepdanbooru.html">dev/waifu2x</a></dd>
                         <dd><a href="../../../../main/api_doc/tagging/deepdanbooru.html">main</a></dd>
                 </dl>
         </div>
