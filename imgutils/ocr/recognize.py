@@ -1,0 +1,75 @@
+from functools import lru_cache
+from typing import List, Tuple
+
+import numpy as np
+from huggingface_hub import hf_hub_download
+
+from ..data import ImageTyping
+from ..utils import open_onnx_model
+
+
+@lru_cache()
+def _open_ocr_recognition_model(model):
+    return open_onnx_model(hf_hub_download(
+        'deepghs/paddleocr',
+        f'{model}/recognition.onnx',
+    ))
+
+
+@lru_cache()
+def _open_ocr_recognition_dictionary(model) -> List[str]:
+    with open(hf_hub_download(
+            'deepghs/paddleocr',
+            f'{model}/dict.txt',
+    ), 'r') as f:
+        dict_ = [line.strip() for line in f]
+
+    return ['<blank>', *dict_, ' ']
+
+
+def decode(text_index, model: str, text_prob=None, is_remove_duplicate=False):
+    retval = []
+    ignored_tokens = [0]
+    batch_size = len(text_index)
+    for batch_idx in range(batch_size):
+        selection = np.ones(len(text_index[batch_idx]), dtype=bool)
+        if is_remove_duplicate:
+            selection[1:] = text_index[batch_idx][1:] != text_index[batch_idx][:-1]
+        for ignored_token in ignored_tokens:
+            selection &= text_index[batch_idx] != ignored_token
+
+        char_list = [
+            _open_ocr_recognition_dictionary(model)[text_id.item()]
+            for text_id in text_index[batch_idx][selection]
+        ]
+        if text_prob is not None:
+            conf_list = text_prob[batch_idx][selection]
+        else:
+            conf_list = [1] * len(selection)
+        if len(conf_list) == 0:
+            conf_list = [0]
+
+        text = ''.join(char_list)
+        retval.append((text, np.mean(conf_list).tolist()))
+
+    return retval
+
+
+def _text_recognize(image: ImageTyping, model: str = 'ch_PP-OCRv4_det_infer',
+                    is_remove_duplicate: bool = False) -> Tuple[str, float]:
+    r = 48 / image.height
+    new_height = int(image.height * r)
+    new_width = int(image.width * r)
+    image = image.resize((new_width, new_height))
+
+    input_ = np.array(image).transpose((2, 0, 1)).astype(np.float32) / 255.0
+
+    input_ = ((input_ - 0.5) / 0.5)[None, ...].astype(np.float32)
+    _ort_session = _open_ocr_recognition_model(model)
+    _input_name = _ort_session.get_inputs()[0].name
+    _output_name = _ort_session.get_outputs()[0].name
+    output, = _ort_session.run([_output_name], {_input_name: input_})
+
+    indices = output.argmax(axis=2)
+    confs = output.max(axis=2)
+    return decode(indices, model, confs, is_remove_duplicate)[0]
