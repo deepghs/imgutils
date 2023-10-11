@@ -14,3 +14,7 @@ imgutils.tagging
     deepdanbooru
     format
     overlap
+    blacklist
+    character
+    order
+

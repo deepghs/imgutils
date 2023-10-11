@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; imgutils 0.2.7 documentation</title>
+  <title>Index &mdash; imgutils 0.2.8 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
             
           
@@ -313,15 +313,19 @@
 </li>
       <li><a href="api_doc/detect/hand.html#imgutils.detect.hand.detect_hands">detect_hands() (in module imgutils.detect.hand)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/detect/head.html#imgutils.detect.head.detect_heads">detect_heads() (in module imgutils.detect.head)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/detect/person.html#imgutils.detect.person.detect_person">detect_person() (in module imgutils.detect.person)</a>
 </li>
       <li><a href="api_doc/detect/text.html#imgutils.detect.text.detect_text">detect_text() (in module imgutils.detect.text)</a>
 </li>
       <li><a href="api_doc/detect/visual.html#imgutils.detect.visual.detection_visualize">detection_visualize() (in module imgutils.detect.visual)</a>
+</li>
+      <li><a href="api_doc/tagging/character.html#imgutils.tagging.character.drop_basic_character_tags">drop_basic_character_tags() (in module imgutils.tagging.character)</a>
+</li>
+      <li><a href="api_doc/tagging/blacklist.html#imgutils.tagging.blacklist.drop_blacklisted_tags">drop_blacklisted_tags() (in module imgutils.tagging.blacklist)</a>
 </li>
       <li><a href="api_doc/tagging/overlap.html#imgutils.tagging.overlap.drop_overlap_tags">drop_overlap_tags() (in module imgutils.tagging.overlap)</a>
 </li>
@@ -597,8 +601,6 @@
         <li><a href="api_doc/metrics/lpips.html#module-imgutils.metrics.lpips">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     imgutils.metrics.psnr_
 
@@ -613,6 +615,8 @@
         <li><a href="api_doc/operate/index.html#module-imgutils.operate">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     imgutils.operate.align
 
@@ -663,6 +667,20 @@
 </li>
       </ul></li>
       <li>
+    imgutils.tagging.blacklist
+
+      <ul>
+        <li><a href="api_doc/tagging/blacklist.html#module-imgutils.tagging.blacklist">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.tagging.character
+
+      <ul>
+        <li><a href="api_doc/tagging/character.html#module-imgutils.tagging.character">module</a>
+</li>
+      </ul></li>
+      <li>
     imgutils.tagging.deepdanbooru
 
       <ul>
@@ -681,6 +699,13 @@
 
       <ul>
         <li><a href="api_doc/tagging/mldanbooru.html#module-imgutils.tagging.mldanbooru">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.tagging.order
+
+      <ul>
+        <li><a href="api_doc/tagging/order.html#module-imgutils.tagging.order">module</a>
 </li>
       </ul></li>
       <li>
@@ -775,6 +800,10 @@
 </li>
       </ul></li>
       <li><a href="api_doc/validate/aicheck.html#imgutils.validate.aicheck.is_ai_created">is_ai_created() (in module imgutils.validate.aicheck)</a>
+</li>
+      <li><a href="api_doc/tagging/character.html#imgutils.tagging.character.is_basic_character_tag">is_basic_character_tag() (in module imgutils.tagging.character)</a>
+</li>
+      <li><a href="api_doc/tagging/blacklist.html#imgutils.tagging.blacklist.is_blacklisted">is_blacklisted() (in module imgutils.tagging.blacklist)</a>
 </li>
       <li><a href="api_doc/validate/color.html#imgutils.validate.color.is_greyscale">is_greyscale() (in module imgutils.validate.color)</a>
 </li>
@@ -886,11 +915,17 @@
 </li>
         <li><a href="api_doc/tagging/index.html#module-imgutils.tagging">imgutils.tagging</a>
 </li>
+        <li><a href="api_doc/tagging/blacklist.html#module-imgutils.tagging.blacklist">imgutils.tagging.blacklist</a>
+</li>
+        <li><a href="api_doc/tagging/character.html#module-imgutils.tagging.character">imgutils.tagging.character</a>
+</li>
         <li><a href="api_doc/tagging/deepdanbooru.html#module-imgutils.tagging.deepdanbooru">imgutils.tagging.deepdanbooru</a>
 </li>
         <li><a href="api_doc/tagging/format.html#module-imgutils.tagging.format">imgutils.tagging.format</a>
 </li>
         <li><a href="api_doc/tagging/mldanbooru.html#module-imgutils.tagging.mldanbooru">imgutils.tagging.mldanbooru</a>
+</li>
+        <li><a href="api_doc/tagging/order.html#module-imgutils.tagging.order">imgutils.tagging.order</a>
 </li>
         <li><a href="api_doc/tagging/overlap.html#module-imgutils.tagging.overlap">imgutils.tagging.overlap</a>
 </li>
@@ -975,9 +1010,11 @@
 </li>
       <li><a href="api_doc/segment/isnetis.html#imgutils.segment.isnetis.segment_with_isnetis">segment_with_isnetis() (in module imgutils.segment.isnetis)</a>
 </li>
+      <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage">SingleImage (class in imgutils.operate.imgcensor)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage">SingleImage (class in imgutils.operate.imgcensor)</a>
+      <li><a href="api_doc/tagging/order.html#imgutils.tagging.order.sort_tags">sort_tags() (in module imgutils.tagging.order)</a>
 </li>
       <li><a href="api_doc/operate/squeeze.html#imgutils.operate.squeeze.squeeze">squeeze() (in module imgutils.operate.squeeze)</a>
 </li>
@@ -1052,11 +1089,11 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="genindex.html">dev/waifu2x</a></dd>
                         <dd><a href="../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../ocr/index.html">dev/ocr</a></dd>
                         <dd><a href="../onnx/index.html">dev/onnx</a></dd>
                         <dd><a href="../resolution/index.html">dev/resolution</a></dd>
-                        <dd><a href="genindex.html">dev/waifu2x</a></dd>
                         <dd><a href="../../main/index.html">main</a></dd>
                 </dl>
         </div>
