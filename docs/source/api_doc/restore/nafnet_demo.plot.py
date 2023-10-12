@@ -1,11 +1,10 @@
 import os
 from typing import List
 
-from imgutils.restore.nafnet import NafNetModelTyping
+from imgutils.restore.nafnet import NafNetModelTyping, restore_with_nafnet
 from plot import image_plot
 
 sample_dir = 'sample'
-nafnet_dir = 'nafnet'
 
 if __name__ == '__main__':
     models: List[NafNetModelTyping] = ['REDS', 'GoPro', 'SIDD']
@@ -18,13 +17,13 @@ if __name__ == '__main__':
 
     items = []
     for file, title in demo_images:
-        items.append((os.path.join(sample_dir, file), title))
+        src_file = os.path.join(sample_dir, file)
+        items.append((src_file, title))
         for model in models:
-            dst_file = os.path.join(nafnet_dir, f'{os.path.splitext(file)[0]}-{model.lower()}.png')
-            items.append((dst_file, f'{title}\n(Fixed By {model})'))
+            items.append((restore_with_nafnet(src_file, model=model), f'{title}\n(Fixed By {model})'))
 
     image_plot(
         *items,
         columns=len(models) + 1,
-        figsize=(10, 12.5),
+        figsize=(10, 12),
     )
