@@ -13,5 +13,5 @@ if __name__ == '__main__':
         (img_gnoise, 'Gaussian Noise'),
         (restore_with_scunet(img_gnoise), 'Gaussian Noise\n(Fixed By SCUNet)'),
         columns=2,
-        figsize=(6, 8),
+        figsize=(6, 6.8),
     )
