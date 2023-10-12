@@ -1,3 +1,20 @@
+"""
+Overview:
+    Restore the images using `NafNet <https://github.com/megvii-research/NAFNet>`_.
+
+    .. image:: nafnet_demo.plot.py.svg
+        :align: center
+
+    This is an overall benchmark of all the NafNet models:
+
+    .. image:: nafnet_benchmark.plot.py.svg
+        :align: center
+
+    .. warning::
+        Currently, we've identified a significant issue with NafNet when images contain gaussian noise.
+        To ensure your code functions correctly, please ensure the credibility of
+        your image source or preprocess them using SCUNet.
+"""
 from functools import lru_cache
 from typing import Literal
 

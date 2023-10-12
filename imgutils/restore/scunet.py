@@ -1,3 +1,16 @@
+"""
+Overview:
+    Restore the images using `SCUNet <https://github.com/cszn/SCUNet>`_.
+
+    .. image:: scunet_demo.plot.py.svg
+        :align: center
+
+    This is an overall benchmark of all the SCUNet models:
+
+    .. image:: scunet_benchmark.plot.py.svg
+        :align: center
+
+"""
 from functools import lru_cache
 from typing import Literal
 
