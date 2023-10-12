@@ -190,6 +190,17 @@
     
   <section id="module-imgutils.restore.nafnet">
 <span id="imgutils-restore-nafnet"></span><h1>imgutils.restore.nafnet<a class="headerlink" href="#module-imgutils.restore.nafnet" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>Restore the images using <a class="reference external" href="https://github.com/megvii-research/NAFNet">NafNet</a>.</p>
+<img alt="../../_images/nafnet_demo.plot.py.svg" class="align-center" src="../../_images/nafnet_demo.plot.py.svg" /><p>This is an overall benchmark of all the NafNet models:</p>
+<img alt="../../_images/nafnet_benchmark.plot.py.svg" class="align-center" src="../../_images/nafnet_benchmark.plot.py.svg" /><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Currently, we’ve identified a significant issue with NafNet when images contain gaussian noise.
+To ensure your code functions correctly, please ensure the credibility of
+your image source or preprocess them using SCUNet.</p>
+</aside>
+</dd>
+</dl>
 <section id="restore-with-nafnet">
 <h2>restore_with_nafnet<a class="headerlink" href="#restore-with-nafnet" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
