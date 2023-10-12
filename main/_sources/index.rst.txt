@@ -35,6 +35,7 @@ configuration file's structure and their versions.
     api_doc/edge/index
     api_doc/metrics/index
     api_doc/operate/index
+    api_doc/restore/index
     api_doc/segment/index
     api_doc/tagging/index
     api_doc/utils/index
