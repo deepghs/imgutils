@@ -26,5 +26,5 @@ if __name__ == '__main__':
     image_plot(
         *items,
         columns=len(models) + 1,
-        figsize=(12, 9),
+        figsize=(10, 12.5),
     )
