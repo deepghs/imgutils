@@ -38,6 +38,7 @@ configuration file's structure and their versions.
     api_doc/restore/index
     api_doc/segment/index
     api_doc/tagging/index
+    api_doc/upscale/index
     api_doc/utils/index
     api_doc/validate/index
 
