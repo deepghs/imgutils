@@ -29,10 +29,10 @@
    "execution_count": 1,
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-10-13T12:30:48.842296Z",
-     "iopub.status.busy": "2023-10-13T12:30:48.841773Z",
-     "iopub.status.idle": "2023-10-13T12:30:50.045981Z",
-     "shell.execute_reply": "2023-10-13T12:30:50.045171Z"
+     "iopub.execute_input": "2023-10-13T12:42:39.458846Z",
+     "iopub.status.busy": "2023-10-13T12:42:39.458521Z",
+     "iopub.status.idle": "2023-10-13T12:42:40.664948Z",
+     "shell.execute_reply": "2023-10-13T12:42:40.664125Z"
     },
     "pycharm": {
      "name": "#%%\n"
@@ -47,7 +47,7 @@
       "Python: CPython 3.8.18\n",
       "CPU Brand: Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz\n",
       "CPU Count: 2\n",
-      "CPU Freq: 2593.907 MHz\n",
+      "CPU Freq: 2593.906 MHz\n",
       "Memory Size: 6.760 GiB\n",
       "Has CUDA: No\n"
      ]
