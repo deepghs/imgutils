@@ -48,8 +48,8 @@ def area_batch_run(origin_input: np.ndarray, func, scale: int = 1,
 
     tile = min(tile_size, height, width)
     stride = tile - tile_overlap
-    h_idx_list = list(range(0, height - tile, stride)) + [height - tile]
-    w_idx_list = list(range(0, width - tile, stride)) + [width - tile]
+    h_idx_list = sorted(set(list(range(0, height - tile, stride)) + [height - tile]))
+    w_idx_list = sorted(set(list(range(0, width - tile, stride)) + [width - tile]))
     sum_ = np.zeros((batch, output_channels, height * scale, width * scale), dtype=origin_input.dtype)
     weight = np.zeros_like(sum_, dtype=origin_input.dtype)
 
