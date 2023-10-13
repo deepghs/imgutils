@@ -3,6 +3,15 @@ from PIL import Image
 
 from imgutils.metrics import psnr
 from imgutils.upscale import upscale_with_cdc
+from imgutils.upscale.cdc import _open_cdc_upscaler_model
+
+
+@pytest.fixture(autouse=True, scope='function')
+def _release_model():
+    try:
+        yield
+    finally:
+        _open_cdc_upscaler_model.cache_clear()
 
 
 @pytest.mark.unittest
