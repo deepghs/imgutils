@@ -1,17 +1,16 @@
 from functools import lru_cache
-from typing import Tuple
+from typing import Tuple, Any
 
 import numpy as np
 from PIL import Image
 from huggingface_hub import hf_hub_download
-from onnxruntime import InferenceSession
 
 from ..data import ImageTyping, load_image
 from ..utils import open_onnx_model, area_batch_run
 
 
 @lru_cache()
-def _open_cdc_upscaler_model(model: str) -> Tuple[InferenceSession, int]:
+def _open_cdc_upscaler_model(model: str) -> Tuple[Any, int]:
     ort = open_onnx_model(hf_hub_download(
         f'deepghs/cdc_anime_onnx',
         f'{model}.onnx'
