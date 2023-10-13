@@ -31,5 +31,5 @@ if __name__ == '__main__':
     image_plot(
         *items,
         columns=len(_CDC_MODELS) + 1,
-        figsize=(2 * (len(_CDC_MODELS) + 1), 3 * len(demo_images)),
+        figsize=(4 * (len(_CDC_MODELS) + 1), 3 * len(demo_images)),
     )
