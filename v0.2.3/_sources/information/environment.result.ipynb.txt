@@ -29,10 +29,10 @@
    "execution_count": 1,
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-10-13T13:53:29.263329Z",
-     "iopub.status.busy": "2023-10-13T13:53:29.262622Z",
-     "iopub.status.idle": "2023-10-13T13:53:30.520939Z",
-     "shell.execute_reply": "2023-10-13T13:53:30.519712Z"
+     "iopub.execute_input": "2023-10-13T14:25:44.669480Z",
+     "iopub.status.busy": "2023-10-13T14:25:44.668883Z",
+     "iopub.status.idle": "2023-10-13T14:25:45.892609Z",
+     "shell.execute_reply": "2023-10-13T14:25:45.891565Z"
     },
     "pycharm": {
      "name": "#%%\n"
@@ -47,7 +47,7 @@
       "Python: CPython 3.8.18\n",
       "CPU Brand: Intel(R) Xeon(R) CPU E5-2673 v3 @ 2.40GHz\n",
       "CPU Count: 2\n",
-      "CPU Freq: 2397.222 MHz\n",
+      "CPU Freq: 2397.224 MHz\n",
       "Memory Size: 6.760 GiB\n",
       "Has CUDA: No\n"
      ]
