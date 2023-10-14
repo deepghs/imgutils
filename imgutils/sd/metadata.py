@@ -35,11 +35,28 @@ def _sdmeta_quote(value):
 
 @dataclass
 class SDMetaData:
+    """
+    Store information parsed from the metadata of a PNG image.
+
+    :param prompt: The main prompt text.
+    :type prompt: str
+    :param neg_prompt: The negative prompt text.
+    :type neg_prompt: str
+    :param parameters: A dictionary containing various parameters.
+    :type parameters: Dict[str, Any]
+    """
+
     prompt: str
     neg_prompt: str
     parameters: Dict[str, Any]
 
     def __str__(self):
+        """
+        Get a string representation of the metadata.
+
+        :return: A string representation of the metadata.
+        :rtype: str
+        """
         return self._sdmeta_text()
 
     def _sdmeta_text(self):
@@ -70,6 +87,12 @@ class SDMetaData:
 
     @property
     def pnginfo(self) -> PngInfo:
+        """
+        Generate a PngInfo object with the metadata.
+
+        :return: A PngInfo object containing the metadata.
+        :rtype: PngInfo
+        """
         info = PngInfo()
         info.add_text('parameters', self._sdmeta_text())
         return info
@@ -98,7 +121,15 @@ def _parse_parameters(param_text: str):
     return params
 
 
-def parse_sdmeta_from_text(x: str):
+def parse_sdmeta_from_text(x: str) -> SDMetaData:
+    """
+    Parse metadata information from a string.
+
+    :param x: The input string containing metadata.
+    :type x: str
+    :return: A SDMetaData object containing the parsed metadata.
+    :rtype: SDMetaData
+    """
     x = textwrap.dedent(x).strip()
     *prompt_lines, argument_line = x.splitlines(keepends=False)
     if len(_PARAM_PATTERN.findall(argument_line)) < 3:
@@ -131,6 +162,14 @@ def parse_sdmeta_from_text(x: str):
 
 
 def get_sdmeta_from_image(image: ImageTyping) -> Optional[SDMetaData]:
+    """
+    Get metadata from a PNG image.
+
+    :param image: The input image.
+    :type image: ImageTyping
+    :return: A SDMetaData object containing the metadata if available, else None.
+    :rtype: Optional[SDMetaData]
+    """
     image = load_image(image, mode=None, force_background=None)
     pnginfo_text = image.info.get('parameters')
     if pnginfo_text:
