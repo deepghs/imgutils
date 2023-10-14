@@ -3,9 +3,11 @@ Overview:
     Detect and drop some blacklisted tags, which are listed `here <https://huggingface.co/datasets/alea31415/tag_filtering/blob/main/blacklist_tags.txt>`_.
 """
 from functools import lru_cache
-from typing import Union, List, Mapping, Set, Optional
+from typing import Union, List, Mapping, Set, Optional, Tuple
 
 from huggingface_hub import hf_hub_download
+
+from .match import _words_to_matcher, _split_to_words
 
 
 @lru_cache()
@@ -24,39 +26,31 @@ def _load_online_blacklist() -> List[str]:
         return [line.strip() for line in f if line.strip()]
 
 
-def _is_blacklisted(tag: str, blacklist: Set[str]):
-    """
-    Check if a tag is blacklisted.
-
-    :param tag: Tag to be checked.
-    :type tag: str
-    :param blacklist: Set of blacklisted tags.
-    :type blacklist: Set[str]
-    :return: True if the tag is blacklisted, False otherwise.
-    :rtype: bool
-    """
-    return (tag in blacklist or
-            tag.replace('_', ' ') in blacklist or
-            tag.replace(' ', '_') in blacklist)
-
-
 @lru_cache()
-def _online_blacklist_set() -> Set[str]:
+def _online_blacklist_set() -> Set[Tuple[str, ...]]:
     """
     Get the online blacklist as a set.
 
     :return: Set of blacklisted tags.
     :rtype: Set[str]
     """
-    return set(_load_online_blacklist())
+    set_ = set()
+    for tag in _load_online_blacklist():
+        set_ = set_ | _words_to_matcher(_split_to_words(tag))
+    return set_
 
 
-def is_blacklisted(tags: str):
+def _is_blacklisted(tag: str, blacklist_set: Set[Tuple[str, ...]]) -> bool:
+    _tag_matcher = _words_to_matcher(_split_to_words(tag))
+    return bool(set(_tag_matcher & blacklist_set))
+
+
+def is_blacklisted(tag: str) -> bool:
     """
     Check if any of the given tags are blacklisted.
 
-    :param tags: Tags to be checked.
-    :type tags: str
+    :param tag: Tags to be checked.
+    :type tag: str
     :return: True if any tag is blacklisted, False otherwise.
     :rtype: bool
 
@@ -72,7 +66,7 @@ def is_blacklisted(tags: str):
         >>> is_blacklisted('red_hair')
         False
     """
-    return _is_blacklisted(tags, _online_blacklist_set())
+    return _is_blacklisted(tag, _online_blacklist_set())
 
 
 def drop_blacklisted_tags(tags: Union[List[str], Mapping[str, float]],
@@ -102,14 +96,11 @@ def drop_blacklisted_tags(tags: Union[List[str], Mapping[str, float]],
         >>> drop_blacklisted_tags(['solo', '1girl', 'cosplay', 'no_eyewear'])
         ['solo', '1girl']
     """
-    blacklist = []
+    blacklist = set()
     if use_presets:
-        blacklist.extend(_load_online_blacklist())
-    blacklist.extend(custom_blacklist or [])
-
-    blacklist = set(tag.replace(' ', '_') for tag in blacklist)
-    blacklist_update = set(tag.replace('_', ' ') for tag in blacklist)
-    blacklist.update(blacklist_update)
+        blacklist = blacklist | _online_blacklist_set()
+    for tag in (custom_blacklist or []):
+        blacklist = blacklist | _words_to_matcher(_split_to_words(tag))
 
     if isinstance(tags, dict):
         return {tag: value for tag, value in tags.items() if not _is_blacklisted(tag, blacklist)}
