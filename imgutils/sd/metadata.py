@@ -1,3 +1,10 @@
+"""
+Overview:
+    Metadata parser and formatter for a1111's webui generated images.
+
+    Here are 2 sample images: :download:`sd_metadata_simple.png <sd_metadata_simple.png>`
+    and :download:`sd_metadata_complex.png <sd_metadata_complex.png>`.
+"""
 import io
 import json
 import re
@@ -56,6 +63,18 @@ class SDMetaData:
 
         :return: A string representation of the metadata.
         :rtype: str
+
+        Examples::
+            >>> from imgutils.sd import get_sdmeta_from_image
+            >>>
+            >>> sd1 = get_sdmeta_from_image('sd_metadata_simple.png')
+            >>> print(sd1)
+            (extremely delicate and beautiful), best quality, official art, global illumination, soft shadow, super detailed, Japanese light novel cover, 4K, metal_texture, (striped_background), super detailed background, more detailed, rich detailed, extremely detailed CG unity 8k wallpaper, ((unreal)), sci-fi,(fantasy),(masterpiece),(super delicate), (illustration), (extremely delicate and beautiful), anime coloring,
+            (silver_skin), ((high-cut silver_impossible_bodysuit), ((gem_on_chest)),(high-cut_silver_mechanical_leotard)),headgear,
+            (focus-on:1.1),(1_girl),((solo)),slim_waist,white hair, long hair, luminous yellow eyes,(medium_breast:1.2), (Indistinct_cameltoe:0.9), (flat_crotch:1.1),(coquettish), (squint:1.4),(evil_smile :1.35),(dark_persona), [open mouth: 0.7], standing,[wet:0.7],
+            slim_face, tall_girl,(mature),mature_face, (slim_figure), (slim_legs:1.1), (groin:1.1), ((bare_thighs)),
+            Negative prompt: EasyNegative, sketch, duplicate, ugly, huge eyes, text, logo, monochrome, worst face, (bad and mutated hands:1.3), (worst quality:2.0), (low quality:2.0), (blurry:2.0), horror, geometry, bad_prompt, (bad hands), (missing fingers), multiple limbs, bad anatomy, (interlocked fingers:1.2), Ugly Fingers, (extra digit and hands and fingers and legs and arms:1.4), ((2girl)), (deformed fingers:1.2), (long fingers:1.2),(bad-artist-anime), bad-artist, bad hand, blush, (lipstick),skindentation, tie, ((big_breast)), (nipple), thighhighs, pubic_hair, pussy, black and white,(3d), ((realistic)),blurry,nipple slip, (nipple), blush, head_out_of_frame,curvy,
+            Steps: 20, Sampler: DDIM, CFG scale: 7, Seed: 3827064803, Size: 512x848, Model hash: eb49192009, Model: AniDosMix, Clip skip: 2
         """
         return self._sdmeta_text()
 
@@ -90,8 +109,27 @@ class SDMetaData:
         """
         Generate a PngInfo object with the metadata.
 
+        This can be used when saving an image with custom metadata.
+
         :return: A PngInfo object containing the metadata.
         :rtype: PngInfo
+
+        Examples::
+            >>> from PIL import Image
+            >>> from imgutils.sd import get_sdmeta_from_image
+            >>>
+            >>> # get metadata
+            >>> sd1 = get_sdmeta_from_image('sd_metadata_simple.png')
+            >>>
+            >>> # create an image
+            >>> img = Image.new('RGB', (256, 256), 'white')
+            >>>
+            >>> # save this image with sd1's metadata
+            >>> img.save('new_image.png', pnginfo=sd1.pnginfo)
+            >>>
+            >>> # let's see what is in 'new_image.png'
+            >>> get_sdmeta_from_image('new_image.png')
+            SDMetaData(prompt='(extremely delicate and beautiful), best quality, official art, global illumination, soft shadow, super detailed, Japanese light novel cover, 4K, metal_texture, (striped_background), super detailed background, more detailed, rich detailed, extremely detailed CG unity 8k wallpaper, ((unreal)), sci-fi,(fantasy),(masterpiece),(super delicate), (illustration), (extremely delicate and beautiful), anime coloring,\n(silver_skin), ((high-cut silver_impossible_bodysuit), ((gem_on_chest)),(high-cut_silver_mechanical_leotard)),headgear,\n(focus-on:1.1),(1_girl),((solo)),slim_waist,white hair, long hair, luminous yellow eyes,(medium_breast:1.2), (Indistinct_cameltoe:0.9), (flat_crotch:1.1),(coquettish), (squint:1.4),(evil_smile :1.35),(dark_persona), [open mouth: 0.7], standing,[wet:0.7],\nslim_face, tall_girl,(mature),mature_face, (slim_figure), (slim_legs:1.1), (groin:1.1), ((bare_thighs)),', neg_prompt='EasyNegative, sketch, duplicate, ugly, huge eyes, text, logo, monochrome, worst face, (bad and mutated hands:1.3), (worst quality:2.0), (low quality:2.0), (blurry:2.0), horror, geometry, bad_prompt, (bad hands), (missing fingers), multiple limbs, bad anatomy, (interlocked fingers:1.2), Ugly Fingers, (extra digit and hands and fingers and legs and arms:1.4), ((2girl)), (deformed fingers:1.2), (long fingers:1.2),(bad-artist-anime), bad-artist, bad hand, blush, (lipstick),skindentation, tie, ((big_breast)), (nipple), thighhighs, pubic_hair, pussy, black and white,(3d), ((realistic)),blurry,nipple slip, (nipple), blush, head_out_of_frame,curvy,', parameters={'Steps': 20, 'Sampler': 'DDIM', 'CFG scale': 7, 'Seed': 3827064803, 'Size': (512, 848), 'Model hash': 'eb49192009', 'Model': 'AniDosMix', 'Clip skip': 2})
         """
         info = PngInfo()
         info.add_text('parameters', self._sdmeta_text())
@@ -129,6 +167,32 @@ def parse_sdmeta_from_text(x: str) -> SDMetaData:
     :type x: str
     :return: A SDMetaData object containing the parsed metadata.
     :rtype: SDMetaData
+
+    Examples::
+        >>> from imgutils.sd import parse_sdmeta_from_text
+        >>>
+        >>> sd1 = parse_sdmeta_from_text(\"\"\"
+        ... (extremely delicate and beautiful), best quality, official art, global illumination, soft shadow, super detailed, Japanese light novel cover, 4K, metal_texture, (striped_background), super detailed background, more detailed, rich detailed, extremely detailed CG unity 8k wallpaper, ((unreal)), sci-fi,(fantasy),(masterpiece),(super delicate), (illustration), (extremely delicate and beautiful), anime coloring,
+        ... (silver_skin), ((high-cut silver_impossible_bodysuit), ((gem_on_chest)),(high-cut_silver_mechanical_leotard)),headgear,
+        ... (focus-on:1.1),(1_girl),((solo)),slim_waist,white hair, long hair, luminous yellow eyes,(medium_breast:1.2), (Indistinct_cameltoe:0.9), (flat_crotch:1.1),(coquettish), (squint:1.4),(evil_smile :1.35),(dark_persona), [open mouth: 0.7], standing,[wet:0.7],
+        ... slim_face, tall_girl,(mature),mature_face, (slim_figure), (slim_legs:1.1), (groin:1.1), ((bare_thighs)),
+        ... Negative prompt: EasyNegative, sketch, duplicate, ugly, huge eyes, text, logo, monochrome, worst face, (bad and mutated hands:1.3), (worst quality:2.0), (low quality:2.0), (blurry:2.0), horror, geometry, bad_prompt, (bad hands), (missing fingers), multiple limbs, bad anatomy, (interlocked fingers:1.2), Ugly Fingers, (extra digit and hands and fingers and legs and arms:1.4), ((2girl)), (deformed fingers:1.2), (long fingers:1.2),(bad-artist-anime), bad-artist, bad hand, blush, (lipstick),skindentation, tie, ((big_breast)), (nipple), thighhighs, pubic_hair, pussy, black and white,(3d), ((realistic)),blurry,nipple slip, (nipple), blush, head_out_of_frame,curvy,
+        ... Steps: 20, Sampler: DDIM, CFG scale: 7, Seed: 3827064803, Size: 512x848, Model hash: eb49192009, Model: AniDosMix, Clip skip: 2
+        ... \"\"\")
+        >>> sd1
+        SDMetaData(prompt='(extremely delicate and beautiful), best quality, official art, global illumination, soft shadow, super detailed, Japanese light novel cover, 4K, metal_texture, (striped_background), super detailed background, more detailed, rich detailed, extremely detailed CG unity 8k wallpaper, ((unreal)), sci-fi,(fantasy),(masterpiece),(super delicate), (illustration), (extremely delicate and beautiful), anime coloring,\n(silver_skin), ((high-cut silver_impossible_bodysuit), ((gem_on_chest)),(high-cut_silver_mechanical_leotard)),headgear,\n(focus-on:1.1),(1_girl),((solo)),slim_waist,white hair, long hair, luminous yellow eyes,(medium_breast:1.2), (Indistinct_cameltoe:0.9), (flat_crotch:1.1),(coquettish), (squint:1.4),(evil_smile :1.35),(dark_persona), [open mouth: 0.7], standing,[wet:0.7],\nslim_face, tall_girl,(mature),mature_face, (slim_figure), (slim_legs:1.1), (groin:1.1), ((bare_thighs)),', neg_prompt='EasyNegative, sketch, duplicate, ugly, huge eyes, text, logo, monochrome, worst face, (bad and mutated hands:1.3), (worst quality:2.0), (low quality:2.0), (blurry:2.0), horror, geometry, bad_prompt, (bad hands), (missing fingers), multiple limbs, bad anatomy, (interlocked fingers:1.2), Ugly Fingers, (extra digit and hands and fingers and legs and arms:1.4), ((2girl)), (deformed fingers:1.2), (long fingers:1.2),(bad-artist-anime), bad-artist, bad hand, blush, (lipstick),skindentation, tie, ((big_breast)), (nipple), thighhighs, pubic_hair, pussy, black and white,(3d), ((realistic)),blurry,nipple slip, (nipple), blush, head_out_of_frame,curvy,', parameters={'Steps': 20, 'Sampler': 'DDIM', 'CFG scale': 7, 'Seed': 3827064803, 'Size': (512, 848), 'Model hash': 'eb49192009', 'Model': 'AniDosMix', 'Clip skip': 2})
+        >>> type(sd1)
+        <class 'imgutils.sd.metadata.SDMetaData'>
+        >>>
+        >>> sd2 = parse_sdmeta_from_text(\"\"\"
+        ... 1girl, solo, blue eyes, black footwear, white hair, looking at viewer, shoes, full body, standing, bangs, indoors, wide sleeves, ahoge, dress, closed mouth, blush, long sleeves, potted plant, bag, plant, hair bun, window,<lora:BlueArchive10:1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1>,BlueArchive,
+        ... Negative prompt: Neg1,Negative,
+        ... Steps: 20, Sampler: DPM++ 2M SDE Karras, CFG scale: 7, Seed: 2647703743, Size: 768x768, Model hash: 72bd94132e, Model: CuteMix, Denoising strength: 0.7, ControlNet 0: "preprocessor: openpose, model: control_v11p_sd15_openpose [cab727d4], weight: 1, starting/ending: (0, 1), resize mode: Crop and Resize, pixel perfect: False, control mode: Balanced, preprocessor params: (512, 64, 64)", Hires upscale: 2, Hires upscaler: Latent, TI hashes: "Neg1: 339cc9210f70, Negative: 66a7279a88dd", Version: v1.5.1
+        ... \"\"\")
+        >>> sd2
+        SDMetaData(prompt='1girl, solo, blue eyes, black footwear, white hair, looking at viewer, shoes, full body, standing, bangs, indoors, wide sleeves, ahoge, dress, closed mouth, blush, long sleeves, potted plant, bag, plant, hair bun, window,<lora:BlueArchive10:1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1>,BlueArchive,', neg_prompt='Neg1,Negative,', parameters={'Steps': 20, 'Sampler': 'DPM++ 2M SDE Karras', 'CFG scale': 7, 'Seed': 2647703743, 'Size': (768, 768), 'Model hash': '72bd94132e', 'Model': 'CuteMix', 'Denoising strength': 0.7, 'ControlNet 0': 'preprocessor: openpose, model: control_v11p_sd15_openpose [cab727d4], weight: 1, starting/ending: (0, 1), resize mode: Crop and Resize, pixel perfect: False, control mode: Balanced, preprocessor params: (512, 64, 64)', 'Hires upscale': 2, 'Hires upscaler': 'Latent', 'TI hashes': 'Neg1: 339cc9210f70, Negative: 66a7279a88dd', 'Version': 'v1.5.1'})
+        >>> type(sd2)
+        <class 'imgutils.sd.metadata.SDMetaData'>
     """
     x = textwrap.dedent(x).strip()
     *prompt_lines, argument_line = x.splitlines(keepends=False)
@@ -169,6 +233,21 @@ def get_sdmeta_from_image(image: ImageTyping) -> Optional[SDMetaData]:
     :type image: ImageTyping
     :return: A SDMetaData object containing the metadata if available, else None.
     :rtype: Optional[SDMetaData]
+
+    Examples::
+        >>> from imgutils.sd import get_sdmeta_from_image
+        >>>
+        >>> sd1 = get_sdmeta_from_image('sd_metadata_simple.png')
+        >>> sd1
+        SDMetaData(prompt='(extremely delicate and beautiful), best quality, official art, global illumination, soft shadow, super detailed, Japanese light novel cover, 4K, metal_texture, (striped_background), super detailed background, more detailed, rich detailed, extremely detailed CG unity 8k wallpaper, ((unreal)), sci-fi,(fantasy),(masterpiece),(super delicate), (illustration), (extremely delicate and beautiful), anime coloring,\n(silver_skin), ((high-cut silver_impossible_bodysuit), ((gem_on_chest)),(high-cut_silver_mechanical_leotard)),headgear,\n(focus-on:1.1),(1_girl),((solo)),slim_waist,white hair, long hair, luminous yellow eyes,(medium_breast:1.2), (Indistinct_cameltoe:0.9), (flat_crotch:1.1),(coquettish), (squint:1.4),(evil_smile :1.35),(dark_persona), [open mouth: 0.7], standing,[wet:0.7],\nslim_face, tall_girl,(mature),mature_face, (slim_figure), (slim_legs:1.1), (groin:1.1), ((bare_thighs)),', neg_prompt='EasyNegative, sketch, duplicate, ugly, huge eyes, text, logo, monochrome, worst face, (bad and mutated hands:1.3), (worst quality:2.0), (low quality:2.0), (blurry:2.0), horror, geometry, bad_prompt, (bad hands), (missing fingers), multiple limbs, bad anatomy, (interlocked fingers:1.2), Ugly Fingers, (extra digit and hands and fingers and legs and arms:1.4), ((2girl)), (deformed fingers:1.2), (long fingers:1.2),(bad-artist-anime), bad-artist, bad hand, blush, (lipstick),skindentation, tie, ((big_breast)), (nipple), thighhighs, pubic_hair, pussy, black and white,(3d), ((realistic)),blurry,nipple slip, (nipple), blush, head_out_of_frame,curvy,', parameters={'Steps': 20, 'Sampler': 'DDIM', 'CFG scale': 7, 'Seed': 3827064803, 'Size': (512, 848), 'Model hash': 'eb49192009', 'Model': 'AniDosMix', 'Clip skip': 2})
+        >>> type(sd1)
+        <class 'imgutils.sd.metadata.SDMetaData'>
+        >>>
+        >>> sd2 = get_sdmeta_from_image('sd_metadata_complex.png')
+        >>> sd2
+        SDMetaData(prompt='1girl, solo, blue eyes, black footwear, white hair, looking at viewer, shoes, full body, standing, bangs, indoors, wide sleeves, ahoge, dress, closed mouth, blush, long sleeves, potted plant, bag, plant, hair bun, window,<lora:BlueArchive10:1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1>,BlueArchive,', neg_prompt='Neg1,Negative,', parameters={'Steps': 20, 'Sampler': 'DPM++ 2M SDE Karras', 'CFG scale': 7, 'Seed': 2647703743, 'Size': (768, 768), 'Model hash': '72bd94132e', 'Model': 'CuteMix', 'Denoising strength': 0.7, 'ControlNet 0': 'preprocessor: openpose, model: control_v11p_sd15_openpose [cab727d4], weight: 1, starting/ending: (0, 1), resize mode: Crop and Resize, pixel perfect: False, control mode: Balanced, preprocessor params: (512, 64, 64)', 'Hires upscale': 2, 'Hires upscaler': 'Latent', 'TI hashes': 'Neg1: 339cc9210f70, Negative: 66a7279a88dd', 'Version': 'v1.5.1'})
+        >>> type(sd2)
+        <class 'imgutils.sd.metadata.SDMetaData'>
     """
     image = load_image(image, mode=None, force_background=None)
     pnginfo_text = image.info.get('parameters')
