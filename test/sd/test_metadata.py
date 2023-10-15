@@ -299,6 +299,32 @@ class TestSdMetadata:
         assert get_sdmeta_from_image(sdimg_3_pil) == sdimg_3_std
         assert get_sdmeta_from_image(sdimg_4_pil) == sdimg_4_std
 
+        assert get_sdmeta_from_image(sdimg_1) != sdimg_2_std
+        assert get_sdmeta_from_image(sdimg_1) != sdimg_3_std
+        assert get_sdmeta_from_image(sdimg_1) != sdimg_4_std
+        assert get_sdmeta_from_image(sdimg_2) != sdimg_1_std
+        assert get_sdmeta_from_image(sdimg_2) != sdimg_3_std
+        assert get_sdmeta_from_image(sdimg_2) != sdimg_4_std
+        assert get_sdmeta_from_image(sdimg_3) != sdimg_1_std
+        assert get_sdmeta_from_image(sdimg_3) != sdimg_2_std
+        assert get_sdmeta_from_image(sdimg_3) != sdimg_4_std
+        assert get_sdmeta_from_image(sdimg_4) != sdimg_1_std
+        assert get_sdmeta_from_image(sdimg_4) != sdimg_2_std
+        assert get_sdmeta_from_image(sdimg_4) != sdimg_3_std
+
+        assert get_sdmeta_from_image(sdimg_1_pil) != sdimg_2_std
+        assert get_sdmeta_from_image(sdimg_1_pil) != sdimg_3_std
+        assert get_sdmeta_from_image(sdimg_1_pil) != sdimg_4_std
+        assert get_sdmeta_from_image(sdimg_2_pil) != sdimg_1_std
+        assert get_sdmeta_from_image(sdimg_2_pil) != sdimg_3_std
+        assert get_sdmeta_from_image(sdimg_2_pil) != sdimg_4_std
+        assert get_sdmeta_from_image(sdimg_3_pil) != sdimg_1_std
+        assert get_sdmeta_from_image(sdimg_3_pil) != sdimg_2_std
+        assert get_sdmeta_from_image(sdimg_3_pil) != sdimg_4_std
+        assert get_sdmeta_from_image(sdimg_4_pil) != sdimg_1_std
+        assert get_sdmeta_from_image(sdimg_4_pil) != sdimg_2_std
+        assert get_sdmeta_from_image(sdimg_4_pil) != sdimg_3_std
+
     def test_get_sdmeta_from_image_none(self, sdimg_none, sdimg_none_pil):
         assert get_sdmeta_from_image(sdimg_none) is None
         assert get_sdmeta_from_image(sdimg_none_pil) is None
