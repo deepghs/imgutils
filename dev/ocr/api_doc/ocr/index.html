@@ -189,20 +189,69 @@
     
   <section id="module-imgutils.ocr">
 <span id="imgutils-ocr"></span><h1>imgutils.ocr<a class="headerlink" href="#module-imgutils.ocr" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>Detect and recognize text in images.</p>
+<p>The models are exported from <a class="reference external" href="https://github.com/PaddlePaddle/PaddleOCR">PaddleOCR</a>, hosted on
+<a class="reference external" href="https://huggingface.co/deepghs/paddleocr/tree/main">huggingface - deepghs/paddleocr</a>.</p>
+<img alt="../../_images/ocr_demo.plot.py.svg" class="align-center" src="../../_images/ocr_demo.plot.py.svg" /><p>This is an overall benchmark of all the text detection models:</p>
+<img alt="../../_images/ocr_det_benchmark.plot.py.svg" class="align-center" src="../../_images/ocr_det_benchmark.plot.py.svg" /><p>and an overall benchmark of all the available text recognition models:</p>
+<img alt="../../_images/ocr_rec_benchmark.plot.py.svg" class="align-center" src="../../_images/ocr_rec_benchmark.plot.py.svg" /></dd>
+</dl>
 <section id="detect-text-with-ocr">
 <h2>detect_text_with_ocr<a class="headerlink" href="#detect-text-with-ocr" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.ocr.detect_text_with_ocr">
 <code class="sig-prename descclassname">imgutils.ocr.</code><code class="sig-name descname">detect_text_with_ocr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ch_PP-OCRv4_det'</span></em>, <em class="sig-param"><span class="n">heat_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">box_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">max_candidates</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">unclip_ratio</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">2.0</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Tuple<span class="p">[</span>Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span><span class="p">, </span>str<span class="p">, </span>float<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/ocr/entry.html#detect_text_with_ocr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.ocr.detect_text_with_ocr" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Detect text in an image using an OCR model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>model</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the text detection model.</p></li>
+<li><p><strong>heat_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The heat map threshold for text detection.</p></li>
+<li><p><strong>box_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The box threshold for text detection.</p></li>
+<li><p><strong>max_candidates</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of candidates to consider.</p></li>
+<li><p><strong>unclip_ratio</strong> (<em>float</em><em>, </em><em>optional</em>) – The unclip ratio for text detection.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of detected text boxes, their corresponding text content, and their confidence scores.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Tuple[Tuple[int, int, int, int], str, float]]</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="ocr">
 <h2>ocr<a class="headerlink" href="#ocr" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.ocr.ocr">
-<code class="sig-prename descclassname">imgutils.ocr.</code><code class="sig-name descname">ocr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">detect_model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ch_PP-OCRv4_det'</span></em>, <em class="sig-param"><span class="n">recognize_model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ch_PP-OCRv4_rec'</span></em>, <em class="sig-param"><span class="n">heat_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">box_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">max_candidates</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">unclip_ratio</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">2.0</span></em>, <em class="sig-param"><span class="n">rotation_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.5</span></em>, <em class="sig-param"><span class="n">is_remove_duplicate</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">silent</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/ocr/entry.html#ocr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.ocr.ocr" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">imgutils.ocr.</code><code class="sig-name descname">ocr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">detect_model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ch_PP-OCRv4_det'</span></em>, <em class="sig-param"><span class="n">recognize_model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ch_PP-OCRv4_rec'</span></em>, <em class="sig-param"><span class="n">heat_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">box_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">max_candidates</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">unclip_ratio</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">2.0</span></em>, <em class="sig-param"><span class="n">rotation_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.5</span></em>, <em class="sig-param"><span class="n">is_remove_duplicate</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/ocr/entry.html#ocr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.ocr.ocr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform optical character recognition (OCR) on an image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>detect_model</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the text detection model.</p></li>
+<li><p><strong>recognize_model</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the text recognition model.</p></li>
+<li><p><strong>heat_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The heat map threshold for text detection.</p></li>
+<li><p><strong>box_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The box threshold for text detection.</p></li>
+<li><p><strong>max_candidates</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of candidates to consider.</p></li>
+<li><p><strong>unclip_ratio</strong> (<em>float</em><em>, </em><em>optional</em>) – The unclip ratio for text detection.</p></li>
+<li><p><strong>rotation_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The rotation threshold for text detection.</p></li>
+<li><p><strong>is_remove_duplicate</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to remove duplicate text content.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of detected text boxes, their corresponding text content, and their combined confidence scores.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Tuple[Tuple[int, int, int, int], str, float]]</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="list-det-models">
@@ -210,7 +259,16 @@
 <dl class="py function">
 <dt id="imgutils.ocr.list_det_models">
 <code class="sig-prename descclassname">imgutils.ocr.</code><code class="sig-name descname">list_det_models</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>str<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/ocr/entry.html#list_det_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.ocr.list_det_models" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>List available text detection models for OCR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of available text detection model names.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="list-rec-models">
@@ -218,7 +276,16 @@
 <dl class="py function">
 <dt id="imgutils.ocr.list_rec_models">
 <code class="sig-prename descclassname">imgutils.ocr.</code><code class="sig-name descname">list_rec_models</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>str<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/ocr/entry.html#list_rec_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.ocr.list_rec_models" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>List available text recognition models for OCR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of available text recognition model names.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 </section>
@@ -283,15 +350,14 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../main/index.html">main</a></dd>
+                        <dd><a href="index.html">dev/ocr</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../cdc/index.html">dev/cdc</a></dd>
-                        <dd><a href="index.html">dev/ocr</a></dd>
                         <dd><a href="../../../onnx/index.html">dev/onnx</a></dd>
                         <dd><a href="../../../resolution/index.html">dev/resolution</a></dd>
-                        <dd><a href="../../../restore/index.html">dev/restore</a></dd>
                         <dd><a href="../../../tagging/index.html">dev/tagging</a></dd>
                         <dd><a href="../../../waifu2x/index.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div>
