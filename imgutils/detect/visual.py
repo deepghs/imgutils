@@ -12,7 +12,7 @@ from hbutils.color import rnd_colors, Color
 from imgutils.data import ImageTyping, load_image
 
 
-def _try_get_font_from_matplotlib(fontsize: int = 12):
+def _try_get_font_from_matplotlib(fp=None, fontsize: int = 12):
     try:
         # noinspection PyPackageRequirements
         import matplotlib
@@ -21,13 +21,13 @@ def _try_get_font_from_matplotlib(fontsize: int = 12):
     else:
         # noinspection PyPackageRequirements
         from matplotlib.font_manager import findfont, FontProperties
-        font = findfont(FontProperties(family=['sans-serif']))
+        font = findfont(fp or FontProperties(family=['sans-serif']))
         return ImageFont.truetype(font, fontsize)
 
 
 def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, float, float, float], str, float]],
                         labels: Optional[List[str]] = None, text_padding: int = 6, fontsize: int = 12,
-                        no_label: bool = False):
+                        fp=None, no_label: bool = False):
     """
     Overview:
         Visualize the results of the object detection.
@@ -51,7 +51,7 @@ def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, f
     image = load_image(image, force_background=None, mode='RGBA')
     visual_image = image.copy()
     draw = ImageDraw.Draw(visual_image, mode='RGBA')
-    font = _try_get_font_from_matplotlib(fontsize) or ImageFont.load_default()
+    font = _try_get_font_from_matplotlib(fp, fontsize) or ImageFont.load_default()
 
     labels = sorted(labels or {label for _, label, _ in detection})
     _colors = list(map(str, rnd_colors(len(labels))))

@@ -1,26 +1,30 @@
+import os
 from functools import lru_cache
 from typing import List, Tuple
 
 import numpy as np
-from huggingface_hub import hf_hub_download
+from huggingface_hub import hf_hub_download, HfFileSystem
 
-from ..data import ImageTyping
+from ..data import ImageTyping, load_image
 from ..utils import open_onnx_model
+
+_HF_CLIENT = HfFileSystem()
+_REPOSITORY = 'deepghs/paddleocr'
 
 
 @lru_cache()
 def _open_ocr_recognition_model(model):
     return open_onnx_model(hf_hub_download(
-        'deepghs/paddleocr',
-        f'{model}/recognition.onnx',
+        _REPOSITORY,
+        f'rec/{model}/model.onnx',
     ))
 
 
 @lru_cache()
 def _open_ocr_recognition_dictionary(model) -> List[str]:
     with open(hf_hub_download(
-            'deepghs/paddleocr',
-            f'{model}/dict.txt',
+            _REPOSITORY,
+            f'rec/{model}/dict.txt',
     ), 'r') as f:
         dict_ = [line.strip() for line in f]
 
@@ -57,9 +61,10 @@ def decode(text_index, model: str, text_prob=None, is_remove_duplicate=False):
 
 def _text_recognize(image: ImageTyping, model: str = 'ch_PP-OCRv4_det_infer',
                     is_remove_duplicate: bool = False) -> Tuple[str, float]:
+    image = load_image(image, force_background='white', mode='RGB')
     r = 48 / image.height
-    new_height = int(image.height * r)
-    new_width = int(image.width * r)
+    new_height = int(round(image.height * r))
+    new_width = int(round(image.width * r))
     image = image.resize((new_width, new_height))
 
     input_ = np.array(image).transpose((2, 0, 1)).astype(np.float32) / 255.0
@@ -73,3 +78,11 @@ def _text_recognize(image: ImageTyping, model: str = 'ch_PP-OCRv4_det_infer',
     indices = output.argmax(axis=2)
     confs = output.max(axis=2)
     return decode(indices, model, confs, is_remove_duplicate)[0]
+
+
+@lru_cache()
+def _list_rec_models() -> List[str]:
+    retval = []
+    for item in _HF_CLIENT.glob(f'{_REPOSITORY}/rec/*/model.onnx', ):
+        retval.append(os.path.relpath(item, _REPOSITORY).split('/')[1])
+    return retval

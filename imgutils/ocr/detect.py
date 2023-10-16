@@ -1,23 +1,30 @@
+import os.path
 from functools import lru_cache
+from typing import List
 
 import cv2
 import numpy as np
 import pyclipper
-from huggingface_hub import hf_hub_download
+from huggingface_hub import hf_hub_download, HfFileSystem
 from shapely import Polygon
 
-from ..data import ImageTyping
+from ..data import ImageTyping, load_image
 from ..utils import open_onnx_model
 
 _MIN_SIZE = 3
+_HF_CLIENT = HfFileSystem()
+_REPOSITORY = 'deepghs/paddleocr'
 
 
 @lru_cache()
 def _open_ocr_detection_model(model):
     return open_onnx_model(hf_hub_download(
-        'deepghs/paddleocr',
-        f'{model}/detection.onnx',
+        _REPOSITORY,
+        f'det/{model}/model.onnx',
     ))
+
+    print(ort.get_inputs()[0].shape)
+    return ort
 
 
 def _box_score_fast(bitmap, _box):
@@ -150,10 +157,19 @@ def _get_text_points(image: ImageTyping, model: str = 'ch_PP-OCRv4_det_infer',
 def _detect_text(image: ImageTyping, model: str = 'ch_PP-OCRv4_det_infer',
                  heat_threshold: float = 0.3, box_threshold: float = 0.7,
                  max_candidates: int = 1000, unclip_ratio: float = 2.0):
+    image = load_image(image, force_background='white', mode='RGB')
     retval = []
     for points, score in _get_text_points(image, model, heat_threshold, box_threshold, max_candidates, unclip_ratio):
         x0, y0 = points[:, 0].min(), points[:, 1].min()
         x1, y1 = points[:, 0].max(), points[:, 1].max()
         retval.append(((x0.item(), y0.item(), x1.item(), y1.item()), 'text', score))
 
+    return retval
+
+
+@lru_cache()
+def _list_det_models() -> List[str]:
+    retval = []
+    for item in _HF_CLIENT.glob(f'{_REPOSITORY}/det/*/model.onnx', ):
+        retval.append(os.path.relpath(item, _REPOSITORY).split('/')[1])
     return retval
