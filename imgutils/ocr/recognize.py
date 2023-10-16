@@ -42,10 +42,8 @@ def decode(text_index, model: str, text_prob=None, is_remove_duplicate=False):
         for ignored_token in ignored_tokens:
             selection &= text_index[batch_idx] != ignored_token
 
-        char_list = [
-            _open_ocr_recognition_dictionary(model)[text_id.item()]
-            for text_id in text_index[batch_idx][selection]
-        ]
+        _dict = _open_ocr_recognition_dictionary(model)
+        char_list = [_dict[text_id.item()] for text_id in text_index[batch_idx][selection]]
         if text_prob is not None:
             conf_list = text_prob[batch_idx][selection]
         else:
@@ -71,9 +69,7 @@ def _text_recognize(image: ImageTyping, model: str = 'ch_PP-OCRv4_rec',
     image = image.resize((new_width, new_height))
 
     input_ = np.array(image).transpose((2, 0, 1)).astype(np.float32) / 255.0
-
     input_ = ((input_ - 0.5) / 0.5)[None, ...].astype(np.float32)
-
     _input_name = _ort_session.get_inputs()[0].name
     _output_name = _ort_session.get_outputs()[0].name
     output, = _ort_session.run([_output_name], {_input_name: input_})
