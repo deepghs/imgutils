@@ -123,7 +123,7 @@ def _normalize(data, mean=(0.48145466, 0.4578275, 0.40821073), std=(0.26862954, 
 _ALIGN = 64
 
 
-def _get_text_points(image: ImageTyping, model: str = 'ch_PP-OCRv4_det_infer',
+def _get_text_points(image: ImageTyping, model: str = 'ch_PP-OCRv4_det',
                      heat_threshold: float = 0.3, box_threshold: float = 0.7,
                      max_candidates: int = 1000, unclip_ratio: float = 2.0):
     origin_width, origin_height = width, height = image.size
@@ -154,7 +154,7 @@ def _get_text_points(image: ImageTyping, model: str = 'ch_PP-OCRv4_det_infer',
     return retval
 
 
-def _detect_text(image: ImageTyping, model: str = 'ch_PP-OCRv4_det_infer',
+def _detect_text(image: ImageTyping, model: str = 'ch_PP-OCRv4_det',
                  heat_threshold: float = 0.3, box_threshold: float = 0.7,
                  max_candidates: int = 1000, unclip_ratio: float = 2.0):
     image = load_image(image, force_background='white', mode='RGB')

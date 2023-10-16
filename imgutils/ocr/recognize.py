@@ -59,7 +59,7 @@ def decode(text_index, model: str, text_prob=None, is_remove_duplicate=False):
     return retval
 
 
-def _text_recognize(image: ImageTyping, model: str = 'ch_PP-OCRv4_det_infer',
+def _text_recognize(image: ImageTyping, model: str = 'ch_PP-OCRv4_rec',
                     is_remove_duplicate: bool = False) -> Tuple[str, float]:
     image = load_image(image, force_background='white', mode='RGB')
     r = 48 / image.height
