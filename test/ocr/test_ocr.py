@@ -91,15 +91,34 @@ class TestOcr:
         detections = ocr(ocr_img_comic)
         assert len(detections) == 8
 
-        assert detections == pytest.approx([
-            ((742, 485, 809, 511), 'MOB.', 0.9356705927336156),
-            ((716, 136, 836, 164), 'SHISHOU,', 0.8933000384412466),
-            ((682, 98, 734, 124), 'BUT', 0.8730931912907247),
-            ((144, 455, 196, 485), 'OH,', 0.8417627579351514),
-            ((427, 129, 553, 154), 'A MIRROR.', 0.7366019454049503),
-            ((1030, 557, 1184, 578), '(EL)  GATO IBERICO', 0.7271127306351021),
-            ((719, 455, 835, 488), "THAt'S △", 0.701928390168364),
-            ((124, 478, 214, 508), 'LOOK!', 0.6965972578194936),
+        bboxes = []
+        texts = []
+        scores = []
+        for bbox, text, score in detections:
+            bboxes.append(bbox)
+            texts.append(text)
+            scores.append(score)
+
+        assert bboxes == pytest.approx([
+            (742, 485, 809, 511),
+            (716, 136, 836, 164),
+            (682, 98, 734, 124),
+            (144, 455, 196, 485),
+            (427, 129, 553, 154),
+            (1030, 557, 1184, 578),
+            (719, 455, 835, 488),
+            (124, 478, 214, 508),
+        ])
+        assert texts == ['MOB.', 'SHISHOU,', 'BUT', 'OH,', 'A MIRROR.', '(EL)  GATO IBERICO', "THAt'S △", 'LOOK!']
+        assert scores == pytest.approx([
+            0.9356677655964869,
+            0.8932994278321376,
+            0.8730925493136663,
+            0.8417598172118067,
+            0.7365999885917329,
+            0.7271122893745091,
+            0.7019268051682541,
+            0.6965953319577997
         ], abs=1e-3)
 
     def test_ocr_plot(self, ocr_img_plot):

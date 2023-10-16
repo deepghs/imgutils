@@ -25,7 +25,7 @@ def _open_ocr_recognition_dictionary(model) -> List[str]:
     with open(hf_hub_download(
             _REPOSITORY,
             f'rec/{model}/dict.txt',
-    ), 'r') as f:
+    ), 'r', encoding='utf-8') as f:
         dict_ = [line.strip() for line in f]
 
     return ['<blank>', *dict_, ' ']
@@ -82,6 +82,7 @@ def _text_recognize(image: ImageTyping, model: str = 'ch_PP-OCRv4_rec',
 @lru_cache()
 def _list_rec_models() -> List[str]:
     retval = []
-    for item in _HF_CLIENT.glob(f'{_REPOSITORY}/rec/*/model.onnx', ):
-        retval.append(os.path.relpath(item, _REPOSITORY).split('/')[1])
+    repo_segment_cnt = len(_REPOSITORY.split('/'))
+    for item in _HF_CLIENT.glob(f'{_REPOSITORY}/rec/*/model.onnx'):
+        retval.append(item.split('/')[repo_segment_cnt:][1])
     return retval

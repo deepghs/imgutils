@@ -1,4 +1,3 @@
-import os.path
 from functools import lru_cache
 from typing import List
 
@@ -167,6 +166,7 @@ def _detect_text(image: ImageTyping, model: str = 'ch_PP-OCRv4_det',
 @lru_cache()
 def _list_det_models() -> List[str]:
     retval = []
-    for item in _HF_CLIENT.glob(f'{_REPOSITORY}/det/*/model.onnx', ):
-        retval.append(os.path.relpath(item, _REPOSITORY).split('/')[1])
+    repo_segment_cnt = len(_REPOSITORY.split('/'))
+    for item in _HF_CLIENT.glob(f'{_REPOSITORY}/det/*/model.onnx'):
+        retval.append(item.split('/')[repo_segment_cnt:][1])
     return retval
