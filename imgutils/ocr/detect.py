@@ -23,9 +23,6 @@ def _open_ocr_detection_model(model):
         f'det/{model}/model.onnx',
     ))
 
-    print(ort.get_inputs()[0].shape)
-    return ort
-
 
 def _box_score_fast(bitmap, _box):
     h, w = bitmap.shape[:2]

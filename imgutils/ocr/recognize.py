@@ -31,7 +31,7 @@ def _open_ocr_recognition_dictionary(model) -> List[str]:
     return ['<blank>', *dict_, ' ']
 
 
-def decode(text_index, model: str, text_prob=None, is_remove_duplicate=False):
+def _text_decode(text_index, model: str, text_prob=None, is_remove_duplicate=False):
     retval = []
     ignored_tokens = [0]
     batch_size = len(text_index)
@@ -76,7 +76,7 @@ def _text_recognize(image: ImageTyping, model: str = 'ch_PP-OCRv4_rec',
 
     indices = output.argmax(axis=2)
     confs = output.max(axis=2)
-    return decode(indices, model, confs, is_remove_duplicate)[0]
+    return _text_decode(indices, model, confs, is_remove_duplicate)[0]
 
 
 @lru_cache()
