@@ -27,6 +27,7 @@ if __name__ == '__main__':
         [
             (model, OCRDetectBenchmark(model))
             for model in _list_det_models()
+            if 'server' not in model
         ],
         title='Benchmark for OCR Detections',
         run_times=10,
