@@ -61,8 +61,11 @@ def decode(text_index, model: str, text_prob=None, is_remove_duplicate=False):
 
 def _text_recognize(image: ImageTyping, model: str = 'ch_PP-OCRv4_rec',
                     is_remove_duplicate: bool = False) -> Tuple[str, float]:
+    _ort_session = _open_ocr_recognition_model(model)
+    expected_height = _ort_session.get_inputs()[0].shape[2]
+
     image = load_image(image, force_background='white', mode='RGB')
-    r = 48 / image.height
+    r = expected_height / image.height
     new_height = int(round(image.height * r))
     new_width = int(round(image.width * r))
     image = image.resize((new_width, new_height))
@@ -70,7 +73,7 @@ def _text_recognize(image: ImageTyping, model: str = 'ch_PP-OCRv4_rec',
     input_ = np.array(image).transpose((2, 0, 1)).astype(np.float32) / 255.0
 
     input_ = ((input_ - 0.5) / 0.5)[None, ...].astype(np.float32)
-    _ort_session = _open_ocr_recognition_model(model)
+
     _input_name = _ort_session.get_inputs()[0].name
     _output_name = _ort_session.get_outputs()[0].name
     output, = _ort_session.run([_output_name], {_input_name: input_})
