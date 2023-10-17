@@ -47,8 +47,17 @@ def detect_text_with_ocr(image: ImageTyping, model: str = _DEFAULT_DET_MODEL,
     :type max_candidates: int, optional
     :param unclip_ratio: The unclip ratio for text detection.
     :type unclip_ratio: float, optional
-    :return: A list of detected text boxes, their corresponding text content, and their confidence scores.
+    :return: A list of detected text boxes, label (always ``text``), and their confidence scores.
     :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    .. note::
+        If you need to extract the actual text content, use the :func:`ocr` function.
+
+    Examples::
+        >>> from imgutils.ocr import detect_text_with_ocr
+        >>>
+        >>> detect_text_with_ocr('comic.jpg')
+        [((742, 485, 809, 511), 'text', 0.9543377610144915), ((682, 98, 734, 124), 'text', 0.9309689495575223), ((716, 136, 836, 164), 'text', 0.9042856988923695), ((144, 455, 196, 485), 'text', 0.874083638387722), ((719, 455, 835, 488), 'text', 0.8628696346175078), ((124, 478, 214, 508), 'text', 0.848871771901487), ((1030, 557, 1184, 578), 'text', 0.8352495440618789), ((427, 129, 553, 154), 'text', 0.8249209443996619)]
     """
     retval = []
     for box, _, score in _detect_text(image, model, heat_threshold, box_threshold, max_candidates, unclip_ratio):
@@ -84,6 +93,19 @@ def ocr(image: ImageTyping, detect_model: str = _DEFAULT_DET_MODEL,
     :type is_remove_duplicate: bool, optional
     :return: A list of detected text boxes, their corresponding text content, and their combined confidence scores.
     :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    Examples::
+        >>> from imgutils.ocr import ocr
+        >>>
+        >>> ocr('comic.jpg')
+        [((742, 485, 809, 511), 'MOB.', 0.9356705927336156), ((716, 136, 836, 164), 'SHISHOU,', 0.8933000384412466), ((682, 98, 734, 124), 'BUT', 0.8730931912907247), ((144, 455, 196, 485), 'OH,', 0.8417627579351514), ((427, 129, 553, 154), 'A MIRROR.', 0.7366019454049503), ((1030, 557, 1184, 578), '(EL)  GATO IBERICO', 0.7271127306351021), ((719, 455, 835, 488), "THAt'S △", 0.701928390168364), ((124, 478, 214, 508), 'LOOK!', 0.6965972578194936)]
+
+        .. note::
+            By default, the text recognition model used is `ch_PP-OCRv4_rec`.
+            This recognition model has good recognition capabilities for both Chinese and English.
+            For unsupported text types, its recognition accuracy cannot be guaranteed, resulting in a lower score.
+            **If you need recognition for other languages, please use :func:`list_rec_models` to
+            view more available recognition models and choose the appropriate one for recognition**.
     """
     image = load_image(image)
     retval = []

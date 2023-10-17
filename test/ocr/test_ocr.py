@@ -45,6 +45,16 @@ def ocr_img_post_text_pil(ocr_img_post_text):
     yield Image.open(ocr_img_post_text)
 
 
+@pytest.fixture()
+def ocr_img_cn_text():
+    yield get_testfile('ocr', 'cn_text.png')
+
+
+@pytest.fixture()
+def ocr_img_cn_text_pil(ocr_img_cn_text):
+    yield Image.open(ocr_img_cn_text)
+
+
 @pytest.mark.unittest
 class TestOcr:
     def test_detect_text_with_ocr_comic(self, ocr_img_comic):
@@ -124,6 +134,26 @@ class TestOcr:
     def test_ocr_plot(self, ocr_img_plot):
         detections = ocr(ocr_img_plot)
         assert len(detections) >= 75
+
+    def test_ocr_cn_text(self, ocr_img_cn_text):
+        detections = ocr(ocr_img_cn_text)
+        assert len(detections) >= 25
+
+        bboxes = []
+        texts = []
+        scores = []
+        for bbox, text, score in detections:
+            bboxes.append(bbox)
+            texts.append(text)
+            scores.append(score)
+
+        assert '算法列表' in texts
+        assert '算法名' in texts
+        assert '训练数据集' in texts
+        assert '年份' in texts
+        assert '任务' in texts
+        assert 'word_acc' in texts
+        assert 'SVTR' in texts
 
     def test_list_rec_models(self):
         lst = list_rec_models()
