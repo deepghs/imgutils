@@ -197,7 +197,7 @@ def parse_sdmeta_from_text(x: str) -> SDMetaData:
     x = textwrap.dedent(x).strip()
     *prompt_lines, argument_line = x.splitlines(keepends=False)
     if len(_PARAM_PATTERN.findall(argument_line)) < 3:
-        prompt_lines._append(argument_line)
+        prompt_lines.append(argument_line)
         argument_line = ''
 
     # 0x1 means prompt, 0x2 means neg prompt
