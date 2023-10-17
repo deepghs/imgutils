@@ -16,7 +16,7 @@ import pandas as pd
 from PIL import Image
 from huggingface_hub import hf_hub_download
 
-from .overlap import drop_overlaps_for_dict
+from .overlap import drop_overlap_tags
 from ..data import ImageTyping, load_image
 from ..utils import open_onnx_model
 
@@ -124,7 +124,7 @@ def get_deepdanbooru_tags(image: ImageTyping, use_real_name: bool = False,
     general_res = [x for x in general_names if x[1] > general_threshold]
     general_res = dict(general_res)
     if drop_overlap:
-        general_res = drop_overlaps_for_dict(general_res)
+        general_res = drop_overlap_tags(general_res)
 
     # Everything else is characters: pick anywhere prediction confidence > threshold
     character_names = [labels[i] for i in character_indexes]

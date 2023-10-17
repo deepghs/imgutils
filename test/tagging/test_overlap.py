@@ -1,16 +1,15 @@
 import pytest
 
-from imgutils.tagging import drop_overlaps_for_dict, drop_overlap_tags
+from imgutils.tagging import drop_overlap_tags
 
 
 @pytest.mark.unittest
 class TestTaggingOverlap:
-    def test_drop_overlap_tags(self):
+    def test_drop_overlap_tags(self, complex_dict_tags):
         assert drop_overlap_tags(['1girl', 'solo', 'long_hair', 'very_long_hair', 'red_hair']) == \
                ['1girl', 'solo', 'very_long_hair', 'red_hair']
 
-    def test_drop_overlaps_for_dict_complex(self, complex_dict_tags):
-        assert drop_overlaps_for_dict(complex_dict_tags) == pytest.approx({
+        assert drop_overlap_tags(complex_dict_tags) == pytest.approx({
             '1girl': 0.998362123966217, 'solo': 0.9912548065185547, 'looking_at_viewer': 0.9146994352340698,
             'blush': 0.8892400860786438, 'smile': 0.43393653631210327, 'bangs': 0.49712443351745605,
             'large_breasts': 0.5196534395217896, 'navel': 0.9653235077857971, 'hair_between_eyes': 0.5786703824996948,
@@ -23,3 +22,9 @@ class TestTaggingOverlap:
             'arms_behind_head': 0.44814401865005493, 'breasts_apart': 0.39798974990844727,
             'clitoris': 0.5310801267623901
         })
+
+    def test_drop_overlap_tags_invalid(self):
+        with pytest.raises(TypeError):
+            drop_overlap_tags(1)
+        with pytest.raises(TypeError):
+            drop_overlap_tags(None)
