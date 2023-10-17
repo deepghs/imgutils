@@ -17,16 +17,13 @@ def _get_overlap_tags() -> Mapping[str, List[str]]:
     """
     json_file = hf_hub_download(
         'alea31415/tag_filtering',
-        'overlap_tags.json',
+        'overlap_tags_simplified.json',
         repo_type='dataset',
     )
     with open(json_file, 'r') as file:
         data = json.load(file)
 
-    return {
-        entry['query']: entry['has_overlap']
-        for entry in data if 'has_overlap' in entry and entry['has_overlap']
-    }
+    return data
 
 
 def drop_overlap_tags(tags: List[str]) -> List[str]:
