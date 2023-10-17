@@ -13,10 +13,3 @@ drop_overlap_tags
 
 
 
-drop_overlaps_for_dict
-----------------------------------
-
-.. autofunction:: drop_overlaps_for_dict
-
-
-
