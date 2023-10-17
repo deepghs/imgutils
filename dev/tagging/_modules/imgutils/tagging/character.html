@@ -301,12 +301,12 @@
         <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">class</span> <span class="nc">CharacterTagPool</span><span class="p">:</span>
+<div class="viewcode-block" id="CharacterTagPool"><a class="viewcode-back" href="../../../api_doc/tagging/character.html#imgutils.tagging.character.CharacterTagPool">[docs]</a><span class="k">class</span> <span class="nc">CharacterTagPool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A pool of character-related tags for detection and removal of basic character tags.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">whitelist</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="CharacterTagPool.__init__"><a class="viewcode-back" href="../../../api_doc/tagging/character.html#imgutils.tagging.character.CharacterTagPool.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">whitelist</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">suffixes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">prefixes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -321,9 +321,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_whitelist</span> <span class="o">=</span> <span class="n">_SuffixPool</span><span class="p">(</span><span class="n">whitelist</span> <span class="ow">or</span> <span class="n">CHAR_WHITELIST</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_suffixes</span> <span class="o">=</span> <span class="n">_SuffixPool</span><span class="p">(</span><span class="n">suffixes</span> <span class="ow">or</span> <span class="n">CHAR_SUFFIXES</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span> <span class="o">=</span> <span class="n">_PrefixPool</span><span class="p">(</span><span class="n">prefixes</span> <span class="ow">or</span> <span class="n">CHAR_PREFIXES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span> <span class="o">=</span> <span class="n">_PrefixPool</span><span class="p">(</span><span class="n">prefixes</span> <span class="ow">or</span> <span class="n">CHAR_PREFIXES</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">is_basic_character_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="CharacterTagPool.is_basic_character_tag"><a class="viewcode-back" href="../../../api_doc/tagging/character.html#imgutils.tagging.character.CharacterTagPool.is_basic_character_tag">[docs]</a>    <span class="k">def</span> <span class="nf">is_basic_character_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check if a given tag is a basic character tag.</span>
 
@@ -335,9 +335,9 @@
         <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_whitelist</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffixes</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffixes</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">drop_basic_character_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]])</span> \
+<div class="viewcode-block" id="CharacterTagPool.drop_basic_character_tags"><a class="viewcode-back" href="../../../api_doc/tagging/character.html#imgutils.tagging.character.CharacterTagPool.drop_basic_character_tags">[docs]</a>    <span class="k">def</span> <span class="nf">drop_basic_character_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]])</span> \
             <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Drop basic character tags from a list or mapping of tags.</span>
@@ -352,7 +352,7 @@
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_basic_character_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">)]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported types of tags, dict or list expected, but </span><span class="si">{</span><span class="n">tags</span><span class="si">!r}</span><span class="s2"> found.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported types of tags, dict or list expected, but </span><span class="si">{</span><span class="n">tags</span><span class="si">!r}</span><span class="s2"> found.&quot;</span><span class="p">)</span></div></div>
 
 
 <span class="n">_DEFAULT_CHARACTER_POOL</span> <span class="o">=</span> <span class="n">CharacterTagPool</span><span class="p">()</span>
