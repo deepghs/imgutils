@@ -196,7 +196,7 @@
 <span class="sd">    .. warning::</span>
 <span class="sd">        This module has been deprecated and will be removed in the future.</span>
 
-<span class="sd">        It is recommended to migrate to the `imgutils.ocr.detect_text_with_ocr` function as soon as possible.</span>
+<span class="sd">        It is recommended to migrate to the :func:`imgutils.ocr.detect_text_with_ocr` function as soon as possible.</span>
 <span class="sd">        This function uses a higher-quality text detection model provided by PaddleOCR,</span>
 <span class="sd">        resulting in improved performance and higher efficiency.</span>
 
@@ -318,6 +318,10 @@
 <span class="sd">    :type max_area_size: Optional[int]</span>
 <span class="sd">    :return: List of detected text bounding boxes, labels, and scores.</span>
 <span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        This function is deprecated, and it will be removed from imgutils in the future.</span>
+<span class="sd">        Please migrate to :func:`imgutils.ocr.detect_text_with_ocr` as soon as possible.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">max_area_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">image</span><span class="o">.</span><span class="n">height</span> <span class="o">&gt;=</span> <span class="n">max_area_size</span> <span class="o">**</span> <span class="mi">2</span><span class="p">:</span>
