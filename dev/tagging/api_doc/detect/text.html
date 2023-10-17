@@ -121,8 +121,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
@@ -201,7 +203,14 @@
 <dt>Overview:</dt><dd><p>Detect text in images.</p>
 <p>Models are hosted on <a class="reference external" href="https://huggingface.co/spaces/deepghs/text_detection">deepghs/text_detection</a>.</p>
 <img alt="../../_images/text_detect_demo.plot.py.svg" class="align-center" src="../../_images/text_detect_demo.plot.py.svg" /><p>This is an overall benchmark of all the text detect models:</p>
-<img alt="../../_images/text_detect_benchmark.plot.py.svg" class="align-center" src="../../_images/text_detect_benchmark.plot.py.svg" /></dd>
+<img alt="../../_images/text_detect_benchmark.plot.py.svg" class="align-center" src="../../_images/text_detect_benchmark.plot.py.svg" /><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This module has been deprecated and will be removed in the future.</p>
+<p>It is recommended to migrate to the <a class="reference internal" href="../ocr/index.html#imgutils.ocr.detect_text_with_ocr" title="imgutils.ocr.detect_text_with_ocr"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.ocr.detect_text_with_ocr()</span></code></a> function as soon as possible.
+This function uses a higher-quality text detection model provided by PaddleOCR,
+resulting in improved performance and higher efficiency.</p>
+<img alt="../../_images/text_detect_deprecate_demo.plot.py.svg" class="align-center" src="../../_images/text_detect_deprecate_demo.plot.py.svg" /></aside>
+</dd>
 </dl>
 <section id="detect-text">
 <h2>detect_text<a class="headerlink" href="#detect-text" title="Permalink to this headline">¶</a></h2>
@@ -227,6 +236,11 @@ it means do not resize in any case.</p></li>
 <dd class="field-odd"><p>List[Tuple[Tuple[int, int, int, int], str, float]]</p>
 </dd>
 </dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function is deprecated, and it will be removed from imgutils in the future.
+Please migrate to <a class="reference internal" href="../ocr/index.html#imgutils.ocr.detect_text_with_ocr" title="imgutils.ocr.detect_text_with_ocr"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.ocr.detect_text_with_ocr()</span></code></a> as soon as possible.</p>
+</aside>
 </dd></dl>
 
 </section>
@@ -292,12 +306,12 @@ it means do not resize in any case.</p></li>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../main/api_doc/detect/text.html">main</a></dd>
+                        <dd><a href="text.html">dev/tagging</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../cdc/api_doc/detect/text.html">dev/cdc</a></dd>
                         <dd><a href="../../../resolution/index.html">dev/resolution</a></dd>
-                        <dd><a href="text.html">dev/tagging</a></dd>
                         <dd><a href="../../../waifu2x/api_doc/detect/text.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../../../main/api_doc/detect/text.html">main</a></dd>
                 </dl>
         </div>
     </div>

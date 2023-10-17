@@ -106,8 +106,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
@@ -191,14 +193,26 @@
 <span class="sd">    .. image:: text_detect_benchmark.plot.py.svg</span>
 <span class="sd">        :align: center</span>
 
+<span class="sd">    .. warning::</span>
+<span class="sd">        This module has been deprecated and will be removed in the future.</span>
+
+<span class="sd">        It is recommended to migrate to the :func:`imgutils.ocr.detect_text_with_ocr` function as soon as possible.</span>
+<span class="sd">        This function uses a higher-quality text detection model provided by PaddleOCR,</span>
+<span class="sd">        resulting in improved performance and higher efficiency.</span>
+
+<span class="sd">        .. image:: text_detect_deprecate_demo.plot.py.svg</span>
+<span class="sd">            :align: center</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">deprecation</span> <span class="kn">import</span> <span class="n">deprecated</span>
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
 
+<span class="kn">from</span> <span class="nn">..config.meta</span> <span class="kn">import</span> <span class="n">__VERSION__</span>
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
 
@@ -285,7 +299,9 @@
     <span class="k">return</span> <span class="n">bboxes</span>
 
 
-<div class="viewcode-block" id="detect_text"><a class="viewcode-back" href="../../../api_doc/detect/text.html#imgutils.detect.text.detect_text">[docs]</a><span class="k">def</span> <span class="nf">detect_text</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+<div class="viewcode-block" id="detect_text"><a class="viewcode-back" href="../../../api_doc/detect/text.html#imgutils.detect.text.detect_text">[docs]</a><span class="nd">@deprecated</span><span class="p">(</span><span class="n">deprecated_in</span><span class="o">=</span><span class="s2">&quot;0.2.10&quot;</span><span class="p">,</span> <span class="n">removed_in</span><span class="o">=</span><span class="s2">&quot;0.4&quot;</span><span class="p">,</span> <span class="n">current_version</span><span class="o">=</span><span class="n">__VERSION__</span><span class="p">,</span>
+            <span class="n">details</span><span class="o">=</span><span class="s2">&quot;Use the new function :func:`imgutils.ocr.detect_text_with_ocr` instead&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">detect_text</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
                 <span class="n">max_area_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">640</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Detect text regions in the given image using the specified model and threshold.</span>
@@ -302,6 +318,10 @@
 <span class="sd">    :type max_area_size: Optional[int]</span>
 <span class="sd">    :return: List of detected text bounding boxes, labels, and scores.</span>
 <span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        This function is deprecated, and it will be removed from imgutils in the future.</span>
+<span class="sd">        Please migrate to :func:`imgutils.ocr.detect_text_with_ocr` as soon as possible.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">max_area_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">image</span><span class="o">.</span><span class="n">height</span> <span class="o">&gt;=</span> <span class="n">max_area_size</span> <span class="o">**</span> <span class="mi">2</span><span class="p">:</span>
@@ -370,12 +390,12 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                        <dd><a href="text.html">dev/tagging</a></dd>
                         <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../cdc/index.html">dev/cdc</a></dd>
                         <dd><a href="../../../../resolution/index.html">dev/resolution</a></dd>
-                        <dd><a href="text.html">dev/tagging</a></dd>
                         <dd><a href="../../../../waifu2x/index.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div>

@@ -106,8 +106,10 @@
 <li class="toctree-l1"><a class="reference internal" href="api_doc/detect/index.html">imgutils.detect</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/edge/index.html">imgutils.edge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/ocr/index.html">imgutils.ocr</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/operate/index.html">imgutils.operate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/sd/index.html">imgutils.sd</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/segment/index.html">imgutils.segment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/tagging/index.html">imgutils.tagging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/utils/index.html">imgutils.utils</a></li>
@@ -211,6 +213,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage.__init__">__init__() (imgutils.operate.imgcensor.SingleImage method)</a>
+</li>
+      <li><a href="api_doc/sd/metadata.html#imgutils.sd.metadata.SDMetaData.__str__">__str__() (imgutils.sd.metadata.SDMetaData method)</a>
 </li>
       <li><a href="api_doc/config/meta.html#imgutils.config.meta.__TITLE__">__TITLE__ (in module imgutils.config.meta)</a>
 </li>
@@ -326,6 +330,8 @@
 </li>
       <li><a href="api_doc/detect/text.html#imgutils.detect.text.detect_text">detect_text() (in module imgutils.detect.text)</a>
 </li>
+      <li><a href="api_doc/ocr/index.html#imgutils.ocr.detect_text_with_ocr">detect_text_with_ocr() (in module imgutils.ocr)</a>
+</li>
       <li><a href="api_doc/detect/visual.html#imgutils.detect.visual.detection_visualize">detection_visualize() (in module imgutils.detect.visual)</a>
 </li>
       <li><a href="api_doc/tagging/character.html#imgutils.tagging.character.drop_basic_character_tags">drop_basic_character_tags() (in module imgutils.tagging.character)</a>
@@ -333,8 +339,6 @@
       <li><a href="api_doc/tagging/blacklist.html#imgutils.tagging.blacklist.drop_blacklisted_tags">drop_blacklisted_tags() (in module imgutils.tagging.blacklist)</a>
 </li>
       <li><a href="api_doc/tagging/overlap.html#imgutils.tagging.overlap.drop_overlap_tags">drop_overlap_tags() (in module imgutils.tagging.overlap)</a>
-</li>
-      <li><a href="api_doc/tagging/overlap.html#imgutils.tagging.overlap.drop_overlaps_for_dict">drop_overlaps_for_dict() (in module imgutils.tagging.overlap)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -378,15 +382,17 @@
 </li>
       <li><a href="api_doc/edge/lineart_anime.html#imgutils.edge.lineart_anime.get_edge_by_lineart_anime">get_edge_by_lineart_anime() (in module imgutils.edge.lineart_anime)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/segment/isnetis.html#imgutils.segment.isnetis.get_isnetis_mask">get_isnetis_mask() (in module imgutils.segment.isnetis)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/tagging/mldanbooru.html#imgutils.tagging.mldanbooru.get_mldanbooru_tags">get_mldanbooru_tags() (in module imgutils.tagging.mldanbooru)</a>
 </li>
       <li><a href="api_doc/validate/monochrome.html#imgutils.validate.monochrome.get_monochrome_score">get_monochrome_score() (in module imgutils.validate.monochrome)</a>
 </li>
       <li><a href="api_doc/utils/onnxruntime.html#imgutils.utils.onnxruntime.get_onnx_provider">get_onnx_provider() (in module imgutils.utils.onnxruntime)</a>
+</li>
+      <li><a href="api_doc/sd/metadata.html#imgutils.sd.metadata.get_sdmeta_from_image">get_sdmeta_from_image() (in module imgutils.sd.metadata)</a>
 </li>
       <li><a href="api_doc/tagging/wd14.html#imgutils.tagging.wd14.get_wd14_tags">get_wd14_tags() (in module imgutils.tagging.wd14)</a>
 </li>
@@ -614,6 +620,13 @@
 </li>
       </ul></li>
       <li>
+    imgutils.ocr
+
+      <ul>
+        <li><a href="api_doc/ocr/index.html#module-imgutils.ocr">module</a>
+</li>
+      </ul></li>
+      <li>
     imgutils.operate
 
       <ul>
@@ -634,8 +647,6 @@
         <li><a href="api_doc/operate/censor.html#module-imgutils.operate.censor_">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     imgutils.operate.imgcensor
 
@@ -643,6 +654,8 @@
         <li><a href="api_doc/operate/imgcensor.html#module-imgutils.operate.imgcensor">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     imgutils.operate.squeeze
 
@@ -669,6 +682,20 @@
 
       <ul>
         <li><a href="api_doc/restore/scunet.html#module-imgutils.restore.scunet">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.sd
+
+      <ul>
+        <li><a href="api_doc/sd/index.html#module-imgutils.sd">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.sd.metadata
+
+      <ul>
+        <li><a href="api_doc/sd/metadata.html#module-imgutils.sd.metadata">module</a>
 </li>
       </ul></li>
       <li>
@@ -859,12 +886,16 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_doc/data/image.html#imgutils.data.image.load_image">load_image() (in module imgutils.data.image)</a>
+      <li><a href="api_doc/ocr/index.html#imgutils.ocr.list_det_models">list_det_models() (in module imgutils.ocr)</a>
 </li>
-      <li><a href="api_doc/data/image.html#imgutils.data.image.load_images">load_images() (in module imgutils.data.image)</a>
+      <li><a href="api_doc/ocr/index.html#imgutils.ocr.list_rec_models">list_rec_models() (in module imgutils.ocr)</a>
+</li>
+      <li><a href="api_doc/data/image.html#imgutils.data.image.load_image">load_image() (in module imgutils.data.image)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/data/image.html#imgutils.data.image.load_images">load_images() (in module imgutils.data.image)</a>
+</li>
       <li><a href="api_doc/metrics/lpips.html#imgutils.metrics.lpips.lpips_clustering">lpips_clustering() (in module imgutils.metrics.lpips)</a>
 </li>
       <li><a href="api_doc/metrics/lpips.html#imgutils.metrics.lpips.lpips_difference">lpips_difference() (in module imgutils.metrics.lpips)</a>
@@ -939,6 +970,8 @@
 </li>
         <li><a href="api_doc/metrics/psnr_.html#module-imgutils.metrics.psnr_">imgutils.metrics.psnr_</a>
 </li>
+        <li><a href="api_doc/ocr/index.html#module-imgutils.ocr">imgutils.ocr</a>
+</li>
         <li><a href="api_doc/operate/index.html#module-imgutils.operate">imgutils.operate</a>
 </li>
         <li><a href="api_doc/operate/align.html#module-imgutils.operate.align">imgutils.operate.align</a>
@@ -954,6 +987,10 @@
         <li><a href="api_doc/restore/nafnet.html#module-imgutils.restore.nafnet">imgutils.restore.nafnet</a>
 </li>
         <li><a href="api_doc/restore/scunet.html#module-imgutils.restore.scunet">imgutils.restore.scunet</a>
+</li>
+        <li><a href="api_doc/sd/index.html#module-imgutils.sd">imgutils.sd</a>
+</li>
+        <li><a href="api_doc/sd/metadata.html#module-imgutils.sd.metadata">imgutils.sd.metadata</a>
 </li>
         <li><a href="api_doc/segment/index.html#module-imgutils.segment">imgutils.segment</a>
 </li>
@@ -1022,6 +1059,10 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/ocr/index.html#imgutils.ocr.ocr">ocr() (in module imgutils.ocr)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/utils/onnxruntime.html#imgutils.utils.onnxruntime.open_onnx_model">open_onnx_model() (in module imgutils.utils.onnxruntime)</a>
 </li>
   </ul></td>
@@ -1030,10 +1071,14 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/sd/metadata.html#imgutils.sd.metadata.parse_sdmeta_from_text">parse_sdmeta_from_text() (in module imgutils.sd.metadata)</a>
+</li>
       <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.PixelateCensor">PixelateCensor (class in imgutils.operate.censor_)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/sd/metadata.html#imgutils.sd.metadata.SDMetaData.pnginfo">pnginfo() (imgutils.sd.metadata.SDMetaData property)</a>
+</li>
       <li><a href="api_doc/metrics/psnr_.html#imgutils.metrics.psnr_.psnr">psnr() (in module imgutils.metrics.psnr_)</a>
 </li>
   </ul></td>
@@ -1060,14 +1105,16 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/sd/metadata.html#imgutils.sd.metadata.SDMetaData">SDMetaData (class in imgutils.sd.metadata)</a>
+</li>
       <li><a href="api_doc/segment/isnetis.html#imgutils.segment.isnetis.segment_rgba_with_isnetis">segment_rgba_with_isnetis() (in module imgutils.segment.isnetis)</a>
 </li>
       <li><a href="api_doc/segment/isnetis.html#imgutils.segment.isnetis.segment_with_isnetis">segment_with_isnetis() (in module imgutils.segment.isnetis)</a>
 </li>
-      <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage">SingleImage (class in imgutils.operate.imgcensor)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage">SingleImage (class in imgutils.operate.imgcensor)</a>
+</li>
       <li><a href="api_doc/tagging/order.html#imgutils.tagging.order.sort_tags">sort_tags() (in module imgutils.tagging.order)</a>
 </li>
       <li><a href="api_doc/operate/squeeze.html#imgutils.operate.squeeze.squeeze">squeeze() (in module imgutils.operate.squeeze)</a>
@@ -1152,12 +1199,12 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../main/index.html">main</a></dd>
+                        <dd><a href="genindex.html">dev/tagging</a></dd>
                         <dd><a href="../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../cdc/index.html">dev/cdc</a></dd>
                         <dd><a href="../resolution/index.html">dev/resolution</a></dd>
-                        <dd><a href="genindex.html">dev/tagging</a></dd>
                         <dd><a href="../waifu2x/index.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div>
