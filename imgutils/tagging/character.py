@@ -23,18 +23,42 @@ _WordTupleTyping = Tuple[str, ...]
 
 
 class _SuffixPool:
+    """
+    Helper class to manage suffixes for character tags.
+    """
+
     def __init__(self, suffixes: Optional[List[str]] = None):
+        """
+        Initialize a SuffixPool instance.
+
+        :param suffixes: A list of suffixes to include, defaults to None
+        :type suffixes: Optional[List[str]], optional
+        """
         self._suffixes: Dict[int, Set[_WordTupleTyping]] = {}
         for suffix in (suffixes or []):
             self._append(suffix)
 
     def _append(self, text: str):
+        """
+        Append a suffix to the pool.
+
+        :param text: The suffix to append
+        :type text: str
+        """
         for item in _words_to_matcher(_split_to_words(text)):
             if len(item) not in self._suffixes:
                 self._suffixes[len(item)] = set()
             self._suffixes[len(item)].add(item)
 
     def __contains__(self, text: str):
+        """
+        Check if a given text contains any suffix from the pool.
+
+        :param text: The text to check
+        :type text: str
+        :return: True if the text contains a suffix, False otherwise
+        :rtype: bool
+        """
         words = _split_to_words(text)
         for length, tpl_set in self._suffixes.items():
             if length > len(words):
@@ -48,18 +72,42 @@ class _SuffixPool:
 
 
 class _PrefixPool:
+    """
+    Helper class to manage prefixes for character tags.
+    """
+
     def __init__(self, prefixes: Optional[List[str]] = None):
+        """
+        Initialize a PrefixPool instance.
+
+        :param prefixes: A list of prefixes to include, defaults to None
+        :type prefixes: Optional[List[str]], optional
+        """
         self._prefixes: Dict[int, Set[_WordTupleTyping]] = {}
         for prefix in (prefixes or []):
             self._append(prefix)
 
     def _append(self, text: str):
+        """
+        Append a prefix to the pool.
+
+        :param text: The prefix to append
+        :type text: str
+        """
         for item in _words_to_matcher(_split_to_words(text), enable_forms=False):
             if len(item) not in self._prefixes:
                 self._prefixes[len(item)] = set()
             self._prefixes[len(item)].add(item)
 
     def __contains__(self, text: str):
+        """
+        Check if a given text contains any prefix from the pool.
+
+        :param text: The text to check
+        :type text: str
+        :return: True if the text contains a prefix, False otherwise
+        :rtype: bool
+        """
         words = _split_to_words(text)
         for length, tpl_set in self._prefixes.items():
             if length > len(words):
@@ -73,14 +121,36 @@ class _PrefixPool:
 
 
 class CharacterTagPool:
+    """
+    A pool of character-related tags for detection and removal of basic character tags.
+    """
+
     def __init__(self, whitelist: Optional[List[str]] = None,
                  suffixes: Optional[List[str]] = None,
                  prefixes: Optional[List[str]] = None):
+        """
+        Initialize a CharacterTagPool instance.
+
+        :param whitelist: A list of whitelisted tags, defaults to None
+        :type whitelist: Optional[List[str]], optional
+        :param suffixes: A list of suffixes to consider, defaults to None
+        :type suffixes: Optional[List[str]], optional
+        :param prefixes: A list of prefixes to consider, defaults to None
+        :type prefixes: Optional[List[str]], optional
+        """
         self._whitelist = _SuffixPool(whitelist or CHAR_WHITELIST)
         self._suffixes = _SuffixPool(suffixes or CHAR_SUFFIXES)
         self._prefixes = _PrefixPool(prefixes or CHAR_PREFIXES)
 
     def is_basic_character_tag(self, tag: str) -> bool:
+        """
+        Check if a given tag is a basic character tag.
+
+        :param tag: The tag to check
+        :type tag: str
+        :return: True if the tag is a basic character tag, False otherwise
+        :rtype: bool
+        """
         if tag in self._whitelist:
             return False
         else:
@@ -88,6 +158,14 @@ class CharacterTagPool:
 
     def drop_basic_character_tags(self, tags: Union[List[str], Mapping[str, float]]) \
             -> Union[List[str], Mapping[str, float]]:
+        """
+        Drop basic character tags from a list or mapping of tags.
+
+        :param tags: The tags to process
+        :type tags: Union[List[str], Mapping[str, float]]
+        :return: Processed tags with basic character tags removed
+        :rtype: Union[List[str], Mapping[str, float]]
+        """
         if isinstance(tags, dict):
             return {tag: value for tag, value in tags.items() if not self.is_basic_character_tag(tag)}
         elif isinstance(tags, list):
