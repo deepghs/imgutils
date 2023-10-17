@@ -119,12 +119,12 @@
 <li class="toctree-l2"><a class="reference internal" href="format.html">imgutils.tagging.format</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.tagging.overlap</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#drop-overlap-tags">drop_overlap_tags</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#drop-overlaps-for-dict">drop_overlaps_for_dict</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="blacklist.html">imgutils.tagging.blacklist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="character.html">imgutils.tagging.character</a></li>
 <li class="toctree-l2"><a class="reference internal" href="order.html">imgutils.tagging.order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="match.html">imgutils.tagging.match</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
@@ -203,7 +203,7 @@
 <h2>drop_overlap_tags<a class="headerlink" href="#drop-overlap-tags" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.tagging.overlap.drop_overlap_tags">
-<code class="sig-prename descclassname">imgutils.tagging.overlap.</code><code class="sig-name descname">drop_overlap_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tags</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>str<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/tagging/overlap.html#drop_overlap_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.tagging.overlap.drop_overlap_tags" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">imgutils.tagging.overlap.</code><code class="sig-name descname">drop_overlap_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tags</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>Mapping<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>Mapping<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/tagging/overlap.html#drop_overlap_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.tagging.overlap.drop_overlap_tags" title="Permalink to this definition">¶</a></dt>
 <dd><p>Drop overlapping tags from the given list of tags.</p>
 <p>This function removes tags that have overlaps with other tags based on precomputed overlap information.</p>
 <dl class="field-list simple">
@@ -227,33 +227,6 @@
 <span class="gp">... </span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drop_overlap_tags</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
 <span class="go">[&#39;1girl&#39;, &#39;solo&#39;, &#39;very_long_hair&#39;, &#39;red_hair&#39;, &#39;medium_breasts&#39;]</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="drop-overlaps-for-dict">
-<h2>drop_overlaps_for_dict<a class="headerlink" href="#drop-overlaps-for-dict" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
-<dt id="imgutils.tagging.overlap.drop_overlaps_for_dict">
-<code class="sig-prename descclassname">imgutils.tagging.overlap.</code><code class="sig-name descname">drop_overlaps_for_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tags</span><span class="p">:</span> <span class="n">Mapping<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Mapping<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/tagging/overlap.html#drop_overlaps_for_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.tagging.overlap.drop_overlaps_for_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Drop overlapping tags from the given dictionary of tags with confidence scores.</p>
-<p>This function removes tags that have overlaps with other tags based on precomputed overlap information.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>tags</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – A dictionary where keys are tags and values are confidence scores.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A dictionary with non-overlapping tags and their corresponding confidence scores.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Mapping[str, float]</p>
-</dd>
-</dl>
-<dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">drop_overlaps_for_dict</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tags</span> <span class="o">=</span> <span class="p">{</span>
 <span class="gp">... </span>    <span class="s1">&#39;1girl&#39;</span><span class="p">:</span> <span class="mf">0.8849405313291128</span><span class="p">,</span>
@@ -264,7 +237,7 @@
 <span class="gp">... </span>    <span class="s1">&#39;breasts&#39;</span><span class="p">:</span> <span class="mf">0.3165260620737027</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="s1">&#39;medium_breasts&#39;</span><span class="p">:</span> <span class="mf">0.47744464927382957</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_overlaps_for_dict</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_overlap_tags</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
 <span class="go">{</span>
 <span class="go">    &#39;1girl&#39;: 0.8849405313291128,</span>
 <span class="go">    &#39;solo&#39;: 0.8548297594823425,</span>
@@ -341,12 +314,11 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/tagging/api_doc/tagging/overlap.html">dev/tagging</a></dd>
+                        <dd><a href="overlap.html">main</a></dd>
                         <dd><a href="../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../dev/cdc/api_doc/tagging/overlap.html">dev/cdc</a></dd>
                         <dd><a href="../../../dev/resolution/index.html">dev/resolution</a></dd>
                         <dd><a href="../../../dev/waifu2x/api_doc/tagging/overlap.html">dev/waifu2x</a></dd>
-                        <dd><a href="overlap.html">main</a></dd>
                 </dl>
         </div>
     </div>

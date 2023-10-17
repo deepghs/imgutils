@@ -183,97 +183,179 @@
 <span class="sd">Overview:</span>
 <span class="sd">    Detect and drop character-related basic tags.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">hbutils.string</span> <span class="kn">import</span> <span class="n">singular_form</span><span class="p">,</span> <span class="n">plural_form</span>
+<span class="kn">from</span> <span class="nn">.match</span> <span class="kn">import</span> <span class="n">_split_to_words</span><span class="p">,</span> <span class="n">_words_to_matcher</span>
 
-<span class="n">_CHAR_WHITELIST</span> <span class="o">=</span> <span class="p">[</span>
+<span class="n">CHAR_WHITELIST</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;drill&#39;</span><span class="p">,</span> <span class="s1">&#39;pubic_hair&#39;</span><span class="p">,</span> <span class="s1">&#39;closed_eyes&#39;</span><span class="p">,</span> <span class="s1">&#39;half-closed_eyes&#39;</span><span class="p">,</span> <span class="s1">&#39;empty_eyes&#39;</span>
 <span class="p">]</span>
-<span class="n">_CHAR_SUFFIXES</span> <span class="o">=</span> <span class="p">[</span>
+<span class="n">CHAR_SUFFIXES</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;eyes&#39;</span><span class="p">,</span> <span class="s1">&#39;skin&#39;</span><span class="p">,</span> <span class="s1">&#39;hair&#39;</span><span class="p">,</span> <span class="s1">&#39;bun&#39;</span><span class="p">,</span> <span class="s1">&#39;bangs&#39;</span><span class="p">,</span> <span class="s1">&#39;cut&#39;</span><span class="p">,</span> <span class="s1">&#39;sidelocks&#39;</span><span class="p">,</span>
     <span class="s1">&#39;twintails&#39;</span><span class="p">,</span> <span class="s1">&#39;braid&#39;</span><span class="p">,</span> <span class="s1">&#39;braids&#39;</span><span class="p">,</span> <span class="s1">&#39;afro&#39;</span><span class="p">,</span> <span class="s1">&#39;ahoge&#39;</span><span class="p">,</span> <span class="s1">&#39;drill&#39;</span><span class="p">,</span>
     <span class="s1">&#39;drills&#39;</span><span class="p">,</span> <span class="s1">&#39;bald&#39;</span><span class="p">,</span> <span class="s1">&#39;dreadlocks&#39;</span><span class="p">,</span> <span class="s1">&#39;side up&#39;</span><span class="p">,</span> <span class="s1">&#39;ponytail&#39;</span><span class="p">,</span> <span class="s1">&#39;updo&#39;</span><span class="p">,</span>
     <span class="s1">&#39;beard&#39;</span><span class="p">,</span> <span class="s1">&#39;mustache&#39;</span><span class="p">,</span> <span class="s1">&#39;pointy ears&#39;</span><span class="p">,</span> <span class="s1">&#39;ear&#39;</span><span class="p">,</span> <span class="s1">&#39;horn&#39;</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">_CHAR_PREFIXES</span> <span class="o">=</span> <span class="p">[</span>
+<span class="n">CHAR_PREFIXES</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;hair over&#39;</span><span class="p">,</span> <span class="s1">&#39;hair between&#39;</span>
 <span class="p">]</span>
 
+<span class="n">_WordTupleTyping</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">_split_to_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+
+<span class="k">class</span> <span class="nc">_SuffixPool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Split a string into words and return them in lowercase.</span>
-
-<span class="sd">    :param text: The input text to split.</span>
-<span class="sd">    :type text: str</span>
-<span class="sd">    :return: List of lowercase words.</span>
-<span class="sd">    :rtype: List[str]</span>
+<span class="sd">    Helper class to manage suffixes for character tags.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[\W_]+&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span> <span class="k">if</span> <span class="n">word</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suffixes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a SuffixPool instance.</span>
+
+<span class="sd">        :param suffixes: A list of suffixes to include, defaults to None</span>
+<span class="sd">        :type suffixes: Optional[List[str]], optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_suffixes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">_WordTupleTyping</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="p">(</span><span class="n">suffixes</span> <span class="ow">or</span> <span class="p">[]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_append</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append a suffix to the pool.</span>
+
+<span class="sd">        :param text: The suffix to append</span>
+<span class="sd">        :type text: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">_words_to_matcher</span><span class="p">(</span><span class="n">_split_to_words</span><span class="p">(</span><span class="n">text</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffixes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_suffixes</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_suffixes</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if a given text contains any suffix from the pool.</span>
+
+<span class="sd">        :param text: The text to check</span>
+<span class="sd">        :type text: str</span>
+<span class="sd">        :return: True if the text contains a suffix, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">length</span><span class="p">,</span> <span class="n">tpl_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffixes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">length</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="n">seg</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">words</span><span class="p">[</span><span class="o">-</span><span class="n">length</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="n">_words_to_matcher</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">tpl_set</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">def</span> <span class="nf">_match_suffix</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">_PrefixPool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if a tag matches a given suffix.</span>
-
-<span class="sd">    :param tag: The tag to check.</span>
-<span class="sd">    :type tag: str</span>
-<span class="sd">    :param suffix: The suffix to match.</span>
-<span class="sd">    :type suffix: str</span>
-<span class="sd">    :return: True if the tag matches the suffix, False otherwise.</span>
-<span class="sd">    :rtype: bool</span>
+<span class="sd">    Helper class to manage prefixes for character tags.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">tag_words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
-    <span class="n">suffix_words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span>
-    <span class="n">all_suffixes</span> <span class="o">=</span> <span class="p">[</span><span class="n">suffix_words</span><span class="p">]</span>
-    <span class="n">all_suffixes</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">*</span><span class="n">suffix_words</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">singular_form</span><span class="p">(</span><span class="n">suffix_words</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
-    <span class="n">all_suffixes</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">*</span><span class="n">suffix_words</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">plural_form</span><span class="p">(</span><span class="n">suffix_words</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
 
-    <span class="k">for</span> <span class="n">suf</span> <span class="ow">in</span> <span class="n">all_suffixes</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">tag_words</span><span class="p">[</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">suf</span><span class="p">):]</span> <span class="o">==</span> <span class="n">suf</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefixes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a PrefixPool instance.</span>
 
-    <span class="k">return</span> <span class="kc">False</span>
+<span class="sd">        :param prefixes: A list of prefixes to include, defaults to None</span>
+<span class="sd">        :type prefixes: Optional[List[str]], optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">_WordTupleTyping</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="p">(</span><span class="n">prefixes</span> <span class="ow">or</span> <span class="p">[]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_append</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append a prefix to the pool.</span>
+
+<span class="sd">        :param text: The prefix to append</span>
+<span class="sd">        :type text: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">_words_to_matcher</span><span class="p">(</span><span class="n">_split_to_words</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">enable_forms</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if a given text contains any prefix from the pool.</span>
+
+<span class="sd">        :param text: The text to check</span>
+<span class="sd">        :type text: str</span>
+<span class="sd">        :return: True if the text contains a prefix, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">length</span><span class="p">,</span> <span class="n">tpl_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">length</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="n">seg</span> <span class="o">=</span> <span class="n">words</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">_words_to_matcher</span><span class="p">(</span><span class="n">seg</span><span class="p">,</span> <span class="n">enable_forms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">tpl_set</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="k">def</span> <span class="nf">_match_prefix</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="CharacterTagPool"><a class="viewcode-back" href="../../../api_doc/tagging/character.html#imgutils.tagging.character.CharacterTagPool">[docs]</a><span class="k">class</span> <span class="nc">CharacterTagPool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if a tag matches a given prefix.</span>
-
-<span class="sd">    :param tag: The tag to check.</span>
-<span class="sd">    :type tag: str</span>
-<span class="sd">    :param prefix: The prefix to match.</span>
-<span class="sd">    :type prefix: str</span>
-<span class="sd">    :return: True if the tag matches the prefix, False otherwise.</span>
-<span class="sd">    :rtype: bool</span>
+<span class="sd">    A pool of character-related tags for detection and removal of basic character tags.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">tag_words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
-    <span class="n">prefix_words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tag_words</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix_words</span><span class="p">)]</span> <span class="o">==</span> <span class="n">prefix_words</span>
+
+<div class="viewcode-block" id="CharacterTagPool.__init__"><a class="viewcode-back" href="../../../api_doc/tagging/character.html#imgutils.tagging.character.CharacterTagPool.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">whitelist</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">suffixes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">prefixes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a CharacterTagPool instance.</span>
+
+<span class="sd">        :param whitelist: A list of whitelisted tags, defaults to None</span>
+<span class="sd">        :type whitelist: Optional[List[str]], optional</span>
+<span class="sd">        :param suffixes: A list of suffixes to consider, defaults to None</span>
+<span class="sd">        :type suffixes: Optional[List[str]], optional</span>
+<span class="sd">        :param prefixes: A list of prefixes to consider, defaults to None</span>
+<span class="sd">        :type prefixes: Optional[List[str]], optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_whitelist</span> <span class="o">=</span> <span class="n">_SuffixPool</span><span class="p">(</span><span class="n">whitelist</span> <span class="ow">or</span> <span class="n">CHAR_WHITELIST</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_suffixes</span> <span class="o">=</span> <span class="n">_SuffixPool</span><span class="p">(</span><span class="n">suffixes</span> <span class="ow">or</span> <span class="n">CHAR_SUFFIXES</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span> <span class="o">=</span> <span class="n">_PrefixPool</span><span class="p">(</span><span class="n">prefixes</span> <span class="ow">or</span> <span class="n">CHAR_PREFIXES</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CharacterTagPool.is_basic_character_tag"><a class="viewcode-back" href="../../../api_doc/tagging/character.html#imgutils.tagging.character.CharacterTagPool.is_basic_character_tag">[docs]</a>    <span class="k">def</span> <span class="nf">is_basic_character_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if a given tag is a basic character tag.</span>
+
+<span class="sd">        :param tag: The tag to check</span>
+<span class="sd">        :type tag: str</span>
+<span class="sd">        :return: True if the tag is a basic character tag, False otherwise</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_whitelist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffixes</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prefixes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CharacterTagPool.drop_basic_character_tags"><a class="viewcode-back" href="../../../api_doc/tagging/character.html#imgutils.tagging.character.CharacterTagPool.drop_basic_character_tags">[docs]</a>    <span class="k">def</span> <span class="nf">drop_basic_character_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tags</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]])</span> \
+            <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Drop basic character tags from a list or mapping of tags.</span>
+
+<span class="sd">        :param tags: The tags to process</span>
+<span class="sd">        :type tags: Union[List[str], Mapping[str, float]]</span>
+<span class="sd">        :return: Processed tags with basic character tags removed</span>
+<span class="sd">        :rtype: Union[List[str], Mapping[str, float]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">tag</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">tags</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_basic_character_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">)}</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_basic_character_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported types of tags, dict or list expected, but </span><span class="si">{</span><span class="n">tags</span><span class="si">!r}</span><span class="s2"> found.&quot;</span><span class="p">)</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">_match_same</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if a tag matches another tag, considering singular and plural forms.</span>
-
-<span class="sd">    :param tag: The tag to check.</span>
-<span class="sd">    :type tag: str</span>
-<span class="sd">    :param expected: The expected tag.</span>
-<span class="sd">    :type expected: str</span>
-<span class="sd">    :return: True if the tag matches the expected tag, False otherwise.</span>
-<span class="sd">    :rtype: bool</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
-    <span class="n">as_</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="o">*</span><span class="n">a</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">singular_form</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])],</span> <span class="p">[</span><span class="o">*</span><span class="n">a</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">plural_form</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])]]</span>
-    <span class="n">as_</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">as_</span><span class="p">])</span>
-
-    <span class="n">b</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
-    <span class="n">bs_</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="p">,</span> <span class="p">[</span><span class="o">*</span><span class="n">b</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">singular_form</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])],</span> <span class="p">[</span><span class="o">*</span><span class="n">b</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">plural_form</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])]]</span>
-    <span class="n">bs_</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">bs_</span><span class="p">])</span>
-
-    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">as_</span> <span class="o">&amp;</span> <span class="n">bs_</span><span class="p">)</span>
+<span class="n">_DEFAULT_CHARACTER_POOL</span> <span class="o">=</span> <span class="n">CharacterTagPool</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="is_basic_character_tag"><a class="viewcode-back" href="../../../api_doc/tagging/character.html#imgutils.tagging.character.is_basic_character_tag">[docs]</a><span class="k">def</span> <span class="nf">is_basic_character_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -303,11 +385,7 @@
 <span class="sd">        &gt;&gt;&gt; is_basic_character_tag(&#39;dress&#39;)</span>
 <span class="sd">        False</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">_match_same</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">wl_tag</span><span class="p">)</span> <span class="k">for</span> <span class="n">wl_tag</span> <span class="ow">in</span> <span class="n">_CHAR_WHITELIST</span><span class="p">):</span>
-        <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="n">_match_suffix</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span> <span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">_CHAR_SUFFIXES</span><span class="p">)</span>
-                <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">_match_prefix</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span> <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">_CHAR_PREFIXES</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">_DEFAULT_CHARACTER_POOL</span><span class="o">.</span><span class="n">is_basic_character_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="drop_basic_character_tags"><a class="viewcode-back" href="../../../api_doc/tagging/character.html#imgutils.tagging.character.drop_basic_character_tags">[docs]</a><span class="k">def</span> <span class="nf">drop_basic_character_tags</span><span class="p">(</span><span class="n">tags</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
@@ -334,12 +412,7 @@
 <span class="sd">        ... ])</span>
 <span class="sd">        [&#39;1girl&#39;, &#39;solo&#39;, &#39;chair&#39;, &#39;hear&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">tag</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">tags</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_basic_character_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">)}</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_basic_character_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">)]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported types of tags, dict or list expected, but </span><span class="si">{</span><span class="n">tags</span><span class="si">!r}</span><span class="s2"> found.&quot;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_DEFAULT_CHARACTER_POOL</span><span class="o">.</span><span class="n">drop_basic_character_tags</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span></div>
 </pre></div>
 
 
@@ -392,12 +465,11 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/tagging/index.html">dev/tagging</a></dd>
+                        <dd><a href="character.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/cdc/index.html">dev/cdc</a></dd>
                         <dd><a href="../../../../dev/resolution/index.html">dev/resolution</a></dd>
                         <dd><a href="../../../../dev/waifu2x/index.html">dev/waifu2x</a></dd>
-                        <dd><a href="character.html">main</a></dd>
                 </dl>
         </div>
     </div>
