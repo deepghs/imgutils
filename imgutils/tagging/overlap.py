@@ -1,6 +1,7 @@
+import copy
 import json
 from functools import lru_cache
-from typing import Mapping, List
+from typing import Mapping, List, Union
 
 from huggingface_hub import hf_hub_download
 
@@ -26,7 +27,7 @@ def _get_overlap_tags() -> Mapping[str, List[str]]:
     return data
 
 
-def drop_overlap_tags(tags: List[str]) -> List[str]:
+def drop_overlap_tags(tags: Union[List[str], Mapping[str, float]]) -> Union[List[str], Mapping[str, float]]:
     """
     Drop overlapping tags from the given list of tags.
 
@@ -47,13 +48,35 @@ def drop_overlap_tags(tags: List[str]) -> List[str]:
         ... ]
         >>> drop_overlap_tags(tags)
         ['1girl', 'solo', 'very_long_hair', 'red_hair', 'medium_breasts']
+        >>>
+        >>> tags = {
+        ...     '1girl': 0.8849405313291128,
+        ...     'solo': 0.8548297594823425,
+        ...     'long_hair': 0.03910296474461261,
+        ...     'very_long_hair': 0.6615180440330748,
+        ...     'red_hair': 0.21552028866308015,
+        ...     'breasts': 0.3165260620737027,
+        ...     'medium_breasts': 0.47744464927382957,
+        ... }
+        >>> drop_overlap_tags(tags)
+        {
+            '1girl': 0.8849405313291128,
+            'solo': 0.8548297594823425,
+            'very_long_hair': 0.6615180440330748,
+            'red_hair': 0.21552028866308015,
+            'medium_breasts': 0.47744464927382957
+        }
     """
     overlap_tags_dict = _get_overlap_tags()
     result_tags = []
+    _origin_tags = copy.deepcopy(tags)
+    if isinstance(tags, dict):
+        tags = list(tags.keys())
     tags_underscore = [tag.replace(' ', '_') for tag in tags]
 
+    tags: List[str]
+    tags_underscore: List[str]
     for tag, tag_ in zip(tags, tags_underscore):
-
         to_remove = False
 
         # Case 1: If the tag is a key and some of the associated values are in tags
@@ -71,40 +94,10 @@ def drop_overlap_tags(tags: List[str]) -> List[str]:
         if not to_remove:
             result_tags.append(tag)
 
-    return result_tags
-
-
-def drop_overlaps_for_dict(tags: Mapping[str, float]) -> Mapping[str, float]:
-    """
-    Drop overlapping tags from the given dictionary of tags with confidence scores.
-
-    This function removes tags that have overlaps with other tags based on precomputed overlap information.
-
-    :param tags: A dictionary where keys are tags and values are confidence scores.
-    :type tags: Mapping[str, float]
-    :return: A dictionary with non-overlapping tags and their corresponding confidence scores.
-    :rtype: Mapping[str, float]
-
-    Examples::
-        >>> from imgutils.tagging import drop_overlaps_for_dict
-        >>>
-        >>> tags = {
-        ...     '1girl': 0.8849405313291128,
-        ...     'solo': 0.8548297594823425,
-        ...     'long_hair': 0.03910296474461261,
-        ...     'very_long_hair': 0.6615180440330748,
-        ...     'red_hair': 0.21552028866308015,
-        ...     'breasts': 0.3165260620737027,
-        ...     'medium_breasts': 0.47744464927382957,
-        ... }
-        >>> drop_overlaps_for_dict(tags)
-        {
-            '1girl': 0.8849405313291128,
-            'solo': 0.8548297594823425,
-            'very_long_hair': 0.6615180440330748,
-            'red_hair': 0.21552028866308015,
-            'medium_breasts': 0.47744464927382957
-        }
-    """
-    key_set = set(drop_overlap_tags(list(tags.keys())))
-    return {tag: confidence for tag, confidence in tags.items() if tag in key_set}
+    if isinstance(_origin_tags, list):
+        return result_tags
+    elif isinstance(_origin_tags, dict):
+        _rtags_set = set(result_tags)
+        return {key: value for key, value in _origin_tags.items() if key in _rtags_set}
+    else:
+        raise TypeError(f'Unknown tags type - {_origin_tags!r}.')  # pragma: no cover

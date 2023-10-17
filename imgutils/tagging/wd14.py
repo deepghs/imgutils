@@ -11,7 +11,7 @@ import huggingface_hub
 import numpy as np
 import pandas as pd
 
-from .overlap import drop_overlaps_for_dict
+from .overlap import drop_overlap_tags
 from ..data import load_image, ImageTyping
 from ..utils import open_onnx_model
 
@@ -152,7 +152,7 @@ def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
     general_res = [x for x in general_names if x[1] > general_threshold]
     general_res = dict(general_res)
     if drop_overlap:
-        general_res = drop_overlaps_for_dict(general_res)
+        general_res = drop_overlap_tags(general_res)
 
     # Everything else is characters: pick anywhere prediction confidence > threshold
     character_names = [labels[i] for i in character_indexes]
