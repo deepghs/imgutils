@@ -271,14 +271,36 @@
 <span class="go">[((742, 485, 809, 511), &#39;MOB.&#39;, 0.9356705927336156), ((716, 136, 836, 164), &#39;SHISHOU,&#39;, 0.8933000384412466), ((682, 98, 734, 124), &#39;BUT&#39;, 0.8730931912907247), ((144, 455, 196, 485), &#39;OH,&#39;, 0.8417627579351514), ((427, 129, 553, 154), &#39;A MIRROR.&#39;, 0.7366019454049503), ((1030, 557, 1184, 578), &#39;(EL)  GATO IBERICO&#39;, 0.7271127306351021), ((719, 455, 835, 488), &quot;THAt&#39;S △&quot;, 0.701928390168364), ((124, 478, 214, 508), &#39;LOOK!&#39;, 0.6965972578194936)]</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
 <p>By default, the text recognition model used is <cite>ch_PP-OCRv4_rec</cite>.
 This recognition model has good recognition capabilities for both Chinese and English.
 For unsupported text types, its recognition accuracy cannot be guaranteed, resulting in a lower score.
 <strong>If you need recognition for other languages, please use :func:`list_rec_models` to
-view more available recognition models and choose the appropriate one for recognition</strong>.</p>
-</aside>
+view more available recognition models and choose the appropriate one for recognition.</strong></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">ocr</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># use default recognition model on japanese post</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ocr</span><span class="p">(</span><span class="s1">&#39;post_text.jpg&#39;</span><span class="p">)</span>
+<span class="go">[</span>
+<span class="go">    ((319, 847, 561, 899), &#39;KanColle&#39;, 0.9130667787597329),</span>
+<span class="go">    ((552, 811, 791, 921), &#39;1944&#39;, 0.8566762346615406),</span>
+<span class="go">    ((319, 820, 558, 850), &#39;Fleet  Girls Collection&#39;, 0.8100635458911772),</span>
+<span class="go">    ((235, 904, 855, 1009), &#39;海&#39;, 0.6716076803280185),</span>
+<span class="go">    ((239, 768, 858, 808), &#39;I ·  tSu · ka ·  A· NO· u·  mI ·  de&#39;, 0.654507230718228),</span>
+<span class="go">    ((209, 507, 899, 811), &#39;[&#39;, 0.2888084133529467)</span>
+<span class="go">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># use japanese model</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ocr</span><span class="p">(</span><span class="s1">&#39;post_text.jpg&#39;</span><span class="p">,</span> <span class="n">recognize_model</span><span class="o">=</span><span class="s1">&#39;japan_PP-OCRv3_rec&#39;</span><span class="p">)</span>
+<span class="go">[</span>
+<span class="go">    ((319, 847, 561, 899), &#39;KanColle&#39;, 0.9230690942939336),</span>
+<span class="go">    ((552, 811, 791, 921), &#39;1944&#39;, 0.8564870717047623),</span>
+<span class="go">    ((235, 904, 855, 1009), &#39;いつかあの海で&#39;, 0.8061289060358996),</span>
+<span class="go">    ((319, 820, 558, 850), &#39;Fleet   Girls  Collection&#39;, 0.8045396777081609),</span>
+<span class="go">    ((239, 768, 858, 808), &#39;I.TSU.KA・A・NO.U・MI.DE&#39;, 0.7311649382696896),</span>
+<span class="go">    ((209, 507, 899, 811), &#39;「艦とれれ&#39;, 0.6648729016512889)</span>
+<span class="go">]</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
@@ -298,6 +320,22 @@ view more available recognition models and choose the appropriate one for recogn
 <dd class="field-even"><p>List[str]</p>
 </dd>
 </dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">list_det_models</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list_det_models</span><span class="p">()</span>
+<span class="go">[&#39;ch_PP-OCRv2_det&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv3_det&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv4_det&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv4_server_det&#39;,</span>
+<span class="go"> &#39;ch_ppocr_mobile_slim_v2.0_det&#39;,</span>
+<span class="go"> &#39;ch_ppocr_mobile_v2.0_det&#39;,</span>
+<span class="go"> &#39;ch_ppocr_server_v2.0_det&#39;,</span>
+<span class="go"> &#39;en_PP-OCRv3_det&#39;]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -313,6 +351,33 @@ view more available recognition models and choose the appropriate one for recogn
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">list_rec_models</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list_rec_models</span><span class="p">()</span>
+<span class="go">[&#39;arabic_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv2_rec&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv4_rec&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv4_server_rec&#39;,</span>
+<span class="go"> &#39;ch_ppocr_mobile_v2.0_rec&#39;,</span>
+<span class="go"> &#39;ch_ppocr_server_v2.0_rec&#39;,</span>
+<span class="go"> &#39;chinese_cht_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;cyrillic_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;devanagari_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;en_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;en_PP-OCRv4_rec&#39;,</span>
+<span class="go"> &#39;en_number_mobile_v2.0_rec&#39;,</span>
+<span class="go"> &#39;japan_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;ka_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;korean_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;latin_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;ta_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;te_PP-OCRv3_rec&#39;]</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>

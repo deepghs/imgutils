@@ -195,6 +195,19 @@
 
 <span class="sd">    :return: A list of available text detection model names.</span>
 <span class="sd">    :rtype: List[str]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.ocr import list_det_models</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; list_det_models()</span>
+<span class="sd">        [&#39;ch_PP-OCRv2_det&#39;,</span>
+<span class="sd">         &#39;ch_PP-OCRv3_det&#39;,</span>
+<span class="sd">         &#39;ch_PP-OCRv4_det&#39;,</span>
+<span class="sd">         &#39;ch_PP-OCRv4_server_det&#39;,</span>
+<span class="sd">         &#39;ch_ppocr_mobile_slim_v2.0_det&#39;,</span>
+<span class="sd">         &#39;ch_ppocr_mobile_v2.0_det&#39;,</span>
+<span class="sd">         &#39;ch_ppocr_server_v2.0_det&#39;,</span>
+<span class="sd">         &#39;en_PP-OCRv3_det&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_list_det_models</span><span class="p">()</span></div>
 
@@ -205,6 +218,30 @@
 
 <span class="sd">    :return: A list of available text recognition model names.</span>
 <span class="sd">    :rtype: List[str]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.ocr import list_rec_models</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; list_rec_models()</span>
+<span class="sd">        [&#39;arabic_PP-OCRv3_rec&#39;,</span>
+<span class="sd">         &#39;ch_PP-OCRv2_rec&#39;,</span>
+<span class="sd">         &#39;ch_PP-OCRv3_rec&#39;,</span>
+<span class="sd">         &#39;ch_PP-OCRv4_rec&#39;,</span>
+<span class="sd">         &#39;ch_PP-OCRv4_server_rec&#39;,</span>
+<span class="sd">         &#39;ch_ppocr_mobile_v2.0_rec&#39;,</span>
+<span class="sd">         &#39;ch_ppocr_server_v2.0_rec&#39;,</span>
+<span class="sd">         &#39;chinese_cht_PP-OCRv3_rec&#39;,</span>
+<span class="sd">         &#39;cyrillic_PP-OCRv3_rec&#39;,</span>
+<span class="sd">         &#39;devanagari_PP-OCRv3_rec&#39;,</span>
+<span class="sd">         &#39;en_PP-OCRv3_rec&#39;,</span>
+<span class="sd">         &#39;en_PP-OCRv4_rec&#39;,</span>
+<span class="sd">         &#39;en_number_mobile_v2.0_rec&#39;,</span>
+<span class="sd">         &#39;japan_PP-OCRv3_rec&#39;,</span>
+<span class="sd">         &#39;ka_PP-OCRv3_rec&#39;,</span>
+<span class="sd">         &#39;korean_PP-OCRv3_rec&#39;,</span>
+<span class="sd">         &#39;latin_PP-OCRv3_rec&#39;,</span>
+<span class="sd">         &#39;ta_PP-OCRv3_rec&#39;,</span>
+<span class="sd">         &#39;te_PP-OCRv3_rec&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_list_rec_models</span><span class="p">()</span></div>
 
@@ -281,12 +318,36 @@
 <span class="sd">        &gt;&gt;&gt; ocr(&#39;comic.jpg&#39;)</span>
 <span class="sd">        [((742, 485, 809, 511), &#39;MOB.&#39;, 0.9356705927336156), ((716, 136, 836, 164), &#39;SHISHOU,&#39;, 0.8933000384412466), ((682, 98, 734, 124), &#39;BUT&#39;, 0.8730931912907247), ((144, 455, 196, 485), &#39;OH,&#39;, 0.8417627579351514), ((427, 129, 553, 154), &#39;A MIRROR.&#39;, 0.7366019454049503), ((1030, 557, 1184, 578), &#39;(EL)  GATO IBERICO&#39;, 0.7271127306351021), ((719, 455, 835, 488), &quot;THAt&#39;S △&quot;, 0.701928390168364), ((124, 478, 214, 508), &#39;LOOK!&#39;, 0.6965972578194936)]</span>
 
-<span class="sd">        .. note::</span>
-<span class="sd">            By default, the text recognition model used is `ch_PP-OCRv4_rec`.</span>
-<span class="sd">            This recognition model has good recognition capabilities for both Chinese and English.</span>
-<span class="sd">            For unsupported text types, its recognition accuracy cannot be guaranteed, resulting in a lower score.</span>
-<span class="sd">            **If you need recognition for other languages, please use :func:`list_rec_models` to</span>
-<span class="sd">            view more available recognition models and choose the appropriate one for recognition**.</span>
+<span class="sd">        By default, the text recognition model used is `ch_PP-OCRv4_rec`.</span>
+<span class="sd">        This recognition model has good recognition capabilities for both Chinese and English.</span>
+<span class="sd">        For unsupported text types, its recognition accuracy cannot be guaranteed, resulting in a lower score.</span>
+<span class="sd">        **If you need recognition for other languages, please use :func:`list_rec_models` to</span>
+<span class="sd">        view more available recognition models and choose the appropriate one for recognition.**</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.ocr import ocr</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # use default recognition model on japanese post</span>
+<span class="sd">        &gt;&gt;&gt; ocr(&#39;post_text.jpg&#39;)</span>
+<span class="sd">        [</span>
+<span class="sd">            ((319, 847, 561, 899), &#39;KanColle&#39;, 0.9130667787597329),</span>
+<span class="sd">            ((552, 811, 791, 921), &#39;1944&#39;, 0.8566762346615406),</span>
+<span class="sd">            ((319, 820, 558, 850), &#39;Fleet  Girls Collection&#39;, 0.8100635458911772),</span>
+<span class="sd">            ((235, 904, 855, 1009), &#39;海&#39;, 0.6716076803280185),</span>
+<span class="sd">            ((239, 768, 858, 808), &#39;I ·  tSu · ka ·  A· NO· u·  mI ·  de&#39;, 0.654507230718228),</span>
+<span class="sd">            ((209, 507, 899, 811), &#39;[&#39;, 0.2888084133529467)</span>
+<span class="sd">        ]</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # use japanese model</span>
+<span class="sd">        &gt;&gt;&gt; ocr(&#39;post_text.jpg&#39;, recognize_model=&#39;japan_PP-OCRv3_rec&#39;)</span>
+<span class="sd">        [</span>
+<span class="sd">            ((319, 847, 561, 899), &#39;KanColle&#39;, 0.9230690942939336),</span>
+<span class="sd">            ((552, 811, 791, 921), &#39;1944&#39;, 0.8564870717047623),</span>
+<span class="sd">            ((235, 904, 855, 1009), &#39;いつかあの海で&#39;, 0.8061289060358996),</span>
+<span class="sd">            ((319, 820, 558, 850), &#39;Fleet   Girls  Collection&#39;, 0.8045396777081609),</span>
+<span class="sd">            ((239, 768, 858, 808), &#39;I.TSU.KA・A・NO.U・MI.DE&#39;, 0.7311649382696896),</span>
+<span class="sd">            ((209, 507, 899, 811), &#39;「艦とれれ&#39;, 0.6648729016512889)</span>
+<span class="sd">        ]</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     <span class="n">retval</span> <span class="o">=</span> <span class="p">[]</span>
