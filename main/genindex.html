@@ -106,6 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api_doc/detect/index.html">imgutils.detect</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/edge/index.html">imgutils.edge</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/ocr/index.html">imgutils.ocr</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/operate/index.html">imgutils.operate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/restore/index.html">imgutils.restore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/sd/index.html">imgutils.sd</a></li>
@@ -323,11 +324,13 @@
 </li>
       <li><a href="api_doc/detect/head.html#imgutils.detect.head.detect_heads">detect_heads() (in module imgutils.detect.head)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/detect/person.html#imgutils.detect.person.detect_person">detect_person() (in module imgutils.detect.person)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/detect/text.html#imgutils.detect.text.detect_text">detect_text() (in module imgutils.detect.text)</a>
+</li>
+      <li><a href="api_doc/ocr/index.html#imgutils.ocr.detect_text_with_ocr">detect_text_with_ocr() (in module imgutils.ocr)</a>
 </li>
       <li><a href="api_doc/detect/visual.html#imgutils.detect.visual.detection_visualize">detection_visualize() (in module imgutils.detect.visual)</a>
 </li>
@@ -619,6 +622,13 @@
 </li>
       </ul></li>
       <li>
+    imgutils.ocr
+
+      <ul>
+        <li><a href="api_doc/ocr/index.html#module-imgutils.ocr">module</a>
+</li>
+      </ul></li>
+      <li>
     imgutils.operate
 
       <ul>
@@ -639,6 +649,8 @@
         <li><a href="api_doc/operate/censor.html#module-imgutils.operate.censor_">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     imgutils.operate.imgcensor
 
@@ -646,8 +658,6 @@
         <li><a href="api_doc/operate/imgcensor.html#module-imgutils.operate.imgcensor">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     imgutils.operate.squeeze
 
@@ -871,12 +881,16 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_doc/data/image.html#imgutils.data.image.load_image">load_image() (in module imgutils.data.image)</a>
+      <li><a href="api_doc/ocr/index.html#imgutils.ocr.list_det_models">list_det_models() (in module imgutils.ocr)</a>
 </li>
-      <li><a href="api_doc/data/image.html#imgutils.data.image.load_images">load_images() (in module imgutils.data.image)</a>
+      <li><a href="api_doc/ocr/index.html#imgutils.ocr.list_rec_models">list_rec_models() (in module imgutils.ocr)</a>
+</li>
+      <li><a href="api_doc/data/image.html#imgutils.data.image.load_image">load_image() (in module imgutils.data.image)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/data/image.html#imgutils.data.image.load_images">load_images() (in module imgutils.data.image)</a>
+</li>
       <li><a href="api_doc/metrics/lpips.html#imgutils.metrics.lpips.lpips_clustering">lpips_clustering() (in module imgutils.metrics.lpips)</a>
 </li>
       <li><a href="api_doc/metrics/lpips.html#imgutils.metrics.lpips.lpips_difference">lpips_difference() (in module imgutils.metrics.lpips)</a>
@@ -950,6 +964,8 @@
         <li><a href="api_doc/metrics/lpips.html#module-imgutils.metrics.lpips">imgutils.metrics.lpips</a>
 </li>
         <li><a href="api_doc/metrics/psnr_.html#module-imgutils.metrics.psnr_">imgutils.metrics.psnr_</a>
+</li>
+        <li><a href="api_doc/ocr/index.html#module-imgutils.ocr">imgutils.ocr</a>
 </li>
         <li><a href="api_doc/operate/index.html#module-imgutils.operate">imgutils.operate</a>
 </li>
@@ -1035,6 +1051,10 @@
 
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/ocr/index.html#imgutils.ocr.ocr">ocr() (in module imgutils.ocr)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/utils/onnxruntime.html#imgutils.utils.onnxruntime.open_onnx_model">open_onnx_model() (in module imgutils.utils.onnxruntime)</a>
 </li>
@@ -1164,13 +1184,12 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../dev/ocr/index.html">dev/ocr</a></dd>
+                        <dd><a href="genindex.html">main</a></dd>
                         <dd><a href="../ccip/index.html">ccip</a></dd>
                         <dd><a href="../dev/cdc/index.html">dev/cdc</a></dd>
                         <dd><a href="../dev/resolution/index.html">dev/resolution</a></dd>
                         <dd><a href="../dev/tagging/index.html">dev/tagging</a></dd>
                         <dd><a href="../dev/waifu2x/index.html">dev/waifu2x</a></dd>
-                        <dd><a href="genindex.html">main</a></dd>
                 </dl>
         </div>
     </div>

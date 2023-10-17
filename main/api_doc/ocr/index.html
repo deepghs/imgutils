@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.ocr &mdash; imgutils 0.2.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.operate" href="../operate/index.html" />
+    <link rel="prev" title="imgutils.metrics.psnr_" href="../metrics/psnr_.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">imgutils.ocr</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#detect-text-with-ocr">detect_text_with_ocr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocr">ocr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#list-det-models">list_det_models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#list-rec-models">list_rec_models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>imgutils.ocr</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api_doc/ocr/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <section id="module-imgutils.ocr">
+<span id="imgutils-ocr"></span><h1>imgutils.ocr<a class="headerlink" href="#module-imgutils.ocr" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>Detect and recognize text in images.</p>
+<p>The models are exported from <a class="reference external" href="https://github.com/PaddlePaddle/PaddleOCR">PaddleOCR</a>, hosted on
+<a class="reference external" href="https://huggingface.co/deepghs/paddleocr/tree/main">huggingface - deepghs/paddleocr</a>.</p>
+<img alt="../../_images/ocr_demo.plot.py.svg" class="align-center" src="../../_images/ocr_demo.plot.py.svg" /><p>This is an overall benchmark of all the text detection models:</p>
+<img alt="../../_images/ocr_det_benchmark.plot.py.svg" class="align-center" src="../../_images/ocr_det_benchmark.plot.py.svg" /><p>and an overall benchmark of all the available text recognition models:</p>
+<img alt="../../_images/ocr_rec_benchmark.plot.py.svg" class="align-center" src="../../_images/ocr_rec_benchmark.plot.py.svg" /></dd>
+</dl>
+<section id="detect-text-with-ocr">
+<h2>detect_text_with_ocr<a class="headerlink" href="#detect-text-with-ocr" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.ocr.detect_text_with_ocr">
+<code class="sig-prename descclassname">imgutils.ocr.</code><code class="sig-name descname">detect_text_with_ocr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ch_PP-OCRv4_det'</span></em>, <em class="sig-param"><span class="n">heat_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">box_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">max_candidates</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">unclip_ratio</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">2.0</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Tuple<span class="p">[</span>Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">, </span>int<span class="p">]</span><span class="p">, </span>str<span class="p">, </span>float<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/ocr/entry.html#detect_text_with_ocr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.ocr.detect_text_with_ocr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect text in an image using an OCR model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>model</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the text detection model.</p></li>
+<li><p><strong>heat_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The heat map threshold for text detection.</p></li>
+<li><p><strong>box_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The box threshold for text detection.</p></li>
+<li><p><strong>max_candidates</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of candidates to consider.</p></li>
+<li><p><strong>unclip_ratio</strong> (<em>float</em><em>, </em><em>optional</em>) – The unclip ratio for text detection.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of detected text boxes, label (always <code class="docutils literal notranslate"><span class="pre">text</span></code>), and their confidence scores.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Tuple[Tuple[int, int, int, int], str, float]]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you need to extract the actual text content, use the <a class="reference internal" href="#imgutils.ocr.ocr" title="imgutils.ocr.ocr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ocr()</span></code></a> function.</p>
+</aside>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">detect_text_with_ocr</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">detect_text_with_ocr</span><span class="p">(</span><span class="s1">&#39;comic.jpg&#39;</span><span class="p">)</span>
+<span class="go">[((742, 485, 809, 511), &#39;text&#39;, 0.9543377610144915), ((682, 98, 734, 124), &#39;text&#39;, 0.9309689495575223), ((716, 136, 836, 164), &#39;text&#39;, 0.9042856988923695), ((144, 455, 196, 485), &#39;text&#39;, 0.874083638387722), ((719, 455, 835, 488), &#39;text&#39;, 0.8628696346175078), ((124, 478, 214, 508), &#39;text&#39;, 0.848871771901487), ((1030, 557, 1184, 578), &#39;text&#39;, 0.8352495440618789), ((427, 129, 553, 154), &#39;text&#39;, 0.8249209443996619)]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="ocr">
+<h2>ocr<a class="headerlink" href="#ocr" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.ocr.ocr">
+<code class="sig-prename descclassname">imgutils.ocr.</code><code class="sig-name descname">ocr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">detect_model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ch_PP-OCRv4_det'</span></em>, <em class="sig-param"><span class="n">recognize_model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ch_PP-OCRv4_rec'</span></em>, <em class="sig-param"><span class="n">heat_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">box_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">max_candidates</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">unclip_ratio</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">2.0</span></em>, <em class="sig-param"><span class="n">rotation_threshold</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.5</span></em>, <em class="sig-param"><span class="n">is_remove_duplicate</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/ocr/entry.html#ocr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.ocr.ocr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform optical character recognition (OCR) on an image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>detect_model</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the text detection model.</p></li>
+<li><p><strong>recognize_model</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the text recognition model.</p></li>
+<li><p><strong>heat_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The heat map threshold for text detection.</p></li>
+<li><p><strong>box_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The box threshold for text detection.</p></li>
+<li><p><strong>max_candidates</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of candidates to consider.</p></li>
+<li><p><strong>unclip_ratio</strong> (<em>float</em><em>, </em><em>optional</em>) – The unclip ratio for text detection.</p></li>
+<li><p><strong>rotation_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – The rotation threshold for text detection.</p></li>
+<li><p><strong>is_remove_duplicate</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to remove duplicate text content.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of detected text boxes, their corresponding text content, and their combined confidence scores.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Tuple[Tuple[int, int, int, int], str, float]]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">ocr</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ocr</span><span class="p">(</span><span class="s1">&#39;comic.jpg&#39;</span><span class="p">)</span>
+<span class="go">[((742, 485, 809, 511), &#39;MOB.&#39;, 0.9356705927336156), ((716, 136, 836, 164), &#39;SHISHOU,&#39;, 0.8933000384412466), ((682, 98, 734, 124), &#39;BUT&#39;, 0.8730931912907247), ((144, 455, 196, 485), &#39;OH,&#39;, 0.8417627579351514), ((427, 129, 553, 154), &#39;A MIRROR.&#39;, 0.7366019454049503), ((1030, 557, 1184, 578), &#39;(EL)  GATO IBERICO&#39;, 0.7271127306351021), ((719, 455, 835, 488), &quot;THAt&#39;S △&quot;, 0.701928390168364), ((124, 478, 214, 508), &#39;LOOK!&#39;, 0.6965972578194936)]</span>
+</pre></div>
+</div>
+<p>By default, the text recognition model used is <cite>ch_PP-OCRv4_rec</cite>.
+This recognition model has good recognition capabilities for both Chinese and English.
+For unsupported text types, its recognition accuracy cannot be guaranteed, resulting in a lower score.
+<strong>If you need recognition for other languages, please use :func:`list_rec_models` to
+view more available recognition models and choose the appropriate one for recognition.</strong></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">ocr</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># use default recognition model on japanese post</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ocr</span><span class="p">(</span><span class="s1">&#39;post_text.jpg&#39;</span><span class="p">)</span>
+<span class="go">[</span>
+<span class="go">    ((319, 847, 561, 899), &#39;KanColle&#39;, 0.9130667787597329),</span>
+<span class="go">    ((552, 811, 791, 921), &#39;1944&#39;, 0.8566762346615406),</span>
+<span class="go">    ((319, 820, 558, 850), &#39;Fleet  Girls Collection&#39;, 0.8100635458911772),</span>
+<span class="go">    ((235, 904, 855, 1009), &#39;海&#39;, 0.6716076803280185),</span>
+<span class="go">    ((239, 768, 858, 808), &#39;I ·  tSu · ka ·  A· NO· u·  mI ·  de&#39;, 0.654507230718228),</span>
+<span class="go">    ((209, 507, 899, 811), &#39;[&#39;, 0.2888084133529467)</span>
+<span class="go">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># use japanese model</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ocr</span><span class="p">(</span><span class="s1">&#39;post_text.jpg&#39;</span><span class="p">,</span> <span class="n">recognize_model</span><span class="o">=</span><span class="s1">&#39;japan_PP-OCRv3_rec&#39;</span><span class="p">)</span>
+<span class="go">[</span>
+<span class="go">    ((319, 847, 561, 899), &#39;KanColle&#39;, 0.9230690942939336),</span>
+<span class="go">    ((552, 811, 791, 921), &#39;1944&#39;, 0.8564870717047623),</span>
+<span class="go">    ((235, 904, 855, 1009), &#39;いつかあの海で&#39;, 0.8061289060358996),</span>
+<span class="go">    ((319, 820, 558, 850), &#39;Fleet   Girls  Collection&#39;, 0.8045396777081609),</span>
+<span class="go">    ((239, 768, 858, 808), &#39;I.TSU.KA・A・NO.U・MI.DE&#39;, 0.7311649382696896),</span>
+<span class="go">    ((209, 507, 899, 811), &#39;「艦とれれ&#39;, 0.6648729016512889)</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="list-det-models">
+<h2>list_det_models<a class="headerlink" href="#list-det-models" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.ocr.list_det_models">
+<code class="sig-prename descclassname">imgutils.ocr.</code><code class="sig-name descname">list_det_models</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>str<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/ocr/entry.html#list_det_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.ocr.list_det_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>List available text detection models for OCR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of available text detection model names.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">list_det_models</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list_det_models</span><span class="p">()</span>
+<span class="go">[&#39;ch_PP-OCRv2_det&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv3_det&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv4_det&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv4_server_det&#39;,</span>
+<span class="go"> &#39;ch_ppocr_mobile_slim_v2.0_det&#39;,</span>
+<span class="go"> &#39;ch_ppocr_mobile_v2.0_det&#39;,</span>
+<span class="go"> &#39;ch_ppocr_server_v2.0_det&#39;,</span>
+<span class="go"> &#39;en_PP-OCRv3_det&#39;]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="list-rec-models">
+<h2>list_rec_models<a class="headerlink" href="#list-rec-models" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.ocr.list_rec_models">
+<code class="sig-prename descclassname">imgutils.ocr.</code><code class="sig-name descname">list_rec_models</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>str<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/ocr/entry.html#list_rec_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.ocr.list_rec_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>List available text recognition models for OCR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of available text recognition model names.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">list_rec_models</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list_rec_models</span><span class="p">()</span>
+<span class="go">[&#39;arabic_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv2_rec&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv4_rec&#39;,</span>
+<span class="go"> &#39;ch_PP-OCRv4_server_rec&#39;,</span>
+<span class="go"> &#39;ch_ppocr_mobile_v2.0_rec&#39;,</span>
+<span class="go"> &#39;ch_ppocr_server_v2.0_rec&#39;,</span>
+<span class="go"> &#39;chinese_cht_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;cyrillic_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;devanagari_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;en_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;en_PP-OCRv4_rec&#39;,</span>
+<span class="go"> &#39;en_number_mobile_v2.0_rec&#39;,</span>
+<span class="go"> &#39;japan_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;ka_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;korean_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;latin_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;ta_PP-OCRv3_rec&#39;,</span>
+<span class="go"> &#39;te_PP-OCRv3_rec&#39;]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../operate/index.html" class="btn btn-neutral float-right" title="imgutils.operate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../metrics/psnr_.html" class="btn btn-neutral float-left" title="imgutils.metrics.psnr_" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: main
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../v0.1.1/index.html">v0.1.1</a></dd>
+                        <dd><a href="../../../v0.2.0/index.html">v0.2.0</a></dd>
+                        <dd><a href="../../../v0.2.1/index.html">v0.2.1</a></dd>
+                        <dd><a href="../../../v0.2.2/index.html">v0.2.2</a></dd>
+                        <dd><a href="../../../v0.2.3/index.html">v0.2.3</a></dd>
+                        <dd><a href="../../../v0.2.4/index.html">v0.2.4</a></dd>
+                        <dd><a href="../../../v0.2.5/index.html">v0.2.5</a></dd>
+                        <dd><a href="../../../v0.2.6/index.html">v0.2.6</a></dd>
+                        <dd><a href="../../../v0.2.7/index.html">v0.2.7</a></dd>
+                        <dd><a href="../../../v0.2.8/index.html">v0.2.8</a></dd>
+                        <dd><a href="../../../v0.2.9/index.html">v0.2.9</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="index.html">main</a></dd>
+                        <dd><a href="../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../dev/cdc/index.html">dev/cdc</a></dd>
+                        <dd><a href="../../../dev/resolution/index.html">dev/resolution</a></dd>
+                        <dd><a href="../../../dev/tagging/index.html">dev/tagging</a></dd>
+                        <dd><a href="../../../dev/waifu2x/index.html">dev/waifu2x</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
