@@ -15,7 +15,7 @@ Overview:
     .. warning::
         This module has been deprecated and will be removed in the future.
 
-        It is recommended to migrate to the `imgutils.ocr.detect_text_with_ocr` function as soon as possible.
+        It is recommended to migrate to the :func:`imgutils.ocr.detect_text_with_ocr` function as soon as possible.
         This function uses a higher-quality text detection model provided by PaddleOCR,
         resulting in improved performance and higher efficiency.
 
@@ -137,6 +137,10 @@ def detect_text(image: ImageTyping, model: str = _DEFAULT_MODEL, threshold: floa
     :type max_area_size: Optional[int]
     :return: List of detected text bounding boxes, labels, and scores.
     :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    .. warning::
+        This function is deprecated, and it will be removed from imgutils in the future.
+        Please migrate to :func:`imgutils.ocr.detect_text_with_ocr` as soon as possible.
     """
     image = load_image(image)
     if max_area_size is not None and image.width * image.height >= max_area_size ** 2:
