@@ -2,7 +2,19 @@ import pytest
 from PIL import Image
 
 from imgutils.ocr import detect_text_with_ocr, list_det_models, list_rec_models, ocr
+from imgutils.ocr.detect import _open_ocr_detection_model
+from imgutils.ocr.recognize import _open_ocr_recognition_dictionary, _open_ocr_recognition_model
 from test.testings import get_testfile
+
+
+@pytest.fixture(autouse=True, scope='module')
+def _clear_cache():
+    try:
+        yield
+    finally:
+        _open_ocr_detection_model.cache_clear()
+        _open_ocr_recognition_model.cache_clear()
+        _open_ocr_recognition_dictionary.cache_clear()
 
 
 @pytest.fixture()
