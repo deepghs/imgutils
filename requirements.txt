@@ -9,3 +9,5 @@ pandas
 scipy
 emoji>=2.5.0
 pilmoji>=1.3.0
+shapely
+pyclipper
