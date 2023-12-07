@@ -1,5 +1,7 @@
 from enum import IntEnum, unique
 
+import numpy as np
+
 OP18_BODY_MIN = 0
 OP18_BODY_MAX = 17
 
@@ -50,7 +52,7 @@ class OpenPose18(IntEnum):
 
 class OP18KeyPointSet:
     def __init__(self, all_):
-        self.all = all_
+        self.all: np.ndarray = all_
 
     @property
     def body(self):
@@ -79,3 +81,21 @@ class OP18KeyPointSet:
     @property
     def right_hand(self):
         return self.all[OP18_RIGHT_HAND_MIN:OP18_RIGHT_HAND_MAX + 1]
+
+    def __mul__(self, multiplier):
+        if isinstance(multiplier, (float, int)):
+            new_all = self.all.copy()
+            new_all[:, 0] *= multiplier
+            new_all[:, 1] *= multiplier
+            return OP18KeyPointSet(new_all)
+        else:
+            raise TypeError(f'Invalid type of multiplier - {multiplier!r}.')
+
+    def __truediv__(self, divisor):
+        if isinstance(divisor, (float, int)):
+            new_all = self.all.copy()
+            new_all[:, 0] /= divisor
+            new_all[:, 1] /= divisor
+            return OP18KeyPointSet(new_all)
+        else:
+            raise TypeError(f'Invalid type of divisor - {divisor!r}.')
