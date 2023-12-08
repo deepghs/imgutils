@@ -79,6 +79,35 @@ def _op18_face(keypoints: OP18KeyPointSet, draw: ImageDraw.ImageDraw, threshold:
 def op18_visualize(image: ImageTyping, keypoints_list: List[OP18KeyPointSet], threshold: float = 0.3,
                    min_edge_size: Optional[int] = 512, draw_body: bool = True, draw_hands: bool = True,
                    draw_feet: bool = True, draw_face: bool = True) -> Image.Image:
+    """
+    Visualize the keypoint information of animated characters using the OP18 model on an image.
+
+    This function takes an input image and a list of OP18 keypoint sets for animated characters, and visualizes
+    the keypoint information on the image. It supports drawing the body, hands, feet, and face of the characters
+    based on the provided keypoint sets.
+
+    :param image: The input image to visualize.
+    :type image: ImageTyping
+    :param keypoints_list: List of OP18KeyPointSet objects containing keypoint information for characters.
+    :type keypoints_list: List[OP18KeyPointSet]
+    :param threshold: Keypoint detection threshold. Keypoints with a confidence score below this threshold
+            will not be drawn.
+    :type threshold: float, optional
+    :param min_edge_size: Minimum size for the shorter edge of the output image. If the original image is larger,
+            it will be resized.
+    :type min_edge_size: int, optional
+    :param draw_body: If True, draw lines connecting keypoints for the body. Default is True.
+    :type draw_body: bool
+    :param draw_hands: If True, draw lines connecting keypoints for the hands. Default is True.
+    :type draw_hands: bool
+    :param draw_feet: If True, draw lines connecting keypoints for the feet. Default is True.
+    :type draw_feet: bool
+    :param draw_face: If True, draw ellipses around facial keypoints. Default is True.
+    :type draw_face: bool
+
+    :return: The image with visualized keypoint information.
+    :rtype: Image.Image
+    """
     image = load_image(image, force_background='white', mode='RGB')
     if min_edge_size is not None and min(image.width, image.height) > min_edge_size:
         r = min(image.width, image.height) / min_edge_size

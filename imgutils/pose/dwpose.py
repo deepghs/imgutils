@@ -242,7 +242,7 @@ def _get_warp_matrix(center: np.ndarray, scale: np.ndarray, rot: float,
 
     src, dst = src.astype(np.float32), dst.astype(np.float32)
     if inv:
-        src, dst = dst, src
+        src, dst = dst, src  # pragma: no cover
     warp_mat = cv2.getAffineTransform(src, dst)
 
     return warp_mat
@@ -325,7 +325,8 @@ def _get_simcc_maximum(simcc_x: np.ndarray, simcc_y: np.ndarray) -> Tuple[np.nda
     return locs, vals
 
 
-def _output_decode(simcc_x: np.ndarray, simcc_y: np.ndarray, simcc_split_ratio: float) -> Tuple[np.ndarray, np.ndarray]:
+def _output_decode(simcc_x: np.ndarray, simcc_y: np.ndarray, simcc_split_ratio: float) \
+        -> Tuple[np.ndarray, np.ndarray]:
     """Modulate simcc distribution with Gaussian.
 
     Args:
@@ -397,11 +398,12 @@ def dwpose_estimate(image: ImageTyping, auto_detect: bool = True,
     np_image = np.array(image)
     if auto_detect:
         if out_bboxes is not None:
-            warnings.warn(f'Auto detection enabled, value of out_bboxes will be ignored: {out_bboxes!r}.')
-        out_bboxes = [
-            (x0, y0, x1, y1) for (x0, y0, x1, y1), _, _ in
-            detect_person(image, **(person_detect_cfgs or {}))
-        ]
+            warnings.warn('Out bboxes provided, auto detection will be disabled.')
+        else:
+            out_bboxes = [
+                (x0, y0, x1, y1) for (x0, y0, x1, y1), _, _ in
+                detect_person(image, **(person_detect_cfgs or {}))
+            ]
     elif out_bboxes is None:
         out_bboxes = [(0, 0, image.width, image.height)]
 
