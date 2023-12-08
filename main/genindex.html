@@ -108,6 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api_doc/metrics/index.html">imgutils.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/ocr/index.html">imgutils.ocr</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/pose/index.html">imgutils.pose</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/restore/index.html">imgutils.restore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/sd/index.html">imgutils.sd</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/segment/index.html">imgutils.segment</a></li>
@@ -213,14 +214,20 @@
       <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage.__init__">__init__() (imgutils.operate.imgcensor.SingleImage method)</a>
 
       <ul>
+        <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__init__">(imgutils.pose.format.OP18KeyPointSet method)</a>
+</li>
         <li><a href="api_doc/tagging/character.html#imgutils.tagging.character.CharacterTagPool.__init__">(imgutils.tagging.character.CharacterTagPool method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__mul__">__mul__() (imgutils.pose.format.OP18KeyPointSet method)</a>
+</li>
       <li><a href="api_doc/sd/metadata.html#imgutils.sd.metadata.SDMetaData.__str__">__str__() (imgutils.sd.metadata.SDMetaData method)</a>
 </li>
       <li><a href="api_doc/config/meta.html#imgutils.config.meta.__TITLE__">__TITLE__ (in module imgutils.config.meta)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__truediv__">__truediv__() (imgutils.pose.format.OP18KeyPointSet method)</a>
 </li>
       <li><a href="api_doc/config/meta.html#imgutils.config.meta.__VERSION__">__VERSION__ (in module imgutils.config.meta)</a>
 </li>
@@ -263,6 +270,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.BlurCensor">BlurCensor (class in imgutils.operate.censor_)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.body">body() (imgutils.pose.format.OP18KeyPointSet property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -356,6 +365,8 @@
 </li>
       <li><a href="api_doc/tagging/overlap.html#imgutils.tagging.overlap.drop_overlap_tags">drop_overlap_tags() (in module imgutils.tagging.overlap)</a>
 </li>
+      <li><a href="api_doc/pose/dwpose.html#imgutils.pose.dwpose.dwpose_estimate">dwpose_estimate() (in module imgutils.pose.dwpose)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -377,6 +388,10 @@
 
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.face">face() (imgutils.pose.format.OP18KeyPointSet property)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage.find_for_area">find_for_area() (imgutils.operate.imgcensor.SingleImage method)</a>
 </li>
@@ -670,13 +685,41 @@
         <li><a href="api_doc/operate/imgcensor.html#module-imgutils.operate.imgcensor">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     imgutils.operate.squeeze
 
       <ul>
         <li><a href="api_doc/operate/squeeze.html#module-imgutils.operate.squeeze">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.pose
+
+      <ul>
+        <li><a href="api_doc/pose/index.html#module-imgutils.pose">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    imgutils.pose.dwpose
+
+      <ul>
+        <li><a href="api_doc/pose/dwpose.html#module-imgutils.pose.dwpose">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.pose.format
+
+      <ul>
+        <li><a href="api_doc/pose/format.html#module-imgutils.pose.format">module</a>
+</li>
+      </ul></li>
+      <li>
+    imgutils.pose.visual
+
+      <ul>
+        <li><a href="api_doc/pose/visual.html#module-imgutils.pose.visual">module</a>
 </li>
       </ul></li>
       <li>
@@ -906,14 +949,40 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_ANKLE">LEFT_ANKLE (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_BIG_TOE">LEFT_BIG_TOE (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_EAR">LEFT_EAR (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_ELBOW">LEFT_ELBOW (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_EYE">LEFT_EYE (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.left_foot">left_foot() (imgutils.pose.format.OP18KeyPointSet property)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.left_hand">left_hand() (imgutils.pose.format.OP18KeyPointSet property)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_HEEL">LEFT_HEEL (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_HIP">LEFT_HIP (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_KNEE">LEFT_KNEE (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_SHOULDER">LEFT_SHOULDER (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_SMALL_TOE">LEFT_SMALL_TOE (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_WRIST">LEFT_WRIST (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
       <li><a href="api_doc/ocr/index.html#imgutils.ocr.list_det_models">list_det_models() (in module imgutils.ocr)</a>
 </li>
       <li><a href="api_doc/ocr/index.html#imgutils.ocr.list_rec_models">list_rec_models() (in module imgutils.ocr)</a>
 </li>
       <li><a href="api_doc/data/image.html#imgutils.data.image.load_image">load_image() (in module imgutils.data.image)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/data/image.html#imgutils.data.image.load_images">load_images() (in module imgutils.data.image)</a>
 </li>
       <li><a href="api_doc/metrics/lpips.html#imgutils.metrics.lpips.lpips_clustering">lpips_clustering() (in module imgutils.metrics.lpips)</a>
@@ -1002,6 +1071,14 @@
 </li>
         <li><a href="api_doc/operate/squeeze.html#module-imgutils.operate.squeeze">imgutils.operate.squeeze</a>
 </li>
+        <li><a href="api_doc/pose/index.html#module-imgutils.pose">imgutils.pose</a>
+</li>
+        <li><a href="api_doc/pose/dwpose.html#module-imgutils.pose.dwpose">imgutils.pose.dwpose</a>
+</li>
+        <li><a href="api_doc/pose/format.html#module-imgutils.pose.format">imgutils.pose.format</a>
+</li>
+        <li><a href="api_doc/pose/visual.html#module-imgutils.pose.visual">imgutils.pose.visual</a>
+</li>
         <li><a href="api_doc/restore/index.html#module-imgutils.restore">imgutils.restore</a>
 </li>
         <li><a href="api_doc/restore/nafnet.html#module-imgutils.restore.nafnet">imgutils.restore.nafnet</a>
@@ -1067,10 +1144,14 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_doc/validate/nsfw.html#imgutils.validate.nsfw.nsfw_pred">nsfw_pred() (in module imgutils.validate.nsfw)</a>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.NECK">NECK (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.NOSE">NOSE (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/validate/nsfw.html#imgutils.validate.nsfw.nsfw_pred">nsfw_pred() (in module imgutils.validate.nsfw)</a>
+</li>
       <li><a href="api_doc/validate/nsfw.html#imgutils.validate.nsfw.nsfw_pred_score">nsfw_pred_score() (in module imgutils.validate.nsfw)</a>
 </li>
   </ul></td>
@@ -1081,8 +1162,36 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/ocr/index.html#imgutils.ocr.ocr">ocr() (in module imgutils.ocr)</a>
 </li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_BODY_MAX">OP18_BODY_MAX (in module imgutils.pose.format)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_BODY_MIN">OP18_BODY_MIN (in module imgutils.pose.format)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_FACE_MAX">OP18_FACE_MAX (in module imgutils.pose.format)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_FACE_MIN">OP18_FACE_MIN (in module imgutils.pose.format)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_LEFT_FOOT_MAX">OP18_LEFT_FOOT_MAX (in module imgutils.pose.format)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_LEFT_FOOT_MIN">OP18_LEFT_FOOT_MIN (in module imgutils.pose.format)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_LEFT_HAND_MAX">OP18_LEFT_HAND_MAX (in module imgutils.pose.format)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_LEFT_HAND_MIN">OP18_LEFT_HAND_MIN (in module imgutils.pose.format)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_RIGHT_FOOT_MAX">OP18_RIGHT_FOOT_MAX (in module imgutils.pose.format)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_RIGHT_FOOT_MIN">OP18_RIGHT_FOOT_MIN (in module imgutils.pose.format)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_RIGHT_HAND_MAX">OP18_RIGHT_HAND_MAX (in module imgutils.pose.format)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18_RIGHT_HAND_MIN">OP18_RIGHT_HAND_MIN (in module imgutils.pose.format)</a>
+</li>
+      <li><a href="api_doc/pose/visual.html#imgutils.pose.visual.op18_visualize">op18_visualize() (in module imgutils.pose.visual)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet">OP18KeyPointSet (class in imgutils.pose.format)</a>
+</li>
       <li><a href="api_doc/utils/onnxruntime.html#imgutils.utils.onnxruntime.open_onnx_model">open_onnx_model() (in module imgutils.utils.onnxruntime)</a>
 </li>
   </ul></td>
@@ -1111,13 +1220,39 @@
 </li>
       <li><a href="api_doc/restore/nafnet.html#imgutils.restore.nafnet.restore_with_nafnet">restore_with_nafnet() (in module imgutils.restore.nafnet)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/restore/scunet.html#imgutils.restore.scunet.restore_with_scunet">restore_with_scunet() (in module imgutils.restore.scunet)</a>
 </li>
       <li><a href="api_doc/data/decode.html#imgutils.data.decode.rgb_decode">rgb_decode() (in module imgutils.data.decode)</a>
 </li>
       <li><a href="api_doc/data/encode.html#imgutils.data.encode.rgb_encode">rgb_encode() (in module imgutils.data.encode)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_ANKLE">RIGHT_ANKLE (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_BIG_TOE">RIGHT_BIG_TOE (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_EAR">RIGHT_EAR (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_ELBOW">RIGHT_ELBOW (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_EYE">RIGHT_EYE (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.right_foot">right_foot() (imgutils.pose.format.OP18KeyPointSet property)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.right_hand">right_hand() (imgutils.pose.format.OP18KeyPointSet property)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_HEEL">RIGHT_HEEL (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_HIP">RIGHT_HIP (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_KNEE">RIGHT_KNEE (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_SHOULDER">RIGHT_SHOULDER (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_SMALL_TOE">RIGHT_SMALL_TOE (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_WRIST">RIGHT_WRIST (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1220,13 +1355,12 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../dev/dwpose/index.html">dev/dwpose</a></dd>
+                        <dd><a href="genindex.html">main</a></dd>
                         <dd><a href="../ccip/index.html">ccip</a></dd>
                         <dd><a href="../dev/cdc/index.html">dev/cdc</a></dd>
                         <dd><a href="../dev/py312/index.html">dev/py312</a></dd>
                         <dd><a href="../dev/resolution/index.html">dev/resolution</a></dd>
                         <dd><a href="../dev/waifu2x/index.html">dev/waifu2x</a></dd>
-                        <dd><a href="genindex.html">main</a></dd>
                 </dl>
         </div>
     </div>
