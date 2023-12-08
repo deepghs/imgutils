@@ -410,5 +410,8 @@ def dwpose_estimate(image: ImageTyping, auto_detect: bool = True,
     resized_img, center, scale = _dwpose_preprocess(np_image, out_bboxes, model_input_size)
     outputs = _dwpose_inference(session, resized_img)
     keypoints, scores = _dwpose_postprocess(outputs, model_input_size, center, scale)
-    keypoints, scores = _dwpose_reorder_body_points(keypoints, scores)
-    return _split_data(keypoints, scores)
+    if keypoints.shape[0] > 0:
+        keypoints, scores = _dwpose_reorder_body_points(keypoints, scores)
+        return _split_data(keypoints, scores)
+    else:
+        return []

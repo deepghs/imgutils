@@ -42,3 +42,8 @@ def pose_data_rin():
 @pytest.fixture()
 def pose_data_nad_rin():
     return np.load(get_testfile('pose', 'tohsaka_rin_nad_pose.npy'))
+
+
+@pytest.fixture()
+def img_file_gun():
+    return get_testfile('maxim_machine_gun.jpg')

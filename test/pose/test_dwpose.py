@@ -31,3 +31,7 @@ class TestPoseDwpose:
         assert isinstance(poses[1], OP18KeyPointSet)
         assert np.isclose(pose_data_2girls_0, poses[0].all).all()
         assert np.isclose(pose_data_2girls_1, poses[1].all).all()
+
+    def test_dwpose_estimate_nothing(self, img_file_gun):
+        poses = dwpose_estimate(img_file_gun)
+        assert len(poses) == 0
