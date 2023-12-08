@@ -1,3 +1,18 @@
+"""
+Overview:
+    Detect human keypoints in anime images.
+
+    The model is from `https://github.com/IDEA-Research/DWPose <https://github.com/IDEA-Research/DWPose>`_.
+
+    .. image:: dwpose_demo.plot.py.svg
+        :align: center
+
+    This is an overall benchmark of all the keypoint detect models:
+
+    .. image:: dwpose_benchmark.plot.py.svg
+        :align: center
+
+"""
 import warnings
 from functools import lru_cache
 from typing import Tuple, List
@@ -381,14 +396,34 @@ def dwpose_estimate(image: ImageTyping, auto_detect: bool = True,
     """
     Performs inference on the RTMPose model and returns keypoints and scores.
 
-    Args:
-        image (ImageTyping): Input image.
-        auto_detect: Auto detect person with :func:`imgutils.detect.detect_person`.
-        out_bboxes (List[Tuple[int, int, int, int]], optional): Bounding boxes.
-        person_detect_cfgs: Config arguments for :func:`imgutils.detect.detect_person`.
+    :param image: Input image.
+    :type image: ImageTyping
+    :param auto_detect: Auto detect person with :func:`imgutils.detect.person.detect_person`.
+    :type auto_detect: bool
+    :param out_bboxes: Bounding boxes.
+    :type out_bboxes: Optional[List[Tuple[int, int, int, int]]]
+    :param person_detect_cfgs: Config arguments for :func:`imgutils.detect.person.detect_person`.
+    :type person_detect_cfgs: Optional[Dict]
 
-    Returns:
-        List of mapping of different parts, including ``all``, ``head``, ``body``, ``foot``, ``hand1`` and ``hand2``.
+    :return: List of mapping of different parts, including ``all``, ``head``, ``body``, ``foot``, ``hand1`` and ``hand2``.
+    :rtype: List[OP18KeyPointSet]
+
+    Examples:
+        >>> from imgutils.data import load_image
+        >>> from imgutils.pose import dwpose_estimate, op18_visualize
+        >>>
+        >>> image = load_image('dwpose/squat.jpg')
+        >>> keypoints = dwpose_estimate(image)
+        >>> keypoints
+        [<imgutils.pose.format.OP18KeyPointSet object at 0x7f5ca933f3d0>]
+        >>>
+        >>> from matplotlib import pyplot as plt
+        >>> plt.imshow(op18_visualize(image, keypoints))
+        <matplotlib.image.AxesImage object at 0x7f5c98069790>
+        >>> plt.show()
+
+        .. note::
+            Function :func:`imgutils.pose.visual.op18_visualize` can be used to visualize this result.
     """
     session = _open_dwpose_model()
     h, w = session.get_inputs()[0].shape[-2:]
