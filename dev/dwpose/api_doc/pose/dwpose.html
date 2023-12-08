@@ -194,19 +194,53 @@
     
   <section id="module-imgutils.pose.dwpose">
 <span id="imgutils-pose-dwpose"></span><h1>imgutils.pose.dwpose<a class="headerlink" href="#module-imgutils.pose.dwpose" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>Detect human keypoints in anime images.</p>
+<p>The model is from <a class="reference external" href="https://github.com/IDEA-Research/DWPose">https://github.com/IDEA-Research/DWPose</a>.</p>
+<img alt="../../_images/dwpose_demo.plot.py.svg" class="align-center" src="../../_images/dwpose_demo.plot.py.svg" /><p>This is an overall benchmark of all the keypoint detect models:</p>
+<img alt="../../_images/dwpose_benchmark.plot.py.svg" class="align-center" src="../../_images/dwpose_benchmark.plot.py.svg" /></dd>
+</dl>
 <section id="dwpose-estimate">
 <h2>dwpose_estimate<a class="headerlink" href="#dwpose-estimate" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.pose.dwpose.dwpose_estimate">
 <code class="sig-prename descclassname">imgutils.pose.dwpose.</code><code class="sig-name descname">dwpose_estimate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">auto_detect</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">out_bboxes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">person_detect_cfgs</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span><a class="reference internal" href="format.html#imgutils.pose.format.OP18KeyPointSet" title="imgutils.pose.format.OP18KeyPointSet">imgutils.pose.format.OP18KeyPointSet</a><span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/pose/dwpose.html#dwpose_estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.pose.dwpose.dwpose_estimate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs inference on the RTMPose model and returns keypoints and scores.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>image (ImageTyping): Input image.
-auto_detect: Auto detect person with <code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.detect.detect_person()</span></code>.
-out_bboxes (List[Tuple[int, int, int, int]], optional): Bounding boxes.
-person_detect_cfgs: Config arguments for <code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.detect.detect_person()</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – Input image.</p></li>
+<li><p><strong>auto_detect</strong> (<em>bool</em>) – Auto detect person with <a class="reference internal" href="../detect/person.html#imgutils.detect.person.detect_person" title="imgutils.detect.person.detect_person"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.detect.person.detect_person()</span></code></a>.</p></li>
+<li><p><strong>out_bboxes</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em><em>]</em><em>]</em>) – Bounding boxes.</p></li>
+<li><p><strong>person_detect_cfgs</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – Config arguments for <a class="reference internal" href="../detect/person.html#imgutils.detect.person.detect_person" title="imgutils.detect.person.detect_person"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.detect.person.detect_person()</span></code></a>.</p></li>
+</ul>
 </dd>
-<dt>Returns:</dt><dd><p>List of mapping of different parts, including <code class="docutils literal notranslate"><span class="pre">all</span></code>, <code class="docutils literal notranslate"><span class="pre">head</span></code>, <code class="docutils literal notranslate"><span class="pre">body</span></code>, <code class="docutils literal notranslate"><span class="pre">foot</span></code>, <code class="docutils literal notranslate"><span class="pre">hand1</span></code> and <code class="docutils literal notranslate"><span class="pre">hand2</span></code>.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of mapping of different parts, including <code class="docutils literal notranslate"><span class="pre">all</span></code>, <code class="docutils literal notranslate"><span class="pre">head</span></code>, <code class="docutils literal notranslate"><span class="pre">body</span></code>, <code class="docutils literal notranslate"><span class="pre">foot</span></code>, <code class="docutils literal notranslate"><span class="pre">hand1</span></code> and <code class="docutils literal notranslate"><span class="pre">hand2</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="format.html#imgutils.pose.format.OP18KeyPointSet" title="imgutils.pose.format.OP18KeyPointSet">OP18KeyPointSet</a>]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.data</span> <span class="kn">import</span> <span class="n">load_image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.pose</span> <span class="kn">import</span> <span class="n">dwpose_estimate</span><span class="p">,</span> <span class="n">op18_visualize</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="s1">&#39;dwpose/squat.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keypoints</span> <span class="o">=</span> <span class="n">dwpose_estimate</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keypoints</span>
+<span class="go">[&lt;imgutils.pose.format.OP18KeyPointSet object at 0x7f5ca933f3d0&gt;]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">op18_visualize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">keypoints</span><span class="p">))</span>
+<span class="go">&lt;matplotlib.image.AxesImage object at 0x7f5c98069790&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Function <a class="reference internal" href="visual.html#imgutils.pose.visual.op18_visualize" title="imgutils.pose.visual.op18_visualize"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.pose.visual.op18_visualize()</span></code></a> can be used to visualize this result.</p>
+</aside>
 </dd>
 </dl>
 </dd></dl>

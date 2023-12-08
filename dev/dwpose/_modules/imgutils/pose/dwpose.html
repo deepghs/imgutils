@@ -180,7 +180,22 @@
     
     
   <h1>Source code for imgutils.pose.dwpose</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    Detect human keypoints in anime images.</span>
+
+<span class="sd">    The model is from `https://github.com/IDEA-Research/DWPose &lt;https://github.com/IDEA-Research/DWPose&gt;`_.</span>
+
+<span class="sd">    .. image:: dwpose_demo.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    This is an overall benchmark of all the keypoint detect models:</span>
+
+<span class="sd">    .. image:: dwpose_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
 
@@ -563,14 +578,34 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Performs inference on the RTMPose model and returns keypoints and scores.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        image (ImageTyping): Input image.</span>
-<span class="sd">        auto_detect: Auto detect person with :func:`imgutils.detect.detect_person`.</span>
-<span class="sd">        out_bboxes (List[Tuple[int, int, int, int]], optional): Bounding boxes.</span>
-<span class="sd">        person_detect_cfgs: Config arguments for :func:`imgutils.detect.detect_person`.</span>
+<span class="sd">    :param image: Input image.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param auto_detect: Auto detect person with :func:`imgutils.detect.person.detect_person`.</span>
+<span class="sd">    :type auto_detect: bool</span>
+<span class="sd">    :param out_bboxes: Bounding boxes.</span>
+<span class="sd">    :type out_bboxes: Optional[List[Tuple[int, int, int, int]]]</span>
+<span class="sd">    :param person_detect_cfgs: Config arguments for :func:`imgutils.detect.person.detect_person`.</span>
+<span class="sd">    :type person_detect_cfgs: Optional[Dict]</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        List of mapping of different parts, including ``all``, ``head``, ``body``, ``foot``, ``hand1`` and ``hand2``.</span>
+<span class="sd">    :return: List of mapping of different parts, including ``all``, ``head``, ``body``, ``foot``, ``hand1`` and ``hand2``.</span>
+<span class="sd">    :rtype: List[OP18KeyPointSet]</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.data import load_image</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.pose import dwpose_estimate, op18_visualize</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; image = load_image(&#39;dwpose/squat.jpg&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; keypoints = dwpose_estimate(image)</span>
+<span class="sd">        &gt;&gt;&gt; keypoints</span>
+<span class="sd">        [&lt;imgutils.pose.format.OP18KeyPointSet object at 0x7f5ca933f3d0&gt;]</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; from matplotlib import pyplot as plt</span>
+<span class="sd">        &gt;&gt;&gt; plt.imshow(op18_visualize(image, keypoints))</span>
+<span class="sd">        &lt;matplotlib.image.AxesImage object at 0x7f5c98069790&gt;</span>
+<span class="sd">        &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            Function :func:`imgutils.pose.visual.op18_visualize` can be used to visualize this result.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">session</span> <span class="o">=</span> <span class="n">_open_dwpose_model</span><span class="p">()</span>
     <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get_inputs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
