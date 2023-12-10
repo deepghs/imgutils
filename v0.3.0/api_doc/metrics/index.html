@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.metrics &mdash; imgutils 0.3.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.metrics.aesthetic" href="aesthetic.html" />
+    <link rel="prev" title="imgutils.edge.lineart_anime" href="../edge/lineart_anime.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">imgutils.metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aesthetic.html">imgutils.metrics.aesthetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccip.html">imgutils.metrics.ccip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpips.html">imgutils.metrics.lpips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="psnr_.html">imgutils.metrics.psnr_</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>imgutils.metrics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api_doc/metrics/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <section id="module-imgutils.metrics">
+<span id="imgutils-metrics"></span><h1>imgutils.metrics<a class="headerlink" href="#module-imgutils.metrics" title="Permalink to this headline">¶</a></h1>
+<dl class="simple">
+<dt>Overview:</dt><dd><p>Tools for computing visual metrics.</p>
+</dd>
+</dl>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="aesthetic.html">imgutils.metrics.aesthetic</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aesthetic.html#get-aesthetic-score">get_aesthetic_score</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ccip.html">imgutils.metrics.ccip</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ccip.html#ccip-extract-feature">ccip_extract_feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccip.html#ccip-batch-extract-features">ccip_batch_extract_features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccip.html#ccip-default-threshold">ccip_default_threshold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccip.html#ccip-difference">ccip_difference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccip.html#ccip-same">ccip_same</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccip.html#ccip-batch-differences">ccip_batch_differences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccip.html#ccip-batch-same">ccip_batch_same</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccip.html#ccip-default-clustering-params">ccip_default_clustering_params</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccip.html#ccip-clustering">ccip_clustering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lpips.html">imgutils.metrics.lpips</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lpips.html#lpips-extract-feature">lpips_extract_feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpips.html#lpips-difference">lpips_difference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpips.html#lpips-clustering">lpips_clustering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="psnr_.html">imgutils.metrics.psnr_</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="psnr_.html#psnr-1">psnr</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="aesthetic.html" class="btn btn-neutral float-right" title="imgutils.metrics.aesthetic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../edge/lineart_anime.html" class="btn btn-neutral float-left" title="imgutils.edge.lineart_anime" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d7
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.3.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.1.0/api_doc/metrics/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../v0.1.1/api_doc/metrics/index.html">v0.1.1</a></dd>
+                        <dd><a href="../../../v0.2.0/api_doc/metrics/index.html">v0.2.0</a></dd>
+                        <dd><a href="../../../v0.2.1/api_doc/metrics/index.html">v0.2.1</a></dd>
+                        <dd><a href="../../../v0.2.10/api_doc/metrics/index.html">v0.2.10</a></dd>
+                        <dd><a href="../../../v0.2.2/api_doc/metrics/index.html">v0.2.2</a></dd>
+                        <dd><a href="../../../v0.2.3/api_doc/metrics/index.html">v0.2.3</a></dd>
+                        <dd><a href="../../../v0.2.4/api_doc/metrics/index.html">v0.2.4</a></dd>
+                        <dd><a href="../../../v0.2.5/api_doc/metrics/index.html">v0.2.5</a></dd>
+                        <dd><a href="../../../v0.2.6/api_doc/metrics/index.html">v0.2.6</a></dd>
+                        <dd><a href="../../../v0.2.7/api_doc/metrics/index.html">v0.2.7</a></dd>
+                        <dd><a href="../../../v0.2.8/api_doc/metrics/index.html">v0.2.8</a></dd>
+                        <dd><a href="../../../v0.2.9/api_doc/metrics/index.html">v0.2.9</a></dd>
+                        <dd><a href="index.html">v0.3.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../ccip/api_doc/metrics/index.html">ccip</a></dd>
+                        <dd><a href="../../../dev/cdc/api_doc/metrics/index.html">dev/cdc</a></dd>
+                        <dd><a href="../../../dev/py312/api_doc/metrics/index.html">dev/py312</a></dd>
+                        <dd><a href="../../../dev/resolution/api_doc/metrics/index.html">dev/resolution</a></dd>
+                        <dd><a href="../../../dev/waifu2x/api_doc/metrics/index.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../../main/api_doc/metrics/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
