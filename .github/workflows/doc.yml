@@ -29,7 +29,7 @@ jobs:
         with:
           swap-size-gb: 8
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.3.0
         with:
           fetch-depth: 20
           submodules: 'recursive'
@@ -101,7 +101,7 @@ jobs:
         with:
           swap-size-gb: 8
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.3.0
         with:
           fetch-depth: 20
           submodules: 'recursive'
