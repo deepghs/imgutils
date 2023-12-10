@@ -1,6 +1,6 @@
 """
 Overview:
-    Tagging utils based on ML-danbooru which is provided by 7eu7d. The code is here:
+    Tagging utils based on ML-danbooru which is provided by 7eu7d7. The code is here:
     `7eu7d7/ML-Danbooru <https://github.com/7eu7d7/ML-Danbooru>`_ .
 """
 from functools import lru_cache

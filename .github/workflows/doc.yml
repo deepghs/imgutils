@@ -70,7 +70,7 @@ jobs:
         id: commit
         run: |
           git config user.name 'narugo1992'
-          git config user.email 'narugo@126.com'
+          git config user.email 'narugo992@gmail.com'
           git add -A
           git diff-index --quiet HEAD || git commit -a -m "dev(narugo): auto sync $(date -R)"
       - name: Push changes
@@ -148,7 +148,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_CONFIG_NAME: narugo1992
-          GIT_CONFIG_EMAIL: narugo@126.com
+          GIT_CONFIG_EMAIL: narugo992@gmail.com
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: public # The folder the action should deploy.
           CLEAN: true # Automatically remove deleted files from the deploy branch
