@@ -6,10 +6,24 @@ imgutils.tagging.character
 .. automodule:: imgutils.tagging.character
 
 
-CHAR_WHITELIST
+CHAR_WHITELIST_SUFFIX
 ------------------------------
 
-.. autodata:: CHAR_WHITELIST
+.. autodata:: CHAR_WHITELIST_SUFFIX
+
+
+
+CHAR_WHITELIST_PREFIX
+------------------------------
+
+.. autodata:: CHAR_WHITELIST_PREFIX
+
+
+
+CHAR_WHITELIST_WORD
+------------------------------
+
+.. autodata:: CHAR_WHITELIST_WORD
 
 
 
