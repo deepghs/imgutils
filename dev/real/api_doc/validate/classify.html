@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.validate.classify &mdash; imgutils 0.3.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.validate.color" href="color.html" />
+    <link rel="prev" title="imgutils.validate.aicheck" href="aicheck.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.validate</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aicheck.html">imgutils.validate.aicheck</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.validate.classify</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#anime-classify-score">anime_classify_score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#anime-classify">anime_classify</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">imgutils.validate.color</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monochrome.html">imgutils.validate.monochrome</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nsfw.html">imgutils.validate.nsfw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="portrait.html">imgutils.validate.portrait</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rating.html">imgutils.validate.rating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style_age.html">imgutils.validate.style_age</a></li>
+<li class="toctree-l2"><a class="reference internal" href="teen.html">imgutils.validate.teen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="truncate.html">imgutils.validate.truncate</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">imgutils.validate</a> &raquo;</li>
+        
+      <li>imgutils.validate.classify</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api_doc/validate/classify.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <section id="module-imgutils.validate.classify">
+<span id="imgutils-validate-classify"></span><h1>imgutils.validate.classify<a class="headerlink" href="#module-imgutils.validate.classify" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>A model for classifying anime images into 4 classes (<code class="docutils literal notranslate"><span class="pre">3d</span></code>, <code class="docutils literal notranslate"><span class="pre">bangumi</span></code>, <code class="docutils literal notranslate"><span class="pre">comic</span></code> and <code class="docutils literal notranslate"><span class="pre">illustration</span></code>).</p>
+<p>The following are sample images for testing.</p>
+<img alt="../../_images/classify.plot.py.svg" class="align-center" src="../../_images/classify.plot.py.svg" /><p>This is an overall benchmark of all the classification validation models:</p>
+<img alt="../../_images/classify_benchmark.plot.py.svg" class="align-center" src="../../_images/classify_benchmark.plot.py.svg" /><p>The models are hosted on
+<a class="reference external" href="https://huggingface.co/deepghs/anime_classification">huggingface - deepghs/anime_classification</a>.</p>
+</dd>
+</dl>
+<section id="anime-classify-score">
+<h2>anime_classify_score<a class="headerlink" href="#anime-classify-score" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.validate.classify.anime_classify_score">
+<code class="sig-prename descclassname">imgutils.validate.classify.</code><code class="sig-name descname">anime_classify_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'mobilenetv3_sce_dist'</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/validate/classify.html#anime_classify_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.classify.anime_classify_score" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Overview:</dt><dd><p>Predict the class of the given image, return the score with as a dict object.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – Image to classify.</p></li>
+<li><p><strong>model_name</strong> – Model to use. Default is <code class="docutils literal notranslate"><span class="pre">mobilenetv3_sce_dist</span></code>. All available models are listed
+on the benchmark plot above. If you need better accuracy, just set this to <code class="docutils literal notranslate"><span class="pre">caformer_s36_plus</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dict with classes and scores.</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.validate</span> <span class="kn">import</span> <span class="n">anime_classify_score</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/3d/1.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 0.9999048709869385, &#39;bangumi&#39;: 1.2998967577004805e-05, &#39;comic&#39;: 6.3774782574910205e-06, &#39;illustration&#39;: 7.573143375338987e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/3d/2.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 1.0, &#39;bangumi&#39;: 2.3347255118794097e-12, &#39;comic&#39;: 5.393629119720966e-12, &#39;illustration&#39;: 6.71077689945454e-12}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/3d/3.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 0.9999587535858154, &#39;bangumi&#39;: 1.6608031728537753e-05, &#39;comic&#39;: 1.4294577340479009e-05, &#39;illustration&#39;: 1.0324462891730946e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/bangumi/4.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 8.245967464404202e-09, &#39;bangumi&#39;: 0.9999991655349731, &#39;comic&#39;: 2.004386701059957e-08, &#39;illustration&#39;: 8.202430876735889e-07}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/bangumi/5.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 6.440834113163874e-05, &#39;bangumi&#39;: 0.9982288479804993, &#39;comic&#39;: 1.4121969797997735e-05, &#39;illustration&#39;: 0.001692703110165894}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/bangumi/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 2.3443080159404883e-14, &#39;bangumi&#39;: 1.0, &#39;comic&#39;: 5.647845608075866e-14, &#39;illustration&#39;: 6.008537851293072e-13}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/comic/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 4.029740221408245e-18, &#39;bangumi&#39;: 4.658470278842451e-18, &#39;comic&#39;: 1.0, &#39;illustration&#39;: 2.0487814569869478e-11}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/comic/8.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 1.019530813939351e-11, &#39;bangumi&#39;: 1.5961519215720865e-12, &#39;comic&#39;: 1.0, &#39;illustration&#39;: 2.2395576712574972e-11}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/comic/9.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 2.1237236958165234e-13, &#39;bangumi&#39;: 2.3246717593440602e-14, &#39;comic&#39;: 1.0, &#39;illustration&#39;: 3.4230233231236085e-11}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/illustration/10.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 0.00026091927429661155, &#39;bangumi&#39;: 0.00011691388499457389, &#39;comic&#39;: 8.51359436637722e-05, &#39;illustration&#39;: 0.9995369911193848}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/illustration/11.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 6.014750475458186e-09, &#39;bangumi&#39;: 2.3536564697224094e-07, &#39;comic&#39;: 7.933858796604909e-06, &#39;illustration&#39;: 0.999991774559021}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify_score</span><span class="p">(</span><span class="s1">&#39;classify/illustration/12.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;3d&#39;: 3.153582292725332e-05, &#39;bangumi&#39;: 0.0001071861624950543, &#39;comic&#39;: 5.665345452143811e-05, &#39;illustration&#39;: 0.999804675579071}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="anime-classify">
+<h2>anime_classify<a class="headerlink" href="#anime-classify" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.validate.classify.anime_classify">
+<code class="sig-prename descclassname">imgutils.validate.classify.</code><code class="sig-name descname">anime_classify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'mobilenetv3_sce_dist'</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/validate/classify.html#anime_classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.classify.anime_classify" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Overview:</dt><dd><p>Predict the class of the given image, return the class and its score.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – Image to classify.</p></li>
+<li><p><strong>model_name</strong> – Model to use. Default is <code class="docutils literal notranslate"><span class="pre">mobilenetv3_sce_dist</span></code>. All available models are listed
+on the benchmark plot above. If you need better accuracy, just set this to <code class="docutils literal notranslate"><span class="pre">caformer_s36_plus</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple contains the class and its score.</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.validate</span> <span class="kn">import</span> <span class="n">anime_classify</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/3d/1.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;3d&#39;, 0.9999048709869385)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/3d/2.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;3d&#39;, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/3d/3.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;3d&#39;, 0.9999587535858154)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/bangumi/4.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;bangumi&#39;, 0.9999991655349731)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/bangumi/5.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;bangumi&#39;, 0.9982288479804993)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/bangumi/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;bangumi&#39;, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/comic/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;comic&#39;, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/comic/8.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;comic&#39;, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/comic/9.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;comic&#39;, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/illustration/10.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;illustration&#39;, 0.9995369911193848)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/illustration/11.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;illustration&#39;, 0.999991774559021)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_classify</span><span class="p">(</span><span class="s1">&#39;classify/illustration/12.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;illustration&#39;, 0.999804675579071)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="color.html" class="btn btn-neutral float-right" title="imgutils.validate.color" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="aicheck.html" class="btn btn-neutral float-left" title="imgutils.validate.aicheck" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d7
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/real
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../v0.1.1/api_doc/validate/classify.html">v0.1.1</a></dd>
+                        <dd><a href="../../../../v0.2.0/api_doc/validate/classify.html">v0.2.0</a></dd>
+                        <dd><a href="../../../../v0.2.1/api_doc/validate/classify.html">v0.2.1</a></dd>
+                        <dd><a href="../../../../v0.2.10/api_doc/validate/classify.html">v0.2.10</a></dd>
+                        <dd><a href="../../../../v0.2.2/api_doc/validate/classify.html">v0.2.2</a></dd>
+                        <dd><a href="../../../../v0.2.3/api_doc/validate/classify.html">v0.2.3</a></dd>
+                        <dd><a href="../../../../v0.2.4/api_doc/validate/classify.html">v0.2.4</a></dd>
+                        <dd><a href="../../../../v0.2.5/api_doc/validate/classify.html">v0.2.5</a></dd>
+                        <dd><a href="../../../../v0.2.6/api_doc/validate/classify.html">v0.2.6</a></dd>
+                        <dd><a href="../../../../v0.2.7/api_doc/validate/classify.html">v0.2.7</a></dd>
+                        <dd><a href="../../../../v0.2.8/api_doc/validate/classify.html">v0.2.8</a></dd>
+                        <dd><a href="../../../../v0.2.9/api_doc/validate/classify.html">v0.2.9</a></dd>
+                        <dd><a href="../../../../v0.3.0/api_doc/validate/classify.html">v0.3.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="classify.html">dev/real</a></dd>
+                        <dd><a href="../../../../ccip/api_doc/validate/classify.html">ccip</a></dd>
+                        <dd><a href="../../../bangumi/api_doc/validate/classify.html">dev/bangumi</a></dd>
+                        <dd><a href="../../../cdc/api_doc/validate/classify.html">dev/cdc</a></dd>
+                        <dd><a href="../../../py312/api_doc/validate/classify.html">dev/py312</a></dd>
+                        <dd><a href="../../../resolution/api_doc/validate/classify.html">dev/resolution</a></dd>
+                        <dd><a href="../../../tagprune/api_doc/validate/classify.html">dev/tagprune</a></dd>
+                        <dd><a href="../../../waifu2x/api_doc/validate/classify.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../../../main/api_doc/validate/classify.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

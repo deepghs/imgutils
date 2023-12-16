@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.validate.real &mdash; imgutils 0.3.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>imgutils.validate.real</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api_doc/validate/real.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <section id="module-imgutils.validate.real">
+<span id="imgutils-validate-real"></span><h1>imgutils.validate.real<a class="headerlink" href="#module-imgutils.validate.real" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>A model for classifying anime real images into 2 classes (<code class="docutils literal notranslate"><span class="pre">anime</span></code>, <code class="docutils literal notranslate"><span class="pre">real</span></code>).</p>
+<p>The following are sample images for testing.</p>
+<img alt="../../_images/real.plot.py.svg" class="align-center" src="../../_images/real.plot.py.svg" /><p>This is an overall benchmark of all the real classification models:</p>
+<img alt="../../_images/real_benchmark.plot.py.svg" class="align-center" src="../../_images/real_benchmark.plot.py.svg" /><p>The models are hosted on
+<a class="reference external" href="https://huggingface.co/deepghs/anime_real_cls">huggingface - deepghs/anime_real_cls</a>.</p>
+</dd>
+</dl>
+<section id="anime-real-score">
+<h2>anime_real_score<a class="headerlink" href="#anime-real-score" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.validate.real.anime_real_score">
+<code class="sig-prename descclassname">imgutils.validate.real.</code><code class="sig-name descname">anime_real_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'mobilenetv3_v0_dist'</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/validate/real.html#anime_real_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.real.anime_real_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the scores for different types in an anime real.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – The model name. Default is ‘mobilenetv3_v0_dist’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with type scores.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, float]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.validate</span> <span class="kn">import</span> <span class="n">anime_real_score</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/anime/1.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 0.9999716281890869, &#39;real&#39;: 2.8398366339388303e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/anime/2.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 0.9992202520370483, &#39;real&#39;: 0.0007797438884153962}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/anime/3.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 0.9999709129333496, &#39;real&#39;: 2.905452492996119e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/anime/4.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 0.9999765157699585, &#39;real&#39;: 2.3499671442550607e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/anime/5.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 0.9994087219238281, &#39;real&#39;: 0.0005913018831051886}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/anime/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 0.9999759197235107, &#39;real&#39;: 2.4061362637439743e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/anime/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 0.9999052286148071, &#39;real&#39;: 9.475799015490338e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/anime/8.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 0.9999759197235107, &#39;real&#39;: 2.403173675702419e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/real/9.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 1.5848207794988411e-06, &#39;real&#39;: 0.9999984502792358}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/real/10.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 0.0010207017185166478, &#39;real&#39;: 0.9989792704582214}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/real/11.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 2.2124368115328252e-06, &#39;real&#39;: 0.9999977350234985}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/real/12.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 1.6512358342879452e-05, &#39;real&#39;: 0.9999834299087524}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/real/13.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 6.359853614412714e-06, &#39;real&#39;: 0.9999936819076538}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/real/14.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 1.600314317329321e-05, &#39;real&#39;: 0.9999840259552002}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/real/15.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 1.5589323083986528e-05, &#39;real&#39;: 0.9999843835830688}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real_score</span><span class="p">(</span><span class="s1">&#39;real/real/16.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;anime&#39;: 1.5513256585109048e-05, &#39;real&#39;: 0.9999845027923584}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="anime-real">
+<h2>anime_real<a class="headerlink" href="#anime-real" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.validate.real.anime_real">
+<code class="sig-prename descclassname">imgutils.validate.real.</code><code class="sig-name descname">anime_real</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'mobilenetv3_v0_dist'</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/validate/real.html#anime_real"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.validate.real.anime_real" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the primary anime real type and its score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – The model name. Default is ‘mobilenetv3_v0_dist’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple with the primary type and its score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[str, float]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.validate</span> <span class="kn">import</span> <span class="n">anime_real</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/anime/1.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;anime&#39;, 0.9999716281890869)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/anime/2.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;anime&#39;, 0.9992202520370483)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/anime/3.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;anime&#39;, 0.9999709129333496)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/anime/4.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;anime&#39;, 0.9999765157699585)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/anime/5.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;anime&#39;, 0.9994087219238281)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/anime/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;anime&#39;, 0.9999759197235107)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/anime/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;anime&#39;, 0.9999052286148071)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/anime/8.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;anime&#39;, 0.9999759197235107)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/real/9.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;real&#39;, 0.9999984502792358)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/real/10.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;real&#39;, 0.9989792704582214)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/real/11.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;real&#39;, 0.9999977350234985)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/real/12.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;real&#39;, 0.9999834299087524)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/real/13.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;real&#39;, 0.9999936819076538)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/real/14.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;real&#39;, 0.9999840259552002)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/real/15.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;real&#39;, 0.9999843835830688)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_real</span><span class="p">(</span><span class="s1">&#39;real/real/16.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;real&#39;, 0.9999845027923584)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d7
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/real
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../v0.1.1/index.html">v0.1.1</a></dd>
+                        <dd><a href="../../../../v0.2.0/index.html">v0.2.0</a></dd>
+                        <dd><a href="../../../../v0.2.1/index.html">v0.2.1</a></dd>
+                        <dd><a href="../../../../v0.2.10/index.html">v0.2.10</a></dd>
+                        <dd><a href="../../../../v0.2.2/index.html">v0.2.2</a></dd>
+                        <dd><a href="../../../../v0.2.3/index.html">v0.2.3</a></dd>
+                        <dd><a href="../../../../v0.2.4/index.html">v0.2.4</a></dd>
+                        <dd><a href="../../../../v0.2.5/index.html">v0.2.5</a></dd>
+                        <dd><a href="../../../../v0.2.6/index.html">v0.2.6</a></dd>
+                        <dd><a href="../../../../v0.2.7/index.html">v0.2.7</a></dd>
+                        <dd><a href="../../../../v0.2.8/index.html">v0.2.8</a></dd>
+                        <dd><a href="../../../../v0.2.9/index.html">v0.2.9</a></dd>
+                        <dd><a href="../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="real.html">dev/real</a></dd>
+                        <dd><a href="../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../bangumi/index.html">dev/bangumi</a></dd>
+                        <dd><a href="../../../cdc/index.html">dev/cdc</a></dd>
+                        <dd><a href="../../../py312/index.html">dev/py312</a></dd>
+                        <dd><a href="../../../resolution/index.html">dev/resolution</a></dd>
+                        <dd><a href="../../../tagprune/index.html">dev/tagprune</a></dd>
+                        <dd><a href="../../../waifu2x/index.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
