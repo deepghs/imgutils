@@ -5,12 +5,12 @@ Overview:
 
     The following are sample images for testing.
 
-    .. image:: bangumi_character.plot.py.svg
+    .. image:: bangumi_char.plot.py.svg
         :align: center
 
     This is an overall benchmark of all the bangumi character classification models:
 
-    .. image:: bangumi_character_benchmark.plot.py.svg
+    .. image:: bangumi_char_benchmark.plot.py.svg
         :align: center
 
     The models are hosted on
