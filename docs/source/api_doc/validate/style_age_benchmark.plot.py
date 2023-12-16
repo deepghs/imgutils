@@ -39,7 +39,7 @@ if __name__ == '__main__':
             (name, AnimeStyleAgeBenchmark(name))
             for name in _MODEL_NAMES
         ],
-        title='Benchmark for Anime Portrait Models',
+        title='Benchmark for Anime Style Age Models',
         run_times=10,
         try_times=20,
     )()
