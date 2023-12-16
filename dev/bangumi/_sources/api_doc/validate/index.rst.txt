@@ -17,5 +17,6 @@ imgutils.validate
     nsfw
     portrait
     rating
+    style_age
     teen
     truncate
