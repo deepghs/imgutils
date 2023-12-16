@@ -10,6 +10,7 @@ imgutils.validate
     :maxdepth: 3
 
     aicheck
+    bangumi_char
     classify
     color
     monochrome
