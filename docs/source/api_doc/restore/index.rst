@@ -11,4 +11,5 @@ imgutils.restore
 
     nafnet
     scunet
+    adversarial
 
