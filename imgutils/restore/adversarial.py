@@ -48,6 +48,11 @@ def remove_adversarial_noise(image: ImageTyping, diameter: int = 5, sigma_color:
 
     :return: Image with adversarial noise removed.
     :rtype: Image.Image
+
+    Examples::
+        >>> from imgutils.restore import remove_adversarial_noise
+        >>>
+        >>> remove_adversarial_noise('adversarial_input.png')
     """
     image = load_image(image, mode='RGB', force_background='white')
     img = np.array(image).astype(np.float32)
