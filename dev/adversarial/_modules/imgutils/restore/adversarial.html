@@ -193,59 +193,88 @@
 <span class="sd">        :align: center</span>
 
 <span class="sd">    .. note::</span>
-<span class="sd">        This tool is inspired from `Github - lllyasviel/AdverseCleaner &lt;https://github.com/lllyasviel/AdverseCleaner&gt;`_.</span>
+<span class="sd">        This tool is inspired from `Huggingface - mf666/mist-fucker &lt;https://huggingface.co/spaces/mf666/mist-fucker&gt;`_.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">cv2.ximgproc</span> <span class="kn">import</span> <span class="n">guidedFilter</span>
 
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span>
 
 
-<div class="viewcode-block" id="remove_adversarial_noise"><a class="viewcode-back" href="../../../api_doc/restore/adversarial.html#imgutils.restore.adversarial.remove_adversarial_noise">[docs]</a><span class="k">def</span> <span class="nf">remove_adversarial_noise</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">diameter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">sigma_color</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">8.0</span><span class="p">,</span>
-                             <span class="n">sigma_space</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">8.0</span><span class="p">,</span> <span class="n">radius</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">16.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<div class="viewcode-block" id="remove_adversarial_noise"><a class="viewcode-back" href="../../../api_doc/restore/adversarial.html#imgutils.restore.adversarial.remove_adversarial_noise">[docs]</a><span class="k">def</span> <span class="nf">remove_adversarial_noise</span><span class="p">(</span>
+        <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">diameter_min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">diameter_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="n">sigma_color_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">6.0</span><span class="p">,</span> <span class="n">sigma_color_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span>
+        <span class="n">sigma_space_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">6.0</span><span class="p">,</span> <span class="n">sigma_space_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span>
+        <span class="n">radius_min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">radius_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">eps_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">16.0</span><span class="p">,</span> <span class="n">eps_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">24.0</span><span class="p">,</span>
+        <span class="n">b_iters</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span> <span class="n">g_iters</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Remove adversarial noise from an image using bilateral and guided filtering.</span>
+<span class="sd">    Remove adversarial noise from an image using random bilateral and guided filtering.</span>
 
-<span class="sd">    This function applies bilateral filtering and guided filtering to reduce adversarial noise in the input image.</span>
+<span class="sd">    This function applies random bilateral filtering and random guided filtering iteratively to reduce adversarial noise</span>
+<span class="sd">    in the input image.</span>
 
 <span class="sd">    :param image: The input image.</span>
-<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :type image: Image.Image</span>
 
-<span class="sd">    :param diameter: Diameter of each pixel neighborhood for bilateral filtering.</span>
-<span class="sd">    :type diameter: int, optional</span>
+<span class="sd">    :param diameter_min: Minimum diameter for bilateral filtering.</span>
+<span class="sd">    :type diameter_min: int, optional</span>
 
-<span class="sd">    :param sigma_color: Filter sigma in the color space for bilateral filtering.</span>
-<span class="sd">    :type sigma_color: float, optional</span>
+<span class="sd">    :param diameter_max: Maximum diameter for bilateral filtering.</span>
+<span class="sd">    :type diameter_max: int, optional</span>
 
-<span class="sd">    :param sigma_space: Filter sigma in the coordinate space for bilateral filtering.</span>
-<span class="sd">    :type sigma_space: float, optional</span>
+<span class="sd">    :param sigma_color_min: Minimum filter sigma in the color space for bilateral filtering.</span>
+<span class="sd">    :type sigma_color_min: float, optional</span>
 
-<span class="sd">    :param radius: Radius of Guided Filter.</span>
-<span class="sd">    :type radius: float, optional</span>
+<span class="sd">    :param sigma_color_max: Maximum filter sigma in the color space for bilateral filtering.</span>
+<span class="sd">    :type sigma_color_max: float, optional</span>
 
-<span class="sd">    :param eps: Guided Filter regularization term.</span>
-<span class="sd">    :type eps: int, optional</span>
+<span class="sd">    :param sigma_space_min: Minimum filter sigma in the coordinate space for bilateral filtering.</span>
+<span class="sd">    :type sigma_space_min: float, optional</span>
+
+<span class="sd">    :param sigma_space_max: Maximum filter sigma in the coordinate space for bilateral filtering.</span>
+<span class="sd">    :type sigma_space_max: float, optional</span>
+
+<span class="sd">    :param radius_min: Minimum radius for guided filtering.</span>
+<span class="sd">    :type radius_min: int, optional</span>
+
+<span class="sd">    :param radius_max: Maximum radius for guided filtering.</span>
+<span class="sd">    :type radius_max: int, optional</span>
+
+<span class="sd">    :param eps_min: Minimum guided filter regularization term.</span>
+<span class="sd">    :type eps_min: float, optional</span>
+
+<span class="sd">    :param eps_max: Maximum guided filter regularization term.</span>
+<span class="sd">    :type eps_max: float, optional</span>
+
+<span class="sd">    :param b_iters: Number of iterations for bilateral filtering.</span>
+<span class="sd">    :type b_iters: int, optional</span>
+
+<span class="sd">    :param g_iters: Number of iterations for guided filtering.</span>
+<span class="sd">    :type g_iters: int, optional</span>
 
 <span class="sd">    :return: Image with adversarial noise removed.</span>
 <span class="sd">    :rtype: Image.Image</span>
-
-<span class="sd">    Examples::</span>
-<span class="sd">        &gt;&gt;&gt; from imgutils.restore import remove_adversarial_noise</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; remove_adversarial_noise(&#39;adversarial_input.png&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
     <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-    <span class="c1"># Apply bilateral filtering iteratively</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
+    <span class="c1"># Apply random bilateral filtering iteratively</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">b_iters</span><span class="p">):</span>
+        <span class="n">diameter</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">diameter_min</span><span class="p">,</span> <span class="n">diameter_max</span><span class="p">)</span>
+        <span class="n">sigma_color</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">sigma_color_min</span><span class="p">,</span> <span class="n">sigma_color_max</span><span class="p">)</span>
+        <span class="n">sigma_space</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">sigma_space_min</span><span class="p">,</span> <span class="n">sigma_space_max</span><span class="p">)</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">bilateralFilter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">sigma_color</span><span class="p">,</span> <span class="n">sigma_space</span><span class="p">)</span>
 
-    <span class="c1"># Apply guided filtering iteratively</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="c1"># Apply random guided filtering iteratively</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">g_iters</span><span class="p">):</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">radius_min</span><span class="p">,</span> <span class="n">radius_max</span><span class="p">)</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">eps_min</span><span class="p">,</span> <span class="n">eps_max</span><span class="p">)</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">guidedFilter</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
 
     <span class="c1"># Clip the values and convert back to uint8 for PIL Image</span>

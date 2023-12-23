@@ -199,7 +199,7 @@
 <img alt="../../_images/adversarial_demo.plot.py.svg" class="align-center" src="../../_images/adversarial_demo.plot.py.svg" /><p>This is an overall benchmark of all the adversarial denoising:</p>
 <img alt="../../_images/adversarial_benchmark.plot.py.svg" class="align-center" src="../../_images/adversarial_benchmark.plot.py.svg" /><div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This tool is inspired from <a class="reference external" href="https://github.com/lllyasviel/AdverseCleaner">Github - lllyasviel/AdverseCleaner</a>.</p>
+<p>This tool is inspired from <a class="reference external" href="https://huggingface.co/spaces/mf666/mist-fucker">Huggingface - mf666/mist-fucker</a>.</p>
 </aside>
 </dd>
 </dl>
@@ -207,18 +207,26 @@
 <h2>remove_adversarial_noise<a class="headerlink" href="#remove-adversarial-noise" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="imgutils.restore.adversarial.remove_adversarial_noise">
-<code class="sig-prename descclassname">imgutils.restore.adversarial.</code><code class="sig-name descname">remove_adversarial_noise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">diameter</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">sigma_color</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">8.0</span></em>, <em class="sig-param"><span class="n">sigma_space</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">8.0</span></em>, <em class="sig-param"><span class="n">radius</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">4</span></em>, <em class="sig-param"><span class="n">eps</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">16.0</span></em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="reference internal" href="../../_modules/imgutils/restore/adversarial.html#remove_adversarial_noise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.restore.adversarial.remove_adversarial_noise" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove adversarial noise from an image using bilateral and guided filtering.</p>
-<p>This function applies bilateral filtering and guided filtering to reduce adversarial noise in the input image.</p>
+<code class="sig-prename descclassname">imgutils.restore.adversarial.</code><code class="sig-name descname">remove_adversarial_noise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">PIL.Image.Image</span></em>, <em class="sig-param"><span class="n">diameter_min</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">4</span></em>, <em class="sig-param"><span class="n">diameter_max</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">6</span></em>, <em class="sig-param"><span class="n">sigma_color_min</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">6.0</span></em>, <em class="sig-param"><span class="n">sigma_color_max</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">10.0</span></em>, <em class="sig-param"><span class="n">sigma_space_min</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">6.0</span></em>, <em class="sig-param"><span class="n">sigma_space_max</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">10.0</span></em>, <em class="sig-param"><span class="n">radius_min</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">3</span></em>, <em class="sig-param"><span class="n">radius_max</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">6</span></em>, <em class="sig-param"><span class="n">eps_min</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">16.0</span></em>, <em class="sig-param"><span class="n">eps_max</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">24.0</span></em>, <em class="sig-param"><span class="n">b_iters</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">64</span></em>, <em class="sig-param"><span class="n">g_iters</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">8</span></em><span class="sig-paren">)</span> &#x2192; PIL.Image.Image<a class="reference internal" href="../../_modules/imgutils/restore/adversarial.html#remove_adversarial_noise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.restore.adversarial.remove_adversarial_noise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove adversarial noise from an image using random bilateral and guided filtering.</p>
+<p>This function applies random bilateral filtering and random guided filtering iteratively to reduce adversarial noise
+in the input image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
-<li><p><strong>diameter</strong> (<em>int</em><em>, </em><em>optional</em>) – Diameter of each pixel neighborhood for bilateral filtering.</p></li>
-<li><p><strong>sigma_color</strong> (<em>float</em><em>, </em><em>optional</em>) – Filter sigma in the color space for bilateral filtering.</p></li>
-<li><p><strong>sigma_space</strong> (<em>float</em><em>, </em><em>optional</em>) – Filter sigma in the coordinate space for bilateral filtering.</p></li>
-<li><p><strong>radius</strong> (<em>float</em><em>, </em><em>optional</em>) – Radius of Guided Filter.</p></li>
-<li><p><strong>eps</strong> (<em>int</em><em>, </em><em>optional</em>) – Guided Filter regularization term.</p></li>
+<li><p><strong>image</strong> (<em>Image.Image</em>) – The input image.</p></li>
+<li><p><strong>diameter_min</strong> (<em>int</em><em>, </em><em>optional</em>) – Minimum diameter for bilateral filtering.</p></li>
+<li><p><strong>diameter_max</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum diameter for bilateral filtering.</p></li>
+<li><p><strong>sigma_color_min</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum filter sigma in the color space for bilateral filtering.</p></li>
+<li><p><strong>sigma_color_max</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum filter sigma in the color space for bilateral filtering.</p></li>
+<li><p><strong>sigma_space_min</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum filter sigma in the coordinate space for bilateral filtering.</p></li>
+<li><p><strong>sigma_space_max</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum filter sigma in the coordinate space for bilateral filtering.</p></li>
+<li><p><strong>radius_min</strong> (<em>int</em><em>, </em><em>optional</em>) – Minimum radius for guided filtering.</p></li>
+<li><p><strong>radius_max</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum radius for guided filtering.</p></li>
+<li><p><strong>eps_min</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum guided filter regularization term.</p></li>
+<li><p><strong>eps_max</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum guided filter regularization term.</p></li>
+<li><p><strong>b_iters</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of iterations for bilateral filtering.</p></li>
+<li><p><strong>g_iters</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of iterations for guided filtering.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -226,14 +234,6 @@
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Image.Image</p>
-</dd>
-</dl>
-<dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.restore</span> <span class="kn">import</span> <span class="n">remove_adversarial_noise</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">remove_adversarial_noise</span><span class="p">(</span><span class="s1">&#39;adversarial_input.png&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 </dd>
 </dl>
 </dd></dl>
