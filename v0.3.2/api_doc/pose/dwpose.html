@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.pose.dwpose &mdash; imgutils 0.3.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.pose.format" href="format.html" />
+    <link rel="prev" title="imgutils.pose" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.pose</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.pose.dwpose</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dwpose-estimate">dwpose_estimate</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="format.html">imgutils.pose.format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visual.html">imgutils.pose.visual</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">imgutils.pose</a> &raquo;</li>
+        
+      <li>imgutils.pose.dwpose</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api_doc/pose/dwpose.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <section id="module-imgutils.pose.dwpose">
+<span id="imgutils-pose-dwpose"></span><h1>imgutils.pose.dwpose<a class="headerlink" href="#module-imgutils.pose.dwpose" title="Permalink to this headline">¶</a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>Detect human keypoints in anime images.</p>
+<p>The model is from <a class="reference external" href="https://github.com/IDEA-Research/DWPose">https://github.com/IDEA-Research/DWPose</a>.</p>
+<img alt="../../_images/dwpose_demo.plot.py.svg" class="align-center" src="../../_images/dwpose_demo.plot.py.svg" /><p>This is an overall benchmark of all the keypoint detect models:</p>
+<img alt="../../_images/dwpose_benchmark.plot.py.svg" class="align-center" src="../../_images/dwpose_benchmark.plot.py.svg" /></dd>
+</dl>
+<section id="dwpose-estimate">
+<h2>dwpose_estimate<a class="headerlink" href="#dwpose-estimate" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="imgutils.pose.dwpose.dwpose_estimate">
+<code class="sig-prename descclassname">imgutils.pose.dwpose.</code><code class="sig-name descname">dwpose_estimate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">auto_detect</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">out_bboxes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">person_detect_cfgs</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span><a class="reference internal" href="format.html#imgutils.pose.format.OP18KeyPointSet" title="imgutils.pose.format.OP18KeyPointSet">imgutils.pose.format.OP18KeyPointSet</a><span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/pose/dwpose.html#dwpose_estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.pose.dwpose.dwpose_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs inference on the RTMPose model and returns keypoints and scores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – Input image.</p></li>
+<li><p><strong>auto_detect</strong> (<em>bool</em>) – Auto detect person with <a class="reference internal" href="../detect/person.html#imgutils.detect.person.detect_person" title="imgutils.detect.person.detect_person"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.detect.person.detect_person()</span></code></a>.</p></li>
+<li><p><strong>out_bboxes</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em><em>]</em><em>]</em>) – Bounding boxes.</p></li>
+<li><p><strong>person_detect_cfgs</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – Config arguments for <a class="reference internal" href="../detect/person.html#imgutils.detect.person.detect_person" title="imgutils.detect.person.detect_person"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.detect.person.detect_person()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of mapping of different parts, including <code class="docutils literal notranslate"><span class="pre">all</span></code>, <code class="docutils literal notranslate"><span class="pre">head</span></code>, <code class="docutils literal notranslate"><span class="pre">body</span></code>, <code class="docutils literal notranslate"><span class="pre">foot</span></code>, <code class="docutils literal notranslate"><span class="pre">hand1</span></code> and <code class="docutils literal notranslate"><span class="pre">hand2</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="format.html#imgutils.pose.format.OP18KeyPointSet" title="imgutils.pose.format.OP18KeyPointSet">OP18KeyPointSet</a>]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.data</span> <span class="kn">import</span> <span class="n">load_image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.pose</span> <span class="kn">import</span> <span class="n">dwpose_estimate</span><span class="p">,</span> <span class="n">op18_visualize</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="s1">&#39;dwpose/squat.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keypoints</span> <span class="o">=</span> <span class="n">dwpose_estimate</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keypoints</span>
+<span class="go">[&lt;imgutils.pose.format.OP18KeyPointSet object at 0x7f5ca933f3d0&gt;]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">op18_visualize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">keypoints</span><span class="p">))</span>
+<span class="go">&lt;matplotlib.image.AxesImage object at 0x7f5c98069790&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Function <a class="reference internal" href="visual.html#imgutils.pose.visual.op18_visualize" title="imgutils.pose.visual.op18_visualize"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.pose.visual.op18_visualize()</span></code></a> can be used to visualize this result.</p>
+</aside>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="format.html" class="btn btn-neutral float-right" title="imgutils.pose.format" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="imgutils.pose" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, narugo1992, 7eu7d7
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.3.2
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../v0.1.1/index.html">v0.1.1</a></dd>
+                        <dd><a href="../../../v0.2.0/index.html">v0.2.0</a></dd>
+                        <dd><a href="../../../v0.2.1/index.html">v0.2.1</a></dd>
+                        <dd><a href="../../../v0.2.10/index.html">v0.2.10</a></dd>
+                        <dd><a href="../../../v0.2.2/index.html">v0.2.2</a></dd>
+                        <dd><a href="../../../v0.2.3/index.html">v0.2.3</a></dd>
+                        <dd><a href="../../../v0.2.4/index.html">v0.2.4</a></dd>
+                        <dd><a href="../../../v0.2.5/index.html">v0.2.5</a></dd>
+                        <dd><a href="../../../v0.2.6/index.html">v0.2.6</a></dd>
+                        <dd><a href="../../../v0.2.7/index.html">v0.2.7</a></dd>
+                        <dd><a href="../../../v0.2.8/index.html">v0.2.8</a></dd>
+                        <dd><a href="../../../v0.2.9/index.html">v0.2.9</a></dd>
+                        <dd><a href="../../../v0.3.0/api_doc/pose/dwpose.html">v0.3.0</a></dd>
+                        <dd><a href="../../../v0.3.1/api_doc/pose/dwpose.html">v0.3.1</a></dd>
+                        <dd><a href="dwpose.html">v0.3.2</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../dev/cdc/index.html">dev/cdc</a></dd>
+                        <dd><a href="../../../dev/py312/index.html">dev/py312</a></dd>
+                        <dd><a href="../../../dev/resolution/index.html">dev/resolution</a></dd>
+                        <dd><a href="../../../dev/waifu2x/index.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../../main/api_doc/pose/dwpose.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
