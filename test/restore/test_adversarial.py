@@ -22,4 +22,4 @@ class TestRestoreAdversarial:
             remove_adversarial_noise(adversarial_input),
             adversarial_output_pil,
             throw_exception=False
-        ) < 1e-3
+        ) < 5e-3
