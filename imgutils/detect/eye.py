@@ -28,7 +28,7 @@ def _open_eye_detect_model(level: str = 's', version: str = 'v1.0'):
     return open_onnx_model(hf_hub_download(
         f'deepghs/anime_eye_detection',
         f'eye_detect_{version}_{level}/model.onnx'
-    ))
+    ), use_cpu=True)
 
 
 _LABELS = ["eye"]

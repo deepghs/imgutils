@@ -30,7 +30,7 @@ def _open_censor_detect_model(level: str = 's', version: str = 'v1.0'):
     return open_onnx_model(hf_hub_download(
         f'deepghs/anime_censor_detection',
         f'censor_detect_{version}_{level}/model.onnx'
-    ))
+    ), use_cpu=True)
 
 
 _LABELS = ["nipple_f", "penis", "pussy"]

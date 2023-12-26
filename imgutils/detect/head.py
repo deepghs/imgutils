@@ -28,7 +28,7 @@ def _open_head_detect_model(level: str = 's'):
     return open_onnx_model(hf_hub_download(
         'deepghs/imgutils-models',
         f'head_detect/head_detect_best_{level}.onnx'
-    ))
+    ), use_cpu=True)
 
 
 def detect_heads(image: ImageTyping, level: str = 's', max_infer_size=640,
