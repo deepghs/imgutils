@@ -1,0 +1,405 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>imgutils.validate.teen &mdash; imgutils 0.3.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/nbsphinx-code-cells.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/nbsphinx-code-cells.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> imgutils
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>imgutils.validate.teen</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+    
+  <h1>Source code for imgutils.validate.teen</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    A model for classifying teen anime images into 4 classes (``contentious``, ``safe_teen``, ``non_teen&quot;``).</span>
+
+<span class="sd">    The following are sample images for testing.</span>
+
+<span class="sd">    .. image:: teen.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    This is an overall benchmark of all the classification validation models:</span>
+
+<span class="sd">    .. image:: teen_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    The models are hosted on</span>
+<span class="sd">    `huggingface - deepghs/anime_teen &lt;https://huggingface.co/deepghs/anime_teen&gt;`_.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+
+<span class="kn">from</span> <span class="nn">imgutils.data</span> <span class="kn">import</span> <span class="n">rgb_encode</span><span class="p">,</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
+<span class="kn">from</span> <span class="nn">imgutils.utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;anime_teen_score&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;anime_teen&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">_LABELS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;contentious&quot;</span><span class="p">,</span> <span class="s2">&quot;safe_teen&quot;</span><span class="p">,</span> <span class="s2">&quot;non_teen&quot;</span><span class="p">]</span>
+<span class="n">_MODEL_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;caformer_s36_v0&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mobilenetv3_v0_dist&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">_DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3_v0_dist&#39;</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_open_anime_teen_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;deepghs/anime_teen&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span><span class="p">,</span>
+    <span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_img_encode</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">384</span><span class="p">,</span> <span class="mi">384</span><span class="p">),</span>
+                <span class="n">normalize</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">order_</span><span class="o">=</span><span class="s1">&#39;CHW&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">normalize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mean_</span><span class="p">,</span> <span class="n">std_</span> <span class="o">=</span> <span class="n">normalize</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">mean_</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">std_</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_raw_anime_teen</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+    <span class="n">input_</span> <span class="o">=</span> <span class="n">_img_encode</span><span class="p">(</span><span class="n">image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_anime_teen_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">input_</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">output</span>
+
+
+<div class="viewcode-block" id="anime_teen_score"><a class="viewcode-back" href="../../../api_doc/validate/teen.html#imgutils.validate.teen.anime_teen_score">[docs]</a><span class="k">def</span> <span class="nf">anime_teen_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Overview:</span>
+<span class="sd">        Predict the class of the given image, return the score with as a dict object.</span>
+
+<span class="sd">    :param image: Image to teen.</span>
+<span class="sd">    :param model_name: Model to use. Default is ``mobilenetv3_v0_dist``. All available models are listed</span>
+<span class="sd">        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_v0``.</span>
+<span class="sd">    :return: A dict with classes and scores.</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_teen_score</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen_score(&#39;teen/contentious/1.jpg&#39;)</span>
+<span class="sd">        {&#39;contentious&#39;: 0.9998493194580078, &#39;safe_teen&#39;: 3.0378791052498855e-05, &#39;non_teen&#39;: 0.00012023092131130397}</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen_score(&#39;teen/contentious/2.jpg&#39;)</span>
+<span class="sd">        {&#39;contentious&#39;: 0.9790042638778687, &#39;safe_teen&#39;: 0.0017522255657240748, &#39;non_teen&#39;: 0.01924353837966919}</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen_score(&#39;teen/contentious/3.jpg&#39;)</span>
+<span class="sd">        {&#39;contentious&#39;: 0.9998124241828918, &#39;safe_teen&#39;: 4.19778298237361e-05, &#39;non_teen&#39;: 0.0001456339523429051}</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen_score(&#39;teen/safe_teen/4.jpg&#39;)</span>
+<span class="sd">        {&#39;contentious&#39;: 0.0008521362324245274, &#39;safe_teen&#39;: 0.9989691972732544, &#39;non_teen&#39;: 0.00017870066221803427}</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen_score(&#39;teen/safe_teen/5.jpg&#39;)</span>
+<span class="sd">        {&#39;contentious&#39;: 6.0992944781901315e-05, &#39;safe_teen&#39;: 0.9994398951530457, &#39;non_teen&#39;: 0.0004991036257706583}</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen_score(&#39;teen/safe_teen/6.jpg&#39;)</span>
+<span class="sd">        {&#39;contentious&#39;: 5.2035720727872103e-05, &#39;safe_teen&#39;: 0.9994019269943237, &#39;non_teen&#39;: 0.0005460577667690814}</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen_score(&#39;teen/non_teen/7.jpg&#39;)</span>
+<span class="sd">        {&#39;contentious&#39;: 3.0478151529678144e-05, &#39;safe_teen&#39;: 3.524079147609882e-05, &#39;non_teen&#39;: 0.999934196472168}</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen_score(&#39;teen/non_teen/8.jpg&#39;)</span>
+<span class="sd">        {&#39;contentious&#39;: 9.786742884898558e-05, &#39;safe_teen&#39;: 8.653994154883549e-05, &#39;non_teen&#39;: 0.9998156428337097}</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen_score(&#39;teen/non_teen/9.jpg&#39;)</span>
+<span class="sd">        {&#39;contentious&#39;: 0.0001218809193233028, &#39;safe_teen&#39;: 0.00013706681784242392, &#39;non_teen&#39;: 0.9997410178184509}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">_raw_anime_teen</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">_LABELS</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+    <span class="k">return</span> <span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="anime_teen"><a class="viewcode-back" href="../../../api_doc/validate/teen.html#imgutils.validate.teen.anime_teen">[docs]</a><span class="k">def</span> <span class="nf">anime_teen</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Overview:</span>
+<span class="sd">        Predict the class of the given image, return the class and its score.</span>
+
+<span class="sd">    :param image: Image to teen.</span>
+<span class="sd">    :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed</span>
+<span class="sd">        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.</span>
+<span class="sd">    :return: A tuple contains the class and its score.</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_teen</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen(&#39;teen/contentious/1.jpg&#39;)</span>
+<span class="sd">        (&#39;contentious&#39;, 0.9998493194580078)</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen(&#39;teen/contentious/2.jpg&#39;)</span>
+<span class="sd">        (&#39;contentious&#39;, 0.9790042638778687)</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen(&#39;teen/contentious/3.jpg&#39;)</span>
+<span class="sd">        (&#39;contentious&#39;, 0.9998124241828918)</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen(&#39;teen/safe_teen/4.jpg&#39;)</span>
+<span class="sd">        (&#39;safe_teen&#39;, 0.9989691972732544)</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen(&#39;teen/safe_teen/5.jpg&#39;)</span>
+<span class="sd">        (&#39;safe_teen&#39;, 0.9994398951530457)</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen(&#39;teen/safe_teen/6.jpg&#39;)</span>
+<span class="sd">        (&#39;safe_teen&#39;, 0.9994019269943237)</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen(&#39;teen/non_teen/7.jpg&#39;)</span>
+<span class="sd">        (&#39;non_teen&#39;, 0.999934196472168)</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen(&#39;teen/non_teen/8.jpg&#39;)</span>
+<span class="sd">        (&#39;non_teen&#39;, 0.9998156428337097)</span>
+<span class="sd">        &gt;&gt;&gt; anime_teen(&#39;teen/non_teen/9.jpg&#39;)</span>
+<span class="sd">        (&#39;non_teen&#39;, 0.9997410178184509)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">_raw_anime_teen</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">max_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_LABELS</span><span class="p">[</span><span class="n">max_id</span><span class="p">],</span> <span class="n">output</span><span class="p">[</span><span class="n">max_id</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+</pre></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2024, narugo1992, 7eu7d7
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/safe
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.1.0/index.html">v0.1.0</a></dd>
+                        <dd><a href="../../../../../v0.1.1/index.html">v0.1.1</a></dd>
+                        <dd><a href="../../../../../v0.2.0/index.html">v0.2.0</a></dd>
+                        <dd><a href="../../../../../v0.2.1/index.html">v0.2.1</a></dd>
+                        <dd><a href="../../../../../v0.2.10/index.html">v0.2.10</a></dd>
+                        <dd><a href="../../../../../v0.2.2/index.html">v0.2.2</a></dd>
+                        <dd><a href="../../../../../v0.2.3/index.html">v0.2.3</a></dd>
+                        <dd><a href="../../../../../v0.2.4/index.html">v0.2.4</a></dd>
+                        <dd><a href="../../../../../v0.2.5/index.html">v0.2.5</a></dd>
+                        <dd><a href="../../../../../v0.2.6/index.html">v0.2.6</a></dd>
+                        <dd><a href="../../../../../v0.2.7/index.html">v0.2.7</a></dd>
+                        <dd><a href="../../../../../v0.2.8/index.html">v0.2.8</a></dd>
+                        <dd><a href="../../../../../v0.2.9/index.html">v0.2.9</a></dd>
+                        <dd><a href="../../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../../v0.3.2/index.html">v0.3.2</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="teen.html">dev/safe</a></dd>
+                        <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../../cdc/index.html">dev/cdc</a></dd>
+                        <dd><a href="../../../../cpu/index.html">dev/cpu</a></dd>
+                        <dd><a href="../../../../py312/index.html">dev/py312</a></dd>
+                        <dd><a href="../../../../resolution/index.html">dev/resolution</a></dd>
+                        <dd><a href="../../../../waifu2x/index.html">dev/waifu2x</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
