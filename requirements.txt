@@ -5,6 +5,7 @@ scikit-learn
 huggingface_hub
 tqdm
 opencv-python
+opencv-contrib-python
 pandas
 scipy
 emoji>=2.5.0

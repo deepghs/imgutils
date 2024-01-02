@@ -25,9 +25,9 @@ class TestTaggingCharacter:
 
     def test_drop_basic_character_tags(self, complex_dict_tags, complex_list_tags):
         assert drop_basic_character_tags(complex_dict_tags) == pytest.approx({
-            '1girl': 0.998362123966217, 'solo': 0.9912548065185547, 'breasts': 0.983635425567627,
+            '1girl': 0.998362123966217, 'solo': 0.9912548065185547,
             'looking_at_viewer': 0.9146994352340698, 'blush': 0.8892400860786438, 'smile': 0.43393653631210327,
-            'large_breasts': 0.5196534395217896, 'navel': 0.9653235077857971, 'closed_mouth': 0.9369247555732727,
+            'navel': 0.9653235077857971, 'closed_mouth': 0.9369247555732727,
             'nipples': 0.9660118222236633, 'collarbone': 0.588348925113678, 'nude': 0.9496222734451294,
             'sweat': 0.8690457344055176, 'pussy': 0.9868264198303223, 'spread_legs': 0.9603149890899658,
             'armpits': 0.9024748802185059, 'stomach': 0.6723923087120056, 'arms_up': 0.9380699396133423,
@@ -37,7 +37,7 @@ class TestTaggingCharacter:
             'clitoris': 0.5310801267623901
         }, abs=1e-3)
         assert drop_basic_character_tags(complex_list_tags) == [
-            '1girl', 'solo', 'breasts', 'looking_at_viewer', 'blush', 'smile', 'large_breasts', 'navel', 'closed_mouth',
+            '1girl', 'solo', 'looking_at_viewer', 'blush', 'smile', 'navel', 'closed_mouth',
             'nipples', 'collarbone', 'nude', 'sweat', 'pussy', 'spread_legs', 'armpits', 'stomach', 'arms_up',
             'completely_nude', 'uncensored', 'pussy_juice', 'feet_out_of_frame', 'on_bed', 'arms_behind_head',
             'breasts_apart', 'clitoris'
