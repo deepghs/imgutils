@@ -1,105 +1,65 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.metrics.ccip &mdash; imgutils 0.3.2 documentation</title>
-  
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
 
   
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-  
-  
-
-  
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=53a30eae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="imgutils.metrics.lpips" href="lpips.html" />
     <link rel="prev" title="imgutils.metrics.aesthetic" href="aesthetic.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../index.html" class="icon icon-home"> imgutils
           
-
-          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
           </a>
-
-          
-            
-            
               <div class="version">
                 0.3.2
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p><span class="caption-text">Tutorials</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
 </ul>
-<p><span class="caption-text">Information</span></p>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
 </ul>
-<p><span class="caption-text">API Documentation</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
@@ -109,15 +69,42 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.metrics</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="aesthetic.html">imgutils.metrics.aesthetic</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.metrics.ccip</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#ccip-extract-feature">ccip_extract_feature</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ccip-batch-extract-features">ccip_batch_extract_features</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ccip-default-threshold">ccip_default_threshold</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ccip-difference">ccip_difference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ccip-same">ccip_same</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ccip-batch-differences">ccip_batch_differences</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ccip-batch-same">ccip_batch_same</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ccip-default-clustering-params">ccip_default_clustering_params</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ccip-clustering">ccip_clustering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-extract-feature">ccip_extract_feature</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.ccip.ccip_extract_feature"><code class="docutils literal notranslate"><span class="pre">ccip_extract_feature()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-batch-extract-features">ccip_batch_extract_features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.ccip.ccip_batch_extract_features"><code class="docutils literal notranslate"><span class="pre">ccip_batch_extract_features()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-default-threshold">ccip_default_threshold</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.ccip.ccip_default_threshold"><code class="docutils literal notranslate"><span class="pre">ccip_default_threshold()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-difference">ccip_difference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.ccip.ccip_difference"><code class="docutils literal notranslate"><span class="pre">ccip_difference()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-same">ccip_same</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.ccip.ccip_same"><code class="docutils literal notranslate"><span class="pre">ccip_same()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-batch-differences">ccip_batch_differences</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.ccip.ccip_batch_differences"><code class="docutils literal notranslate"><span class="pre">ccip_batch_differences()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-batch-same">ccip_batch_same</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.ccip.ccip_batch_same"><code class="docutils literal notranslate"><span class="pre">ccip_batch_same()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-default-clustering-params">ccip_default_clustering_params</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.ccip.ccip_default_clustering_params"><code class="docutils literal notranslate"><span class="pre">ccip_default_clustering_params()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-clustering">ccip_clustering</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.ccip.ccip_clustering"><code class="docutils literal notranslate"><span class="pre">ccip_clustering()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="lpips.html">imgutils.metrics.lpips</a></li>
@@ -135,74 +122,35 @@
 <li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">imgutils</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="index.html">imgutils.metrics</a> &raquo;</li>
-        
-      <li>imgutils.metrics.ccip</li>
-    
-    
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.metrics</a></li>
+      <li class="breadcrumb-item active">imgutils.metrics.ccip</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="../../_sources/api_doc/metrics/ccip.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
     
     
   <section id="module-imgutils.metrics.ccip">
-<span id="imgutils-metrics-ccip"></span><h1>imgutils.metrics.ccip<a class="headerlink" href="#module-imgutils.metrics.ccip" title="Permalink to this headline">¶</a></h1>
+<span id="imgutils-metrics-ccip"></span><h1>imgutils.metrics.ccip<a class="headerlink" href="#module-imgutils.metrics.ccip" title="Permalink to this heading"></a></h1>
 <dl>
 <dt>Overview:</dt><dd><p>A tool used to determine the visual differences between anime characters in two images
 (limited to images containing only a single anime character). When the characters in the two images are the same,
@@ -218,14 +166,14 @@ repository <a class="reference external" href="https://huggingface.co/deepghs/cc
 it is recommended to refer to the relevant measurement data in the aforementioned
 model repository <a class="reference external" href="https://huggingface.co/deepghs/ccip_onnx">deepghs/ccip_onnx</a>
 before performing any manual operations.</p>
-</aside>
+</div>
 </dd>
 </dl>
 <section id="ccip-extract-feature">
-<h2>ccip_extract_feature<a class="headerlink" href="#ccip-extract-feature" title="Permalink to this headline">¶</a></h2>
+<h2>ccip_extract_feature<a class="headerlink" href="#ccip-extract-feature" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt id="imgutils.metrics.ccip.ccip_extract_feature">
-<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_extract_feature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">image</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_extract_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_extract_feature" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="imgutils.metrics.ccip.ccip_extract_feature">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.ccip.</span></span><span class="sig-name descname"><span class="pre">ccip_extract_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">384</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ccip-caformer-24-randaug-pruned'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_extract_feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_extract_feature" title="Permalink to this definition"></a></dt>
 <dd><p>Extracts the feature vector of the character from the given anime image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -258,10 +206,10 @@ The available model names are: <code class="docutils literal notranslate"><span 
 
 </section>
 <section id="ccip-batch-extract-features">
-<h2>ccip_batch_extract_features<a class="headerlink" href="#ccip-batch-extract-features" title="Permalink to this headline">¶</a></h2>
+<h2>ccip_batch_extract_features<a class="headerlink" href="#ccip-batch-extract-features" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt id="imgutils.metrics.ccip.ccip_batch_extract_features">
-<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_batch_extract_features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span><span class="p">]</span><span class="p">, </span>Tuple<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">]</span><span class="p">, </span><span class="p">…</span><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_extract_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_extract_features" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="imgutils.metrics.ccip.ccip_batch_extract_features">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.ccip.</span></span><span class="sig-name descname"><span class="pre">ccip_batch_extract_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">384</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ccip-caformer-24-randaug-pruned'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_extract_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_extract_features" title="Permalink to this definition"></a></dt>
 <dd><p>Extracts the feature vectors of multiple images using the specified model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -294,10 +242,10 @@ The available model names are: <code class="docutils literal notranslate"><span 
 
 </section>
 <section id="ccip-default-threshold">
-<h2>ccip_default_threshold<a class="headerlink" href="#ccip-default-threshold" title="Permalink to this headline">¶</a></h2>
+<h2>ccip_default_threshold<a class="headerlink" href="#ccip-default-threshold" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt id="imgutils.metrics.ccip.ccip_default_threshold">
-<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_default_threshold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_default_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_default_threshold" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="imgutils.metrics.ccip.ccip_default_threshold">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.ccip.</span></span><span class="sig-name descname"><span class="pre">ccip_default_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ccip-caformer-24-randaug-pruned'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_default_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_default_threshold" title="Permalink to this definition"></a></dt>
 <dd><p>Retrieves the default threshold value obtained from model metrics in the Hugging Face model repository.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -329,10 +277,10 @@ The available model names are: <code class="docutils literal notranslate"><span 
 
 </section>
 <section id="ccip-difference">
-<h2>ccip_difference<a class="headerlink" href="#ccip-difference" title="Permalink to this headline">¶</a></h2>
+<h2>ccip_difference<a class="headerlink" href="#ccip-difference" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt id="imgutils.metrics.ccip.ccip_difference">
-<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_difference</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_difference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_difference" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="imgutils.metrics.ccip.ccip_difference">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.ccip.</span></span><span class="sig-name descname"><span class="pre">ccip_difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">384</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ccip-caformer-24-randaug-pruned'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_difference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_difference" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the difference value between two anime characters based on their images or feature vectors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -377,10 +325,10 @@ The available model names are: <code class="docutils literal notranslate"><span 
 
 </section>
 <section id="ccip-same">
-<h2>ccip_same<a class="headerlink" href="#ccip-same" title="Permalink to this headline">¶</a></h2>
+<h2>ccip_same<a class="headerlink" href="#ccip-same" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt id="imgutils.metrics.ccip.ccip_same">
-<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_same</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_same"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_same" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="imgutils.metrics.ccip.ccip_same">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.ccip.</span></span><span class="sig-name descname"><span class="pre">ccip_same</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">384</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ccip-caformer-24-randaug-pruned'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_same"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_same" title="Permalink to this definition"></a></dt>
 <dd><p>Determines whether two given images or feature vectors belong to the same anime character based on the CCIP model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -427,10 +375,10 @@ The available model names are: <code class="docutils literal notranslate"><span 
 
 </section>
 <section id="ccip-batch-differences">
-<h2>ccip_batch_differences<a class="headerlink" href="#ccip-batch-differences" title="Permalink to this headline">¶</a></h2>
+<h2>ccip_batch_differences<a class="headerlink" href="#ccip-batch-differences" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt id="imgutils.metrics.ccip.ccip_batch_differences">
-<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_batch_differences</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_differences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_differences" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="imgutils.metrics.ccip.ccip_batch_differences">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.ccip.</span></span><span class="sig-name descname"><span class="pre">ccip_batch_differences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">384</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ccip-caformer-24-randaug-pruned'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_differences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_differences" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates the pairwise differences between a given list of images or feature vectors representing anime characters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -466,10 +414,10 @@ The available model names are: <code class="docutils literal notranslate"><span 
 
 </section>
 <section id="ccip-batch-same">
-<h2>ccip_batch_same<a class="headerlink" href="#ccip-batch-same" title="Permalink to this headline">¶</a></h2>
+<h2>ccip_batch_same<a class="headerlink" href="#ccip-batch-same" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt id="imgutils.metrics.ccip.ccip_batch_same">
-<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_batch_same</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">threshold</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_same"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_same" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="imgutils.metrics.ccip.ccip_batch_same">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.ccip.</span></span><span class="sig-name descname"><span class="pre">ccip_batch_same</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">384</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ccip-caformer-24-randaug-pruned'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_batch_same"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_batch_same" title="Permalink to this definition"></a></dt>
 <dd><p>Calculates whether the given list of images or feature vectors representing anime characters are
 the same characters, based on the pairwise differences matrix and a given threshold.</p>
 <dl class="field-list simple">
@@ -508,10 +456,10 @@ indicates whether the i-th and j-th characters are considered the same.</p>
 
 </section>
 <section id="ccip-default-clustering-params">
-<h2>ccip_default_clustering_params<a class="headerlink" href="#ccip-default-clustering-params" title="Permalink to this headline">¶</a></h2>
+<h2>ccip_default_clustering_params<a class="headerlink" href="#ccip-default-clustering-params" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt id="imgutils.metrics.ccip.ccip_default_clustering_params">
-<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_default_clustering_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">Literal<span class="p">[</span>dbscan<span class="p">, </span>dbscan_2<span class="p">, </span>dbscan_free<span class="p">, </span>optics<span class="p">, </span>optics_best<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'optics'</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>float<span class="p">, </span>int<span class="p">]</span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_default_clustering_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_default_clustering_params" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="imgutils.metrics.ccip.ccip_default_clustering_params">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.ccip.</span></span><span class="sig-name descname"><span class="pre">ccip_default_clustering_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ccip-caformer-24-randaug-pruned'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dbscan'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'dbscan_2'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'dbscan_free'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'optics'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'optics_best'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'optics'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_default_clustering_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_default_clustering_params" title="Permalink to this definition"></a></dt>
 <dd><p>Retrieves the default configuration for clustering operations.</p>
 <p>When the <code class="docutils literal notranslate"><span class="pre">method</span></code> is <code class="docutils literal notranslate"><span class="pre">dbscan</span></code>, the epsilon (eps) value is obtained from
 <a class="reference internal" href="#imgutils.metrics.ccip.ccip_default_threshold" title="imgutils.metrics.ccip.ccip_default_threshold"><code class="xref py py-func docutils literal notranslate"><span class="pre">ccip_default_threshold()</span></code></a> as the default threshold value, and the min_samples value is set to <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p>
@@ -558,10 +506,10 @@ The available options are: <code class="docutils literal notranslate"><span clas
 
 </section>
 <section id="ccip-clustering">
-<h2>ccip_clustering<a class="headerlink" href="#ccip-clustering" title="Permalink to this headline">¶</a></h2>
+<h2>ccip_clustering<a class="headerlink" href="#ccip-clustering" title="Permalink to this heading"></a></h2>
 <dl class="py function">
-<dt id="imgutils.metrics.ccip.ccip_clustering">
-<code class="sig-prename descclassname">imgutils.metrics.ccip.</code><code class="sig-name descname">ccip_clustering</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">images</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">, </span>bytes<span class="p">, </span>bytearray<span class="p">, </span>BinaryIO<span class="p">, </span>PIL.Image.Image<span class="p">, </span>numpy.ndarray<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">Literal<span class="p">[</span>dbscan<span class="p">, </span>dbscan_2<span class="p">, </span>dbscan_free<span class="p">, </span>optics<span class="p">, </span>optics_best<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'optics'</span></em>, <em class="sig-param"><span class="n">eps</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_samples</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">384</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'ccip-caformer-24-randaug-pruned'</span></em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_clustering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_clustering" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="imgutils.metrics.ccip.ccip_clustering">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.ccip.</span></span><span class="sig-name descname"><span class="pre">ccip_clustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'dbscan'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'dbscan_2'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'dbscan_free'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'optics'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'optics_best'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'optics'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">384</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ccip-caformer-24-randaug-pruned'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_clustering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_clustering" title="Permalink to this definition"></a></dt>
 <dd><p>Performs clustering on the given list of images or feature vectors.</p>
 <p>The function applies the selected clustering method (<code class="docutils literal notranslate"><span class="pre">method</span></code>) with
 the specified parameters (<code class="docutils literal notranslate"><span class="pre">eps</span></code> and <code class="docutils literal notranslate"><span class="pre">min_samples</span></code>) to cluster the provided list of
@@ -628,7 +576,7 @@ of separating slightly different instances of the same character into different 
 features and consistent poses and outfits), the <code class="docutils literal notranslate"><span class="pre">dbscan</span></code> method can be considered for clustering.
 However, please be aware that the dbscan method is highly sensitive to the <code class="docutils literal notranslate"><span class="pre">eps</span></code> value,
 so careful tuning is necessary.</p>
-</aside>
+</div>
 </dd></dl>
 
 </section>
@@ -637,37 +585,27 @@ so careful tuning is necessary.</p>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="lpips.html" class="btn btn-neutral float-right" title="imgutils.metrics.lpips" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="aesthetic.html" class="btn btn-neutral float-left" title="imgutils.metrics.aesthetic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="aesthetic.html" class="btn btn-neutral float-left" title="imgutils.metrics.aesthetic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lpips.html" class="btn btn-neutral float-right" title="imgutils.metrics.lpips" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2024, narugo1992, 7eu7d7
-
-    </p>
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
   
     <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
@@ -685,28 +623,18 @@ so careful tuning is necessary.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="ccip.html">dev/safe</a></dd>
                         <dd><a href="../../../../ccip/api_doc/metrics/ccip.html">ccip</a></dd>
-                        <dd><a href="../../../cdc/api_doc/metrics/ccip.html">dev/cdc</a></dd>
                         <dd><a href="../../../cpu/api_doc/metrics/ccip.html">dev/cpu</a></dd>
                         <dd><a href="../../../py312/api_doc/metrics/ccip.html">dev/py312</a></dd>
-                        <dd><a href="../../../resolution/api_doc/metrics/ccip.html">dev/resolution</a></dd>
-                        <dd><a href="../../../waifu2x/api_doc/metrics/ccip.html">dev/waifu2x</a></dd>
+                        <dd><a href="ccip.html">dev/safe</a></dd>
                         <dd><a href="../../../../main/api_doc/metrics/ccip.html">main</a></dd>
                 </dl>
         </div>
-    </div>
-
-  <script type="text/javascript">
+    </div><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

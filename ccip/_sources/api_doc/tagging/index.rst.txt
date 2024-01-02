@@ -13,3 +13,9 @@ imgutils.tagging
     wd14
     deepdanbooru
     format
+    overlap
+    blacklist
+    character
+    order
+    match
+

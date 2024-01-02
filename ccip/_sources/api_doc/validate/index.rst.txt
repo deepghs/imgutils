@@ -10,9 +10,14 @@ imgutils.validate
     :maxdepth: 3
 
     aicheck
+    bangumi_char
     classify
     color
     monochrome
     nsfw
+    portrait
     rating
+    real
+    style_age
+    teen
     truncate
