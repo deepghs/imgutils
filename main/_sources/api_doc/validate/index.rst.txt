@@ -18,6 +18,7 @@ imgutils.validate
     portrait
     rating
     real
+    safe
     style_age
     teen
     truncate
