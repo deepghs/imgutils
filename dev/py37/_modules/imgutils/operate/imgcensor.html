@@ -108,21 +108,14 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">emoji</span> <span class="kn">import</span> <span class="n">emojize</span>
 <span class="kn">from</span> <span class="nn">hbutils.system</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
-<span class="kn">from</span> <span class="nn">hbutils.testing</span> <span class="kn">import</span> <span class="n">vpython</span>
 <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">center_of_mass</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
-<span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
 
 <span class="kn">from</span> <span class="nn">.align</span> <span class="kn">import</span> <span class="n">align_maxsize</span>
 <span class="kn">from</span> <span class="nn">.censor_</span> <span class="kn">import</span> <span class="n">BaseCensor</span><span class="p">,</span> <span class="n">register_censor_method</span>
@@ -507,41 +500,12 @@
 
 <span class="sd">            .. image:: censor_emoji.plot.py.svg</span>
 <span class="sd">                :align: center</span>
-
-<span class="sd">        .. warning::</span>
-<span class="sd">            Due to compatibility issues with pilmoji library in Python 3.7, and the fact that</span>
-<span class="sd">            Python 3.7 reached its end of life on June 27, 2023, custom emojis cannot be used in Python 3.7.</span>
-<span class="sd">            To ensure that the code can still be executed, the :class:`ImageBasedCensor` with</span>
-<span class="sd">            a pre-defined smiley face image will be used instead.</span>
-<span class="sd">            When used, the values of the ``emoji`` and ``style`` parameters will be ignored.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_get_native_emoji_censor</span><span class="p">(</span><span class="n">emoji</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">)</span> \
             <span class="o">.</span><span class="n">censor_area</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">ratio_threshold</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 
 
-<span class="k">if</span> <span class="n">vpython</span> <span class="o">&gt;=</span> <span class="s1">&#39;3.8&#39;</span><span class="p">:</span>
-    <span class="n">register_censor_method</span><span class="p">(</span><span class="s1">&#39;emoji&#39;</span><span class="p">,</span> <span class="n">EmojiBasedCensor</span><span class="p">)</span>
-
-<span class="k">else</span><span class="p">:</span>
-    <span class="nd">@lru_cache</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">_py37_fallback</span><span class="p">():</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Due to compatibility issues with the pilmoji library, &#39;</span>
-                      <span class="s1">&#39;the emoji censor method is not supported in Python 3.7. &#39;</span>
-                      <span class="s1">&#39;A pre-defined single emoji image will be used for rendering, &#39;</span>
-                      <span class="s1">&#39;and the emoji and style parameters will be ignored.&#39;</span><span class="p">)</span>
-
-
-    <span class="k">class</span> <span class="nc">_Python37FallbackCensor</span><span class="p">(</span><span class="n">ImageBasedCensor</span><span class="p">):</span>
-        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="n">ImageBasedCensor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">_get_file_in_censor_assets</span><span class="p">(</span><span class="s1">&#39;emoji_censor.png&#39;</span><span class="p">)])</span>
-
-        <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">ratio_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-                        <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
-            <span class="n">_py37_fallback</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">ImageBasedCensor</span><span class="o">.</span><span class="n">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">ratio_threshold</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-
-    <span class="n">register_censor_method</span><span class="p">(</span><span class="s1">&#39;emoji&#39;</span><span class="p">,</span> <span class="n">_Python37FallbackCensor</span><span class="p">)</span>
+<span class="n">register_censor_method</span><span class="p">(</span><span class="s1">&#39;emoji&#39;</span><span class="p">,</span> <span class="n">EmojiBasedCensor</span><span class="p">)</span>
 </pre></div>
 
 
