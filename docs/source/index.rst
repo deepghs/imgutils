@@ -29,11 +29,16 @@ configuration file's structure and their versions.
     :caption: API Documentation
 
     api_doc/config/index
+    api_doc/ascii/index
     api_doc/data/index
     api_doc/detect/index
     api_doc/edge/index
     api_doc/metrics/index
+    api_doc/ocr/index
     api_doc/operate/index
+    api_doc/pose/index
+    api_doc/restore/index
+    api_doc/sd/index
     api_doc/segment/index
     api_doc/tagging/index
     api_doc/utils/index

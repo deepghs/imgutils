@@ -55,7 +55,7 @@ def detect_censors(image: ImageTyping, level: str = 's', version: str = 'v1.0', 
     :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold
         will be discarded. The default value is `0.7`.
     :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
-        the target type (always `censor`) and the target confidence score.
+        the target type (one of `nipple_f`, `penis` and `pussy`) and the target confidence score.
 
     Examples::
         >>> from imgutils.detect import detect_censors, detection_visualize
@@ -78,5 +78,5 @@ def detect_censors(image: ImageTyping, level: str = 's', version: str = 'v1.0', 
     new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
 
     data = rgb_encode(new_image)[None, ...]
-    output, = _open_censor_detect_model(level).run(['output0'], {'images': data})
+    output, = _open_censor_detect_model(level, version).run(['output0'], {'images': data})
     return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, _LABELS)

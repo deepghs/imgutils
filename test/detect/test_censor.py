@@ -13,7 +13,7 @@ def _release_model_after_run():
 
 
 @pytest.mark.unittest
-class TestDetectHead:
+class TestDetectCensor:
     def test_detect_censors(self):
         detections = detect_censors(get_testfile('nude_girl.png'))
         assert len(detections) == 3

@@ -50,10 +50,10 @@ pdocs:
 dataset:
 	mkdir -p ${DATASET_DIR}
 	if [ ! -d ${DATASET_DIR}/chafen_arknights ]; then \
-		git clone https://${HF_NARUGO_USERNAME}:${HF_NARUGO_PASSWORD}@huggingface.co/datasets/deepghs/chafen_arknights.git ${DATASET_DIR}/chafen_arknights; \
+		git clone https://huggingface.co/datasets/deepghs/chafen_arknights.git ${DATASET_DIR}/chafen_arknights; \
 	fi
 	if [ ! -d ${DATASET_DIR}/monochrome_danbooru ]; then \
-		git clone https://${HF_NARUGO_USERNAME}:${HF_NARUGO_PASSWORD}@huggingface.co/datasets/deepghs/monochrome_danbooru.git ${DATASET_DIR}/monochrome_danbooru; \
+		git clone https://huggingface.co/datasets/deepghs/monochrome_danbooru.git ${DATASET_DIR}/monochrome_danbooru; \
 	fi
 	if [ ! -d ${DATASET_DIR}/images_test_v1 ]; then \
 		mkdir -p ${DATASET_DIR}/images_test_v1 && \
