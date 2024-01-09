@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.validate.rating &mdash; imgutils 0.3.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=f7db8ab7"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+              <div class="version">
+                0.3.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.validate.rating</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.validate.rating</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    A model for rating anime images into 4 classes (``safe``, ``r15`` and ``r18``).</span>
+
+<span class="sd">    The following are sample images for testing.</span>
+
+<span class="sd">    .. image:: rating.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    This is an overall benchmark of all the rating validation models:</span>
+
+<span class="sd">    .. image:: rating_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    The models are hosted on</span>
+<span class="sd">    `huggingface - deepghs/anime_rating &lt;https://huggingface.co/deepghs/anime_rating&gt;`_.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Please note that the classification of ``safe``, ``r15``, and ``r18`` types does not have clear boundaries,</span>
+<span class="sd">        making it challenging to clean the training data. As a result, there is no strict ground truth</span>
+<span class="sd">        for the rating classification problem. The judgment functionality provided by the current module</span>
+<span class="sd">        is intended as a quick and rough estimation.</span>
+
+<span class="sd">        **If you require an accurate filtering or judgment function specifically for R-18 images,</span>
+<span class="sd">        it is recommended to consider using object detection-based methods**,</span>
+<span class="sd">        such as using :func:`imgutils.detect.censor.detect_censors` to detect sensitive regions as the basis for judgment.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+
+<span class="kn">from</span> <span class="nn">imgutils.data</span> <span class="kn">import</span> <span class="n">rgb_encode</span><span class="p">,</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
+<span class="kn">from</span> <span class="nn">imgutils.utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;anime_rating_score&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;anime_rating&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">_MODEL_NAMES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;caformer_s36_plus&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mobilenetv3&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mobilenetv3_sce&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mobilenetv3_sce_dist&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">_DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3_sce_dist&#39;</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_open_anime_rating_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;deepghs/anime_rating&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span><span class="p">,</span>
+    <span class="p">))</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_open_anime_rating_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;deepghs/anime_rating&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/meta.json&#39;</span><span class="p">,</span>
+    <span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_img_encode</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">384</span><span class="p">,</span> <span class="mi">384</span><span class="p">),</span>
+                <span class="n">normalize</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">order_</span><span class="o">=</span><span class="s1">&#39;CHW&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">normalize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mean_</span><span class="p">,</span> <span class="n">std_</span> <span class="o">=</span> <span class="n">normalize</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">mean_</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">std_</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_raw_anime_rating</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+    <span class="n">input_</span> <span class="o">=</span> <span class="n">_img_encode</span><span class="p">(</span><span class="n">image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_anime_rating_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">input_</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">output</span>
+
+
+<div class="viewcode-block" id="anime_rating_score"><a class="viewcode-back" href="../../../api_doc/validate/rating.html#imgutils.validate.rating.anime_rating_score">[docs]</a><span class="k">def</span> <span class="nf">anime_rating_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Overview:</span>
+<span class="sd">        Predict the rating of the given image, return the score with as a dict object.</span>
+
+<span class="sd">    :param image: Image to rating.</span>
+<span class="sd">    :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed</span>
+<span class="sd">        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.</span>
+<span class="sd">    :return: A dict with ratings and scores.</span>
+
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_rating_score</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/safe/1.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.9999998807907104, &#39;r15&#39;: 2.5863172936624323e-08, &#39;r18&#39;: 6.480062353375615e-08}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/safe/2.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.9924363493919373, &#39;r15&#39;: 0.007255776319652796, &#39;r18&#39;: 0.0003077814180869609}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/safe/3.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.996969997882843, &#39;r15&#39;: 0.0030054834205657244, &#39;r18&#39;: 2.4601260520284995e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/safe/4.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.9966891407966614, &#39;r15&#39;: 0.003293127752840519, &#39;r18&#39;: 1.770909148035571e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r15/5.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.00025384966284036636, &#39;r15&#39;: 0.9996721744537354, &#39;r18&#39;: 7.399192691082135e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r15/6.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 7.973351603141055e-05, &#39;r15&#39;: 0.9998563528060913, &#39;r18&#39;: 6.391309580067173e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r15/7.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.0018681309884414077, &#39;r15&#39;: 0.9827859997749329, &#39;r18&#39;: 0.015345841646194458}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r15/8.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.013710384257137775, &#39;r15&#39;: 0.8339558839797974, &#39;r18&#39;: 0.15233369171619415}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r18/9.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 3.951323833462084e-06, &#39;r15&#39;: 0.00029566374723799527, &#39;r18&#39;: 0.9997004270553589}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r18/10.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 0.00018434497178532183, &#39;r15&#39;: 4.568440272123553e-05, &#39;r18&#39;: 0.9997699856758118}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r18/11.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 9.11225129129889e-07, &#39;r15&#39;: 5.051862899563275e-05, &#39;r18&#39;: 0.9999485015869141}</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating_score(&#39;rating/r18/12.jpg&#39;)</span>
+<span class="sd">        {&#39;safe&#39;: 6.902020231791539e-06, &#39;r15&#39;: 0.0005639699520543218, &#39;r18&#39;: 0.9994290471076965}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">_raw_anime_rating</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">_open_anime_rating_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">),</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+    <span class="k">return</span> <span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="anime_rating"><a class="viewcode-back" href="../../../api_doc/validate/rating.html#imgutils.validate.rating.anime_rating">[docs]</a><span class="k">def</span> <span class="nf">anime_rating</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Overview:</span>
+<span class="sd">        Predict the rating of the given image, return the class and its score.</span>
+
+<span class="sd">    :param image: Image to rating.</span>
+<span class="sd">    :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed</span>
+<span class="sd">        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.</span>
+<span class="sd">    :return: A tuple contains the rating and its score.</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_rating</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/safe/1.jpg&#39;)</span>
+<span class="sd">        (&#39;safe&#39;, 0.9999998807907104)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/safe/2.jpg&#39;)</span>
+<span class="sd">        (&#39;safe&#39;, 0.9924363493919373)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/safe/3.jpg&#39;)</span>
+<span class="sd">        (&#39;safe&#39;, 0.996969997882843)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/safe/4.jpg&#39;)</span>
+<span class="sd">        (&#39;safe&#39;, 0.9966891407966614)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r15/5.jpg&#39;)</span>
+<span class="sd">        (&#39;r15&#39;, 0.9996721744537354)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r15/6.jpg&#39;)</span>
+<span class="sd">        (&#39;r15&#39;, 0.9998563528060913)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r15/7.jpg&#39;)</span>
+<span class="sd">        (&#39;r15&#39;, 0.9827859997749329)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r15/8.jpg&#39;)</span>
+<span class="sd">        (&#39;r15&#39;, 0.8339558839797974)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r18/9.jpg&#39;)</span>
+<span class="sd">        (&#39;r18&#39;, 0.9997004270553589)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r18/10.jpg&#39;)</span>
+<span class="sd">        (&#39;r18&#39;, 0.9997699856758118)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r18/11.jpg&#39;)</span>
+<span class="sd">        (&#39;r18&#39;, 0.9999485015869141)</span>
+<span class="sd">        &gt;&gt;&gt; anime_rating(&#39;rating/r18/12.jpg&#39;)</span>
+<span class="sd">        (&#39;r18&#39;, 0.9994290471076965)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">_raw_anime_rating</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">max_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_open_anime_rating_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">)[</span><span class="n">max_id</span><span class="p">],</span> <span class="n">output</span><span class="p">[</span><span class="n">max_id</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/classify
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../../v0.3.2/index.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../../v0.3.3/index.html">v0.3.3</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="rating.html">dev/classify</a></dd>
+                        <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../../cpu/index.html">dev/cpu</a></dd>
+                        <dd><a href="../../../../py312/index.html">dev/py312</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
