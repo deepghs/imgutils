@@ -21,7 +21,7 @@ class MonochromeBenchmark(BaseBenchmark):
 
     def run(self):
         image_file = random.choice(self.all_images)
-        _ = get_monochrome_score(image_file, model_name=self.model, safe=self.safe)
+        _ = get_monochrome_score(image_file, model_name=self.model)
 
 
 if __name__ == '__main__':
