@@ -5,7 +5,7 @@ enum_tools~=0.9.0
 sphinx-toolbox
 plantumlcli>=0.0.2
 packaging
-sphinx-multiversion~=0.2.4
+sphinx-multiversion>=0.2.4
 where~=1.0.2
 easydict>=1.7,<2
 responses>=0.20.0
