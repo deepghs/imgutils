@@ -4,8 +4,10 @@ Overview:
 
     The following are sample images for testing.
 
-    .. image:: rating.plot.py.svg
-        :align: center
+    .. collapse:: The following are sample images for testing. (WARNING: NSFW!!!)
+
+        .. image:: rating.plot.py.svg
+            :align: center
 
     This is an overall benchmark of all the rating validation models:
 
