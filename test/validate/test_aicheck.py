@@ -3,7 +3,8 @@ import os.path
 
 import pytest
 
-from imgutils.validate.aicheck import _open_anime_aicheck_model, is_ai_created, get_ai_created_score
+from imgutils.generic.classify import _open_models_for_repo_id
+from imgutils.validate.aicheck import is_ai_created, get_ai_created_score, _REPO_ID
 from test.testings import get_testfile
 
 _ROOT_DIR = get_testfile('anime_aicheck')
@@ -18,7 +19,7 @@ def _release_model_after_run():
     try:
         yield
     finally:
-        _open_anime_aicheck_model.cache_clear()
+        _open_models_for_repo_id(_REPO_ID).clear()
 
 
 @pytest.mark.unittest
