@@ -119,62 +119,18 @@
 <span class="sd">    The models are hosted on</span>
 <span class="sd">    `huggingface - deepghs/anime_classification &lt;https://huggingface.co/deepghs/anime_classification&gt;`_.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
-
-<span class="kn">from</span> <span class="nn">imgutils.data</span> <span class="kn">import</span> <span class="n">rgb_encode</span><span class="p">,</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
-<span class="kn">from</span> <span class="nn">imgutils.utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">..generic</span> <span class="kn">import</span> <span class="n">classify_predict</span><span class="p">,</span> <span class="n">classify_predict_score</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;anime_classify_score&#39;</span><span class="p">,</span>
     <span class="s1">&#39;anime_classify&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">_LABELS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;3d&#39;</span><span class="p">,</span> <span class="s1">&#39;bangumi&#39;</span><span class="p">,</span> <span class="s1">&#39;comic&#39;</span><span class="p">,</span> <span class="s1">&#39;illustration&#39;</span><span class="p">]</span>
-<span class="n">_MODEL_NAMES</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;caformer_s36&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;caformer_s36_plus&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mobilenetv3&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mobilenetv3_dist&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mobilenetv3_sce&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mobilenetv3_sce_dist&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;mobilevitv2_150&#39;</span><span class="p">,</span>
-<span class="p">]</span>
 <span class="n">_DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3_sce_dist&#39;</span>
-
-
-<span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_anime_classify_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;deepghs/anime_classification&#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span><span class="p">,</span>
-    <span class="p">))</span>
-
-
-<span class="k">def</span> <span class="nf">_img_encode</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">384</span><span class="p">,</span> <span class="mi">384</span><span class="p">),</span>
-                <span class="n">normalize</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)):</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">order_</span><span class="o">=</span><span class="s1">&#39;CHW&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">normalize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">mean_</span><span class="p">,</span> <span class="n">std_</span> <span class="o">=</span> <span class="n">normalize</span>
-        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">mean_</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">std_</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
-
-    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_raw_anime_classify</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">):</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
-    <span class="n">input_</span> <span class="o">=</span> <span class="n">_img_encode</span><span class="p">(</span><span class="n">image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-    <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_anime_classify_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">input_</span><span class="p">})</span>
-
-    <span class="k">return</span> <span class="n">output</span>
+<span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/anime_classification&#39;</span>
 
 
 <div class="viewcode-block" id="anime_classify_score"><a class="viewcode-back" href="../../../api_doc/validate/classify.html#imgutils.validate.classify.anime_classify_score">[docs]</a><span class="k">def</span> <span class="nf">anime_classify_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
@@ -215,9 +171,7 @@
 <span class="sd">        &gt;&gt;&gt; anime_classify_score(&#39;classify/illustration/12.jpg&#39;)</span>
 <span class="sd">        {&#39;3d&#39;: 3.153582292725332e-05, &#39;bangumi&#39;: 0.0001071861624950543, &#39;comic&#39;: 5.665345452143811e-05, &#39;illustration&#39;: 0.999804675579071}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">_raw_anime_classify</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
-    <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">_LABELS</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
-    <span class="k">return</span> <span class="n">values</span></div>
+    <span class="k">return</span> <span class="n">classify_predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_REPO_ID</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="anime_classify"><a class="viewcode-back" href="../../../api_doc/validate/classify.html#imgutils.validate.classify.anime_classify">[docs]</a><span class="k">def</span> <span class="nf">anime_classify</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
@@ -258,9 +212,7 @@
 <span class="sd">        &gt;&gt;&gt; anime_classify(&#39;classify/illustration/12.jpg&#39;)</span>
 <span class="sd">        (&#39;illustration&#39;, 0.999804675579071)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">_raw_anime_classify</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">max_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_LABELS</span><span class="p">[</span><span class="n">max_id</span><span class="p">],</span> <span class="n">output</span><span class="p">[</span><span class="n">max_id</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+    <span class="k">return</span> <span class="n">classify_predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_REPO_ID</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
 </pre></div>
 
 
