@@ -3,8 +3,9 @@ import os.path
 
 import pytest
 
+from imgutils.generic.classify import _open_models_for_repo_id
 from imgutils.validate import anime_bangumi_char
-from imgutils.validate.bangumi_char import _open_anime_bangumi_char_model, anime_bangumi_char_score
+from imgutils.validate.bangumi_char import anime_bangumi_char_score, _REPO_ID
 from test.testings import get_testfile
 
 _ROOT_DIR = get_testfile('bangumi_char')
@@ -19,7 +20,7 @@ def _release_model_after_run():
     try:
         yield
     finally:
-        _open_anime_bangumi_char_model.cache_clear()
+        _open_models_for_repo_id(_REPO_ID).clear()
 
 
 @pytest.mark.unittest

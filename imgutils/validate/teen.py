@@ -15,57 +15,18 @@ Overview:
     The models are hosted on
     `huggingface - deepghs/anime_teen <https://huggingface.co/deepghs/anime_teen>`_.
 """
-from functools import lru_cache
-from typing import Tuple, Optional, Dict
+from typing import Tuple, Dict
 
-import numpy as np
-from PIL import Image
-from huggingface_hub import hf_hub_download
-
-from imgutils.data import rgb_encode, ImageTyping, load_image
-from imgutils.utils import open_onnx_model
+from ..data import ImageTyping
+from ..generic import classify_predict, classify_predict_score
 
 __all__ = [
     'anime_teen_score',
     'anime_teen',
 ]
 
-_LABELS = ["contentious", "safe_teen", "non_teen"]
-_MODEL_NAMES = [
-    'caformer_s36_v0',
-    'mobilenetv3_v0_dist',
-]
 _DEFAULT_MODEL_NAME = 'mobilenetv3_v0_dist'
-
-
-@lru_cache()
-def _open_anime_teen_model(model_name):
-    return open_onnx_model(hf_hub_download(
-        f'deepghs/anime_teen',
-        f'{model_name}/model.onnx',
-    ))
-
-
-def _img_encode(image: Image.Image, size: Tuple[int, int] = (384, 384),
-                normalize: Optional[Tuple[float, float]] = (0.5, 0.5)):
-    image = image.resize(size, Image.BILINEAR)
-    data = rgb_encode(image, order_='CHW')
-
-    if normalize is not None:
-        mean_, std_ = normalize
-        mean = np.asarray([mean_]).reshape((-1, 1, 1))
-        std = np.asarray([std_]).reshape((-1, 1, 1))
-        data = (data - mean) / std
-
-    return data.astype(np.float32)
-
-
-def _raw_anime_teen(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME):
-    image = load_image(image, force_background='white', mode='RGB')
-    input_ = _img_encode(image)[None, ...]
-    output, = _open_anime_teen_model(model_name).run(['output'], {'input': input_})
-
-    return output
+_REPO_ID = 'deepghs/anime_teen'
 
 
 def anime_teen_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) -> Dict[str, float]:
@@ -100,9 +61,7 @@ def anime_teen_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) 
         >>> anime_teen_score('teen/non_teen/9.jpg')
         {'contentious': 0.0001218809193233028, 'safe_teen': 0.00013706681784242392, 'non_teen': 0.9997410178184509}
     """
-    output = _raw_anime_teen(image, model_name)
-    values = dict(zip(_LABELS, map(lambda x: x.item(), output[0])))
-    return values
+    return classify_predict_score(image, _REPO_ID, model_name)
 
 
 def anime_teen(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) -> Tuple[str, float]:
@@ -137,6 +96,4 @@ def anime_teen(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) -> Tup
         >>> anime_teen('teen/non_teen/9.jpg')
         ('non_teen', 0.9997410178184509)
     """
-    output = _raw_anime_teen(image, model_name)[0]
-    max_id = np.argmax(output)
-    return _LABELS[max_id], output[max_id].item()
+    return classify_predict(image, _REPO_ID, model_name)
