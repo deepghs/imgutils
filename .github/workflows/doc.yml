@@ -146,6 +146,7 @@ jobs:
       - name: Deploy to Github Page
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
+          REPOSITORY_NAME: deepghs/imgutils-docs
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_CONFIG_NAME: narugo1992
           GIT_CONFIG_EMAIL: narugo992@gmail.com
