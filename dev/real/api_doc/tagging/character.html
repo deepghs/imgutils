@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.tagging.character &mdash; imgutils 0.3.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=3c521a7a"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.tagging.order" href="order.html" />
+    <link rel="prev" title="imgutils.tagging.blacklist" href="blacklist.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+              <div class="version">
+                0.3.4
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.tagging</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="mldanbooru.html">imgutils.tagging.mldanbooru</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wd14.html">imgutils.tagging.wd14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepdanbooru.html">imgutils.tagging.deepdanbooru</a></li>
+<li class="toctree-l2"><a class="reference internal" href="format.html">imgutils.tagging.format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overlap.html">imgutils.tagging.overlap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blacklist.html">imgutils.tagging.blacklist</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.tagging.character</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#char-whitelist-suffix">CHAR_WHITELIST_SUFFIX</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.character.CHAR_WHITELIST_SUFFIX"><code class="docutils literal notranslate"><span class="pre">CHAR_WHITELIST_SUFFIX</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#char-whitelist-prefix">CHAR_WHITELIST_PREFIX</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.character.CHAR_WHITELIST_PREFIX"><code class="docutils literal notranslate"><span class="pre">CHAR_WHITELIST_PREFIX</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#char-whitelist-word">CHAR_WHITELIST_WORD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.character.CHAR_WHITELIST_WORD"><code class="docutils literal notranslate"><span class="pre">CHAR_WHITELIST_WORD</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#char-suffixes">CHAR_SUFFIXES</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.character.CHAR_SUFFIXES"><code class="docutils literal notranslate"><span class="pre">CHAR_SUFFIXES</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#char-prefixes">CHAR_PREFIXES</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.character.CHAR_PREFIXES"><code class="docutils literal notranslate"><span class="pre">CHAR_PREFIXES</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#charactertagpool">CharacterTagPool</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.character.CharacterTagPool"><code class="docutils literal notranslate"><span class="pre">CharacterTagPool</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#is-basic-character-tag">is_basic_character_tag</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.character.is_basic_character_tag"><code class="docutils literal notranslate"><span class="pre">is_basic_character_tag()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#drop-basic-character-tags">drop_basic_character_tags</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.character.drop_basic_character_tags"><code class="docutils literal notranslate"><span class="pre">drop_basic_character_tags()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="order.html">imgutils.tagging.order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="match.html">imgutils.tagging.match</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.tagging</a></li>
+      <li class="breadcrumb-item active">imgutils.tagging.character</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/tagging/character.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.tagging.character">
+<span id="imgutils-tagging-character"></span><h1>imgutils.tagging.character<a class="headerlink" href="#module-imgutils.tagging.character" title="Permalink to this heading"></a></h1>
+<dl class="simple">
+<dt>Overview:</dt><dd><p>Detect and drop character-related basic tags.</p>
+</dd>
+</dl>
+<section id="char-whitelist-suffix">
+<h2>CHAR_WHITELIST_SUFFIX<a class="headerlink" href="#char-whitelist-suffix" title="Permalink to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="imgutils.tagging.character.CHAR_WHITELIST_SUFFIX">
+<span class="sig-prename descclassname"><span class="pre">imgutils.tagging.character.</span></span><span class="sig-name descname"><span class="pre">CHAR_WHITELIST_SUFFIX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['anal_hair',</span> <span class="pre">'anal_tail',</span> <span class="pre">'arm_behind_head',</span> <span class="pre">'arm_hair',</span> <span class="pre">'arm_under_breasts',</span> <span class="pre">'arms_behind_head',</span> <span class="pre">'bird_on_head',</span> <span class="pre">'blood_in_hair',</span> <span class="pre">'breasts_on_glass',</span> <span class="pre">'breasts_on_head',</span> <span class="pre">'cat_on_head',</span> <span class="pre">'closed_eyes',</span> <span class="pre">'clothed_female_nude_female',</span> <span class="pre">'clothed_female_nude_male',</span> <span class="pre">'clothed_male_nude_female',</span> <span class="pre">'clothes_between_breasts',</span> <span class="pre">'cream_on_face',</span> <span class="pre">'drying_hair',</span> <span class="pre">'empty_eyes',</span> <span class="pre">'face_to_breasts',</span> <span class="pre">'facial',</span> <span class="pre">'food_on_face',</span> <span class="pre">'food_on_head',</span> <span class="pre">'game_boy',</span> <span class="pre">&quot;grabbing_another's_hair&quot;,</span> <span class="pre">'grabbing_own_breast',</span> <span class="pre">'gun_to_head',</span> <span class="pre">'half-closed_eyes',</span> <span class="pre">'head_between_breasts',</span> <span class="pre">'heart_in_eye',</span> <span class="pre">'multiple_boys',</span> <span class="pre">'multiple_girls',</span> <span class="pre">'object_on_breast',</span> <span class="pre">'object_on_head',</span> <span class="pre">'paint_splatter_on_face',</span> <span class="pre">'parted_lips',</span> <span class="pre">'penis_on_face',</span> <span class="pre">'person_on_head',</span> <span class="pre">'pokemon_on_head',</span> <span class="pre">'pubic_hair',</span> <span class="pre">'rabbit_on_head',</span> <span class="pre">'rice_on_face',</span> <span class="pre">'severed_head',</span> <span class="pre">'star_in_eye',</span> <span class="pre">'sticker_on_face',</span> <span class="pre">'tentacles_on_male',</span> <span class="pre">'tying_hair']</span></em><a class="headerlink" href="#imgutils.tagging.character.CHAR_WHITELIST_SUFFIX" title="Permalink to this definition"></a></dt>
+<dd><p>Built-in mutable sequence.</p>
+<p>If no argument is given, the constructor creates a new empty list.
+The argument must be an iterable if specified.</p>
+</dd></dl>
+
+</section>
+<section id="char-whitelist-prefix">
+<h2>CHAR_WHITELIST_PREFIX<a class="headerlink" href="#char-whitelist-prefix" title="Permalink to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="imgutils.tagging.character.CHAR_WHITELIST_PREFIX">
+<span class="sig-prename descclassname"><span class="pre">imgutils.tagging.character.</span></span><span class="sig-name descname"><span class="pre">CHAR_WHITELIST_PREFIX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['holding',</span> <span class="pre">'hand</span> <span class="pre">on',</span> <span class="pre">'hands</span> <span class="pre">on',</span> <span class="pre">'hand</span> <span class="pre">to',</span> <span class="pre">'hands</span> <span class="pre">to',</span> <span class="pre">'hand</span> <span class="pre">in',</span> <span class="pre">'hands</span> <span class="pre">in',</span> <span class="pre">'hand</span> <span class="pre">over',</span> <span class="pre">'hands</span> <span class="pre">over',</span> <span class="pre">'futa</span> <span class="pre">with',</span> <span class="pre">'futa</span> <span class="pre">on',</span> <span class="pre">'cum</span> <span class="pre">on',</span> <span class="pre">'covering',</span> <span class="pre">'adjusting',</span> <span class="pre">'rubbing',</span> <span class="pre">'sitting',</span> <span class="pre">'shading',</span> <span class="pre">'playing',</span> <span class="pre">'cutting']</span></em><a class="headerlink" href="#imgutils.tagging.character.CHAR_WHITELIST_PREFIX" title="Permalink to this definition"></a></dt>
+<dd><p>Built-in mutable sequence.</p>
+<p>If no argument is given, the constructor creates a new empty list.
+The argument must be an iterable if specified.</p>
+</dd></dl>
+
+</section>
+<section id="char-whitelist-word">
+<h2>CHAR_WHITELIST_WORD<a class="headerlink" href="#char-whitelist-word" title="Permalink to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="imgutils.tagging.character.CHAR_WHITELIST_WORD">
+<span class="sig-prename descclassname"><span class="pre">imgutils.tagging.character.</span></span><span class="sig-name descname"><span class="pre">CHAR_WHITELIST_WORD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['drill']</span></em><a class="headerlink" href="#imgutils.tagging.character.CHAR_WHITELIST_WORD" title="Permalink to this definition"></a></dt>
+<dd><p>Built-in mutable sequence.</p>
+<p>If no argument is given, the constructor creates a new empty list.
+The argument must be an iterable if specified.</p>
+</dd></dl>
+
+</section>
+<section id="char-suffixes">
+<h2>CHAR_SUFFIXES<a class="headerlink" href="#char-suffixes" title="Permalink to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="imgutils.tagging.character.CHAR_SUFFIXES">
+<span class="sig-prename descclassname"><span class="pre">imgutils.tagging.character.</span></span><span class="sig-name descname"><span class="pre">CHAR_SUFFIXES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['eyes',</span> <span class="pre">'skin',</span> <span class="pre">'hair',</span> <span class="pre">'bun',</span> <span class="pre">'bangs',</span> <span class="pre">'cut',</span> <span class="pre">'sidelocks',</span> <span class="pre">'twintails',</span> <span class="pre">'braid',</span> <span class="pre">'braids',</span> <span class="pre">'afro',</span> <span class="pre">'ahoge',</span> <span class="pre">'drill',</span> <span class="pre">'drills',</span> <span class="pre">'bald',</span> <span class="pre">'dreadlocks',</span> <span class="pre">'side</span> <span class="pre">up',</span> <span class="pre">'ponytail',</span> <span class="pre">'updo',</span> <span class="pre">'beard',</span> <span class="pre">'mustache',</span> <span class="pre">'pointy</span> <span class="pre">ears',</span> <span class="pre">'ear',</span> <span class="pre">'horn',</span> <span class="pre">'tail',</span> <span class="pre">'wing',</span> <span class="pre">'ornament',</span> <span class="pre">'hairband',</span> <span class="pre">'pupil',</span> <span class="pre">'bow',</span> <span class="pre">'eyewear',</span> <span class="pre">'headwear',</span> <span class="pre">'ribbon',</span> <span class="pre">'crown',</span> <span class="pre">'cap',</span> <span class="pre">'hat',</span> <span class="pre">'hairclip',</span> <span class="pre">'breast',</span> <span class="pre">'mole',</span> <span class="pre">'halo',</span> <span class="pre">'earrings',</span> <span class="pre">'animal</span> <span class="pre">ear</span> <span class="pre">fluff',</span> <span class="pre">'hair</span> <span class="pre">flower',</span> <span class="pre">'glasses',</span> <span class="pre">'fang',</span> <span class="pre">'female',</span> <span class="pre">'girl',</span> <span class="pre">'boy',</span> <span class="pre">'male',</span> <span class="pre">'beret',</span> <span class="pre">'heterochromia',</span> <span class="pre">'headdress',</span> <span class="pre">'headgear',</span> <span class="pre">'eyepatch',</span> <span class="pre">'headphones',</span> <span class="pre">'eyebrows',</span> <span class="pre">'eyelashes',</span> <span class="pre">'sunglasses',</span> <span class="pre">'hair</span> <span class="pre">intakes',</span> <span class="pre">'scrunchie',</span> <span class="pre">'ear_piercing',</span> <span class="pre">'head',</span> <span class="pre">'on</span> <span class="pre">face',</span> <span class="pre">'on</span> <span class="pre">head',</span> <span class="pre">'on</span> <span class="pre">hair',</span> <span class="pre">'headband',</span> <span class="pre">'hair</span> <span class="pre">rings',</span> <span class="pre">'under_mouth',</span> <span class="pre">'freckles',</span> <span class="pre">'lip',</span> <span class="pre">'eyeliner',</span> <span class="pre">'eyeshadow',</span> <span class="pre">'tassel',</span> <span class="pre">'over</span> <span class="pre">one</span> <span class="pre">eye',</span> <span class="pre">'drill',</span> <span class="pre">'drill</span> <span class="pre">hair']</span></em><a class="headerlink" href="#imgutils.tagging.character.CHAR_SUFFIXES" title="Permalink to this definition"></a></dt>
+<dd><p>Built-in mutable sequence.</p>
+<p>If no argument is given, the constructor creates a new empty list.
+The argument must be an iterable if specified.</p>
+</dd></dl>
+
+</section>
+<section id="char-prefixes">
+<h2>CHAR_PREFIXES<a class="headerlink" href="#char-prefixes" title="Permalink to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="imgutils.tagging.character.CHAR_PREFIXES">
+<span class="sig-prename descclassname"><span class="pre">imgutils.tagging.character.</span></span><span class="sig-name descname"><span class="pre">CHAR_PREFIXES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['hair</span> <span class="pre">over',</span> <span class="pre">'hair</span> <span class="pre">between',</span> <span class="pre">'facial']</span></em><a class="headerlink" href="#imgutils.tagging.character.CHAR_PREFIXES" title="Permalink to this definition"></a></dt>
+<dd><p>Built-in mutable sequence.</p>
+<p>If no argument is given, the constructor creates a new empty list.
+The argument must be an iterable if specified.</p>
+</dd></dl>
+
+</section>
+<section id="charactertagpool">
+<h2>CharacterTagPool<a class="headerlink" href="#charactertagpool" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.tagging.character.CharacterTagPool">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.tagging.character.</span></span><span class="sig-name descname"><span class="pre">CharacterTagPool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">whitelist_suffixes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whitelist_prefixes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whitelist_words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffixes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefixes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/character.html#CharacterTagPool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.tagging.character.CharacterTagPool" title="Permalink to this definition"></a></dt>
+<dd><p>A pool of character-related tags for detection and removal of basic character tags.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.tagging.character.CharacterTagPool.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">whitelist_suffixes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whitelist_prefixes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whitelist_words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffixes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefixes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/character.html#CharacterTagPool.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.tagging.character.CharacterTagPool.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize a CharacterTagPool instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>whitelist_suffixes</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – A list of whitelisted suffixes, defaults to None</p></li>
+<li><p><strong>suffixes</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – A list of suffixes to consider, defaults to None</p></li>
+<li><p><strong>prefixes</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – A list of prefixes to consider, defaults to None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.tagging.character.CharacterTagPool.drop_basic_character_tags">
+<span class="sig-name descname"><span class="pre">drop_basic_character_tags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/tagging/character.html#CharacterTagPool.drop_basic_character_tags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.tagging.character.CharacterTagPool.drop_basic_character_tags" title="Permalink to this definition"></a></dt>
+<dd><p>Drop basic character tags from a list or mapping of tags.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tags</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>Mapping</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em><em>]</em>) – The tags to process</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Processed tags with basic character tags removed</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[List[str], Mapping[str, float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.tagging.character.CharacterTagPool.is_basic_character_tag">
+<span class="sig-name descname"><span class="pre">is_basic_character_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/imgutils/tagging/character.html#CharacterTagPool.is_basic_character_tag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.tagging.character.CharacterTagPool.is_basic_character_tag" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a given tag is a basic character tag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tag</strong> (<em>str</em>) – The tag to check</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the tag is a basic character tag, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="is-basic-character-tag">
+<h2>is_basic_character_tag<a class="headerlink" href="#is-basic-character-tag" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.tagging.character.is_basic_character_tag">
+<span class="sig-prename descclassname"><span class="pre">imgutils.tagging.character.</span></span><span class="sig-name descname"><span class="pre">is_basic_character_tag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/imgutils/tagging/character.html#is_basic_character_tag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.tagging.character.is_basic_character_tag" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a tag is a basic character tag by matching with predefined whitelisted and blacklisted patterns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tag</strong> (<em>str</em>) – The tag to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the tag is a basic character tag, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">is_basic_character_tag</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_basic_character_tag</span><span class="p">(</span><span class="s1">&#39;red hair&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_basic_character_tag</span><span class="p">(</span><span class="s1">&#39;red_hair&#39;</span><span class="p">)</span>  <span class="c1"># span doesn&#39;t matter</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_basic_character_tag</span><span class="p">(</span><span class="s1">&#39;cat ears&#39;</span><span class="p">)</span>  <span class="c1"># singular</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_basic_character_tag</span><span class="p">(</span><span class="s1">&#39;cat ear&#39;</span><span class="p">)</span>  <span class="c1"># plural</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_basic_character_tag</span><span class="p">(</span><span class="s1">&#39;chair&#39;</span><span class="p">)</span>  <span class="c1"># only whole word will be matched</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_basic_character_tag</span><span class="p">(</span><span class="s1">&#39;hear&#39;</span><span class="p">)</span>  <span class="c1"># only whole word will be matched</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_basic_character_tag</span><span class="p">(</span><span class="s1">&#39;dress&#39;</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="drop-basic-character-tags">
+<h2>drop_basic_character_tags<a class="headerlink" href="#drop-basic-character-tags" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.tagging.character.drop_basic_character_tags">
+<span class="sig-prename descclassname"><span class="pre">imgutils.tagging.character.</span></span><span class="sig-name descname"><span class="pre">drop_basic_character_tags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/tagging/character.html#drop_basic_character_tags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.tagging.character.drop_basic_character_tags" title="Permalink to this definition"></a></dt>
+<dd><p>Drop basic character tags from the given list or mapping of tags.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tags</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>Mapping</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em><em>]</em>) – List or mapping of tags to be filtered.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Filtered list or mapping of tags without the basic character tags.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[List[str], Mapping[str, float]]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If the input tags are neither a list nor a dictionary.</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">drop_basic_character_tags</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_basic_character_tags</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="s1">&#39;1girl&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;solo&#39;</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;red_hair&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s1">&#39;cat ears&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;chair&#39;</span><span class="p">:</span> <span class="mf">0.86</span><span class="p">,</span> <span class="s1">&#39;hear&#39;</span><span class="p">:</span> <span class="mf">0.72</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">})</span>
+<span class="go">{&#39;1girl&#39;: 1.0, &#39;solo&#39;: 0.95, &#39;chair&#39;: 0.86, &#39;hear&#39;: 0.72}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drop_basic_character_tags</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="s1">&#39;1girl&#39;</span><span class="p">,</span> <span class="s1">&#39;solo&#39;</span><span class="p">,</span> <span class="s1">&#39;red_hair&#39;</span><span class="p">,</span> <span class="s1">&#39;cat ears&#39;</span><span class="p">,</span> <span class="s1">&#39;chair&#39;</span><span class="p">,</span> <span class="s1">&#39;hear&#39;</span>
+<span class="gp">... </span><span class="p">])</span>
+<span class="go">[&#39;1girl&#39;, &#39;solo&#39;, &#39;chair&#39;, &#39;hear&#39;]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="blacklist.html" class="btn btn-neutral float-left" title="imgutils.tagging.blacklist" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="order.html" class="btn btn-neutral float-right" title="imgutils.tagging.order" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/real
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.3.0/api_doc/tagging/character.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../v0.3.1/api_doc/tagging/character.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../v0.3.2/api_doc/tagging/character.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../v0.3.3/api_doc/tagging/character.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../v0.3.4/api_doc/tagging/character.html">v0.3.4</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="character.html">dev/real</a></dd>
+                        <dd><a href="../../../../ccip/api_doc/tagging/character.html">ccip</a></dd>
+                        <dd><a href="../../../cpu/api_doc/tagging/character.html">dev/cpu</a></dd>
+                        <dd><a href="../../../py312/api_doc/tagging/character.html">dev/py312</a></dd>
+                        <dd><a href="../../../../main/api_doc/tagging/character.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
