@@ -25,7 +25,7 @@ __all__ = [
     'anime_real',
 ]
 
-_DEFAULT_MODEL_NAME = 'mobilenetv3_v1_dist_ls0.1'
+_DEFAULT_MODEL_NAME = 'mobilenetv3_v1.1_dist_ls0.1'
 _REPO_ID = 'deepghs/anime_real_cls'
 
 
@@ -35,7 +35,7 @@ def anime_real_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) 
 
     :param image: The input image.
     :type image: ImageTyping
-    :param model_name: The model name. Default is 'mobilenetv3_v1_dist_ls0.1'.
+    :param model_name: The model name. Default is 'mobilenetv3_v1.1_dist_ls0.1'.
     :type model_name: str
     :return: A dictionary with type scores.
     :rtype: Dict[str, float]
@@ -85,7 +85,7 @@ def anime_real(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) -> Tup
 
     :param image: The input image.
     :type image: ImageTyping
-    :param model_name: The model name. Default is 'mobilenetv3_v1_dist_ls0.1'.
+    :param model_name: The model name. Default is 'mobilenetv3_v1.1_dist_ls0.1'.
     :type model_name: str
     :return: A tuple with the primary type and its score.
     :rtype: Tuple[str, float]
