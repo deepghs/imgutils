@@ -1,7 +1,7 @@
 Installation
 ===================
 
-imgutils is currently hosted on PyPI. It required python >= 3.7.
+imgutils is currently hosted on PyPI. It required python >= 3.8.
 
 You can simply install imgutils from PyPI with the following command:
 

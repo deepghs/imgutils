@@ -26,18 +26,13 @@ Overview:
 """
 import json
 from functools import lru_cache
-from typing import Union, List, Optional, Tuple
+from typing import Literal, Union, List, Optional, Tuple
 
 import numpy as np
 from PIL import Image
 from huggingface_hub import hf_hub_download
 from sklearn.cluster import DBSCAN, OPTICS
 from tqdm.auto import tqdm
-
-try:
-    from typing import Literal
-except (ModuleNotFoundError, ImportError):
-    from typing_extensions import Literal
 
 from ..data import MultiImagesTyping, load_images, ImageTyping
 from ..utils import open_onnx_model

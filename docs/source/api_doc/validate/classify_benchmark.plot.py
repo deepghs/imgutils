@@ -1,8 +1,11 @@
 import random
 
 from benchmark import BaseBenchmark, create_plot_cli
+from imgutils.generic.classify import _open_models_for_repo_id
 from imgutils.validate import anime_classify
-from imgutils.validate.classify import _MODEL_NAMES
+from imgutils.validate.classify import _REPO_ID
+
+_MODEL_NAMES = _open_models_for_repo_id(_REPO_ID).model_names
 
 
 class AnimeClassifyBenchmark(BaseBenchmark):
@@ -11,12 +14,10 @@ class AnimeClassifyBenchmark(BaseBenchmark):
         self.model = model
 
     def load(self):
-        from imgutils.validate.classify import _open_anime_classify_model
-        _ = _open_anime_classify_model(self.model)
+        _open_models_for_repo_id(_REPO_ID)._open_model(self.model)
 
     def unload(self):
-        from imgutils.validate.classify import _open_anime_classify_model
-        _open_anime_classify_model.cache_clear()
+        _open_models_for_repo_id(_REPO_ID).clear()
 
     def run(self):
         image_file = random.choice(self.all_images)

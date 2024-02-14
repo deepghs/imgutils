@@ -3,7 +3,10 @@ import os.path
 import pytest
 from hbutils.testing import tmatrix
 
-from imgutils.validate.monochrome import get_monochrome_score, is_monochrome, _monochrome_validate_model
+from imgutils.generic.classify import _open_models_for_repo_id
+from imgutils.validate.monochrome import get_monochrome_score, is_monochrome, _REPO_ID
+
+_MODEL_NAMES = _open_models_for_repo_id(_REPO_ID).model_names
 
 
 @pytest.fixture(scope='module', autouse=True)
@@ -11,7 +14,7 @@ def _release_model_after_run():
     try:
         yield
     finally:
-        _monochrome_validate_model.cache_clear()
+        _open_models_for_repo_id(_REPO_ID).clear()
 
 
 def get_samples():
@@ -36,27 +39,13 @@ def get_samples():
 class TestValidateMonochrome:
     @pytest.mark.parametrize(*tmatrix({
         ('type_', 'file'): get_samples(),
-        ('model', 'safe'): [
-            ('caformer_s36', False),
-            ('caformer_s36', True),
-            ('mobilenetv3', False),
-            ('mobilenetv3', True),
-            ('mobilenetv3_dist', False),
-            ('mobilenetv3_dist', True),
-        ],
+        'model_name': _MODEL_NAMES,
     }))
-    def test_monochrome_test(self, type_: str, file: str, model: str, safe: bool):
+    def test_monochrome_test(self, type_: str, file: str, model_name: str):
         filename = os.path.join('test', 'testfile', 'dataset', 'monochrome_danbooru', type_, file)
         if type_ == 'monochrome':
-            assert get_monochrome_score(filename, model=model, safe=safe) >= 0.5
-            assert is_monochrome(filename, model=model, safe=safe)
+            assert get_monochrome_score(filename, model_name=model_name) >= 0.5
+            assert is_monochrome(filename, model_name=model_name)
         else:
-            assert get_monochrome_score(filename, model=model, safe=safe) <= 0.5
-            assert not is_monochrome(filename, model=model, safe=safe)
-
-    def test_monochrome_test_with_unknown_safe(self):
-        with pytest.raises(ValueError):
-            _ = get_monochrome_score(
-                os.path.join('test', 'testfile', 'dataset', 'monochrome_danbooru', 'normal', '2475192.jpg'),
-                model='Model not found',
-            )
+            assert get_monochrome_score(filename, model_name=model_name) <= 0.5
+            assert not is_monochrome(filename, model_name=model_name)

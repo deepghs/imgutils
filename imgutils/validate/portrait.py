@@ -15,16 +15,10 @@ Overview:
     The models are hosted on
     `huggingface - deepghs/anime_portrait <https://huggingface.co/deepghs/anime_portrait>`_.
 """
-import json
-from functools import lru_cache
-from typing import Tuple, Optional, Dict, List
+from typing import Tuple, Dict
 
-import numpy as np
-from PIL import Image
-from huggingface_hub import hf_hub_download
-
-from imgutils.data import rgb_encode, ImageTyping, load_image
-from imgutils.utils import open_onnx_model
+from ..data import ImageTyping
+from ..generic import classify_predict, classify_predict_score
 
 __all__ = [
     'anime_portrait_score',
@@ -32,81 +26,7 @@ __all__ = [
 ]
 
 _DEFAULT_MODEL_NAME = 'mobilenetv3_v0_dist'
-
-
-@lru_cache()
-def _open_anime_portrait_model(model_name):
-    """
-    Open the anime portrait model.
-
-    :param model_name: The model name.
-    :type model_name: str
-    :return: The ONNX model.
-    """
-    return open_onnx_model(hf_hub_download(
-        f'deepghs/anime_portrait',
-        f'{model_name}/model.onnx',
-    ))
-
-
-@lru_cache()
-def _get_anime_portrait_labels(model_name) -> List[str]:
-    """
-    Get the labels for the anime portrait model.
-
-    :param model_name: The model name.
-    :type model_name: str
-    :return: The list of labels.
-    :rtype: List[str]
-    """
-    with open(hf_hub_download(
-            f'deepghs/anime_portrait',
-            f'{model_name}/meta.json',
-    ), 'r') as f:
-        return json.load(f)['labels']
-
-
-def _img_encode(image: Image.Image, size: Tuple[int, int] = (384, 384),
-                normalize: Optional[Tuple[float, float]] = (0.5, 0.5)):
-    """
-    Encode the input image.
-
-    :param image: The input image.
-    :type image: Image.Image
-    :param size: The desired size of the image.
-    :type size: Tuple[int, int]
-    :param normalize: Mean and standard deviation for normalization. Default is (0.5, 0.5).
-    :type normalize: Optional[Tuple[float, float]]
-    :return: The encoded image data.
-    :rtype: np.ndarray
-    """
-    image = image.resize(size, Image.BILINEAR)
-    data = rgb_encode(image, order_='CHW')
-
-    if normalize is not None:
-        mean_, std_ = normalize
-        mean = np.asarray([mean_]).reshape((-1, 1, 1))
-        std = np.asarray([std_]).reshape((-1, 1, 1))
-        data = (data - mean) / std
-
-    return data.astype(np.float32)
-
-
-def _raw_anime_portrait(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME):
-    """
-    Perform raw anime portrait processing on the input image.
-
-    :param image: The input image.
-    :type image: ImageTyping
-    :param model_name: The model name. Default is 'mobilenetv3_v0_dist'.
-    :type model_name: str
-    :return: The processed image data.
-    :rtype: np.ndarray
-    """
-    image = load_image(image, force_background='white', mode='RGB')
-    input_ = _img_encode(image)[None, ...]
-    output, = _open_anime_portrait_model(model_name).run(['output'], {'input': input_})
-    return output
+_REPO_ID = 'deepghs/anime_portrait'
 
 
 def anime_portrait_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) -> Dict[str, float]:
@@ -142,9 +62,7 @@ def anime_portrait_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NA
         >>> anime_portrait_score('head/9.jpg')
         {'person': 5.736660568800289e-07, 'halfbody': 7.199210472208506e-08, 'head': 0.9999992847442627}
     """
-    output = _raw_anime_portrait(image, model_name)
-    values = dict(zip(_get_anime_portrait_labels(model_name), map(lambda x: x.item(), output[0])))
-    return values
+    return classify_predict_score(image, _REPO_ID, model_name)
 
 
 def anime_portrait(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) -> Tuple[str, float]:
@@ -180,6 +98,4 @@ def anime_portrait(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) ->
         >>> anime_portrait('head/9.jpg')
         ('head', 0.9999992847442627)
     """
-    output = _raw_anime_portrait(image, model_name)[0]
-    max_id = np.argmax(output)
-    return _get_anime_portrait_labels(model_name)[max_id], output[max_id].item()
+    return classify_predict(image, _REPO_ID, model_name)

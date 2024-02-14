@@ -3,8 +3,9 @@ import os.path
 
 import pytest
 
+from imgutils.generic.classify import _open_models_for_repo_id
 from imgutils.validate import anime_rating
-from imgutils.validate.rating import _open_anime_rating_model, anime_rating_score
+from imgutils.validate.rating import anime_rating_score, _REPO_ID
 from test.testings import get_testfile
 
 _ROOT_DIR = get_testfile('rating')
@@ -19,7 +20,7 @@ def _release_model_after_run():
     try:
         yield
     finally:
-        _open_anime_rating_model.cache_clear()
+        _open_models_for_repo_id(_REPO_ID).clear()
 
 
 @pytest.mark.unittest

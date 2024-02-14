@@ -1,18 +1,11 @@
-import os
 import random
 
-from huggingface_hub import HfFileSystem
-
 from benchmark import BaseBenchmark, create_plot_cli
+from imgutils.generic.classify import _open_models_for_repo_id
 from imgutils.validate import anime_bangumi_char
+from imgutils.validate.bangumi_char import _REPO_ID
 
-hf_fs = HfFileSystem()
-
-_REPOSITORY = 'deepghs/bangumi_char_type'
-_MODEL_NAMES = [
-    os.path.relpath(file, _REPOSITORY).split('/')[0] for file in
-    hf_fs.glob(f'{_REPOSITORY}/*/model.onnx')
-]
+_MODEL_NAMES = _open_models_for_repo_id(_REPO_ID).model_names
 
 
 class AnimeBangumiCharacterBenchmark(BaseBenchmark):
@@ -21,12 +14,10 @@ class AnimeBangumiCharacterBenchmark(BaseBenchmark):
         self.model = model
 
     def load(self):
-        from imgutils.validate.bangumi_char import _open_anime_bangumi_char_model
-        _ = _open_anime_bangumi_char_model(self.model)
+        _open_models_for_repo_id(_REPO_ID)._open_model(self.model)
 
     def unload(self):
-        from imgutils.validate.bangumi_char import _open_anime_bangumi_char_model
-        _open_anime_bangumi_char_model.cache_clear()
+        _open_models_for_repo_id(_REPO_ID).clear()
 
     def run(self):
         image_file = random.choice(self.all_images)
