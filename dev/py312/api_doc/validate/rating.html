@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>imgutils.validate.rating &mdash; imgutils 0.3.2 documentation</title>
+  <title>imgutils.validate.rating &mdash; imgutils 0.3.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -17,7 +17,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=53a30eae"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=3c521a7a"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -40,7 +40,7 @@
             imgutils
           </a>
               <div class="version">
-                0.3.2
+                0.3.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -95,6 +95,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="real.html">imgutils.validate.real</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safe.html">imgutils.validate.safe</a></li>
 <li class="toctree-l2"><a class="reference internal" href="style_age.html">imgutils.validate.style_age</a></li>
 <li class="toctree-l2"><a class="reference internal" href="teen.html">imgutils.validate.teen</a></li>
 <li class="toctree-l2"><a class="reference internal" href="truncate.html">imgutils.validate.truncate</a></li>
@@ -134,7 +135,8 @@
 <dl>
 <dt>Overview:</dt><dd><p>A model for rating anime images into 4 classes (<code class="docutils literal notranslate"><span class="pre">safe</span></code>, <code class="docutils literal notranslate"><span class="pre">r15</span></code> and <code class="docutils literal notranslate"><span class="pre">r18</span></code>).</p>
 <p>The following are sample images for testing.</p>
-<img alt="../../_images/rating.plot.py.svg" class="align-center" src="../../_images/rating.plot.py.svg" /><p>This is an overall benchmark of all the rating validation models:</p>
+<details class="summary-the-following-are-sample-images-for-testing-warning-nsfw">
+<summary>The following are sample images for testing. (WARNING: NSFW!!!)</summary><img alt="../../_images/rating.plot.py.svg" class="align-center" src="../../_images/rating.plot.py.svg" /></details><p>This is an overall benchmark of all the rating validation models:</p>
 <img alt="../../_images/rating_benchmark.plot.py.svg" class="align-center" src="../../_images/rating_benchmark.plot.py.svg" /><p>The models are hosted on
 <a class="reference external" href="https://huggingface.co/deepghs/anime_rating">huggingface - deepghs/anime_rating</a>.</p>
 <div class="admonition note">
@@ -153,7 +155,7 @@ such as using <a class="reference internal" href="../detect/censor.html#imgutils
 <h2>anime_rating_score<a class="headerlink" href="#anime-rating-score" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="imgutils.validate.rating.anime_rating_score">
-<span class="sig-prename descclassname"><span class="pre">imgutils.validate.rating.</span></span><span class="sig-name descname"><span class="pre">anime_rating_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mobilenetv3_sce_dist'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/validate/rating.html#anime_rating_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.validate.rating.anime_rating_score" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">imgutils.validate.rating.</span></span><span class="sig-name descname"><span class="pre">anime_rating_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mobilenetv3_v1_pruned_ls0.1'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/validate/rating.html#anime_rating_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.validate.rating.anime_rating_score" title="Permalink to this definition"></a></dt>
 <dd><dl class="simple">
 <dt>Overview:</dt><dd><p>Predict the rating of the given image, return the score with as a dict object.</p>
 </dd>
@@ -208,7 +210,7 @@ on the benchmark plot above. If you need better accuracy, just set this to <code
 <h2>anime_rating<a class="headerlink" href="#anime-rating" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="imgutils.validate.rating.anime_rating">
-<span class="sig-prename descclassname"><span class="pre">imgutils.validate.rating.</span></span><span class="sig-name descname"><span class="pre">anime_rating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mobilenetv3_sce_dist'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/validate/rating.html#anime_rating"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.validate.rating.anime_rating" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">imgutils.validate.rating.</span></span><span class="sig-name descname"><span class="pre">anime_rating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mobilenetv3_v1_pruned_ls0.1'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/validate/rating.html#anime_rating"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.validate.rating.anime_rating" title="Permalink to this definition"></a></dt>
 <dd><dl class="simple">
 <dt>Overview:</dt><dd><p>Predict the rating of the given image, return the class and its score.</p>
 </dd>
@@ -304,10 +306,9 @@ on the benchmark plot above. If you need better accuracy, just set this to <code
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../real/api_doc/validate/rating.html">dev/real</a></dd>
+                        <dd><a href="rating.html">dev/py312</a></dd>
                         <dd><a href="../../../../ccip/api_doc/validate/rating.html">ccip</a></dd>
                         <dd><a href="../../../cpu/api_doc/validate/rating.html">dev/cpu</a></dd>
-                        <dd><a href="rating.html">dev/py312</a></dd>
                         <dd><a href="../../../../main/api_doc/validate/rating.html">main</a></dd>
                 </dl>
         </div>

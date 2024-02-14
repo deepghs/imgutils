@@ -29,10 +29,10 @@
    "execution_count": 1,
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-02-14T14:10:14.524877Z",
-     "iopub.status.busy": "2024-02-14T14:10:14.524460Z",
-     "iopub.status.idle": "2024-02-14T14:10:15.704799Z",
-     "shell.execute_reply": "2024-02-14T14:10:15.704061Z"
+     "iopub.execute_input": "2024-02-14T14:40:49.315937Z",
+     "iopub.status.busy": "2024-02-14T14:40:49.315745Z",
+     "iopub.status.idle": "2024-02-14T14:40:50.487124Z",
+     "shell.execute_reply": "2024-02-14T14:40:50.486347Z"
     },
     "pycharm": {
      "name": "#%%\n"
@@ -53,7 +53,7 @@
      "text": [
       "CPU Brand: AMD EPYC 7763 64-Core Processor\n",
       "CPU Count: 4\n",
-      "CPU Freq: 2977.047 MHz\n",
+      "CPU Freq: 2870.8235 MHz\n",
       "Memory Size: 15.607 GiB\n",
       "Has CUDA: No\n"
      ]
