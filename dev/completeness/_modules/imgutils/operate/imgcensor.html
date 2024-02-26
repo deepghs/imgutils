@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.operate.imgcensor &mdash; imgutils 0.3.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=3c521a7a"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+              <div class="version">
+                0.3.4
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.operate.imgcensor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.operate.imgcensor</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    Censors a specified area of an image using a custom image or emoji.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">emoji</span> <span class="kn">import</span> <span class="n">emojize</span>
+<span class="kn">from</span> <span class="nn">hbutils.system</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="kn">import</span> <span class="n">center_of_mass</span>
+
+<span class="kn">from</span> <span class="nn">.align</span> <span class="kn">import</span> <span class="n">align_maxsize</span>
+<span class="kn">from</span> <span class="nn">.censor_</span> <span class="kn">import</span> <span class="n">BaseCensor</span><span class="p">,</span> <span class="n">register_censor_method</span>
+<span class="kn">from</span> <span class="nn">.squeeze</span> <span class="kn">import</span> <span class="n">squeeze_with_transparency</span><span class="p">,</span> <span class="n">_get_mask_of_transparency</span>
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">load_images</span>
+
+
+<span class="k">def</span> <span class="nf">_image_rotate_and_sq</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">degrees</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">squeeze_with_transparency</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="SingleImage"><a class="viewcode-back" href="../../../api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage">[docs]</a><span class="k">class</span> <span class="nc">SingleImage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class that attempts to find a solution to completely cover a given area of an image while minimizing the covered area.</span>
+
+<span class="sd">    :param image: The input image.</span>
+<span class="sd">    :type image: Image.Image</span>
+
+<span class="sd">    :ivar image: The original image for censoring.</span>
+<span class="sd">    :vartype image: Image.Image</span>
+
+<span class="sd">    :ivar mask: The mask of the image. True means this pixel is not transparent and able to cover some area.</span>
+<span class="sd">    :vartype mask: np.ndarray</span>
+
+<span class="sd">    :ivar prefix: The prefix sum of the mask.</span>
+<span class="sd">    :vartype prefix: np.ndarray</span>
+
+<span class="sd">    :ivar cx: The X-coordinate of the mass center of this image. The position of the occlusion should be as close as</span>
+<span class="sd">               possible to the mass center of the image.</span>
+<span class="sd">    :vartype cx: float</span>
+
+<span class="sd">    :ivar cy: The Y-coordinate of the mass center of this image. The position of the occlusion should be as close as</span>
+<span class="sd">               possible to the mass center of the image.</span>
+<span class="sd">    :vartype cy: float</span>
+
+<span class="sd">    :ivar width: The width of the image.</span>
+<span class="sd">    :vartype width: int</span>
+
+<span class="sd">    :ivar height: The height of the image.</span>
+<span class="sd">    :vartype height: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SingleImage.__init__"><a class="viewcode-back" href="../../../api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">_get_mask_of_transparency</span><span class="p">(</span><span class="n">align_maxsize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint64</span><span class="p">)</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">mask</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">prefix</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># original image for censoring</span>
+        <span class="c1"># do not use self.image inside this class,</span>
+        <span class="c1"># because its size is not assumed to be the same as self.mask.shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span>
+
+        <span class="c1"># mask of the image (True means this pixel is not transparent</span>
+        <span class="c1"># and able to cover some area)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span>
+
+        <span class="c1"># prefix sum of the mask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span>
+
+        <span class="c1"># mass center of this image, the position of the occlusion</span>
+        <span class="c1"># should be as close as possible to the mass center of the image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span> <span class="o">=</span> <span class="n">center_of_mass</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The width of the image.</span>
+
+<span class="sd">        :return: The width of the image.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The height of the image.</span>
+
+<span class="sd">        :return: The height of the image.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_find_for_fixed_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds a solution for a fixed area (width and height) that can completely cover the given area.</span>
+
+<span class="sd">        :param width: The width of the fixed area.</span>
+<span class="sd">        :type width: int</span>
+
+<span class="sd">        :param height: The height of the fixed area.</span>
+<span class="sd">        :type height: int</span>
+
+<span class="sd">        :return: The coordinates of the found solution (top-left corner) or None if no solution is found.</span>
+<span class="sd">        :rtype: Tuple[Optional[int], Optional[int]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">width</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">height</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">[</span><span class="n">width</span><span class="p">:,</span> <span class="n">height</span><span class="p">:]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">[:</span><span class="o">-</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">:]</span> <span class="o">-</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">[</span><span class="n">width</span><span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="n">height</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">[:</span><span class="o">-</span><span class="n">width</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="n">height</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">delta</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">width</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">height</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">delta</span> <span class="o">==</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># not found</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="n">centers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">xs</span> <span class="o">+</span> <span class="n">width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ys</span> <span class="o">+</span> <span class="n">height</span> <span class="o">//</span> <span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">best_cid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(((</span><span class="n">centers</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="bp">self</span><span class="o">.</span><span class="n">cx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cy</span><span class="p">]]))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="n">centers</span><span class="p">[</span><span class="n">best_cid</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">fx</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">fy</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SingleImage.find_for_area"><a class="viewcode-back" href="../../../api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.SingleImage.find_for_area">[docs]</a>    <span class="k">def</span> <span class="nf">find_for_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds a solution to completely cover a given area with a rectangle while minimizing the covered area.</span>
+
+<span class="sd">        :param width: The width of the target area to cover.</span>
+<span class="sd">        :type width: int</span>
+
+<span class="sd">        :param height: The height of the target area to cover.</span>
+<span class="sd">        :type height: int</span>
+
+<span class="sd">        :return: The coordinates (x, y) of the found solution (top-left corner), the scaling factor applied to the</span>
+<span class="sd">                 width and height, and the ratio of the covered area to the total mask area.</span>
+<span class="sd">        :rtype: Tuple[float, float, float, float]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">width</span> <span class="o">*</span> <span class="n">r</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">height</span> <span class="o">*</span> <span class="n">r</span><span class="p">))</span>
+            <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_for_fixed_area</span><span class="p">(</span><span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">fx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span> <span class="o">*</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-6</span>
+        <span class="n">r_fx</span><span class="p">,</span> <span class="n">r_fy</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="n">l</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">width</span> <span class="o">*</span> <span class="n">m</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">height</span> <span class="o">*</span> <span class="n">m</span><span class="p">))</span>
+            <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_for_fixed_area</span><span class="p">(</span><span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">fx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">r_fx</span><span class="p">,</span> <span class="n">r_fy</span> <span class="o">=</span> <span class="n">fx</span> <span class="o">-</span> <span class="n">new_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">fy</span> <span class="o">-</span> <span class="n">new_height</span> <span class="o">/</span> <span class="mi">2</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="n">m</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">m</span>
+
+        <span class="n">ratio</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">*</span> <span class="n">l</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">height</span> <span class="o">*</span> <span class="n">l</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">r_fx</span><span class="p">,</span> <span class="n">r_fy</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">ratio</span></div></div>
+
+
+<div class="viewcode-block" id="ImageBasedCensor"><a class="viewcode-back" href="../../../api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.ImageBasedCensor">[docs]</a><span class="k">class</span> <span class="nc">ImageBasedCensor</span><span class="p">(</span><span class="n">BaseCensor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class that performs censoring on a given area using images by finding the best solution based on rotation.</span>
+
+<span class="sd">    :param images: The input images for censoring.</span>
+<span class="sd">    :type images: MultiImagesTyping</span>
+
+<span class="sd">    :param rotate: The range of rotation angles in degrees (start, end) to consider.</span>
+<span class="sd">    :type rotate: Tuple[int, int]</span>
+
+<span class="sd">    :param step: The step size between rotation angles.</span>
+<span class="sd">    :type step: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">:</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">rotate</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+        <span class="n">origin_images</span> <span class="o">=</span> <span class="n">load_images</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGBA&#39;</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">degrees</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">rotate</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rotate</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">step</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">SingleImage</span><span class="p">(</span><span class="n">_image_rotate_and_sq</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">degrees</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">origin_images</span>
+        <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_find_censor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">ratio_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds the best censoring solution for the given area using the available images.</span>
+
+<span class="sd">        :param area: The coordinates of the target area to censor (x0, y0, x1, y1).</span>
+<span class="sd">        :type area: Tuple[int, int, int, int]</span>
+
+<span class="sd">        :param ratio_threshold: The minimum ratio of the covered area to the total mask area required for a solution</span>
+<span class="sd">                                to be considered valid.</span>
+<span class="sd">        :type ratio_threshold: float</span>
+
+<span class="sd">        :return: The ratio of the covered area to the total mask area, the index of the selected image, the scaling</span>
+<span class="sd">                 factor applied to the image, the X-coordinate of the top-left corner of the censoring area, and the</span>
+<span class="sd">                 Y-coordinate of the top-left corner of the censoring area.</span>
+<span class="sd">        :rtype: Tuple[float, int, float, float, float]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">area</span>
+        <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m_image</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">):</span>
+            <span class="n">r_fx</span><span class="p">,</span> <span class="n">r_fy</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">ratio</span> <span class="o">=</span> <span class="n">m_image</span><span class="o">.</span><span class="n">find_for_area</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ratio</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">r_fx</span><span class="p">,</span> <span class="n">r_fy</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;</span> <span class="n">ratio_threshold</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">r_fx</span><span class="p">,</span> <span class="n">r_fy</span>
+
+        <span class="n">ratio</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">r_fx</span><span class="p">,</span> <span class="n">r_fy</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">r_fx</span><span class="p">,</span> <span class="n">r_fy</span>
+
+<div class="viewcode-block" id="ImageBasedCensor.censor_area"><a class="viewcode-back" href="../../../api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.ImageBasedCensor.censor_area">[docs]</a>    <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">ratio_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Censors the specified area of the input image using the available images.</span>
+
+<span class="sd">        :param image: The input image to be censored.</span>
+<span class="sd">        :type image: Image.Image</span>
+
+<span class="sd">        :param area: The coordinates of the target area to censor (x0, y0, x1, y1).</span>
+<span class="sd">        :type area: Tuple[int, int, int, int]</span>
+
+<span class="sd">        :param ratio_threshold: The minimum ratio of the covered area to the total mask area required for a solution</span>
+<span class="sd">                                to be considered valid.</span>
+<span class="sd">        :type ratio_threshold: float</span>
+
+<span class="sd">        :param kwargs: Additional keyword arguments to be passed.</span>
+
+<span class="sd">        :return: The censored image.</span>
+<span class="sd">        :rtype: Image.Image</span>
+
+<span class="sd">        Examples::</span>
+<span class="sd">            &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">            &gt;&gt;&gt; from imgutils.operate import censor_areas</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; origin = Image.open(&#39;genshin_post.jpg&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; areas = [  # areas to censor</span>
+<span class="sd">            &gt;&gt;&gt;     (967, 143, 1084, 261),</span>
+<span class="sd">            &gt;&gt;&gt;     (246, 208, 331, 287),</span>
+<span class="sd">            &gt;&gt;&gt;     (662, 466, 705, 514),</span>
+<span class="sd">            &gt;&gt;&gt;     (479, 283, 523, 326)</span>
+<span class="sd">            &gt;&gt;&gt; ]</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # register the star image</span>
+<span class="sd">            &gt;&gt;&gt; register_censor_method(&#39;star&#39;, ImageBasedCensor, images=[&#39;star.png&#39;])</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # default</span>
+<span class="sd">            &gt;&gt;&gt; censored = censor_areas(image, &#39;star&#39;, areas)</span>
+
+<span class="sd">            .. image:: censor_image.plot.py.svg</span>
+<span class="sd">                :align: center</span>
+
+<span class="sd">            .. note::</span>
+<span class="sd">                It is important to note that when using :class:`ImageBasedCensor` to censor an image,</span>
+<span class="sd">                you need to manually register the image used for censoring</span>
+<span class="sd">                using the :func:`register_censor_method` function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">area</span>
+        <span class="n">ratio</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">r_fx</span><span class="p">,</span> <span class="n">r_fy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_censor</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="n">ratio_threshold</span><span class="p">)</span>
+        <span class="n">fm_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">censor_image</span> <span class="o">=</span> <span class="n">fm_image</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">censor_image</span> <span class="o">=</span> <span class="n">censor_image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span>  <span class="c1"># do not use censor_image.size here</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">fm_image</span><span class="o">.</span><span class="n">width</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)),</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">fm_image</span><span class="o">.</span><span class="n">height</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)),</span>
+        <span class="p">))</span>
+        <span class="n">cx0</span><span class="p">,</span> <span class="n">cy0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x0</span> <span class="o">-</span> <span class="n">r_fx</span> <span class="o">/</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y0</span> <span class="o">-</span> <span class="n">r_fy</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span>
+
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">mode</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGBA&#39;</span><span class="p">)</span>
+        <span class="n">image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">censor_image</span><span class="p">,</span> <span class="p">(</span><span class="n">cx0</span><span class="p">,</span> <span class="n">cy0</span><span class="p">,</span> <span class="n">cx0</span> <span class="o">+</span> <span class="n">censor_image</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">cy0</span> <span class="o">+</span> <span class="n">censor_image</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="n">mask</span><span class="o">=</span><span class="n">censor_image</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_get_file_in_censor_assets</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="vm">__file__</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
+
+
+<span class="n">register_censor_method</span><span class="p">(</span>
+    <span class="s1">&#39;heart&#39;</span><span class="p">,</span> <span class="n">ImageBasedCensor</span><span class="p">,</span>
+    <span class="n">images</span><span class="o">=</span><span class="p">[</span><span class="n">_get_file_in_censor_assets</span><span class="p">(</span><span class="s1">&#39;heart_censor.png&#39;</span><span class="p">)]</span>
+<span class="p">)</span>
+<span class="n">register_censor_method</span><span class="p">(</span>
+    <span class="s1">&#39;smile&#39;</span><span class="p">,</span> <span class="n">ImageBasedCensor</span><span class="p">,</span>
+    <span class="n">images</span><span class="o">=</span><span class="p">[</span><span class="n">_get_file_in_censor_assets</span><span class="p">(</span><span class="s1">&#39;smile_censor.png&#39;</span><span class="p">)]</span>
+<span class="p">)</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_get_emoji_img</span><span class="p">(</span><span class="n">emoji</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;twitter&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pilmoji.source</span> <span class="kn">import</span> <span class="n">EmojiCDNSource</span>
+
+    <span class="k">class</span> <span class="nc">_CustomSource</span><span class="p">(</span><span class="n">EmojiCDNSource</span><span class="p">):</span>
+        <span class="n">STYLE</span> <span class="o">=</span> <span class="n">style</span>
+
+    <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">td</span><span class="p">:</span>
+        <span class="n">imgfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="s1">&#39;emoji.png&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">imgfile</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">_CustomSource</span><span class="p">()</span><span class="o">.</span><span class="n">get_emoji</span><span class="p">(</span><span class="n">emojize</span><span class="p">(</span><span class="n">emoji</span><span class="p">))</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">imgfile</span><span class="p">)</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">img</span>
+
+
+<span class="n">_EmojiStyleTyping</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span>
+    <span class="s1">&#39;twitter&#39;</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;google&#39;</span><span class="p">,</span> <span class="s1">&#39;microsoft&#39;</span><span class="p">,</span> <span class="s1">&#39;samsung&#39;</span><span class="p">,</span> <span class="s1">&#39;whatsapp&#39;</span><span class="p">,</span> <span class="s1">&#39;facebook&#39;</span><span class="p">,</span> <span class="s1">&#39;messenger&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;joypixels&#39;</span><span class="p">,</span> <span class="s1">&#39;openmoji&#39;</span><span class="p">,</span> <span class="s1">&#39;emojidex&#39;</span><span class="p">,</span> <span class="s1">&#39;mozilla&#39;</span>
+<span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">_NativeEmojiBasedCensor</span><span class="p">(</span><span class="n">ImageBasedCensor</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">emoji</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;:smiling_face_with_heart-eyes:&#39;</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">_EmojiStyleTyping</span> <span class="o">=</span> <span class="s1">&#39;twitter&#39;</span><span class="p">,</span>
+                 <span class="n">rotate</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+        <span class="n">ImageBasedCensor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">_get_emoji_img</span><span class="p">(</span><span class="n">emoji</span><span class="p">,</span> <span class="n">style</span><span class="p">)],</span> <span class="n">rotate</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_get_native_emoji_censor</span><span class="p">(</span><span class="n">emoji</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;:smiling_face_with_heart-eyes:&#39;</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">_EmojiStyleTyping</span> <span class="o">=</span> <span class="s1">&#39;twitter&#39;</span><span class="p">,</span>
+                             <span class="n">rotate</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_NativeEmojiBasedCensor</span><span class="p">(</span><span class="n">emoji</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">rotate</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="EmojiBasedCensor"><a class="viewcode-back" href="../../../api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.EmojiBasedCensor">[docs]</a><span class="k">class</span> <span class="nc">EmojiBasedCensor</span><span class="p">(</span><span class="n">BaseCensor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performs censoring on a given area of an image using emoji images.</span>
+
+<span class="sd">    :param rotate: The range of rotation angles in degrees (start, end) to consider.</span>
+<span class="sd">    :type rotate: Tuple[int, int]</span>
+
+<span class="sd">    :param step: The step size between rotation angles.</span>
+<span class="sd">    :type step: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotate</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span> <span class="o">=</span> <span class="n">rotate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="n">step</span>
+
+<div class="viewcode-block" id="EmojiBasedCensor.censor_area"><a class="viewcode-back" href="../../../api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.EmojiBasedCensor.censor_area">[docs]</a>    <span class="k">def</span> <span class="nf">censor_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">area</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+                    <span class="n">emoji</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;:smiling_face_with_heart-eyes:&#39;</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">_EmojiStyleTyping</span> <span class="o">=</span> <span class="s1">&#39;twitter&#39;</span><span class="p">,</span>
+                    <span class="n">ratio_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Censors the specified area of the input image using emoji expressions.</span>
+
+<span class="sd">        :param image: The input image to be censored.</span>
+<span class="sd">        :type image: Image.Image</span>
+
+<span class="sd">        :param area: The coordinates of the target area to censor (x0, y0, x1, y1).</span>
+<span class="sd">        :type area: Tuple[int, int, int, int]</span>
+
+<span class="sd">        :param emoji: The emoji expression to use for censoring.</span>
+<span class="sd">                      Emoji code in `emoji &lt;https://github.com/carpedm20/emoji&gt;`_ is supported.</span>
+<span class="sd">                      (default: ``:smiling_face_with_heart-eyes:``, which equals to 😍)</span>
+<span class="sd">        :type emoji: str</span>
+
+<span class="sd">        :param style: The style of the emoji expression. (default: ``twitter``)</span>
+<span class="sd">        :type style: _EmojiStyleTyping</span>
+
+<span class="sd">        :param ratio_threshold: The minimum ratio of the covered area to the total mask area required for a solution</span>
+<span class="sd">                                to be considered valid.</span>
+<span class="sd">        :type ratio_threshold: float</span>
+
+<span class="sd">        :param kwargs: Additional keyword arguments to be passed.</span>
+
+<span class="sd">        :return: The censored image.</span>
+<span class="sd">        :rtype: Image.Image</span>
+
+<span class="sd">        Examples::</span>
+<span class="sd">            &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">            &gt;&gt;&gt; from imgutils.operate import censor_areas</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; origin = Image.open(&#39;genshin_post.jpg&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; areas = [  # areas to censor</span>
+<span class="sd">            &gt;&gt;&gt;     (967, 143, 1084, 261),</span>
+<span class="sd">            &gt;&gt;&gt;     (246, 208, 331, 287),</span>
+<span class="sd">            &gt;&gt;&gt;     (662, 466, 705, 514),</span>
+<span class="sd">            &gt;&gt;&gt;     (479, 283, 523, 326)</span>
+<span class="sd">            &gt;&gt;&gt; ]</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # default</span>
+<span class="sd">            &gt;&gt;&gt; emoji_default = censor_areas(image, &#39;emoji&#39;, areas)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # cat_face (use emoji code)</span>
+<span class="sd">            &gt;&gt;&gt; emoji_green = censor_areas(image, &#39;emoji&#39;, areas, emoji=&#39;:cat_face:&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # grinning_face_with_sweat (use emoji)</span>
+<span class="sd">            &gt;&gt;&gt; emoji_liuhanhuangdou = censor_areas(image, &#39;emoji&#39;, areas, emoji=&#39;😅&#39;)</span>
+
+<span class="sd">            This is the result:</span>
+
+<span class="sd">            .. image:: censor_emoji.plot.py.svg</span>
+<span class="sd">                :align: center</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_get_native_emoji_censor</span><span class="p">(</span><span class="n">emoji</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">censor_area</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="n">ratio_threshold</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<span class="n">register_censor_method</span><span class="p">(</span><span class="s1">&#39;emoji&#39;</span><span class="p">,</span> <span class="n">EmojiBasedCensor</span><span class="p">)</span>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/completeness
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../../v0.3.2/index.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../../v0.3.3/index.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../../v0.3.4/index.html">v0.3.4</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="imgcensor.html">dev/completeness</a></dd>
+                        <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../../classify/index.html">dev/classify</a></dd>
+                        <dd><a href="../../../../cpu/index.html">dev/cpu</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
