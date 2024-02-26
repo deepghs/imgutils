@@ -1,6 +1,6 @@
 """
 Overview:
-    A model for classifying anime images into 4 classes (``3d``, ``bangumi``, ``comic`` and ``illustration``).
+    A model for classifying anime images into 5 classes (``3d``, ``bangumi``, ``comic``, ``illustration``, and ``not_painting``).
 
     The following are sample images for testing.
 
@@ -14,6 +14,9 @@ Overview:
 
     The models are hosted on
     `huggingface - deepghs/anime_classification <https://huggingface.co/deepghs/anime_classification>`_.
+
+    .. note::
+        In older versions of models, there are 4 classes, which means ``not_painting`` do not exist.
 """
 from typing import Tuple, Dict
 
@@ -25,7 +28,7 @@ __all__ = [
     'anime_classify',
 ]
 
-_DEFAULT_MODEL_NAME = 'mobilenetv3_sce_dist'
+_DEFAULT_MODEL_NAME = 'mobilenetv3_v1.3_dist'
 _REPO_ID = 'deepghs/anime_classification'
 
 
@@ -35,8 +38,8 @@ def anime_classify_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NA
         Predict the class of the given image, return the score with as a dict object.
 
     :param image: Image to classify.
-    :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed
-        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.
+    :param model_name: Model to use. Default is ``mobilenetv3_v1.3_dist``. All available models are listed
+        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_v1.3_focal``.
     :return: A dict with classes and scores.
 
     Examples::
@@ -76,8 +79,8 @@ def anime_classify(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) ->
         Predict the class of the given image, return the class and its score.
 
     :param image: Image to classify.
-    :param model_name: Model to use. Default is ``mobilenetv3_sce_dist``. All available models are listed
-        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_plus``.
+    :param model_name: Model to use. Default is ``mobilenetv3_v1.3_dist``. All available models are listed
+        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_v1.3_focal``.
     :return: A tuple contains the class and its score.
 
     Examples::

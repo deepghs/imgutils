@@ -11,5 +11,6 @@ if __name__ == '__main__':
         *natsorted(glob.glob(os.path.join('classify', 'bangumi', '*.jpg'))),
         *natsorted(glob.glob(os.path.join('classify', 'comic', '*.jpg'))),
         *natsorted(glob.glob(os.path.join('classify', 'illustration', '*.jpg'))),
-        columns=3, figsize=(8, 12),
+        *natsorted(glob.glob(os.path.join('classify', 'not_painting', '*.jpg'))),
+        columns=3, figsize=(8, 15),
     )
