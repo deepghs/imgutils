@@ -46,29 +46,35 @@ def anime_classify_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NA
         >>> from imgutils.validate import anime_classify_score
         >>>
         >>> anime_classify_score('classify/3d/1.jpg')
-        {'3d': 0.9999048709869385, 'bangumi': 1.2998967577004805e-05, 'comic': 6.3774782574910205e-06, 'illustration': 7.573143375338987e-05}
+        {'3d': 0.8346158862113953, 'bangumi': 0.004201625939458609, 'comic': 0.0028638991061598063, 'illustration': 0.15633030235767365, 'not_painting': 0.001988308737054467}
         >>> anime_classify_score('classify/3d/2.jpg')
-        {'3d': 1.0, 'bangumi': 2.3347255118794097e-12, 'comic': 5.393629119720966e-12, 'illustration': 6.71077689945454e-12}
+        {'3d': 0.9868855476379395, 'bangumi': 0.001178382197394967, 'comic': 0.00015886101755313575, 'illustration': 0.0005986307514831424, 'not_painting': 0.011178601533174515}
         >>> anime_classify_score('classify/3d/3.jpg')
-        {'3d': 0.9999587535858154, 'bangumi': 1.6608031728537753e-05, 'comic': 1.4294577340479009e-05, 'illustration': 1.0324462891730946e-05}
+        {'3d': 0.9933090209960938, 'bangumi': 0.0012440024875104427, 'comic': 0.00040085514774546027, 'illustration': 0.004924307577311993, 'not_painting': 0.00012189441622467712}
         >>> anime_classify_score('classify/bangumi/4.jpg')
-        {'3d': 8.245967464404202e-09, 'bangumi': 0.9999991655349731, 'comic': 2.004386701059957e-08, 'illustration': 8.202430876735889e-07}
+        {'3d': 0.00031298911198973656, 'bangumi': 0.9968050718307495, 'comic': 5.182305903872475e-05, 'illustration': 0.0027923565357923508, 'not_painting': 3.7805559259140864e-05}
         >>> anime_classify_score('classify/bangumi/5.jpg')
-        {'3d': 6.440834113163874e-05, 'bangumi': 0.9982288479804993, 'comic': 1.4121969797997735e-05, 'illustration': 0.001692703110165894}
+        {'3d': 0.0004650334012694657, 'bangumi': 0.996709942817688, 'comic': 3.736721191671677e-05, 'illustration': 0.0027629584074020386, 'not_painting': 2.4619508621981367e-05}
         >>> anime_classify_score('classify/bangumi/6.jpg')
-        {'3d': 2.3443080159404883e-14, 'bangumi': 1.0, 'comic': 5.647845608075866e-14, 'illustration': 6.008537851293072e-13}
+        {'3d': 0.0003803370927926153, 'bangumi': 0.998649537563324, 'comic': 5.190127922105603e-05, 'illustration': 0.0008622839814051986, 'not_painting': 5.595230686594732e-05}
         >>> anime_classify_score('classify/comic/7.jpg')
-        {'3d': 4.029740221408245e-18, 'bangumi': 4.658470278842451e-18, 'comic': 1.0, 'illustration': 2.0487814569869478e-11}
+        {'3d': 0.0004573142796289176, 'bangumi': 0.00031435859273187816, 'comic': 0.8671838641166687, 'illustration': 0.13199880719184875, 'not_painting': 4.563074617180973e-05}
         >>> anime_classify_score('classify/comic/8.jpg')
-        {'3d': 1.019530813939351e-11, 'bangumi': 1.5961519215720865e-12, 'comic': 1.0, 'illustration': 2.2395576712574972e-11}
+        {'3d': 7.153919796110131e-06, 'bangumi': 8.290010737255216e-05, 'comic': 0.9727378487586975, 'illustration': 0.027150526642799377, 'not_painting': 2.162296004826203e-05}
         >>> anime_classify_score('classify/comic/9.jpg')
-        {'3d': 2.1237236958165234e-13, 'bangumi': 2.3246717593440602e-14, 'comic': 1.0, 'illustration': 3.4230233231236085e-11}
+        {'3d': 2.4933258828241378e-05, 'bangumi': 0.0004275702522136271, 'comic': 0.995402455329895, 'illustration': 0.002233930164948106, 'not_painting': 0.001911122351884842}
         >>> anime_classify_score('classify/illustration/10.jpg')
-        {'3d': 0.00026091927429661155, 'bangumi': 0.00011691388499457389, 'comic': 8.51359436637722e-05, 'illustration': 0.9995369911193848}
+        {'3d': 0.1603819727897644, 'bangumi': 0.0007561995880678296, 'comic': 0.00017044576816260815, 'illustration': 0.838487982749939, 'not_painting': 0.0002034590725088492}
         >>> anime_classify_score('classify/illustration/11.jpg')
-        {'3d': 6.014750475458186e-09, 'bangumi': 2.3536564697224094e-07, 'comic': 7.933858796604909e-06, 'illustration': 0.999991774559021}
+        {'3d': 0.005001617129892111, 'bangumi': 0.000932251859921962, 'comic': 0.009352140128612518, 'illustration': 0.9846979379653931, 'not_painting': 1.6018555470509455e-05}
         >>> anime_classify_score('classify/illustration/12.jpg')
-        {'3d': 3.153582292725332e-05, 'bangumi': 0.0001071861624950543, 'comic': 5.665345452143811e-05, 'illustration': 0.999804675579071}
+        {'3d': 0.004064667969942093, 'bangumi': 9.464051254326478e-05, 'comic': 0.025772539898753166, 'illustration': 0.9699516296386719, 'not_painting': 0.00011656546121230349}
+        >>> anime_classify_score('classify/not_painting/13.jpg')
+        {'3d': 5.287263775244355e-05, 'bangumi': 3.370255853951676e-06, 'comic': 0.01098843663930893, 'illustration': 0.0031668643932789564, 'not_painting': 0.9857884049415588}
+        >>> anime_classify_score('classify/not_painting/14.jpg')
+        {'3d': 7.499273488065228e-05, 'bangumi': 2.8419872251106426e-05, 'comic': 0.0003471920208539814, 'illustration': 0.029472889378666878, 'not_painting': 0.9700765609741211}
+        >>> anime_classify_score('classify/not_painting/15.jpg')
+        {'3d': 0.0012387704337015748, 'bangumi': 0.001172148622572422, 'comic': 9.787473391043022e-05, 'illustration': 0.003680602880194783, 'not_painting': 0.9938107132911682}
     """
     return classify_predict_score(image, _REPO_ID, model_name)
 
@@ -87,28 +93,34 @@ def anime_classify(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) ->
         >>> from imgutils.validate import anime_classify
         >>>
         >>> anime_classify('classify/3d/1.jpg')
-        ('3d', 0.9999048709869385)
+        ('3d', 0.8346157073974609)
         >>> anime_classify('classify/3d/2.jpg')
-        ('3d', 1.0)
+        ('3d', 0.9868855476379395)
         >>> anime_classify('classify/3d/3.jpg')
-        ('3d', 0.9999587535858154)
+        ('3d', 0.9933090209960938)
         >>> anime_classify('classify/bangumi/4.jpg')
-        ('bangumi', 0.9999991655349731)
+        ('bangumi', 0.9968050718307495)
         >>> anime_classify('classify/bangumi/5.jpg')
-        ('bangumi', 0.9982288479804993)
+        ('bangumi', 0.996709942817688)
         >>> anime_classify('classify/bangumi/6.jpg')
-        ('bangumi', 1.0)
+        ('bangumi', 0.998649537563324)
         >>> anime_classify('classify/comic/7.jpg')
-        ('comic', 1.0)
+        ('comic', 0.8671836853027344)
         >>> anime_classify('classify/comic/8.jpg')
-        ('comic', 1.0)
+        ('comic', 0.9727378487586975)
         >>> anime_classify('classify/comic/9.jpg')
-        ('comic', 1.0)
+        ('comic', 0.995402455329895)
         >>> anime_classify('classify/illustration/10.jpg')
-        ('illustration', 0.9995369911193848)
+        ('illustration', 0.8384883403778076)
         >>> anime_classify('classify/illustration/11.jpg')
-        ('illustration', 0.999991774559021)
+        ('illustration', 0.9846979975700378)
         >>> anime_classify('classify/illustration/12.jpg')
-        ('illustration', 0.999804675579071)
+        ('illustration', 0.9699516296386719)
+        >>> anime_classify('classify/not_painting/13.jpg')
+        ('not_painting', 0.9857884049415588)
+        >>> anime_classify('classify/not_painting/14.jpg')
+        ('not_painting', 0.9700766801834106)
+        >>> anime_classify('classify/not_painting/15.jpg')
+        ('not_painting', 0.9938107132911682)
     """
     return classify_predict(image, _REPO_ID, model_name)
