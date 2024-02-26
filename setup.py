@@ -47,7 +47,7 @@ setup(
     author=meta['__AUTHOR__'],
     author_email=meta['__AUTHOR_EMAIL__'],
     license='Apache License, Version 2.0',
-    keywords='Utilities of images.',
+    keywords=meta['__DESCRIPTION__'],
     url='https://github.com/deepghs/imgutils',
 
     # environment
