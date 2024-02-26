@@ -6,6 +6,7 @@ from .aicheck import *
 from .bangumi_char import *
 from .classify import *
 from .color import *
+from .completeness import *
 from .monochrome import *
 from .nsfw import *
 from .portrait import *
