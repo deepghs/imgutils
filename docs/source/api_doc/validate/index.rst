@@ -13,6 +13,7 @@ imgutils.validate
     bangumi_char
     classify
     color
+    completeness
     monochrome
     nsfw
     portrait
