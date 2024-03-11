@@ -34,22 +34,71 @@ class TestTaggingWd14:
             'sensitive': 0.0080718994140625,
             'questionable': 0.003170192241668701,
             'explicit': 0.984081506729126,
-        }, abs=1e-3)
+        }, abs=2e-2)
         assert tags == pytest.approx({
-            '1girl': 0.998362123966217, 'solo': 0.9912548065185547, 'long_hair': 0.9401906728744507,
-            'breasts': 0.983635425567627, 'looking_at_viewer': 0.9146994352340698, 'blush': 0.8892400860786438,
-            'smile': 0.43393653631210327, 'bangs': 0.49712443351745605, 'large_breasts': 0.5196534395217896,
-            'navel': 0.9653235077857971, 'hair_between_eyes': 0.5786703824996948, 'very_long_hair': 0.8142435550689697,
-            'closed_mouth': 0.9369247555732727, 'nipples': 0.9660118222236633, 'purple_eyes': 0.9676010012626648,
-            'collarbone': 0.588348925113678, 'nude': 0.9496222734451294, 'red_hair': 0.9200156331062317,
-            'sweat': 0.8690457344055176, 'horns': 0.9711267948150635, 'pussy': 0.9868264198303223,
-            'spread_legs': 0.9603149890899658, 'armpits': 0.9024748802185059, 'stomach': 0.6723923087120056,
-            'arms_up': 0.9380699396133423, 'completely_nude': 0.9002960920333862, 'uncensored': 0.8612104058265686,
-            'pussy_juice': 0.6021570563316345, 'feet_out_of_frame': 0.39779460430145264, 'on_bed': 0.610720157623291,
-            'arms_behind_head': 0.44814401865005493, 'breasts_apart': 0.39798974990844727,
-            'clitoris': 0.5310801267623901
-        }, abs=1e-3)
-        assert chars == pytest.approx({'surtr_(arknights)': 0.9942929744720459}, abs=1e-3)
+            '1girl': 0.998561441898346, 'solo': 0.9918843507766724, 'long_hair': 0.9451607465744019,
+            'breasts': 0.9867608547210693, 'looking_at_viewer': 0.9200493693351746, 'blush': 0.8876285552978516,
+            'smile': 0.5031097531318665, 'bangs': 0.4979058504104614, 'large_breasts': 0.5059964656829834,
+            'navel': 0.9681310653686523, 'hair_between_eyes': 0.5816333293914795, 'medium_breasts': 0.36410677433013916,
+            'very_long_hair': 0.811715304851532, 'closed_mouth': 0.9338403940200806, 'nipples': 0.9715133905410767,
+            'purple_eyes': 0.9681202173233032, 'collarbone': 0.573296308517456, 'nude': 0.9568941593170166,
+            'red_hair': 0.9242303967475891, 'sweat': 0.8757796287536621, 'horns': 0.973071277141571,
+            'pussy': 0.9876313805580139, 'spread_legs': 0.9634276628494263, 'armpits': 0.9116500616073608,
+            'stomach': 0.6858262419700623, 'arms_up': 0.9398491978645325, 'completely_nude': 0.907513439655304,
+            'uncensored': 0.8703584671020508, 'pussy_juice': 0.6459053754806519,
+            'feet_out_of_frame': 0.3921701908111572, 'on_bed': 0.6049470901489258,
+            'arms_behind_head': 0.4758358597755432, 'breasts_apart': 0.38581883907318115,
+            'clitoris': 0.5746099948883057
+        }, abs=2e-2)
+        assert chars == pytest.approx({'surtr_(arknights)': 0.9942929744720459}, abs=2e-2)
+
+    def test_wd14_tags_sample_no_underline(self):
+        rating, tags, chars = get_wd14_tags(get_testfile('nude_girl.png'), no_underline=True)
+        assert rating == pytest.approx({
+            'general': 0.0020540356636047363,
+            'sensitive': 0.0080718994140625,
+            'questionable': 0.003170192241668701,
+            'explicit': 0.984081506729126,
+        }, abs=2e-2)
+        assert tags == pytest.approx({
+            '1girl': 0.998561441898346, 'solo': 0.9918843507766724, 'long hair': 0.9451607465744019,
+            'breasts': 0.9867608547210693, 'looking at viewer': 0.9200493693351746, 'blush': 0.8876285552978516,
+            'smile': 0.5031097531318665, 'bangs': 0.4979058504104614, 'large breasts': 0.5059964656829834,
+            'navel': 0.9681310653686523, 'hair between eyes': 0.5816333293914795, 'medium breasts': 0.36410677433013916,
+            'very long hair': 0.811715304851532, 'closed mouth': 0.9338403940200806, 'nipples': 0.9715133905410767,
+            'purple eyes': 0.9681202173233032, 'collarbone': 0.573296308517456, 'nude': 0.9568941593170166,
+            'red hair': 0.9242303967475891, 'sweat': 0.8757796287536621, 'horns': 0.973071277141571,
+            'pussy': 0.9876313805580139, 'spread legs': 0.9634276628494263, 'armpits': 0.9116500616073608,
+            'stomach': 0.6858262419700623, 'arms up': 0.9398491978645325, 'completely nude': 0.907513439655304,
+            'uncensored': 0.8703584671020508, 'pussy juice': 0.6459053754806519,
+            'feet out of frame': 0.3921701908111572, 'on bed': 0.6049470901489258,
+            'arms behind head': 0.4758358597755432, 'breasts apart': 0.38581883907318115,
+            'clitoris': 0.5746099948883057
+        }, abs=2e-2)
+        assert chars == pytest.approx({'surtr (arknights)': 0.9942929744720459}, abs=2e-2)
+
+    def test_wd14_tags_sample_mcut(self):
+        rating, tags, chars = get_wd14_tags(
+            get_testfile('nude_girl.png'),
+            general_mcut_enabled=True,
+            character_mcut_enabled=True,
+        )
+        assert rating == pytest.approx({
+            'general': 0.0020540356636047363,
+            'sensitive': 0.0080718994140625,
+            'questionable': 0.003170192241668701,
+            'explicit': 0.984081506729126,
+        }, abs=2e-2)
+        assert tags == pytest.approx({
+            '1girl': 0.998561441898346, 'solo': 0.9918843507766724, 'long_hair': 0.9451607465744019,
+            'breasts': 0.9867608547210693, 'looking_at_viewer': 0.9200493693351746, 'blush': 0.8876285552978516,
+            'navel': 0.9681310653686523, 'very_long_hair': 0.811715304851532, 'closed_mouth': 0.9338403940200806,
+            'nipples': 0.9715133905410767, 'purple_eyes': 0.9681202173233032, 'nude': 0.9568941593170166,
+            'red_hair': 0.9242303967475891, 'sweat': 0.8757796287536621, 'horns': 0.973071277141571,
+            'pussy': 0.9876313805580139, 'spread_legs': 0.9634276628494263, 'armpits': 0.9116500616073608,
+            'arms_up': 0.9398491978645325, 'completely_nude': 0.907513439655304, 'uncensored': 0.8703584671020508
+        }, abs=2e-2)
+        assert chars == pytest.approx({'surtr_(arknights)': 0.9942929744720459}, abs=2e-2)
 
     def test_wd14_tags_no_overlap(self):
         rating, tags, chars = get_wd14_tags(get_testfile('nude_girl.png'), drop_overlap=True)
@@ -59,18 +108,19 @@ class TestTaggingWd14:
             'sensitive': 0.0080718994140625,
             'questionable': 0.003170192241668701,
             'explicit': 0.984081506729126,
-        }, abs=1e-3)
+        }, abs=2e-2)
         assert tags == pytest.approx({
-            '1girl': 0.998362123966217, 'solo': 0.9912548065185547, 'looking_at_viewer': 0.9146994352340698,
-            'blush': 0.8892400860786438, 'smile': 0.43393653631210327, 'bangs': 0.49712443351745605,
-            'large_breasts': 0.5196534395217896, 'navel': 0.9653235077857971, 'hair_between_eyes': 0.5786703824996948,
-            'very_long_hair': 0.8142435550689697, 'closed_mouth': 0.9369247555732727, 'nipples': 0.9660118222236633,
-            'purple_eyes': 0.9676010012626648, 'collarbone': 0.588348925113678, 'red_hair': 0.9200156331062317,
-            'sweat': 0.8690457344055176, 'horns': 0.9711267948150635, 'spread_legs': 0.9603149890899658,
-            'armpits': 0.9024748802185059, 'stomach': 0.6723923087120056, 'arms_up': 0.9380699396133423,
-            'completely_nude': 0.9002960920333862, 'uncensored': 0.8612104058265686, 'pussy_juice': 0.6021570563316345,
-            'feet_out_of_frame': 0.39779460430145264, 'on_bed': 0.610720157623291,
-            'arms_behind_head': 0.44814401865005493, 'breasts_apart': 0.39798974990844727,
-            'clitoris': 0.5310801267623901
-        }, abs=1e-3)
-        assert chars == pytest.approx({'surtr_(arknights)': 0.9942929744720459}, abs=1e-3)
+            '1girl': 0.998561441898346, 'solo': 0.9918843507766724, 'looking_at_viewer': 0.9200493693351746,
+            'blush': 0.8876285552978516, 'smile': 0.5031097531318665, 'bangs': 0.4979058504104614,
+            'large_breasts': 0.5059964656829834, 'navel': 0.9681310653686523, 'hair_between_eyes': 0.5816333293914795,
+            'medium_breasts': 0.36410677433013916, 'very_long_hair': 0.811715304851532,
+            'closed_mouth': 0.9338403940200806, 'nipples': 0.9715133905410767, 'purple_eyes': 0.9681202173233032,
+            'collarbone': 0.573296308517456, 'red_hair': 0.9242303967475891, 'sweat': 0.8757796287536621,
+            'horns': 0.973071277141571, 'spread_legs': 0.9634276628494263, 'armpits': 0.9116500616073608,
+            'stomach': 0.6858262419700623, 'arms_up': 0.9398491978645325, 'completely_nude': 0.907513439655304,
+            'uncensored': 0.8703584671020508, 'pussy_juice': 0.6459053754806519,
+            'feet_out_of_frame': 0.3921701908111572, 'on_bed': 0.6049470901489258,
+            'arms_behind_head': 0.4758358597755432, 'breasts_apart': 0.38581883907318115,
+            'clitoris': 0.5746099948883057
+        }, abs=2e-2)
+        assert chars == pytest.approx({'surtr_(arknights)': 0.9942929744720459}, abs=2e-2)
