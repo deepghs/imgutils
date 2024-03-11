@@ -61,17 +61,31 @@ _KAOMOJIS = [
 ]
 
 
-def _load_wd14_model(model_repo: str, model_filename: str):
-    return open_onnx_model(huggingface_hub.hf_hub_download(model_repo, model_filename))
-
-
 @lru_cache()
 def _get_wd14_model(model_name):
-    return _load_wd14_model(MODEL_NAMES[model_name], MODEL_FILENAME)
+    """
+    Load an ONNX model from the Hugging Face Hub.
+
+    :param model_name: The name of the model.
+    :type model_name: str
+    :return: The loaded ONNX model.
+    :rtype: ONNXModel
+    """
+    return open_onnx_model(huggingface_hub.hf_hub_download(MODEL_NAMES[model_name], MODEL_FILENAME))
 
 
 @lru_cache()
 def _get_wd14_labels(model_name, no_underline: bool = False) -> Tuple[List[str], List[int], List[int], List[int]]:
+    """
+    Get labels for the WD14 model.
+
+    :param model_name: The name of the model.
+    :type model_name: str
+    :param no_underline: If True, replaces underscores in tag names with spaces.
+    :type no_underline: bool
+    :return: A tuple containing the list of tag names, and lists of indexes for rating, general, and character categories.
+    :rtype: Tuple[List[str], List[int], List[int], List[int]]
+    """
     path = huggingface_hub.hf_hub_download(MODEL_NAMES[model_name], LABEL_FILENAME)
     df = pd.read_csv(path)
     name_series = df["name"]
@@ -131,16 +145,27 @@ def get_wd14_tags(
 ):
     """
     Overview:
-        Tagging image by wd14 v2 model. Similar to
-        `SmilingWolf/wd-v1-4-tags <https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags>`_ .
+        Get tags for an image with wd14 taggers.
+        Similar to `SmilingWolf/wd-v1-4-tags <https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags>`_ .
 
-    :param image: Image to tagging.
-    :param model_name: Name of the mode, should be one of the \
-        ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``ConvNextV2``.
-    :param general_threshold: Threshold for default tags, default is ``0.35``.
-    :param character_threshold: Threshold for character tags, default is ``0.85``.
-    :param drop_overlap: Drop overlap tags or not, default is ``False``.
-    :return: Tagging results for levels, features and characters.
+    :param image: The input image.
+    :type image: ImageTyping
+    :param model_name: The name of the model to use.
+    :type model_name: str
+    :param general_threshold: The threshold for general tags.
+    :type general_threshold: float
+    :param general_mcut_enabled: If True, applies MCut thresholding to general tags.
+    :type general_mcut_enabled: bool
+    :param character_threshold: The threshold for character tags.
+    :type character_threshold: float
+    :param character_mcut_enabled: If True, applies MCut thresholding to character tags.
+    :type character_mcut_enabled: bool
+    :param no_underline: If True, replaces underscores in tag names with spaces.
+    :type no_underline: bool
+    :param drop_overlap: If True, drops overlapping tags.
+    :type drop_overlap: bool
+    :return: A tuple containing dictionaries for rating, general, and character tags with their probabilities.
+    :rtype: Tuple[Dict[str, float], Dict[str, float], Dict[str, float]]
 
     Example:
         Here are some images for example
