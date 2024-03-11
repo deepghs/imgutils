@@ -110,52 +110,29 @@
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">huggingface_hub</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">onnxruntime</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">hbutils.testing.requires.version</span> <span class="kn">import</span> <span class="n">VersionInfo</span>
 
 <span class="kn">from</span> <span class="nn">.overlap</span> <span class="kn">import</span> <span class="n">drop_overlap_tags</span>
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
-
-
-<span class="k">def</span> <span class="nf">make_square</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">target_size</span><span class="p">):</span>
-    <span class="n">old_size</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">desired_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">old_size</span><span class="p">)</span>
-    <span class="n">desired_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">desired_size</span><span class="p">,</span> <span class="n">target_size</span><span class="p">)</span>
-
-    <span class="n">delta_w</span> <span class="o">=</span> <span class="n">desired_size</span> <span class="o">-</span> <span class="n">old_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">delta_h</span> <span class="o">=</span> <span class="n">desired_size</span> <span class="o">-</span> <span class="n">old_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">delta_h</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">delta_h</span> <span class="o">-</span> <span class="p">(</span><span class="n">delta_h</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">delta_w</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">delta_w</span> <span class="o">-</span> <span class="p">(</span><span class="n">delta_w</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
-
-    <span class="n">color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">]</span>
-    <span class="c1"># noinspection PyUnresolvedReferences</span>
-    <span class="n">new_im</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">copyMakeBorder</span><span class="p">(</span>
-        <span class="n">img</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">BORDER_CONSTANT</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">color</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">new_im</span>
-
-
-<span class="k">def</span> <span class="nf">smart_resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
-    <span class="c1"># Assumes the image has already gone through make_square</span>
-    <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">size</span><span class="p">:</span>
-        <span class="c1"># noinspection PyUnresolvedReferences</span>
-        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_AREA</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
-        <span class="c1"># noinspection PyUnresolvedReferences</span>
-        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_CUBIC</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">img</span>
-
 
 <span class="n">SWIN_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-swinv2-tagger-v2&quot;</span>
 <span class="n">CONV_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-convnext-tagger-v2&quot;</span>
 <span class="n">CONV2_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-convnextv2-tagger-v2&quot;</span>
 <span class="n">VIT_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-vit-tagger-v2&quot;</span>
 <span class="n">MOAT_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-moat-tagger-v2&quot;</span>
+<span class="n">CONV_V3_MODEL_REPO</span> <span class="o">=</span> <span class="s1">&#39;SmilingWolf/wd-convnext-tagger-v3&#39;</span>
+<span class="n">SWIN_V3_MODEL_REPO</span> <span class="o">=</span> <span class="s1">&#39;SmilingWolf/wd-swinv2-tagger-v3&#39;</span>
+<span class="n">VIT_V3_MODEL_REPO</span> <span class="o">=</span> <span class="s1">&#39;SmilingWolf/wd-vit-tagger-v3&#39;</span>
 <span class="n">MODEL_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;model.onnx&quot;</span>
 <span class="n">LABEL_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;selected_tags.csv&quot;</span>
+
+<span class="n">_IS_V3_SUPPORT</span> <span class="o">=</span> <span class="n">VersionInfo</span><span class="p">(</span><span class="n">onnxruntime</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="s1">&#39;1.17&#39;</span>
 
 <span class="n">MODEL_NAMES</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;SwinV2&quot;</span><span class="p">:</span> <span class="n">SWIN_MODEL_REPO</span><span class="p">,</span>
@@ -163,45 +140,148 @@
     <span class="s2">&quot;ConvNextV2&quot;</span><span class="p">:</span> <span class="n">CONV2_MODEL_REPO</span><span class="p">,</span>
     <span class="s2">&quot;ViT&quot;</span><span class="p">:</span> <span class="n">VIT_MODEL_REPO</span><span class="p">,</span>
     <span class="s2">&quot;MOAT&quot;</span><span class="p">:</span> <span class="n">MOAT_MODEL_REPO</span><span class="p">,</span>
+
+    <span class="s2">&quot;SwinV2_v3&quot;</span><span class="p">:</span> <span class="n">SWIN_V3_MODEL_REPO</span><span class="p">,</span>
+    <span class="s2">&quot;ConvNext_v3&quot;</span><span class="p">:</span> <span class="n">CONV_V3_MODEL_REPO</span><span class="p">,</span>
+    <span class="s2">&quot;ViT_v3&quot;</span><span class="p">:</span> <span class="n">VIT_V3_MODEL_REPO</span><span class="p">,</span>
 <span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">_load_wd14_model</span><span class="p">(</span><span class="n">model_repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">huggingface_hub</span><span class="o">.</span><span class="n">hf_hub_download</span><span class="p">(</span><span class="n">model_repo</span><span class="p">,</span> <span class="n">model_filename</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">_version_support_check</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">model_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_v3&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_IS_V3_SUPPORT</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;V3 taggers not supported on onnxruntime </span><span class="si">{</span><span class="n">onnxruntime</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s1">, &#39;</span>
+                               <span class="sa">f</span><span class="s1">&#39;please upgrade it to 1.17+ version.&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+
+<span class="n">_KAOMOJIS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;0_0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;(o)_(o)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;+_+&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;+_-&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;._.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;&lt;o&gt;_&lt;o&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;&lt;|&gt;_&lt;|&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;=_=&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;&gt;_&lt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;3_3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;6_9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;&gt;_o&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;@_@&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;^_^&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;o_o&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;u_u&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;x_x&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;|_|&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;||_||&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_get_wd14_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">_load_wd14_model</span><span class="p">(</span><span class="n">MODEL_NAMES</span><span class="p">[</span><span class="n">model_name</span><span class="p">],</span> <span class="n">MODEL_FILENAME</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load an ONNX model from the Hugging Face Hub.</span>
+
+<span class="sd">    :param model_name: The name of the model.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :return: The loaded ONNX model.</span>
+<span class="sd">    :rtype: ONNXModel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_version_support_check</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">huggingface_hub</span><span class="o">.</span><span class="n">hf_hub_download</span><span class="p">(</span><span class="n">MODEL_NAMES</span><span class="p">[</span><span class="n">model_name</span><span class="p">],</span> <span class="n">MODEL_FILENAME</span><span class="p">))</span>
 
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_get_wd14_labels</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">huggingface_hub</span><span class="o">.</span><span class="n">hf_hub_download</span><span class="p">(</span><span class="n">CONV2_MODEL_REPO</span><span class="p">,</span> <span class="n">LABEL_FILENAME</span><span class="p">)</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_get_wd14_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">no_underline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get labels for the WD14 model.</span>
 
-    <span class="n">tag_names</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="sd">    :param model_name: The name of the model.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :param no_underline: If True, replaces underscores in tag names with spaces.</span>
+<span class="sd">    :type no_underline: bool</span>
+<span class="sd">    :return: A tuple containing the list of tag names, and lists of indexes for rating, general, and character categories.</span>
+<span class="sd">    :rtype: Tuple[List[str], List[int], List[int], List[int]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">huggingface_hub</span><span class="o">.</span><span class="n">hf_hub_download</span><span class="p">(</span><span class="n">MODEL_NAMES</span><span class="p">[</span><span class="n">model_name</span><span class="p">],</span> <span class="n">LABEL_FILENAME</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">name_series</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">no_underline</span><span class="p">:</span>
+        <span class="n">name_series</span> <span class="o">=</span> <span class="n">name_series</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_KAOMOJIS</span> <span class="k">else</span> <span class="n">x</span>
+        <span class="p">)</span>
+    <span class="n">tag_names</span> <span class="o">=</span> <span class="n">name_series</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
     <span class="n">rating_indexes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">9</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">general_indexes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">character_indexes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">tag_names</span><span class="p">,</span> <span class="n">rating_indexes</span><span class="p">,</span> <span class="n">general_indexes</span><span class="p">,</span> <span class="n">character_indexes</span>
 
 
-<div class="viewcode-block" id="get_wd14_tags"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.get_wd14_tags">[docs]</a><span class="k">def</span> <span class="nf">get_wd14_tags</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ConvNextV2&quot;</span><span class="p">,</span>
-                  <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">character_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">,</span>
-                  <span class="n">drop_overlap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_mcut_threshold</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maximum Cut Thresholding (MCut)</span>
+<span class="sd">    Largeron, C., Moulin, C., &amp; Gery, M. (2012). MCut: A Thresholding Strategy</span>
+<span class="sd">     for Multi-label Classification. In 11th International Symposium, IDA 2012</span>
+<span class="sd">     (pp. 172-183).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sorted_probs</span> <span class="o">=</span> <span class="n">probs</span><span class="p">[</span><span class="n">probs</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">difs</span> <span class="o">=</span> <span class="n">sorted_probs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">sorted_probs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">difs</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+    <span class="n">thresh</span> <span class="o">=</span> <span class="p">(</span><span class="n">sorted_probs</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">sorted_probs</span><span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">thresh</span>
+
+
+<span class="k">def</span> <span class="nf">_prepare_image_for_tagging</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">target_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+    <span class="n">image_shape</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">max_dim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">image_shape</span><span class="p">)</span>
+    <span class="n">pad_left</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_dim</span> <span class="o">-</span> <span class="n">image_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">pad_top</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_dim</span> <span class="o">-</span> <span class="n">image_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="n">padded_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">max_dim</span><span class="p">,</span> <span class="n">max_dim</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+    <span class="n">padded_image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">pad_left</span><span class="p">,</span> <span class="n">pad_top</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">max_dim</span> <span class="o">!=</span> <span class="n">target_size</span><span class="p">:</span>
+        <span class="n">padded_image</span> <span class="o">=</span> <span class="n">padded_image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">target_size</span><span class="p">,</span> <span class="n">target_size</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">)</span>
+
+    <span class="n">image_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">padded_image</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">image_array</span> <span class="o">=</span> <span class="n">image_array</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">image_array</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_wd14_tags"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.get_wd14_tags">[docs]</a><span class="k">def</span> <span class="nf">get_wd14_tags</span><span class="p">(</span>
+        <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;ConvNextV2&#39;</span><span class="p">,</span>
+        <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span>
+        <span class="n">general_mcut_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">character_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">,</span>
+        <span class="n">character_mcut_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">no_underline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">drop_overlap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overview:</span>
-<span class="sd">        Tagging image by wd14 v2 model. Similar to</span>
-<span class="sd">        `SmilingWolf/wd-v1-4-tags &lt;https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags&gt;`_ .</span>
+<span class="sd">        Get tags for an image with wd14 taggers.</span>
+<span class="sd">        Similar to `SmilingWolf/wd-v1-4-tags &lt;https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags&gt;`_ .</span>
 
-<span class="sd">    :param image: Image to tagging.</span>
-<span class="sd">    :param model_name: Name of the mode, should be one of the \</span>
-<span class="sd">        ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``ConvNextV2``.</span>
-<span class="sd">    :param general_threshold: Threshold for default tags, default is ``0.35``.</span>
-<span class="sd">    :param character_threshold: Threshold for character tags, default is ``0.85``.</span>
-<span class="sd">    :param drop_overlap: Drop overlap tags or not, default is ``False``.</span>
-<span class="sd">    :return: Tagging results for levels, features and characters.</span>
+<span class="sd">    :param image: The input image.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param model_name: The name of the model to use.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :param general_threshold: The threshold for general tags.</span>
+<span class="sd">    :type general_threshold: float</span>
+<span class="sd">    :param general_mcut_enabled: If True, applies MCut thresholding to general tags.</span>
+<span class="sd">    :type general_mcut_enabled: bool</span>
+<span class="sd">    :param character_threshold: The threshold for character tags.</span>
+<span class="sd">    :type character_threshold: float</span>
+<span class="sd">    :param character_mcut_enabled: If True, applies MCut thresholding to character tags.</span>
+<span class="sd">    :type character_mcut_enabled: bool</span>
+<span class="sd">    :param no_underline: If True, replaces underscores in tag names with spaces.</span>
+<span class="sd">    :type no_underline: bool</span>
+<span class="sd">    :param drop_overlap: If True, drops overlapping tags.</span>
+<span class="sd">    :type drop_overlap: bool</span>
+<span class="sd">    :return: A tuple containing dictionaries for rating, general, and character tags with their probabilities.</span>
+<span class="sd">    :rtype: Tuple[Dict[str, float], Dict[str, float], Dict[str, float]]</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        Here are some images for example</span>
@@ -228,38 +308,35 @@
 <span class="sd">        &gt;&gt;&gt; chars</span>
 <span class="sd">        {&#39;hu_tao_(genshin_impact)&#39;: 0.9262397289276123, &#39;boo_tao_(genshin_impact)&#39;: 0.942080020904541}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tag_names</span><span class="p">,</span> <span class="n">rating_indexes</span><span class="p">,</span> <span class="n">general_indexes</span><span class="p">,</span> <span class="n">character_indexes</span> <span class="o">=</span> <span class="n">_get_wd14_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">no_underline</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">_get_wd14_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_inputs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
-
-    <span class="c1"># Load image, PIL RGB to OpenCV BGR</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">image</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="n">image</span> <span class="o">=</span> <span class="n">make_square</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">smart_resize</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">target_size</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_inputs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">_prepare_image_for_tagging</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">target_size</span><span class="p">)</span>
 
     <span class="n">input_name</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_inputs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
     <span class="n">label_name</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_outputs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
-    <span class="n">probs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">label_name</span><span class="p">],</span> <span class="p">{</span><span class="n">input_name</span><span class="p">:</span> <span class="n">image</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">label_name</span><span class="p">],</span> <span class="p">{</span><span class="n">input_name</span><span class="p">:</span> <span class="n">image</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tag_names</span><span class="p">,</span> <span class="n">preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)))</span>
 
-    <span class="n">tag_names</span><span class="p">,</span> <span class="n">rating_indexes</span><span class="p">,</span> <span class="n">general_indexes</span><span class="p">,</span> <span class="n">character_indexes</span> <span class="o">=</span> <span class="n">_get_wd14_labels</span><span class="p">()</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tag_names</span><span class="p">,</span> <span class="n">probs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
-
-    <span class="c1"># First 4 labels are actually ratings: pick one with argmax</span>
     <span class="n">ratings_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rating_indexes</span><span class="p">]</span>
     <span class="n">rating</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ratings_names</span><span class="p">)</span>
 
-    <span class="c1"># Then we have general tags: pick anywhere prediction confidence &gt; threshold</span>
     <span class="n">general_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">general_indexes</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">general_mcut_enabled</span><span class="p">:</span>
+        <span class="n">general_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">general_names</span><span class="p">])</span>
+        <span class="n">general_threshold</span> <span class="o">=</span> <span class="n">_mcut_threshold</span><span class="p">(</span><span class="n">general_probs</span><span class="p">)</span>
+
     <span class="n">general_res</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">general_names</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">general_threshold</span><span class="p">]</span>
     <span class="n">general_res</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">general_res</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">drop_overlap</span><span class="p">:</span>
         <span class="n">general_res</span> <span class="o">=</span> <span class="n">drop_overlap_tags</span><span class="p">(</span><span class="n">general_res</span><span class="p">)</span>
 
-    <span class="c1"># Everything else is characters: pick anywhere prediction confidence &gt; threshold</span>
     <span class="n">character_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">character_indexes</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">character_mcut_enabled</span><span class="p">:</span>
+        <span class="n">character_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">character_names</span><span class="p">])</span>
+        <span class="n">character_threshold</span> <span class="o">=</span> <span class="n">_mcut_threshold</span><span class="p">(</span><span class="n">character_probs</span><span class="p">)</span>
+        <span class="n">character_threshold</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">character_threshold</span><span class="p">)</span>
+
     <span class="n">character_res</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">character_names</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">character_threshold</span><span class="p">]</span>
     <span class="n">character_res</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">character_res</span><span class="p">)</span>
 
@@ -306,10 +383,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/wd14v3/index.html">dev/wd14v3</a></dd>
+                        <dd><a href="wd14.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/cpu/index.html">dev/cpu</a></dd>
-                        <dd><a href="wd14.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
