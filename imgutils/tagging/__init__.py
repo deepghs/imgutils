@@ -11,7 +11,7 @@ Overview:
 from .blacklist import is_blacklisted, drop_blacklisted_tags
 from .character import is_basic_character_tag, drop_basic_character_tags
 from .deepdanbooru import get_deepdanbooru_tags
-from .format import tags_to_text
+from .format import tags_to_text, add_underline, remove_underline
 from .match import tag_match_suffix, tag_match_prefix, tag_match_full
 from .mldanbooru import get_mldanbooru_tags
 from .order import sort_tags

@@ -1,6 +1,6 @@
 import pytest
 
-from imgutils.tagging import tags_to_text
+from imgutils.tagging import tags_to_text, add_underline, remove_underline
 
 
 @pytest.fixture()
@@ -40,3 +40,15 @@ class TestTaggingFormat:
                '1girl, panties, drinking glass, panty pull, areola slip'
         assert tags_to_text(tag_mapping, use_spaces=True, include_score=True) == \
                '(1girl:0.999), (panties:0.959), (drinking glass:0.934), (panty pull:0.683), (areola slip:0.412)'
+
+    def test_remove_underline(self):
+        assert remove_underline('1girl') == '1girl'
+        assert remove_underline(' red hair ') == 'red hair'
+        assert remove_underline('red_hair ') == 'red hair'
+        assert remove_underline('  ||_|| ') == '||_||'
+
+    def test_add_underline(self):
+        assert add_underline('1girl') == '1girl'
+        assert add_underline('red hair') == 'red_hair'
+        assert add_underline(' red hair  ') == 'red_hair'
+        assert add_underline(' ||_||  ') == '||_||'
