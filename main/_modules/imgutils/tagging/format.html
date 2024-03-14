@@ -110,6 +110,52 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span>
 
 <span class="n">RE_SPECIAL</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([</span><span class="se">\\</span><span class="s1">()])&#39;</span><span class="p">)</span>
+<span class="n">_KAOMOJIS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;0_0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;(o)_(o)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;+_+&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;+_-&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;._.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;&lt;o&gt;_&lt;o&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;&lt;|&gt;_&lt;|&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;=_=&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;&gt;_&lt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;3_3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;6_9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;&gt;_o&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;@_@&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;^_^&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;o_o&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;u_u&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;x_x&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;|_|&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;||_||&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="add_underline"><a class="viewcode-back" href="../../../api_doc/tagging/format.html#imgutils.tagging.format.add_underline">[docs]</a><span class="k">def</span> <span class="nf">add_underline</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds underscores to a tag string to make it compatible with image labeling conventions.</span>
+
+<span class="sd">    :param tag: The input tag string.</span>
+<span class="sd">    :type tag: str</span>
+<span class="sd">    :return: The tag string with underscores added.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">tag</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="remove_underline"><a class="viewcode-back" href="../../../api_doc/tagging/format.html#imgutils.tagging.format.remove_underline">[docs]</a><span class="k">def</span> <span class="nf">remove_underline</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Removes underscores from a tag string, restoring it to its original form.</span>
+
+<span class="sd">    :param tag: The input tag string.</span>
+<span class="sd">    :type tag: str</span>
+<span class="sd">    :return: The tag string with underscores removed.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">tag</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_KAOMOJIS</span> <span class="k">else</span> <span class="n">tag</span></div>
 
 
 <div class="viewcode-block" id="tags_to_text"><a class="viewcode-back" href="../../../api_doc/tagging/format.html#imgutils.tagging.format.tags_to_text">[docs]</a><span class="k">def</span> <span class="nf">tags_to_text</span><span class="p">(</span><span class="n">tags</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
@@ -151,7 +197,7 @@
     <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">tags_pairs</span><span class="p">:</span>
         <span class="n">t_text</span> <span class="o">=</span> <span class="n">tag</span>
         <span class="k">if</span> <span class="n">use_spaces</span><span class="p">:</span>
-            <span class="n">t_text</span> <span class="o">=</span> <span class="n">t_text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+            <span class="n">t_text</span> <span class="o">=</span> <span class="n">remove_underline</span><span class="p">(</span><span class="n">t_text</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">use_escape</span><span class="p">:</span>
             <span class="n">t_text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">RE_SPECIAL</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">\1&#39;</span><span class="p">,</span> <span class="n">t_text</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">include_score</span><span class="p">:</span>
@@ -201,10 +247,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/underline/index.html">dev/underline</a></dd>
+                        <dd><a href="format.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/cpu/index.html">dev/cpu</a></dd>
-                        <dd><a href="format.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

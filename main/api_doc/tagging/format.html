@@ -78,6 +78,14 @@
 <li class="toctree-l2"><a class="reference internal" href="wd14.html">imgutils.tagging.wd14</a></li>
 <li class="toctree-l2"><a class="reference internal" href="deepdanbooru.html">imgutils.tagging.deepdanbooru</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.tagging.format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#add-underline">add_underline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.format.add_underline"><code class="docutils literal notranslate"><span class="pre">add_underline()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-underline">remove_underline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.format.remove_underline"><code class="docutils literal notranslate"><span class="pre">remove_underline()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#tags-to-text">tags_to_text</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.format.tags_to_text"><code class="docutils literal notranslate"><span class="pre">tags_to_text()</span></code></a></li>
 </ul>
@@ -128,6 +136,46 @@
 <dt>Overview:</dt><dd><p>A tool that maps tags to a single string, commonly used for image feature labeling during model training.</p>
 </dd>
 </dl>
+<section id="add-underline">
+<h2>add_underline<a class="headerlink" href="#add-underline" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.tagging.format.add_underline">
+<span class="sig-prename descclassname"><span class="pre">imgutils.tagging.format.</span></span><span class="sig-name descname"><span class="pre">add_underline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/format.html#add_underline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.tagging.format.add_underline" title="Permalink to this definition"></a></dt>
+<dd><p>Adds underscores to a tag string to make it compatible with image labeling conventions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tag</strong> (<em>str</em>) – The input tag string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tag string with underscores added.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="remove-underline">
+<h2>remove_underline<a class="headerlink" href="#remove-underline" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.tagging.format.remove_underline">
+<span class="sig-prename descclassname"><span class="pre">imgutils.tagging.format.</span></span><span class="sig-name descname"><span class="pre">remove_underline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/format.html#remove_underline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.tagging.format.remove_underline" title="Permalink to this definition"></a></dt>
+<dd><p>Removes underscores from a tag string, restoring it to its original form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tag</strong> (<em>str</em>) – The input tag string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tag string with underscores removed.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="tags-to-text">
 <h2>tags_to_text<a class="headerlink" href="#tags-to-text" title="Permalink to this heading"></a></h2>
 <dl class="py function">
@@ -219,10 +267,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/underline/api_doc/tagging/format.html">dev/underline</a></dd>
+                        <dd><a href="format.html">main</a></dd>
                         <dd><a href="../../../ccip/api_doc/tagging/format.html">ccip</a></dd>
                         <dd><a href="../../../dev/cpu/api_doc/tagging/format.html">dev/cpu</a></dd>
-                        <dd><a href="format.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
