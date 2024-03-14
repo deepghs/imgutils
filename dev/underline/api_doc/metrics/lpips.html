@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.metrics.lpips &mdash; imgutils 0.3.5 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=982a9e63"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.metrics.psnr_" href="psnr_.html" />
+    <link rel="prev" title="imgutils.metrics.ccip" href="ccip.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+              <div class="version">
+                0.3.5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.metrics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aesthetic.html">imgutils.metrics.aesthetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccip.html">imgutils.metrics.ccip</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.metrics.lpips</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lpips-extract-feature">lpips_extract_feature</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.lpips.lpips_extract_feature"><code class="docutils literal notranslate"><span class="pre">lpips_extract_feature()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lpips-difference">lpips_difference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.lpips.lpips_difference"><code class="docutils literal notranslate"><span class="pre">lpips_difference()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lpips-clustering">lpips_clustering</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.lpips.lpips_clustering"><code class="docutils literal notranslate"><span class="pre">lpips_clustering()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="psnr_.html">imgutils.metrics.psnr_</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.metrics</a></li>
+      <li class="breadcrumb-item active">imgutils.metrics.lpips</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/metrics/lpips.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.metrics.lpips">
+<span id="imgutils-metrics-lpips"></span><h1>imgutils.metrics.lpips<a class="headerlink" href="#module-imgutils.metrics.lpips" title="Permalink to this heading"></a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>Useful utilities based on <a class="reference external" href="https://github.com/richzhang/PerceptualSimilarity">richzhang/PerceptualSimilarity</a>,     tested with dataset <a class="reference external" href="https://huggingface.co/datasets/deepghs/chafen_arknights">deepghs/chafen_arknights(private)</a>.</p>
+<p>When threshold is <cite>0.45</cite>, the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html">adjusted rand score</a> can reach <cite>0.995</cite>.</p>
+<p>This is an overall benchmark of all the operations in LPIPS models:</p>
+<img alt="../../_images/lpips_benchmark.plot.py.svg" class="align-center" src="../../_images/lpips_benchmark.plot.py.svg" /></dd>
+</dl>
+<section id="lpips-extract-feature">
+<h2>lpips_extract_feature<a class="headerlink" href="#lpips-extract-feature" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metrics.lpips.lpips_extract_feature">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.lpips.</span></span><span class="sig-name descname"><span class="pre">lpips_extract_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/metrics/lpips.html#lpips_extract_feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.lpips.lpips_extract_feature" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Overview:</dt><dd><p>Extract feature from images.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> – One or multiple images to extract features.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Extracted features, should be a tuple of 5 arrays which extracted from CNN.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">lpips_extract_feature</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f3</span><span class="p">,</span> <span class="n">f4</span><span class="p">,</span> <span class="n">f5</span> <span class="o">=</span> <span class="n">lpips_extract_feature</span><span class="p">(</span><span class="s1">&#39;lpips/1.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">f1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">f2</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">f3</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">f4</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">f4</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">((1, 64, 99, 99), (1, 192, 49, 49), (1, 384, 24, 24), (1, 256, 24, 24), (1, 256, 24, 24))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f3</span><span class="p">,</span> <span class="n">f4</span><span class="p">,</span> <span class="n">f5</span> <span class="o">=</span> <span class="n">lpips_extract_feature</span><span class="p">([</span><span class="s1">&#39;lpips/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;lpips/4.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;lpips/7.jpg&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">f1</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">f2</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">f3</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">f4</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">f4</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">((3, 64, 99, 99), (3, 192, 49, 49), (3, 384, 24, 24), (3, 256, 24, 24), (3, 256, 24, 24))</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This feature can be used in <a class="reference internal" href="#imgutils.metrics.lpips.lpips_difference" title="imgutils.metrics.lpips.lpips_difference"><code class="xref py py-func docutils literal notranslate"><span class="pre">lpips_difference()</span></code></a> and <a class="reference internal" href="#imgutils.metrics.lpips.lpips_clustering" title="imgutils.metrics.lpips.lpips_clustering"><code class="xref py py-func docutils literal notranslate"><span class="pre">lpips_clustering()</span></code></a>.</p>
+</div>
+</dd></dl>
+
+</section>
+<section id="lpips-difference">
+<h2>lpips_difference<a class="headerlink" href="#lpips-difference" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metrics.lpips.lpips_difference">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.lpips.</span></span><span class="sig-name descname"><span class="pre">lpips_difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/imgutils/metrics/lpips.html#lpips_difference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.lpips.lpips_difference" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Overview:</dt><dd><p>Calculate LPIPS difference between images.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img1</strong> – Image file, PIL object or extracted feature of image.</p></li>
+<li><p><strong>img2</strong> – Image file, PIL object or extracted feature of another image.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>LPIPS difference. Value lower than <code class="docutils literal notranslate"><span class="pre">0.45</span></code> usually represents similar.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><p>Here are some images for example</p>
+<img alt="../../_images/lpips_small.plot.py.svg" class="align-center" src="../../_images/lpips_small.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">lpips_difference</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lpips_difference</span><span class="p">(</span><span class="s1">&#39;lpips/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;lpips/2.jpg&#39;</span><span class="p">)</span>
+<span class="go">0.16922694444656372</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lpips_difference</span><span class="p">(</span><span class="s1">&#39;lpips/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;lpips/3.jpg&#39;</span><span class="p">)</span>
+<span class="go">0.22250649333000183</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lpips_difference</span><span class="p">(</span><span class="s1">&#39;lpips/1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;lpips/4.jpg&#39;</span><span class="p">)</span>  <span class="c1"># not similar</span>
+<span class="go">0.6897575259208679</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lpips_difference</span><span class="p">(</span><span class="s1">&#39;lpips/2.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;lpips/3.jpg&#39;</span><span class="p">)</span>
+<span class="go">0.10956494510173798</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lpips_difference</span><span class="p">(</span><span class="s1">&#39;lpips/2.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;lpips/4.jpg&#39;</span><span class="p">)</span>  <span class="c1"># not similar</span>
+<span class="go">0.6823137998580933</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lpips_difference</span><span class="p">(</span><span class="s1">&#39;lpips/3.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;lpips/4.jpg&#39;</span><span class="p">)</span>  <span class="c1"># not similar</span>
+<span class="go">0.6837796568870544</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="lpips-clustering">
+<h2>lpips_clustering<a class="headerlink" href="#lpips-clustering" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metrics.lpips.lpips_clustering">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.lpips.</span></span><span class="sig-name descname"><span class="pre">lpips_clustering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.45</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/metrics/lpips.html#lpips_clustering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.lpips.lpips_clustering" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Overview:</dt><dd><p>Clustering images with LPIPS metrics.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> – List of multiple images.</p></li>
+<li><p><strong>threshold</strong> – Threshold of clustering. Default value <code class="docutils literal notranslate"><span class="pre">0.45</span></code> is recommended.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Clustering result with LPIPS, each integer represent one group, <code class="docutils literal notranslate"><span class="pre">-1</span></code> means this is a noise sample.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><p>Here are some images for example</p>
+<img alt="../../_images/lpips_full.plot.py.svg" class="align-center" src="../../_images/lpips_full.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">lpips_clustering</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;lpips/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">.jpg&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span>
+<span class="go">[&#39;lpips/1.jpg&#39;, &#39;lpips/2.jpg&#39;, &#39;lpips/3.jpg&#39;, &#39;lpips/4.jpg&#39;, &#39;lpips/5.jpg&#39;, &#39;lpips/6.jpg&#39;, &#39;lpips/7.jpg&#39;, &#39;lpips/8.jpg&#39;, &#39;lpips/9.jpg&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lpips_clustering</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+<span class="go">[0, 0, 0, 1, 1, -1, -1, -1, -1]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ccip.html" class="btn btn-neutral float-left" title="imgutils.metrics.ccip" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="psnr_.html" class="btn btn-neutral float-right" title="imgutils.metrics.psnr_" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/underline
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.3.0/api_doc/metrics/lpips.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../v0.3.1/api_doc/metrics/lpips.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../v0.3.2/api_doc/metrics/lpips.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../v0.3.3/api_doc/metrics/lpips.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../v0.3.4/api_doc/metrics/lpips.html">v0.3.4</a></dd>
+                        <dd><a href="../../../../v0.3.5/api_doc/metrics/lpips.html">v0.3.5</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="lpips.html">dev/underline</a></dd>
+                        <dd><a href="../../../../ccip/api_doc/metrics/lpips.html">ccip</a></dd>
+                        <dd><a href="../../../cpu/api_doc/metrics/lpips.html">dev/cpu</a></dd>
+                        <dd><a href="../../../../main/api_doc/metrics/lpips.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
