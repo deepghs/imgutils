@@ -13,6 +13,7 @@ import pandas as pd
 from PIL import Image
 from hbutils.testing.requires.version import VersionInfo
 
+from .format import remove_underline
 from .overlap import drop_overlap_tags
 from ..data import load_image, ImageTyping
 from ..utils import open_onnx_model
@@ -49,29 +50,6 @@ def _version_support_check(model_name):
                                f'please upgrade it to 1.17+ version.')  # pragma: no cover
 
 
-_KAOMOJIS = [
-    "0_0",
-    "(o)_(o)",
-    "+_+",
-    "+_-",
-    "._.",
-    "<o>_<o>",
-    "<|>_<|>",
-    "=_=",
-    ">_<",
-    "3_3",
-    "6_9",
-    ">_o",
-    "@_@",
-    "^_^",
-    "o_o",
-    "u_u",
-    "x_x",
-    "|_|",
-    "||_||",
-]
-
-
 @lru_cache()
 def _get_wd14_model(model_name):
     """
@@ -102,9 +80,7 @@ def _get_wd14_labels(model_name, no_underline: bool = False) -> Tuple[List[str],
     df = pd.read_csv(path)
     name_series = df["name"]
     if no_underline:
-        name_series = name_series.map(
-            lambda x: x.replace("_", " ") if x not in _KAOMOJIS else x
-        )
+        name_series = name_series.map(remove_underline)
     tag_names = name_series.tolist()
 
     rating_indexes = list(np.where(df["category"] == 9)[0])
