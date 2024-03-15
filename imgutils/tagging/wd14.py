@@ -42,6 +42,7 @@ MODEL_NAMES = {
     "ConvNext_v3": CONV_V3_MODEL_REPO,
     "ViT_v3": VIT_V3_MODEL_REPO,
 }
+_DEFAULT_MODEL_NAME = 'SwinV2_v3'
 
 
 def _version_support_check(model_name):
@@ -123,7 +124,7 @@ def _prepare_image_for_tagging(image: ImageTyping, target_size: int):
 
 def get_wd14_tags(
         image: ImageTyping,
-        model_name: str = 'ConvNextV2',
+        model_name: str = _DEFAULT_MODEL_NAME,
         general_threshold: float = 0.35,
         general_mcut_enabled: bool = False,
         character_threshold: float = 0.85,
