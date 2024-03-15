@@ -146,6 +146,7 @@
     <span class="s2">&quot;ConvNext_v3&quot;</span><span class="p">:</span> <span class="n">CONV_V3_MODEL_REPO</span><span class="p">,</span>
     <span class="s2">&quot;ViT_v3&quot;</span><span class="p">:</span> <span class="n">VIT_V3_MODEL_REPO</span><span class="p">,</span>
 <span class="p">}</span>
+<span class="n">_DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;SwinV2_v3&#39;</span>
 
 
 <span class="k">def</span> <span class="nf">_version_support_check</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
@@ -227,7 +228,7 @@
 
 <div class="viewcode-block" id="get_wd14_tags"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.get_wd14_tags">[docs]</a><span class="k">def</span> <span class="nf">get_wd14_tags</span><span class="p">(</span>
         <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span>
-        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;ConvNextV2&#39;</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
         <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span>
         <span class="n">general_mcut_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">character_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">,</span>
@@ -359,10 +360,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/tagdefault/index.html">dev/tagdefault</a></dd>
+                        <dd><a href="wd14.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/cpu/index.html">dev/cpu</a></dd>
-                        <dd><a href="wd14.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
