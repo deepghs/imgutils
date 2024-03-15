@@ -48,7 +48,9 @@ _DEFAULT_MODEL_NAME = 'SwinV2_v3'
 def _version_support_check(model_name):
     if model_name.endswith('_v3') and not _IS_V3_SUPPORT:
         raise EnvironmentError(f'V3 taggers not supported on onnxruntime {onnxruntime.__version__}, '
-                               f'please upgrade it to 1.17+ version.')  # pragma: no cover
+                               f'please upgrade it to 1.17+ version.\n'
+                               f'If you are running on CPU, use "pip install -U onnxruntime" .\n'
+                               f'If you are running on GPU, use "pip install -U onnxruntime-gpu" .')  # pragma: no cover
 
 
 @lru_cache()
