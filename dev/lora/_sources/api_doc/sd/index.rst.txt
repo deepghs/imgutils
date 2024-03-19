@@ -10,4 +10,5 @@ imgutils.sd
     :maxdepth: 3
 
     metadata
+    model
 
