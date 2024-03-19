@@ -44,6 +44,7 @@ jobs:
           sudo apt-get install -y make wget curl cloc graphviz pandoc
           dot -V
           python -m pip install -r requirements.txt
+          python -m pip install -r requirements-model.txt
           python -m pip install -r requirements-doc.txt
       - name: Prepare dataset
         uses: nick-fields/retry@v2
