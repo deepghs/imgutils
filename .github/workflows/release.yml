@@ -37,7 +37,7 @@ jobs:
         run: |
           python -m build --sdist --wheel --outdir dist/
       - name: Publish distribution 📦 to real PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1.8.10
+        uses: pypa/gh-action-pypi-publish@v1.8.10
         with:
           password: ${{ secrets.PYPI_PASSWORD }}
       - name: Upload binaries to release
