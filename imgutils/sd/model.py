@@ -4,7 +4,11 @@ Overview:
 
     .. note::
         ``torch`` and ``safetensors`` are required by this model.
-        Please install them with ``pip install dghs-imgutils[model]`` before start using this part.
+        Please install them with the following command before start using this module.
+
+        .. code:: shell
+
+            pip install dghs-imgutils[model]
 """
 
 from typing import Dict
