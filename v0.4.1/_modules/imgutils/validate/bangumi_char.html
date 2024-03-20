@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.validate.bangumi_char &mdash; imgutils 0.4.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ea00750a"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+              <div class="version">
+                0.4.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.validate.bangumi_char</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.validate.bangumi_char</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    A model for classifying anime bangumi character images into 4 classes</span>
+<span class="sd">    (``vision``, ``imagery``, ``halfbody``, ``face``).</span>
+
+<span class="sd">    The following are sample images for testing.</span>
+
+<span class="sd">    .. image:: bangumi_char.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    This is an overall benchmark of all the bangumi character classification models:</span>
+
+<span class="sd">    .. image:: bangumi_char_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    The models are hosted on</span>
+<span class="sd">    `huggingface - deepghs/bangumi_char_type &lt;https://huggingface.co/deepghs/bangumi_char_type&gt;`_.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Please note that the classification of bangumi character types is not based on the proportion</span>
+<span class="sd">        of the head in the image but on the completeness of facial details.</span>
+<span class="sd">        The specific definitions of the four types can be found `here &lt;https://huggingface.co/datasets/deepghs/bangumi_char_type&gt;`_.</span>
+
+<span class="sd">        In anime videos, **characters in secondary positions often lack details due to simplified animation**,</span>
+<span class="sd">        leading to their classification under the ``vision`` category.</span>
+<span class="sd">        **The other three types include images with complete and clear facial features**.</span>
+
+<span class="sd">        If you are looking for a classification model that judges the proportion of the head in an image,</span>
+<span class="sd">        please use the :func:`imgutils.validate.anime_portrait` function.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">..generic</span> <span class="kn">import</span> <span class="n">classify_predict_score</span><span class="p">,</span> <span class="n">classify_predict</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;anime_bangumi_char_score&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;anime_bangumi_char&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">_DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3_v0_dist&#39;</span>
+<span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/bangumi_char_type&#39;</span>
+
+
+<div class="viewcode-block" id="anime_bangumi_char_score"><a class="viewcode-back" href="../../../api_doc/validate/bangumi_char.html#imgutils.validate.bangumi_char.anime_bangumi_char_score">[docs]</a><span class="k">def</span> <span class="nf">anime_bangumi_char_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the scores for different types in an anime bangumi character.</span>
+
+<span class="sd">    :param image: The input image.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param model_name: The model name. Default is &#39;mobilenetv3_v0_dist&#39;.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :return: A dictionary with type scores.</span>
+<span class="sd">    :rtype: Dict[str, float]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_bangumi_char_score</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/vision/1.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 0.9998525381088257, &#39;imagery&#39;: 0.00012103465269319713, &#39;halfbody&#39;: 1.6464786313008517e-05, &#39;face&#39;: 9.906112609314732e-06}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/vision/2.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 0.9997243285179138, &#39;imagery&#39;: 0.0002490800397936255, &#39;halfbody&#39;: 1.7215803381986916e-05, &#39;face&#39;: 9.354368557978887e-06}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/vision/3.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 0.9998849630355835, &#39;imagery&#39;: 8.90006631379947e-05, &#39;halfbody&#39;: 1.3920385754317977e-05, &#39;face&#39;: 1.2084233276254963e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/vision/4.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 0.9998877048492432, &#39;imagery&#39;: 8.732793503440917e-05, &#39;halfbody&#39;: 1.4264976925915107e-05, &#39;face&#39;: 1.0623419257171918e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/imagery/5.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 0.07076334953308105, &#39;imagery&#39;: 0.9290977716445923, &#39;halfbody&#39;: 0.0001044218079186976, &#39;face&#39;: 3.4467317163944244e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/imagery/6.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 2.2568268832401372e-05, &#39;imagery&#39;: 0.9999498128890991, &#39;halfbody&#39;: 2.1810528778587468e-05, &#39;face&#39;: 5.879474429093534e-06}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/imagery/7.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 3.260669109295122e-05, &#39;imagery&#39;: 0.9999510049819946, &#39;halfbody&#39;: 1.2321036592766177e-05, &#39;face&#39;: 4.025227553938748e-06}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/imagery/8.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 1.4251427273848094e-05, &#39;imagery&#39;: 0.999957799911499, &#39;halfbody&#39;: 2.4273678718600422e-05, &#39;face&#39;: 3.6884023302263813e-06}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/halfbody/9.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 3.880981603288092e-05, &#39;imagery&#39;: 0.0002326338435523212, &#39;halfbody&#39;: 0.9996368885040283, &#39;face&#39;: 9.164971561403945e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/halfbody/10.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 0.00020793956355191767, &#39;imagery&#39;: 0.13438372313976288, &#39;halfbody&#39;: 0.8652494549751282, &#39;face&#39;: 0.000158855298650451}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/halfbody/11.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 0.000238816806813702, &#39;imagery&#39;: 0.3589179217815399, &#39;halfbody&#39;: 0.6406960487365723, &#39;face&#39;: 0.0001471740542910993}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/halfbody/12.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 0.002255884697660804, &#39;imagery&#39;: 0.08208147436380386, &#39;halfbody&#39;: 0.9152728915214539, &#39;face&#39;: 0.00038967153523117304}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/face/13.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 9.227699592884164e-06, &#39;imagery&#39;: 1.0835404282261152e-05, &#39;halfbody&#39;: 5.1437502406770363e-05, &#39;face&#39;: 0.9999284744262695}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/face/14.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 1.2125529792683665e-05, &#39;imagery&#39;: 1.0218892384727951e-05, &#39;halfbody&#39;: 0.00011914174683624879, &#39;face&#39;: 0.9998584985733032}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/face/15.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 1.2007669283775613e-05, &#39;imagery&#39;: 1.6357082131435163e-05, &#39;halfbody&#39;: 5.3068713896209374e-05, &#39;face&#39;: 0.9999185800552368}</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char_score(&#39;bangumi_char/face/16.jpg&#39;)</span>
+<span class="sd">        {&#39;vision&#39;: 1.066640925273532e-05, &#39;imagery&#39;: 9.529400813335087e-06, &#39;halfbody&#39;: 4.089402500540018e-05, &#39;face&#39;: 0.9999388456344604}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">classify_predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_REPO_ID</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="anime_bangumi_char"><a class="viewcode-back" href="../../../api_doc/validate/bangumi_char.html#imgutils.validate.bangumi_char.anime_bangumi_char">[docs]</a><span class="k">def</span> <span class="nf">anime_bangumi_char</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the primary anime bangumi character type and its score.</span>
+
+<span class="sd">    :param image: The input image.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param model_name: The model name. Default is &#39;mobilenetv3_v0_dist&#39;.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :return: A tuple with the primary type and its score.</span>
+<span class="sd">    :rtype: Tuple[str, float]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_bangumi_char</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/vision/1.jpg&#39;)</span>
+<span class="sd">        (&#39;vision&#39;, 0.9998525381088257)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/vision/2.jpg&#39;)</span>
+<span class="sd">        (&#39;vision&#39;, 0.9997243285179138)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/vision/3.jpg&#39;)</span>
+<span class="sd">        (&#39;vision&#39;, 0.9998849630355835)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/vision/4.jpg&#39;)</span>
+<span class="sd">        (&#39;vision&#39;, 0.9998877048492432)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/imagery/5.jpg&#39;)</span>
+<span class="sd">        (&#39;imagery&#39;, 0.9290977716445923)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/imagery/6.jpg&#39;)</span>
+<span class="sd">        (&#39;imagery&#39;, 0.9999498128890991)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/imagery/7.jpg&#39;)</span>
+<span class="sd">        (&#39;imagery&#39;, 0.9999510049819946)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/imagery/8.jpg&#39;)</span>
+<span class="sd">        (&#39;imagery&#39;, 0.999957799911499)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/halfbody/9.jpg&#39;)</span>
+<span class="sd">        (&#39;halfbody&#39;, 0.9996368885040283)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/halfbody/10.jpg&#39;)</span>
+<span class="sd">        (&#39;halfbody&#39;, 0.8652494549751282)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/halfbody/11.jpg&#39;)</span>
+<span class="sd">        (&#39;halfbody&#39;, 0.6406959295272827)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/halfbody/12.jpg&#39;)</span>
+<span class="sd">        (&#39;halfbody&#39;, 0.9152728915214539)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/face/13.jpg&#39;)</span>
+<span class="sd">        (&#39;face&#39;, 0.9999284744262695)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/face/14.jpg&#39;)</span>
+<span class="sd">        (&#39;face&#39;, 0.9998584985733032)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/face/15.jpg&#39;)</span>
+<span class="sd">        (&#39;face&#39;, 0.9999185800552368)</span>
+<span class="sd">        &gt;&gt;&gt; anime_bangumi_char(&#39;bangumi_char/face/16.jpg&#39;)</span>
+<span class="sd">        (&#39;face&#39;, 0.9999388456344604)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">classify_predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_REPO_ID</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.4.1
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../v0.3.2/index.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../v0.3.3/index.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../v0.3.4/index.html">v0.3.4</a></dd>
+                        <dd><a href="../../../../v0.3.5/index.html">v0.3.5</a></dd>
+                        <dd><a href="../../../../v0.4.0/index.html">v0.4.0</a></dd>
+                        <dd><a href="bangumi_char.html">v0.4.1</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                        <dd><a href="../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../../dev/cpu/index.html">dev/cpu</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
