@@ -81,7 +81,16 @@ class ClassifyModel:
 
     def _raw_predict(self, image: ImageTyping, model_name: str):
         image = load_image(image, force_background='white', mode='RGB')
-        input_ = _img_encode(image)[None, ...]
+        model = self._open_model(model_name)
+        batch, channels, height, width = model.get_inputs()[0].shape
+        if channels != 3:
+            raise RuntimeError(f'Model {model_name!r} required {[batch, channels, height, width]!r}, '
+                               f'channels not 3.')  # pragma: no cover
+
+        if isinstance(height, int) and isinstance(width, int):
+            input_ = _img_encode(image, size=(width, height))[None, ...]
+        else:
+            input_ = _img_encode(image)[None, ...]
         output, = self._open_model(model_name).run(['output'], {'input': input_})
         return output
 
