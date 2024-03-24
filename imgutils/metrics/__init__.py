@@ -4,5 +4,6 @@ Overview:
 """
 from .aesthetic import *
 from .ccip import *
+from .dbaesthetic import *
 from .lpips import *
 from .psnr_ import *
