@@ -14,6 +14,7 @@ imgutils.validate
     classify
     color
     completeness
+    dbrating
     monochrome
     nsfw
     portrait
