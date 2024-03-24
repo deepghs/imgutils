@@ -1,6 +1,6 @@
 """
 Overview:
-    A model for rating anime images into 4 classes (``safe``, ``r15`` and ``r18``).
+    A model for rating anime images into 3 classes (``safe``, ``r15`` and ``r18``), based on sankaku rating system.
 
     The following are sample images for testing.
 

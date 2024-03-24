@@ -7,6 +7,7 @@ from .bangumi_char import *
 from .classify import *
 from .color import *
 from .completeness import *
+from .dbrating import *
 from .monochrome import *
 from .nsfw import *
 from .portrait import *
