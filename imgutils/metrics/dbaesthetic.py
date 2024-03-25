@@ -47,7 +47,7 @@ def _value_replace(v, mapping):
     else:
         try:
             _ = hash(v)
-        except TypeError:
+        except TypeError:  # pragma: no cover
             return v
         else:
             return mapping.get(v, v)
@@ -142,7 +142,7 @@ class AestheticModel:
             if percentile >= threshold:
                 return label
         else:
-            raise ValueError(f'No label for unknown percentile {percentile:.3f}.')
+            raise ValueError(f'No label for unknown percentile {percentile:.3f}.')  # pragma: no cover
 
     def get_aesthetic(self, image: ImageTyping, model_name: str, fmt=('label', 'percentile')):
         """
