@@ -1,6 +1,9 @@
 """
 Overview:
-    A tool for assessing the aesthetic quality of anime images using a pre-trained model, based on danbooru dataset.
+    A tool for assessing the aesthetic quality of anime images using a pre-trained model,
+    based on danbooru dataset and metadata analysis result of
+    `HakuBooru <https://github.com/KohakuBlueleaf/HakuBooru>`_ by
+    `KohakuBlueleaf <https://github.com/KohakuBlueleaf>`_.
 
     .. image:: dbaesthetic_full.plot.py.svg
         :align: center
