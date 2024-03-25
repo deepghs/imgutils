@@ -10,14 +10,20 @@ Overview:
 
     .. image:: aesthetic_benchmark.plot.py.svg
         :align: center
+
+    .. warning::
+        These model is deprecated due to the poor effectiveness.
+        Please use `imgutils.metrics.aesthetic.anime_dbaesthetic` for better evaluation.
 """
 from functools import lru_cache
 
 import cv2
 import numpy as np
 from PIL import Image
+from deprecation import deprecated
 from huggingface_hub import hf_hub_download
 
+from ..config.meta import __VERSION__
 from ..data import ImageTyping, load_image
 from ..utils import open_onnx_model
 
@@ -47,6 +53,8 @@ def _preprocess(image: Image.Image):
     return img_input[np.newaxis, :]
 
 
+@deprecated(deprecated_in='0.4.2', removed_in='1.0.0', current_version=__VERSION__,
+            details='Deprecated due to the low effectiveness.')
 def get_aesthetic_score(image: ImageTyping):
     """
     Overview:

@@ -11,5 +11,6 @@ imgutils.metrics
 
     aesthetic
     ccip
+    dbaesthetic
     lpips
     psnr_
