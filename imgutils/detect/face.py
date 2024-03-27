@@ -32,7 +32,7 @@ def _open_face_detect_model(level: str = 's', version: str = 'v1.4'):
     return open_onnx_model(hf_hub_download(
         f'deepghs/anime_face_detection',
         f'face_detect_{version}_{level}/model.onnx'
-    ))
+    ), use_cpu=True)
 
 
 def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1.4', max_infer_size=640,

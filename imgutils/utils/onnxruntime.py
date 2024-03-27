@@ -63,7 +63,7 @@ def get_onnx_provider(provider: Optional[str] = None):
                          f'but unsupported provider {provider!r} found.')
 
 
-def _open_onnx_model(ckpt: str, provider: str, use_cpu: bool = True) -> InferenceSession:
+def _open_onnx_model(ckpt: str, provider: str, use_cpu: bool = False) -> InferenceSession:
     options = SessionOptions()
     options.graph_optimization_level = GraphOptimizationLevel.ORT_ENABLE_ALL
     if provider == "CPUExecutionProvider":
@@ -77,7 +77,7 @@ def _open_onnx_model(ckpt: str, provider: str, use_cpu: bool = True) -> Inferenc
     return InferenceSession(ckpt, options, providers=providers)
 
 
-def open_onnx_model(ckpt: str, mode: str = None) -> InferenceSession:
+def open_onnx_model(ckpt: str, mode: str = None, use_cpu: bool = False) -> InferenceSession:
     """
     Overview:
         Open an ONNX model and load its ONNX runtime.
@@ -85,6 +85,7 @@ def open_onnx_model(ckpt: str, mode: str = None) -> InferenceSession:
     :param ckpt: ONNX model file.
     :param mode: Provider of the ONNX. Default is ``None`` which means the provider will be auto-detected,
         see :func:`get_onnx_provider` for more details.
+    :param use_cpu: Use CPUExecutionProvider as the same time.
     :return: A loaded ONNX runtime object.
 
     .. note::
@@ -93,4 +94,4 @@ def open_onnx_model(ckpt: str, mode: str = None) -> InferenceSession:
         on Linux, executing ``export ONNX_MODE=cpu`` will ignore any existing CUDA and force the model inference
         to run on CPU.
     """
-    return _open_onnx_model(ckpt, get_onnx_provider(mode or os.environ.get('ONNX_MODE', None)))
+    return _open_onnx_model(ckpt, get_onnx_provider(mode or os.environ.get('ONNX_MODE', None)), use_cpu=use_cpu)

@@ -34,7 +34,7 @@ def _open_person_detect_model(level: str, version: str):
     return open_onnx_model(hf_hub_download(
         'deepghs/imgutils-models',
         f'person_detect/person_detect_{_VERSIONS[version]}best_{level}.onnx'
-    ))
+    ), use_cpu=True)
 
 
 def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1.1', max_infer_size=640,

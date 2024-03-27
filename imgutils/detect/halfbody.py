@@ -36,7 +36,7 @@ def _open_halfbody_detect_model(level: str = 's', version: str = 'v1.0'):
     return open_onnx_model(hf_hub_download(
         f'deepghs/anime_halfbody_detection',
         f'halfbody_detect_{version}_{level}/model.onnx'
-    ))
+    ), use_cpu=True)
 
 
 _LABELS = ["halfbody"]
