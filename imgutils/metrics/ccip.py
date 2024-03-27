@@ -95,6 +95,7 @@ def _open_cluster_metrics(model):
 
 
 _VALID_MODEL_NAMES = [
+    'ccip-caformer_b36-24',
     'ccip-caformer-24-randaug-pruned',
     'ccip-caformer-6-randaug-pruned_fp32',
     'ccip-caformer-5_fp32',
@@ -114,7 +115,7 @@ def ccip_extract_feature(image: ImageTyping, size: int = 384, model: str = _DEFA
 
     :param model: The name of the model to use for feature extraction. (default: ``ccip-caformer-24-randaug-pruned``)
                   The available model names are: ``ccip-caformer-24-randaug-pruned``,
-                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``.
+                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``, ``ccip-caformer_b36-24``.
     :type model: str
 
     :return: The feature vector of the character.
@@ -142,7 +143,7 @@ def ccip_batch_extract_features(images: MultiImagesTyping, size: int = 384, mode
 
     :param model: The name of the model to use for feature extraction. (default: ``ccip-caformer-24-randaug-pruned``)
                   The available model names are: ``ccip-caformer-24-randaug-pruned``,
-                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``.
+                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``, ``ccip-caformer_b36-24``.
     :type model: str
 
     :return: The feature vectors of the input images.
@@ -177,7 +178,7 @@ def ccip_default_threshold(model: str = _DEFAULT_MODEL_NAMES) -> float:
 
     :param model: The name of the model to use for feature extraction. (default: ``ccip-caformer-24-randaug-pruned``)
                   The available model names are: ``ccip-caformer-24-randaug-pruned``,
-                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``.
+                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``, ``ccip-caformer_b36-24``.
     :type model: str
 
     :return: The default threshold value obtained from model metrics.
@@ -212,7 +213,7 @@ def ccip_difference(x: _FeatureOrImage, y: _FeatureOrImage,
 
     :param model: The name of the model to use for feature extraction. (default: ``ccip-caformer-24-randaug-pruned``)
                   The available model names are: ``ccip-caformer-24-randaug-pruned``,
-                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``.
+                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``, ``ccip-caformer_b36-24``.
     :type model: str
 
     :return: The difference value between the two anime characters.
@@ -259,7 +260,7 @@ def ccip_same(x: _FeatureOrImage, y: _FeatureOrImage, threshold: Optional[float]
 
     :param model: The name of the model to use for feature extraction. (default: ``ccip-caformer-24-randaug-pruned``)
                   The available model names are: ``ccip-caformer-24-randaug-pruned``,
-                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``.
+                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``, ``ccip-caformer_b36-24``.
     :type model: str
 
     :return: True if the images or feature vectors are determined to belong to the same anime character, False otherwise.
@@ -301,7 +302,7 @@ def ccip_batch_differences(images: List[_FeatureOrImage],
 
     :param model: The name of the model to use for feature extraction. (default: ``ccip-caformer-24-randaug-pruned``)
                   The available model names are: ``ccip-caformer-24-randaug-pruned``,
-                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``.
+                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``, ``ccip-caformer_b36-24``.
     :type model: str
 
     :return: The matrix of pairwise differences between the given images or feature vectors.
@@ -340,7 +341,7 @@ def ccip_batch_same(images: List[_FeatureOrImage], threshold: Optional[float] = 
 
     :param model: The name of the model to use for feature extraction. (default: ``ccip-caformer-24-randaug-pruned``)
                   The available model names are: ``ccip-caformer-24-randaug-pruned``,
-                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``.
+                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``, ``ccip-caformer_b36-24``.
     :type model: str
 
     :return: A boolean matrix of shape (N, N), where N is the length of the `images` list. The value at position (i, j)
@@ -381,7 +382,7 @@ def ccip_default_clustering_params(model: str = _DEFAULT_MODEL_NAMES,
 
     :param model: The name of the model to use for feature extraction. (default: ``ccip-caformer-24-randaug-pruned``)
                   The available model names are: ``ccip-caformer-24-randaug-pruned``,
-                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``.
+                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``, ``ccip-caformer_b36-24``.
     :type model: str
 
     :param method: The clustering method for which the default parameters are retrieved.
@@ -459,7 +460,7 @@ def ccip_clustering(images: List[_FeatureOrImage], method: CCIPClusterMethodTypi
 
     :param model: The name of the model to use for feature extraction. (default: ``ccip-caformer-24-randaug-pruned``)
                   The available model names are: ``ccip-caformer-24-randaug-pruned``,
-                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``.
+                  ``ccip-caformer-6-randaug-pruned_fp32``, ``ccip-caformer-5_fp32``, ``ccip-caformer_b36-24``.
     :type model: str
 
     :return: An array of clustering labels indicating the cluster assignments for each image or feature vector.

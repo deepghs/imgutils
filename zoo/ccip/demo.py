@@ -75,8 +75,8 @@ class Infer:
     @staticmethod
     def build_args():
         parser = argparse.ArgumentParser(description='Stable Diffusion Training')
-        parser.add_argument('--model_name', type=str, default='caformer')
-        parser.add_argument('--ckpt', type=str, default='')
+        parser.add_argument('--model_name', type=str, default='caformer_b36')
+        parser.add_argument('--ckpt', type=str, default='ckpts/ccip-caformer_b36-12.ckpt')
         parser.add_argument('--remote_ckpt', type=str, default='ccip-caformer-2_fp32.ckpt')
         parser.add_argument('--fp16', default=None, action="store_true")
         return parser.parse_args()

@@ -305,6 +305,7 @@ def list_(repository: str):
         ))
 
     df = pd.DataFrame(data=data, columns=columns)
+    df = df.sort_values(by=['F1 Score'], ascending=False)
     print(df.to_markdown(index=False, numalign="center", stralign="center"))
 
 
