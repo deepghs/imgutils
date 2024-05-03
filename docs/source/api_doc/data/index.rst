@@ -10,7 +10,9 @@ imgutils.data
     :maxdepth: 3
 
     background
+    color
     encode
     decode
     image
     layer
+
