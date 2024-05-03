@@ -12,5 +12,6 @@ imgutils.metrics
     aesthetic
     ccip
     dbaesthetic
+    laplacian
     lpips
     psnr_
