@@ -142,7 +142,7 @@ def detect_text(image: ImageTyping, model: str = _DEFAULT_MODEL, threshold: floa
         This function is deprecated, and it will be removed from imgutils in the future.
         Please migrate to :func:`imgutils.ocr.detect_text_with_ocr` as soon as possible.
     """
-    image = load_image(image)
+    image = load_image(image, mode='RGB')
     if max_area_size is not None and image.width * image.height >= max_area_size ** 2:
         r = ((image.width * image.height) / (max_area_size ** 2)) ** 0.5
         new_width, new_height = int(image.width / r), int(image.height / r)

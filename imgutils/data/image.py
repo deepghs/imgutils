@@ -19,7 +19,7 @@ MultiImagesTyping = Union[ImageTyping, List[ImageTyping], Tuple[ImageTyping, ...
 
 
 def _has_alpha_channel(image: Image.Image) -> bool:
-    return any(band in {'A', 'a'} for band in image.getbands())
+    return any(band in {'A', 'a', 'P'} for band in image.getbands())
 
 
 def load_image(image: ImageTyping, mode=None, force_background: Optional[str] = 'white'):
