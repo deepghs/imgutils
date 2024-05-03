@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.validate.completeness &mdash; imgutils 0.4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ddf8ff60"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+              <div class="version">
+                0.4.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.validate.completeness</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.validate.completeness</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    Rough Prediction of illustration&#39;s completeness (``monochrome``, ``rough`` and ``polished``).</span>
+
+<span class="sd">    The following are sample images for testing.</span>
+
+<span class="sd">    .. image:: completeness.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    This is an overall benchmark of all the completeness classification models:</span>
+
+<span class="sd">    .. image:: completeness_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    The models are hosted on</span>
+<span class="sd">    `huggingface - deepghs/anime_completeness &lt;https://huggingface.co/deepghs/anime_completeness&gt;`_.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">..generic</span> <span class="kn">import</span> <span class="n">classify_predict</span><span class="p">,</span> <span class="n">classify_predict_score</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;anime_completeness_score&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;anime_completeness&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">_DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3_v2.2_dist&#39;</span>
+<span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/anime_completeness&#39;</span>
+
+
+<div class="viewcode-block" id="anime_completeness_score"><a class="viewcode-back" href="../../../api_doc/validate/completeness.html#imgutils.validate.completeness.anime_completeness_score">[docs]</a><span class="k">def</span> <span class="nf">anime_completeness_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rough Prediction of illustration&#39;s completeness, and return the score.</span>
+
+<span class="sd">    :param image: The input image.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param model_name: The model name. Default is &#39;mobilenetv3_v2.2_dist&#39;.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :return: A dictionary with type scores.</span>
+<span class="sd">    :rtype: Dict[str, float]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_completeness_score</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness_score(&#39;completeness/monochrome/1.jpg&#39;)</span>
+<span class="sd">        {&#39;polished&#39;: 5.910087929805741e-05, &#39;rough&#39;: 0.1241951510310173, &#39;monochrome&#39;: 0.8757457137107849}</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness_score(&#39;completeness/monochrome/2.jpg&#39;)</span>
+<span class="sd">        {&#39;polished&#39;: 0.00018937293498311192, &#39;rough&#39;: 0.030049214139580727, &#39;monochrome&#39;: 0.9697614312171936}</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness_score(&#39;completeness/monochrome/3.jpg&#39;)</span>
+<span class="sd">        {&#39;polished&#39;: 0.008933082222938538, &#39;rough&#39;: 0.05096456781029701, &#39;monochrome&#39;: 0.9401022791862488}</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness_score(&#39;completeness/rough/4.jpg&#39;)</span>
+<span class="sd">        {&#39;polished&#39;: 0.009832272306084633, &#39;rough&#39;: 0.9898634552955627, &#39;monochrome&#39;: 0.00030428936588577926}</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness_score(&#39;completeness/rough/5.jpg&#39;)</span>
+<span class="sd">        {&#39;polished&#39;: 0.013919820077717304, &#39;rough&#39;: 0.9819902181625366, &#39;monochrome&#39;: 0.004089969675987959}</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness_score(&#39;completeness/rough/6.jpg&#39;)</span>
+<span class="sd">        {&#39;polished&#39;: 0.04166747257113457, &#39;rough&#39;: 0.9582782983779907, &#39;monochrome&#39;: 5.4218515288084745e-05}</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness_score(&#39;completeness/polished/7.jpg&#39;)</span>
+<span class="sd">        {&#39;polished&#39;: 0.8849249482154846, &#39;rough&#39;: 0.1149177998304367, &#39;monochrome&#39;: 0.0001573085755808279}</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness_score(&#39;completeness/polished/8.jpg&#39;)</span>
+<span class="sd">        {&#39;polished&#39;: 0.9907882809638977, &#39;rough&#39;: 0.008958994410932064, &#39;monochrome&#39;: 0.0002527958422433585}</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness_score(&#39;completeness/polished/9.jpg&#39;)</span>
+<span class="sd">        {&#39;polished&#39;: 0.9831690788269043, &#39;rough&#39;: 0.01682441122829914, &#39;monochrome&#39;: 6.613856385229155e-06}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">classify_predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_REPO_ID</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="anime_completeness"><a class="viewcode-back" href="../../../api_doc/validate/completeness.html#imgutils.validate.completeness.anime_completeness">[docs]</a><span class="k">def</span> <span class="nf">anime_completeness</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rough Prediction of illustration&#39;s completeness, return the predict result and its score.</span>
+
+<span class="sd">    :param image: The input image.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param model_name: The model name. Default is &#39;mobilenetv3_v2.2_dist&#39;.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :return: A tuple with the primary type and its score.</span>
+<span class="sd">    :rtype: Tuple[str, float]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_completeness</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness(&#39;completeness/monochrome/1.jpg&#39;)</span>
+<span class="sd">        (&#39;monochrome&#39;, 0.8757458329200745)</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness(&#39;completeness/monochrome/2.jpg&#39;)</span>
+<span class="sd">        (&#39;monochrome&#39;, 0.9697614312171936)</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness(&#39;completeness/monochrome/3.jpg&#39;)</span>
+<span class="sd">        (&#39;monochrome&#39;, 0.9401022791862488)</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness(&#39;completeness/rough/4.jpg&#39;)</span>
+<span class="sd">        (&#39;rough&#39;, 0.9898634552955627)</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness(&#39;completeness/rough/5.jpg&#39;)</span>
+<span class="sd">        (&#39;rough&#39;, 0.9819902181625366)</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness(&#39;completeness/rough/6.jpg&#39;)</span>
+<span class="sd">        (&#39;rough&#39;, 0.9582782983779907)</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness(&#39;completeness/polished/7.jpg&#39;)</span>
+<span class="sd">        (&#39;polished&#39;, 0.8849248290061951)</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness(&#39;completeness/polished/8.jpg&#39;)</span>
+<span class="sd">        (&#39;polished&#39;, 0.9907882809638977)</span>
+<span class="sd">        &gt;&gt;&gt; anime_completeness(&#39;completeness/polished/9.jpg&#39;)</span>
+<span class="sd">        (&#39;polished&#39;, 0.9831690788269043)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">classify_predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_REPO_ID</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/channel
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../../v0.3.2/index.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../../v0.3.3/index.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../../v0.3.4/index.html">v0.3.4</a></dd>
+                        <dd><a href="../../../../../v0.3.5/index.html">v0.3.5</a></dd>
+                        <dd><a href="../../../../../v0.4.0/index.html">v0.4.0</a></dd>
+                        <dd><a href="../../../../../v0.4.1/index.html">v0.4.1</a></dd>
+                        <dd><a href="../../../../../v0.4.2/index.html">v0.4.2</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="completeness.html">dev/channel</a></dd>
+                        <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../../cpu/index.html">dev/cpu</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
