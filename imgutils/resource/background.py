@@ -1,6 +1,12 @@
 """
 Overview:
     Get background images.
+
+    These resources are hosted on `deepghs/anime-bg <https://huggingface.co/datasets/deepghs/anime-bg>`_,
+    which is based on `skytnt/anime-segmentation <https://huggingface.co/datasets/skytnt/anime-segmentation>`_.
+
+    .. image:: background_full.plot.py.svg
+        :align: center
 """
 import os.path
 from functools import lru_cache

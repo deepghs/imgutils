@@ -12,5 +12,5 @@ if __name__ == '__main__':
             for filename in filenames
         ),
         columns=3,
-        figsize=(14, 12),
+        figsize=(14, 10),
     )
