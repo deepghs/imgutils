@@ -1,3 +1,21 @@
+"""
+Overview:
+    `Laplacian operator <https://en.wikipedia.org/wiki/Laplace_operator>`_-based blur check algorithm.
+
+    Default recommended threshold is 100, lower than 100 means blur.
+
+    .. note::
+        **This algorithm seems work not well on anime blur cases**, so this function is just for a reference.
+        We are exploring better algorithm for anime blur detection.
+    
+    .. image:: laplacian_full.plot.py.svg
+        :align: center
+
+    This is an overall benchmark of all the operations in laplacian algorithm:
+
+    .. image:: laplacian_benchmark.plot.py.svg
+        :align: center
+"""
 import cv2
 import numpy as np
 
