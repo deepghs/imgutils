@@ -121,6 +121,17 @@
     
   <section id="module-imgutils.metrics.laplacian">
 <span id="imgutils-metrics-laplacian"></span><h1>imgutils.metrics.laplacian<a class="headerlink" href="#module-imgutils.metrics.laplacian" title="Permalink to this heading"></a></h1>
+<dl>
+<dt>Overview:</dt><dd><p><a class="reference external" href="https://en.wikipedia.org/wiki/Laplace_operator">Laplacian operator</a>-based blur check algorithm.</p>
+<p>Default recommended threshold is 100, lower than 100 means blur.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>This algorithm seems work not well on anime blur cases</strong>, so this function is just for a reference.
+We are exploring better algorithm for anime blur detection.</p>
+</div>
+<img alt="../../_images/laplacian_full.plot.py.svg" class="align-center" src="../../_images/laplacian_full.plot.py.svg" /><p>This is an overall benchmark of all the operations in laplacian algorithm:</p>
+<img alt="../../_images/laplacian_benchmark.plot.py.svg" class="align-center" src="../../_images/laplacian_benchmark.plot.py.svg" /></dd>
+</dl>
 <section id="laplacian-score">
 <h2>laplacian_score<a class="headerlink" href="#laplacian-score" title="Permalink to this heading"></a></h2>
 <dl class="py function">
@@ -137,6 +148,21 @@
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">laplacian_score</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laplacian_score</span><span class="p">(</span><span class="s1">&#39;laplacian/hutao.jpg&#39;</span><span class="p">)</span>
+<span class="go">156.68285005210006</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laplacian_score</span><span class="p">(</span><span class="s1">&#39;laplacian/text_blur.png&#39;</span><span class="p">)</span>
+<span class="go">2276.66629157129</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laplacian_score</span><span class="p">(</span><span class="s1">&#39;laplacian/real2.png&#39;</span><span class="p">)</span>
+<span class="go">15.908745781486806</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">laplacian_score</span><span class="p">(</span><span class="s1">&#39;laplacian/mmd.png&#39;</span><span class="p">)</span>
+<span class="go">1072.8372572065527</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
