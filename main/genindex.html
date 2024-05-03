@@ -67,6 +67,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api_doc/ocr/index.html">imgutils.ocr</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/operate/index.html">imgutils.operate</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc/resource/index.html">imgutils.resource</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/restore/index.html">imgutils.restore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/sd/index.html">imgutils.sd</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_doc/segment/index.html">imgutils.segment</a></li>
@@ -136,6 +137,8 @@
 
       <ul>
         <li><a href="api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__init__">(imgutils.pose.format.OP18KeyPointSet method)</a>
+</li>
+        <li><a href="api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.__init__">(imgutils.resource.background.BackgroundImageSet method)</a>
 </li>
         <li><a href="api_doc/tagging/character.html#imgutils.tagging.character.CharacterTagPool.__init__">(imgutils.tagging.character.CharacterTagPool method)</a>
 </li>
@@ -210,6 +213,8 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet">BackgroundImageSet (class in imgutils.resource.background)</a>
+</li>
       <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.BaseCensor">BaseCensor (class in imgutils.operate.censor_)</a>
 </li>
   </ul></td>
@@ -356,6 +361,10 @@
 </li>
       <li><a href="api_doc/validate/aicheck.html#imgutils.validate.aicheck.get_ai_created_score">get_ai_created_score() (in module imgutils.validate.aicheck)</a>
 </li>
+      <li><a href="api_doc/resource/background.html#imgutils.resource.background.get_bg_image">get_bg_image() (in module imgutils.resource.background)</a>
+</li>
+      <li><a href="api_doc/resource/background.html#imgutils.resource.background.get_bg_image_file">get_bg_image_file() (in module imgutils.resource.background)</a>
+</li>
       <li><a href="api_doc/tagging/deepdanbooru.html#imgutils.tagging.deepdanbooru.get_deepdanbooru_tags">get_deepdanbooru_tags() (in module imgutils.tagging.deepdanbooru)</a>
 </li>
       <li><a href="api_doc/edge/canny.html#imgutils.edge.canny.get_edge_by_canny">get_edge_by_canny() (in module imgutils.edge.canny)</a>
@@ -364,10 +373,14 @@
 </li>
       <li><a href="api_doc/edge/lineart_anime.html#imgutils.edge.lineart_anime.get_edge_by_lineart_anime">get_edge_by_lineart_anime() (in module imgutils.edge.lineart_anime)</a>
 </li>
-      <li><a href="api_doc/segment/isnetis.html#imgutils.segment.isnetis.get_isnetis_mask">get_isnetis_mask() (in module imgutils.segment.isnetis)</a>
+      <li><a href="api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.get_image">get_image() (imgutils.resource.background.BackgroundImageSet method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.get_image_file">get_image_file() (imgutils.resource.background.BackgroundImageSet method)</a>
+</li>
+      <li><a href="api_doc/segment/isnetis.html#imgutils.segment.isnetis.get_isnetis_mask">get_isnetis_mask() (in module imgutils.segment.isnetis)</a>
+</li>
       <li><a href="api_doc/tagging/mldanbooru.html#imgutils.tagging.mldanbooru.get_mldanbooru_tags">get_mldanbooru_tags() (in module imgutils.tagging.mldanbooru)</a>
 </li>
       <li><a href="api_doc/validate/monochrome.html#imgutils.validate.monochrome.get_monochrome_score">get_monochrome_score() (in module imgutils.validate.monochrome)</a>
@@ -685,8 +698,22 @@
         <li><a href="api_doc/pose/visual.html#module-imgutils.pose.visual">module</a>
 </li>
       </ul></li>
+      <li>
+    imgutils.resource
+
+      <ul>
+        <li><a href="api_doc/resource/index.html#module-imgutils.resource">module</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    imgutils.resource.background
+
+      <ul>
+        <li><a href="api_doc/resource/background.html#module-imgutils.resource.background">module</a>
+</li>
+      </ul></li>
       <li>
     imgutils.restore
 
@@ -990,17 +1017,21 @@
 </li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_HIP">LEFT_HIP (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_KNEE">LEFT_KNEE (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_SHOULDER">LEFT_SHOULDER (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_SMALL_TOE">LEFT_SMALL_TOE (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_WRIST">LEFT_WRIST (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
+      <li><a href="api_doc/resource/background.html#imgutils.resource.background.list_bg_image_files">list_bg_image_files() (in module imgutils.resource.background)</a>
+</li>
       <li><a href="api_doc/ocr/index.html#imgutils.ocr.list_det_models">list_det_models() (in module imgutils.ocr)</a>
+</li>
+      <li><a href="api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.list_image_files">list_image_files() (imgutils.resource.background.BackgroundImageSet method)</a>
 </li>
       <li><a href="api_doc/ocr/index.html#imgutils.ocr.list_rec_models">list_rec_models() (in module imgutils.ocr)</a>
 </li>
@@ -1105,6 +1136,10 @@
         <li><a href="api_doc/pose/format.html#module-imgutils.pose.format">imgutils.pose.format</a>
 </li>
         <li><a href="api_doc/pose/visual.html#module-imgutils.pose.visual">imgutils.pose.visual</a>
+</li>
+        <li><a href="api_doc/resource/index.html#module-imgutils.resource">imgutils.resource</a>
+</li>
+        <li><a href="api_doc/resource/background.html#module-imgutils.resource.background">imgutils.resource.background</a>
 </li>
         <li><a href="api_doc/restore/index.html#module-imgutils.restore">imgutils.restore</a>
 </li>
@@ -1259,6 +1294,14 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/resource/background.html#imgutils.resource.background.random_bg_image">random_bg_image() (in module imgutils.resource.background)</a>
+</li>
+      <li><a href="api_doc/resource/background.html#imgutils.resource.background.random_bg_image_file">random_bg_image_file() (in module imgutils.resource.background)</a>
+</li>
+      <li><a href="api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.random_image">random_image() (imgutils.resource.background.BackgroundImageSet method)</a>
+</li>
+      <li><a href="api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.random_image_file">random_image_file() (imgutils.resource.background.BackgroundImageSet method)</a>
+</li>
       <li><a href="api_doc/sd/model.html#imgutils.sd.model.read_metadata">read_metadata() (in module imgutils.sd.model)</a>
 </li>
       <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.register_censor_method">register_censor_method() (in module imgutils.operate.censor_)</a>
@@ -1275,12 +1318,12 @@
 </li>
       <li><a href="api_doc/data/encode.html#imgutils.data.encode.rgb_encode">rgb_encode() (in module imgutils.data.encode)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_ANKLE">RIGHT_ANKLE (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_BIG_TOE">RIGHT_BIG_TOE (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_EAR">RIGHT_EAR (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.RIGHT_ELBOW">RIGHT_ELBOW (imgutils.pose.format.OpenPose18 attribute)</a>
@@ -1402,11 +1445,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../dev/bg/index.html">dev/bg</a></dd>
+                        <dd><a href="genindex.html">main</a></dd>
                         <dd><a href="../ccip/index.html">ccip</a></dd>
                         <dd><a href="../dev/color/index.html">dev/color</a></dd>
                         <dd><a href="../dev/cpu/index.html">dev/cpu</a></dd>
-                        <dd><a href="genindex.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
