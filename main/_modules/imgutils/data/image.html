@@ -122,6 +122,10 @@
 <span class="n">MultiImagesTyping</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">ImageTyping</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">ImageTyping</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ImageTyping</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span>
 
 
+<span class="k">def</span> <span class="nf">_has_alpha_channel</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">band</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">}</span> <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">image</span><span class="o">.</span><span class="n">getbands</span><span class="p">())</span>
+
+
 <div class="viewcode-block" id="load_image"><a class="viewcode-back" href="../../../api_doc/data/image.html#imgutils.data.image.load_image">[docs]</a><span class="k">def</span> <span class="nf">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Loads the image from the provided source and applies necessary transformations.</span>
@@ -151,7 +155,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown image type - </span><span class="si">{</span><span class="n">image</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">force_background</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">_has_alpha_channel</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="ow">and</span> <span class="n">force_background</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">add_background_for_rgba</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">image</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="n">mode</span><span class="p">:</span>
@@ -250,10 +254,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/channel/index.html">dev/channel</a></dd>
+                        <dd><a href="image.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/cpu/index.html">dev/cpu</a></dd>
-                        <dd><a href="image.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
