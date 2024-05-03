@@ -49,6 +49,8 @@ __all__ = [
 
     'ccip_default_clustering_params',
     'ccip_clustering',
+
+    'ccip_merge',
 ]
 
 
@@ -517,3 +519,39 @@ def ccip_clustering(images: List[_FeatureOrImage], method: CCIPClusterMethodTypi
         assert False, f'Unknown mode for CCIP clustering - {method!r}.'  # pragma: no cover
 
     return clustering.labels_.tolist()
+
+
+def ccip_merge(images: Union[List[_FeatureOrImage], np.ndarray],
+               size: int = 384, model: str = _DEFAULT_MODEL_NAMES) -> np.ndarray:
+    """
+    Merge multiple feature vectors into a single vector.
+
+    :param images: The feature vectors or images to merge.
+    :type images: Union[List[_FeatureOrImage], numpy.ndarray]
+    :param size: The size of the image. (default: 384)
+    :type size: int
+    :param model: The name of the model. (default: ``ccip-caformer-24-randaug-pruned``)
+    :type model: str
+    :return: The merged feature vector.
+    :rtype: numpy.ndarray
+
+    Examples::
+        >>> from imgutils.metrics import ccip_merge, ccip_batch_differences
+        >>>
+        >>> images = [f'ccip/{i}.jpg' for i in range(1, 4)]
+        >>>
+        >>> merged = ccip_merge(images)
+        >>> merged.shape
+        (768,)
+        >>>
+        >>> diffs = ccip_batch_differences([merged, *images])[0, 1:]
+        >>> diffs
+        array([0.07437477, 0.0356068 , 0.04396922], dtype=float32)
+        >>> diffs.mean()
+        0.05131693
+    """
+    embs = np.stack([_p_feature(img, size, model) for img in images]).astype(np.float32)
+    lengths = np.linalg.norm(embs, axis=-1)
+    embs = embs / lengths.reshape(-1, 1)
+    ret_embedding = embs.mean(axis=0)
+    return ret_embedding / np.linalg.norm(ret_embedding) * lengths.mean()
