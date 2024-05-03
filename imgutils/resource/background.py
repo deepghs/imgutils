@@ -1,3 +1,7 @@
+"""
+Overview:
+    Get background images.
+"""
 import os.path
 from functools import lru_cache
 from typing import Optional, List
