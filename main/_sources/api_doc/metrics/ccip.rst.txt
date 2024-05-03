@@ -69,3 +69,11 @@ ccip_clustering
 
 
 
+ccip_merge
+--------------------------------------------
+
+.. autofunction:: ccip_merge
+
+
+
+

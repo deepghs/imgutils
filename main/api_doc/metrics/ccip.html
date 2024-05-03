@@ -105,6 +105,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.ccip.ccip_clustering"><code class="docutils literal notranslate"><span class="pre">ccip_clustering()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#ccip-merge">ccip_merge</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metrics.ccip.ccip_merge"><code class="docutils literal notranslate"><span class="pre">ccip_merge()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dbaesthetic.html">imgutils.metrics.dbaesthetic</a></li>
@@ -582,6 +586,48 @@ so careful tuning is necessary.</p>
 </dd></dl>
 
 </section>
+<section id="ccip-merge">
+<h2>ccip_merge<a class="headerlink" href="#ccip-merge" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metrics.ccip.ccip_merge">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metrics.ccip.</span></span><span class="sig-name descname"><span class="pre">ccip_merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">384</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ccip-caformer-24-randaug-pruned'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/imgutils/metrics/ccip.html#ccip_merge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metrics.ccip.ccip_merge" title="Permalink to this definition"></a></dt>
+<dd><p>Merge multiple feature vectors into a single vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>_FeatureOrImage</em><em>]</em><em>, </em><em>numpy.ndarray</em><em>]</em>) – The feature vectors or images to merge.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) – The size of the image. (default: 384)</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – The name of the model. (default: <code class="docutils literal notranslate"><span class="pre">ccip-caformer-24-randaug-pruned</span></code>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The merged feature vector.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.metrics</span> <span class="kn">import</span> <span class="n">ccip_merge</span><span class="p">,</span> <span class="n">ccip_batch_differences</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;ccip/</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">.jpg&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">merged</span> <span class="o">=</span> <span class="n">ccip_merge</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">merged</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(768,)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">diffs</span> <span class="o">=</span> <span class="n">ccip_batch_differences</span><span class="p">([</span><span class="n">merged</span><span class="p">,</span> <span class="o">*</span><span class="n">images</span><span class="p">])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">diffs</span>
+<span class="go">array([0.07437477, 0.0356068 , 0.04396922], dtype=float32)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">diffs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="go">0.05131693</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -631,10 +677,9 @@ so careful tuning is necessary.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/ccip/api_doc/metrics/ccip.html">dev/ccip</a></dd>
+                        <dd><a href="ccip.html">main</a></dd>
                         <dd><a href="../../../ccip/api_doc/metrics/ccip.html">ccip</a></dd>
                         <dd><a href="../../../dev/cpu/api_doc/metrics/ccip.html">dev/cpu</a></dd>
-                        <dd><a href="ccip.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

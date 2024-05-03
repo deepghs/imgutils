@@ -153,6 +153,8 @@
 
     <span class="s1">&#39;ccip_default_clustering_params&#39;</span><span class="p">,</span>
     <span class="s1">&#39;ccip_clustering&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;ccip_merge&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -621,6 +623,42 @@
         <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Unknown mode for CCIP clustering - </span><span class="si">{</span><span class="n">method</span><span class="si">!r}</span><span class="s1">.&#39;</span>  <span class="c1"># pragma: no cover</span>
 
     <span class="k">return</span> <span class="n">clustering</span><span class="o">.</span><span class="n">labels_</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ccip_merge"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_merge">[docs]</a><span class="k">def</span> <span class="nf">ccip_merge</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">_FeatureOrImage</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+               <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Merge multiple feature vectors into a single vector.</span>
+
+<span class="sd">    :param images: The feature vectors or images to merge.</span>
+<span class="sd">    :type images: Union[List[_FeatureOrImage], numpy.ndarray]</span>
+<span class="sd">    :param size: The size of the image. (default: 384)</span>
+<span class="sd">    :type size: int</span>
+<span class="sd">    :param model: The name of the model. (default: ``ccip-caformer-24-randaug-pruned``)</span>
+<span class="sd">    :type model: str</span>
+<span class="sd">    :return: The merged feature vector.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.metrics import ccip_merge, ccip_batch_differences</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; images = [f&#39;ccip/{i}.jpg&#39; for i in range(1, 4)]</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; merged = ccip_merge(images)</span>
+<span class="sd">        &gt;&gt;&gt; merged.shape</span>
+<span class="sd">        (768,)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; diffs = ccip_batch_differences([merged, *images])[0, 1:]</span>
+<span class="sd">        &gt;&gt;&gt; diffs</span>
+<span class="sd">        array([0.07437477, 0.0356068 , 0.04396922], dtype=float32)</span>
+<span class="sd">        &gt;&gt;&gt; diffs.mean()</span>
+<span class="sd">        0.05131693</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">embs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">_p_feature</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">embs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">embs</span> <span class="o">=</span> <span class="n">embs</span> <span class="o">/</span> <span class="n">lengths</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ret_embedding</span> <span class="o">=</span> <span class="n">embs</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret_embedding</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">ret_embedding</span><span class="p">)</span> <span class="o">*</span> <span class="n">lengths</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></div>
 </pre></div>
 
 
@@ -666,10 +704,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/ccip/index.html">dev/ccip</a></dd>
+                        <dd><a href="ccip.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/cpu/index.html">dev/cpu</a></dd>
-                        <dd><a href="ccip.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
