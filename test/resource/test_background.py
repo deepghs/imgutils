@@ -23,6 +23,11 @@ def set_height_1200():
 
 
 @pytest.fixture(scope='module')
+def set_resolution_2000():
+    return BackgroundImageSet(min_resolution=2000)
+
+
+@pytest.fixture(scope='module')
 def set_size_10_2():
     return BackgroundImageSet(width=10, height=2, strict_level=4)
 
@@ -90,6 +95,11 @@ class TestResourceBackground:
         for _ in range(5):
             image = set_height_1200.random_image()
             assert 1100 <= image.height <= 1300
+
+    def test_resolution(self, set_resolution_2000):
+        for _ in range(5):
+            image = set_resolution_2000.random_image()
+            assert image.width * image.height >= 2000 ** 2
 
     def test_ratio(self, set_size_10_2):
         assert 10 <= len(set_size_10_2.df) <= 20

@@ -75,7 +75,7 @@ class BackgroundImageSet:
         :param height: The desired height of background images. (default: None)
         :type height: Optional[float]
 
-        :param strict_level: The strictness level for selecting images. (default: 1.0)
+        :param strict_level: The strictness level for selecting images. (default: 1.5)
         :type strict_level: float
 
         :param min_selected: The minimum number of images to consider for selection. (default: 5)
@@ -222,6 +222,17 @@ def list_bg_image_files() -> List[str]:
 
     :return: A list of filenames of background images.
     :rtype: List[str]
+
+    Examples::
+        >>> from imgutils.resource import list_bg_image_files
+        >>>
+        >>> files = list_bg_image_files()
+        >>> type(files)
+        <class 'list'>
+        >>> len(files)
+        8057
+        >>> files[:5]
+        ['000000.jpg', '000001.jpg', '000002.jpg', '000003.jpg', '000004.jpg']
     """
     return _get_default_set().list_image_files()
 
@@ -235,6 +246,12 @@ def get_bg_image_file(filename: str) -> str:
 
     :return: The local file path of the background image.
     :rtype: str
+
+    Examples::
+        >>> from imgutils.resource import get_bg_image_file
+        >>>
+        >>> get_bg_image_file('000001.jpg')
+        '/home/user/.cache/dghs-imgutils/bg/000001.jpg'
     """
     return _get_default_set().get_image_file(filename)
 
@@ -248,6 +265,12 @@ def get_bg_image(filename) -> Image.Image:
 
     :return: The PIL Image object of the background image.
     :rtype: Image.Image
+
+    Examples::
+        >>> from imgutils.resource import get_bg_image
+        >>>
+        >>> get_bg_image('000001.jpg')
+        <PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=2400x1600 at 0x7FEB86ED5160>
     """
     return _get_default_set().get_image(filename)
 
@@ -258,6 +281,12 @@ def random_bg_image_file() -> str:
 
     :return: The filename of a randomly selected background image.
     :rtype: str
+
+    Examples::
+        >>> from imgutils.resource import random_bg_image_file
+        >>>
+        >>> random_bg_image_file()
+        '/home/user/.cache/dghs-imgutils/bg/003258.jpg'
     """
     return _get_default_set().random_image_file()
 
@@ -268,5 +297,11 @@ def random_bg_image() -> Image.Image:
 
     :return: The PIL Image object of a randomly selected background image.
     :rtype: Image.Image
+
+    Examples::
+        >>> from imgutils.resource import random_bg_image
+        >>>
+        >>> random_bg_image()
+        <PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=400x400 at 0x7FEB86A748B0>
     """
     return _get_default_set().random_image()
