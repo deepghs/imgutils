@@ -30,6 +30,18 @@ def laplacian_score(image: ImageTyping) -> float:
     :type image: ImageTyping
     :return: The Laplacian score.
     :rtype: float
+
+    Examples::
+        >>> from imgutils.metrics import laplacian_score
+        >>>
+        >>> laplacian_score('laplacian/hutao.jpg')
+        156.68285005210006
+        >>> laplacian_score('laplacian/text_blur.png')
+        2276.66629157129
+        >>> laplacian_score('laplacian/real2.png')
+        15.908745781486806
+        >>> laplacian_score('laplacian/mmd.png')
+        1072.8372572065527
     """
     v = np.array(load_image(image, force_background='white', mode='L'))
-    return _variance_of_laplacian(v).item()
+    return float(_variance_of_laplacian(v).item())
