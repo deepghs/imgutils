@@ -167,7 +167,7 @@
 
 
 <div class="viewcode-block" id="BackgroundImageSet"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet">[docs]</a><span class="k">class</span> <span class="nc">BackgroundImageSet</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="BackgroundImageSet.__init__"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">strict_level</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">min_selected</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
                  <span class="n">min_width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">min_height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">min_resolution</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -180,7 +180,7 @@
 <span class="sd">        :param height: The desired height of background images. (default: None)</span>
 <span class="sd">        :type height: Optional[float]</span>
 
-<span class="sd">        :param strict_level: The strictness level for selecting images. (default: 1.0)</span>
+<span class="sd">        :param strict_level: The strictness level for selecting images. (default: 1.5)</span>
 <span class="sd">        :type strict_level: float</span>
 
 <span class="sd">        :param min_selected: The minimum number of images to consider for selection. (default: 5)</span>
@@ -234,7 +234,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No background images selected, please lower your settings.&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">]:</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">)}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">]:</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">)}</span></div>
 
 <div class="viewcode-block" id="BackgroundImageSet.list_image_files"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.list_image_files">[docs]</a>    <span class="k">def</span> <span class="nf">list_image_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -327,6 +327,17 @@
 
 <span class="sd">    :return: A list of filenames of background images.</span>
 <span class="sd">    :rtype: List[str]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.resource import list_bg_image_files</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; files = list_bg_image_files()</span>
+<span class="sd">        &gt;&gt;&gt; type(files)</span>
+<span class="sd">        &lt;class &#39;list&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; len(files)</span>
+<span class="sd">        8057</span>
+<span class="sd">        &gt;&gt;&gt; files[:5]</span>
+<span class="sd">        [&#39;000000.jpg&#39;, &#39;000001.jpg&#39;, &#39;000002.jpg&#39;, &#39;000003.jpg&#39;, &#39;000004.jpg&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_get_default_set</span><span class="p">()</span><span class="o">.</span><span class="n">list_image_files</span><span class="p">()</span></div>
 
@@ -340,6 +351,12 @@
 
 <span class="sd">    :return: The local file path of the background image.</span>
 <span class="sd">    :rtype: str</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.resource import get_bg_image_file</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; get_bg_image_file(&#39;000001.jpg&#39;)</span>
+<span class="sd">        &#39;/home/user/.cache/dghs-imgutils/bg/000001.jpg&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_get_default_set</span><span class="p">()</span><span class="o">.</span><span class="n">get_image_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
@@ -353,6 +370,12 @@
 
 <span class="sd">    :return: The PIL Image object of the background image.</span>
 <span class="sd">    :rtype: Image.Image</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.resource import get_bg_image</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; get_bg_image(&#39;000001.jpg&#39;)</span>
+<span class="sd">        &lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=2400x1600 at 0x7FEB86ED5160&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_get_default_set</span><span class="p">()</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
@@ -363,6 +386,12 @@
 
 <span class="sd">    :return: The filename of a randomly selected background image.</span>
 <span class="sd">    :rtype: str</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.resource import random_bg_image_file</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; random_bg_image_file()</span>
+<span class="sd">        &#39;/home/user/.cache/dghs-imgutils/bg/003258.jpg&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_get_default_set</span><span class="p">()</span><span class="o">.</span><span class="n">random_image_file</span><span class="p">()</span></div>
 
@@ -373,6 +402,12 @@
 
 <span class="sd">    :return: The PIL Image object of a randomly selected background image.</span>
 <span class="sd">    :rtype: Image.Image</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.resource import random_bg_image</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; random_bg_image()</span>
+<span class="sd">        &lt;PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=400x400 at 0x7FEB86A748B0&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_get_default_set</span><span class="p">()</span><span class="o">.</span><span class="n">random_image</span><span class="p">()</span></div>
 </pre></div>

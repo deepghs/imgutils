@@ -10,7 +10,7 @@ BackgroundImageSet
 ------------------------------------------
 
 .. autoclass:: BackgroundImageSet
-    :members: list_image_files, get_image_file, get_image, random_image_file, random_image
+    :members: __init__, list_image_files, get_image_file, get_image, random_image_file, random_image
 
 
 
