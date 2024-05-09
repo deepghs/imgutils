@@ -63,4 +63,4 @@ def upscale_with_cdc(image: ImageTyping, model: str = 'HGSR-MHR-anime-aug_X4_320
     )
     output_ = np.clip(output_, a_min=0.0, a_max=1.0)
     ret_image = Image.fromarray((output_[0].transpose((1, 2, 0)) * 255).astype(np.int8), 'RGB')
-    return [_rgba_postprocess(ret_image, alpha_mask, order=i) for i in range(6)]
+    return _rgba_postprocess(ret_image, alpha_mask)

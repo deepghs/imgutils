@@ -42,7 +42,7 @@ def _rgba_preprocess(image: ImageTyping):
     return pimage, alpha_mask
 
 
-def _rgba_postprocess(pimage, alpha_mask: Optional[np.ndarray] = None, order: int = 1):
+def _rgba_postprocess(pimage, alpha_mask: Optional[np.ndarray] = None):
     """
     Postprocess the image after RGBA conversion.
 
@@ -61,8 +61,9 @@ def _rgba_postprocess(pimage, alpha_mask: Optional[np.ndarray] = None, order: in
     else:
         channels = np.array(pimage)
         alpha_mask = scipy.ndimage.zoom(
-            alpha_mask, np.array(channels.shape[:2]) / np.array(alpha_mask.shape),
-            order=1, mode='nearest',
+            alpha_mask,
+            np.array(channels.shape[:2]) / np.array(alpha_mask.shape),
+            mode='nearest'
         )
         alpha_channel = (alpha_mask * 255.0).astype(np.uint8)[..., np.newaxis]
         rgba_channels = np.concatenate([channels, alpha_channel], axis=-1)
