@@ -18,7 +18,8 @@ if __name__ == '__main__':
         ('sample/original.png', 'Small Logo'),
         ('sample/skadi.jpg', 'Illustration'),
         ('sample/hutao.png', 'Large Illustration'),
-        ('sample/xx.jpg', 'Illustration #2'),
+        # ('sample/xx.jpg', 'Illustration #2'),
+        ('sample/rgba_restore.png', 'RGBA Artwork'),
     ]
 
     items = []
@@ -31,5 +32,5 @@ if __name__ == '__main__':
     image_plot(
         *items,
         columns=len(_CDC_MODELS) + 1,
-        figsize=(4 * (len(_CDC_MODELS) + 1), 3 * len(demo_images)),
+        figsize=(4 * (len(_CDC_MODELS) + 1), 3.5 * len(demo_images)),
     )

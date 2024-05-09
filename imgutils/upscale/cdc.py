@@ -1,3 +1,19 @@
+"""
+Overview:
+    Upscale images with CDC model, developed and trained by `7eu7d7 <https://github.com/7eu7d7>`_,
+    the models are hosted on `deepghs/cdc_anime_onnx <https://huggingface.co/deepghs/cdc_anime_onnx>`_.
+
+    Here are some examples:
+
+    .. image:: cdc_demo.plot.py.svg
+        :align: center
+
+    .. note::
+        CDC model has high quality, and really low running speed.
+        As we tested, when it upscales an image with 1024x1024 resolution on 2060 GPU,
+        the time cost is approx 70s/image. So we strongly recommend against running it on CPU.
+        Please run CDC model on environments with GPU for better experience.
+"""
 from functools import lru_cache
 from typing import Tuple, Any
 
@@ -66,6 +82,21 @@ def upscale_with_cdc(image: ImageTyping, model: str = 'HGSR-MHR-anime-aug_X4_320
 
     :return: The upscaled image.
     :rtype: Image.Image
+
+    .. note::
+        RGBA images are supported. When you pass an image with transparency channel (e.g. RGBA image),
+        this function will return an RGBA image, otherwise return a RGB image.
+
+    Example::
+        >>> from PIL import Image
+        >>> from imgutils.upscale import upscale_with_cdc
+        >>>
+        >>> image = Image.open('cute_waifu_aroma.png')
+        >>> image
+        <PIL.PngImagePlugin.PngImageFile image mode=RGBA size=1168x1168 at 0x7F0E8CA06880>
+        >>>
+        >>> upscale_with_cdc(image)
+        <PIL.Image.Image image mode=RGBA size=4672x4672 at 0x7F0E48EDB640>
     """
     image, alpha_mask = _rgba_preprocess(image)
     image = load_image(image, mode='RGB', force_background='white')
