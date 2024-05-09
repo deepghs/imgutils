@@ -63,7 +63,8 @@ def _rgba_postprocess(pimage, alpha_mask: Optional[np.ndarray] = None):
         alpha_mask = scipy.ndimage.zoom(
             alpha_mask,
             np.array(channels.shape[:2]) / np.array(alpha_mask.shape),
-            mode='nearest'
+            mode='nearest',
+            order=1,
         )
         alpha_channel = (alpha_mask * 255.0).astype(np.uint8)[..., np.newaxis]
         rgba_channels = np.concatenate([channels, alpha_channel], axis=-1)
