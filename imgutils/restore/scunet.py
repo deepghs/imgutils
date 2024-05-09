@@ -10,6 +10,11 @@ Overview:
     .. image:: scunet_benchmark.plot.py.svg
         :align: center
 
+    .. note::
+        New in version v0.4.4, **images with alpha channel supported**.
+
+        If you use an image with alpha channel (e.g. RGBA images),
+        it will return a RGBA image, otherwise return RGG image.
 """
 from functools import lru_cache
 from typing import Literal

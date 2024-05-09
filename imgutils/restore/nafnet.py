@@ -14,6 +14,12 @@ Overview:
         Currently, we've identified a significant issue with NafNet when images contain gaussian noise.
         To ensure your code functions correctly, please ensure the credibility of
         your image source or preprocess them using SCUNet.
+
+    .. note::
+        New in version v0.4.4, **images with alpha channel supported**.
+
+        If you use an image with alpha channel (e.g. RGBA images),
+        it will return a RGBA image, otherwise return RGG image.
 """
 from functools import lru_cache
 from typing import Literal
