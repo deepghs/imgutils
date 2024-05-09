@@ -39,3 +39,8 @@ def q45_image(sample_image):
         img_file = os.path.join(td, 'image.jpg')
         sample_image.save(img_file, quality=45)
         yield load_image(img_file)
+
+
+@pytest.fixture()
+def rgba_image():
+    yield load_image(get_testfile('rgba_restore.png'), mode='RGBA', force_background=None)

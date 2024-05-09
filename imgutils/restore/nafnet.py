@@ -14,6 +14,12 @@ Overview:
         Currently, we've identified a significant issue with NafNet when images contain gaussian noise.
         To ensure your code functions correctly, please ensure the credibility of
         your image source or preprocess them using SCUNet.
+
+    .. note::
+        New in version v0.4.4, **images with alpha channel supported**.
+
+        If you use an image with alpha channel (e.g. RGBA images),
+        it will return a RGBA image, otherwise return RGG image.
 """
 from functools import lru_cache
 from typing import Literal
@@ -22,6 +28,7 @@ import numpy as np
 from PIL import Image
 from huggingface_hub import hf_hub_download
 
+from .transparent import _rgba_preprocess, _rgba_postprocess
 from ..data import ImageTyping, load_image
 from ..utils import open_onnx_model, area_batch_run
 
@@ -61,6 +68,7 @@ def restore_with_nafnet(image: ImageTyping, model: NafNetModelTyping = 'REDS',
     :return: The restored image.
     :rtype: Image.Image
     """
+    image, alpha_mask = _rgba_preprocess(image)
     image = load_image(image, mode='RGB', force_background='white')
     input_ = np.array(image).astype(np.float32) / 255.0
     input_ = input_.transpose((2, 0, 1))[None, ...]
@@ -75,4 +83,5 @@ def restore_with_nafnet(image: ImageTyping, model: NafNetModelTyping = 'REDS',
         process_title='NafNet Restore',
     )
     output_ = np.clip(output_, a_min=0.0, a_max=1.0)
-    return Image.fromarray((output_[0].transpose((1, 2, 0)) * 255).astype(np.int8), 'RGB')
+    ret_image = Image.fromarray((output_[0].transpose((1, 2, 0)) * 255).astype(np.int8), 'RGB')
+    return _rgba_postprocess(ret_image, alpha_mask)
