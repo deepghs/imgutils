@@ -5,6 +5,7 @@ import numpy as np
 from PIL import Image
 from huggingface_hub import hf_hub_download
 
+from .transparent import _rgba_preprocess, _rgba_postprocess
 from ..data import ImageTyping, load_image
 from ..utils import open_onnx_model, area_batch_run
 
@@ -33,6 +34,7 @@ _CDC_INPUT_UNIT = 16
 def upscale_with_cdc(image: ImageTyping, model: str = 'HGSR-MHR-anime-aug_X4_320',
                      tile_size: int = 512, tile_overlap: int = 64, batch_size: int = 1,
                      silent: bool = False) -> Image.Image:
+    image, alpha_mask = _rgba_preprocess(image)
     image = load_image(image, mode='RGB', force_background='white')
     input_ = np.array(image).astype(np.float32) / 255.0
     input_ = input_.transpose((2, 0, 1))[None, ...]
@@ -60,4 +62,5 @@ def upscale_with_cdc(image: ImageTyping, model: str = 'HGSR-MHR-anime-aug_X4_320
         scale=scale, silent=silent, process_title='CDC Upscale',
     )
     output_ = np.clip(output_, a_min=0.0, a_max=1.0)
-    return Image.fromarray((output_[0].transpose((1, 2, 0)) * 255).astype(np.int8), 'RGB')
+    ret_image = Image.fromarray((output_[0].transpose((1, 2, 0)) * 255).astype(np.int8), 'RGB')
+    return [_rgba_postprocess(ret_image, alpha_mask, order=i) for i in range(6)]
