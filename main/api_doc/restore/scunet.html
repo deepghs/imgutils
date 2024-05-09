@@ -122,7 +122,13 @@
 <dl>
 <dt>Overview:</dt><dd><p>Restore the images using <a class="reference external" href="https://github.com/cszn/SCUNet">SCUNet</a>.</p>
 <img alt="../../_images/scunet_demo.plot.py.svg" class="align-center" src="../../_images/scunet_demo.plot.py.svg" /><p>This is an overall benchmark of all the SCUNet models:</p>
-<img alt="../../_images/scunet_benchmark.plot.py.svg" class="align-center" src="../../_images/scunet_benchmark.plot.py.svg" /></dd>
+<img alt="../../_images/scunet_benchmark.plot.py.svg" class="align-center" src="../../_images/scunet_benchmark.plot.py.svg" /><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>New in version v0.4.4, <strong>images with alpha channel supported</strong>.</p>
+<p>If you use an image with alpha channel (e.g. RGBA images),
+it will return a RGBA image, otherwise return RGG image.</p>
+</div>
+</dd>
 </dl>
 <section id="restore-with-scunet">
 <h2>restore_with_scunet<a class="headerlink" href="#restore-with-scunet" title="Permalink to this heading"></a></h2>
@@ -200,11 +206,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/restore/api_doc/restore/scunet.html">dev/restore</a></dd>
+                        <dd><a href="scunet.html">main</a></dd>
                         <dd><a href="../../../ccip/api_doc/restore/scunet.html">ccip</a></dd>
                         <dd><a href="../../../dev/color/api_doc/restore/scunet.html">dev/color</a></dd>
                         <dd><a href="../../../dev/cpu/api_doc/restore/scunet.html">dev/cpu</a></dd>
-                        <dd><a href="scunet.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
