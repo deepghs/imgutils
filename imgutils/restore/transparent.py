@@ -7,10 +7,28 @@ from ..data.image import ImageTyping, load_image
 
 
 def _has_alpha_channel(image: Image.Image) -> bool:
+    """
+    Check if the image has an alpha channel.
+
+    :param image: The image to check.
+    :type image: Image.Image
+
+    :return: True if the image has an alpha channel, False otherwise.
+    :rtype: bool
+    """
     return any(band in {'A', 'a', 'P'} for band in image.getbands())
 
 
 def _rgba_preprocess(image: ImageTyping):
+    """
+    Preprocess the image for RGBA conversion.
+
+    :param image: The image to preprocess.
+    :type image: ImageTyping
+
+    :return: Preprocessed image and alpha mask.
+    :rtype: Tuple[Image.Image, Optional[np.ndarray]]
+    """
     image = load_image(image, force_background=None, mode=None)
     if _has_alpha_channel(image):
         image = image.convert('RGBA')
@@ -24,6 +42,18 @@ def _rgba_preprocess(image: ImageTyping):
 
 
 def _rgba_postprocess(pimage, alpha_mask: Optional[np.ndarray] = None):
+    """
+    Postprocess the image after RGBA conversion.
+
+    :param pimage: The processed image.
+    :type pimage: Image.Image
+
+    :param alpha_mask: The alpha mask.
+    :type alpha_mask: Optional[np.ndarray]
+
+    :return: Postprocessed image.
+    :rtype: Image.Image
+    """
     assert pimage.mode == 'RGB'
     if alpha_mask is None:
         return pimage
