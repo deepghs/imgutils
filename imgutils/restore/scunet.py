@@ -12,6 +12,7 @@ Overview:
 
 """
 from functools import lru_cache
+from typing import Literal
 
 import numpy as np
 from PIL import Image
@@ -19,11 +20,6 @@ from huggingface_hub import hf_hub_download
 
 from ..data import ImageTyping, load_image
 from ..utils import open_onnx_model, area_batch_run
-
-try:
-    from typing import Literal
-except (ImportError, ModuleNotFoundError):
-    from typing_extensions import Literal
 
 SCUNetModelTyping = Literal['GAN', 'PSNR']
 

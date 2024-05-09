@@ -1,11 +1,6 @@
 import random
 import re
-from typing import Union, List, Mapping
-
-try:
-    from typing import Literal
-except (ImportError, ModuleNotFoundError):
-    from typing_extensions import Literal
+from typing import Literal, Union, List, Mapping
 
 
 def sort_tags(tags: Union[List[str], Mapping[str, float]],

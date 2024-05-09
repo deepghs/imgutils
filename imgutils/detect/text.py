@@ -12,14 +12,26 @@ Overview:
     .. image:: text_detect_benchmark.plot.py.svg
         :align: center
 
+    .. warning::
+        This module has been deprecated and will be removed in the future.
+
+        It is recommended to migrate to the :func:`imgutils.ocr.detect_text_with_ocr` function as soon as possible.
+        This function uses a higher-quality text detection model provided by PaddleOCR,
+        resulting in improved performance and higher efficiency.
+
+        .. image:: text_detect_deprecate_demo.plot.py.svg
+            :align: center
+
 """
 from functools import lru_cache
 from typing import List, Tuple, Optional
 
 import cv2
 import numpy as np
+from deprecation import deprecated
 from huggingface_hub import hf_hub_download
 
+from ..config.meta import __VERSION__
 from ..data import ImageTyping, load_image
 from ..utils import open_onnx_model
 
@@ -106,6 +118,8 @@ def _get_bounding_box_of_text(image: ImageTyping, model: str, threshold: float) 
     return bboxes
 
 
+@deprecated(deprecated_in="0.2.10", removed_in="0.4", current_version=__VERSION__,
+            details="Use the new function :func:`imgutils.ocr.detect_text_with_ocr` instead")
 def detect_text(image: ImageTyping, model: str = _DEFAULT_MODEL, threshold: float = 0.05,
                 max_area_size: Optional[int] = 640):
     """
@@ -123,8 +137,12 @@ def detect_text(image: ImageTyping, model: str = _DEFAULT_MODEL, threshold: floa
     :type max_area_size: Optional[int]
     :return: List of detected text bounding boxes, labels, and scores.
     :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    .. warning::
+        This function is deprecated, and it will be removed from imgutils in the future.
+        Please migrate to :func:`imgutils.ocr.detect_text_with_ocr` as soon as possible.
     """
-    image = load_image(image)
+    image = load_image(image, mode='RGB')
     if max_area_size is not None and image.width * image.height >= max_area_size ** 2:
         r = ((image.width * image.height) / (max_area_size ** 2)) ** 0.5
         new_width, new_height = int(image.width / r), int(image.height / r)

@@ -2,97 +2,297 @@
 Overview:
     Detect and drop character-related basic tags.
 """
-import re
-from typing import Union, List, Mapping
+from typing import Union, List, Mapping, Tuple, Dict, Set, Optional
 
-from hbutils.string import singular_form, plural_form
+from .match import _split_to_words, _words_to_matcher
 
-_CHAR_WHITELIST = [
-    'drill', 'pubic_hair', 'closed_eyes', 'half-closed_eyes', 'empty_eyes'
+CHAR_WHITELIST_SUFFIX = [
+    'anal_hair',
+    'anal_tail',
+    'arm_behind_head',
+    'arm_hair',
+    'arm_under_breasts',
+    'arms_behind_head',
+    'bird_on_head',
+    'blood_in_hair',
+    'breasts_on_glass',
+    'breasts_on_head',
+    'cat_on_head',
+    'closed_eyes',
+    'clothed_female_nude_female',
+    'clothed_female_nude_male',
+    'clothed_male_nude_female',
+    'clothes_between_breasts',
+    'cream_on_face',
+    'drying_hair',
+    'empty_eyes',
+    'face_to_breasts',
+    'facial',
+    'food_on_face',
+    'food_on_head',
+    'game_boy',
+    "grabbing_another's_hair",
+    'grabbing_own_breast',
+    'gun_to_head',
+    'half-closed_eyes',
+    'head_between_breasts',
+    'heart_in_eye',
+    'multiple_boys',
+    'multiple_girls',
+    'object_on_breast',
+    'object_on_head',
+    'paint_splatter_on_face',
+    'parted_lips',
+    'penis_on_face',
+    'person_on_head',
+    'pokemon_on_head',
+    'pubic_hair',
+    'rabbit_on_head',
+    'rice_on_face',
+    'severed_head',
+    'star_in_eye',
+    'sticker_on_face',
+    'tentacles_on_male',
+    'tying_hair'
 ]
-_CHAR_SUFFIXES = [
+CHAR_WHITELIST_PREFIX = [
+    'holding', 'hand on', 'hands on', 'hand to', 'hands to',
+    'hand in', 'hands in', 'hand over', 'hands over',
+    'futa with', 'futa on', 'cum on', 'covering', 'adjusting', 'rubbing',
+    'sitting', 'shading', 'playing', 'cutting',
+]
+CHAR_WHITELIST_WORD = [
+    'drill',
+]
+CHAR_SUFFIXES = [
     'eyes', 'skin', 'hair', 'bun', 'bangs', 'cut', 'sidelocks',
     'twintails', 'braid', 'braids', 'afro', 'ahoge', 'drill',
     'drills', 'bald', 'dreadlocks', 'side up', 'ponytail', 'updo',
-    'beard', 'mustache', 'pointy ears', 'ear', 'horn',
+    'beard', 'mustache', 'pointy ears', 'ear', 'horn', 'tail', 'wing',
+    'ornament', 'hairband', 'pupil', 'bow', 'eyewear', 'headwear',
+    'ribbon', 'crown', 'cap', 'hat', 'hairclip', 'breast', 'mole',
+    'halo', 'earrings', 'animal ear fluff', 'hair flower', 'glasses',
+    'fang', 'female', 'girl', 'boy', 'male', 'beret', 'heterochromia',
+    'headdress', 'headgear', 'eyepatch', 'headphones', 'eyebrows', 'eyelashes',
+    'sunglasses', 'hair intakes', 'scrunchie', 'ear_piercing', 'head',
+    'on face', 'on head', 'on hair', 'headband', 'hair rings', 'under_mouth',
+    'freckles', 'lip', 'eyeliner', 'eyeshadow', 'tassel', 'over one eye',
+    'drill', 'drill hair',
 ]
-_CHAR_PREFIXES = [
-    'hair over', 'hair between'
+CHAR_PREFIXES = [
+    'hair over', 'hair between', 'facial',
 ]
 
+_WordTupleTyping = Tuple[str, ...]
 
-def _split_to_words(text: str) -> List[str]:
+
+class _WordPool:
     """
-    Split a string into words and return them in lowercase.
-
-    :param text: The input text to split.
-    :type text: str
-    :return: List of lowercase words.
-    :rtype: List[str]
+    Helper class to manage  character tags.
     """
-    return [word.lower() for word in re.split(r'[\W_]+', text) if word]
+
+    def __init__(self, words: Optional[List[str]] = None):
+        """
+        Initialize a _WordPool instance.
+
+        :param words: A list of words to include, defaults to None
+        :type words: Optional[List[str]], optional
+        """
+        self._words: Dict[int, Set[_WordTupleTyping]] = {}
+        for word in (words or []):
+            self._append(word)
+
+    def _append(self, text: str):
+        """
+        Append a word to the pool.
+
+        :param text: The word to append
+        :type text: str
+        """
+        for item in _words_to_matcher(_split_to_words(text)):
+            if len(item) not in self._words:
+                self._words[len(item)] = set()
+            self._words[len(item)].add(item)
+
+    def __contains__(self, text: str):
+        """
+        Check if a given text equals to any word from the pool.
+
+        :param text: The text to check
+        :type text: str
+        :return: True if the text equals to a word, False otherwise
+        :rtype: bool
+        """
+        words = tuple(_split_to_words(text))
+        return len(words) in self._words and words in self._words[len(words)]
 
 
-def _match_suffix(tag: str, suffix: str):
+class _SuffixPool:
     """
-    Check if a tag matches a given suffix.
-
-    :param tag: The tag to check.
-    :type tag: str
-    :param suffix: The suffix to match.
-    :type suffix: str
-    :return: True if the tag matches the suffix, False otherwise.
-    :rtype: bool
+    Helper class to manage suffixes for character tags.
     """
-    tag_words = _split_to_words(tag)
-    suffix_words = _split_to_words(suffix)
-    all_suffixes = [suffix_words]
-    all_suffixes.append([*suffix_words[:-1], singular_form(suffix_words[0])])
-    all_suffixes.append([*suffix_words[:-1], plural_form(suffix_words[0])])
 
-    for suf in all_suffixes:
-        if tag_words[-len(suf):] == suf:
-            return True
+    def __init__(self, suffixes: Optional[List[str]] = None):
+        """
+        Initialize a SuffixPool instance.
 
-    return False
+        :param suffixes: A list of suffixes to include, defaults to None
+        :type suffixes: Optional[List[str]], optional
+        """
+        self._suffixes: Dict[int, Set[_WordTupleTyping]] = {}
+        for suffix in (suffixes or []):
+            self._append(suffix)
+
+    def _append(self, text: str):
+        """
+        Append a suffix to the pool.
+
+        :param text: The suffix to append
+        :type text: str
+        """
+        for item in _words_to_matcher(_split_to_words(text)):
+            if len(item) not in self._suffixes:
+                self._suffixes[len(item)] = set()
+            self._suffixes[len(item)].add(item)
+
+    def __contains__(self, text: str):
+        """
+        Check if a given text contains any suffix from the pool.
+
+        :param text: The text to check
+        :type text: str
+        :return: True if the text contains a suffix, False otherwise
+        :rtype: bool
+        """
+        words = _split_to_words(text)
+        for length, tpl_set in self._suffixes.items():
+            if length > len(words):
+                continue
+
+            seg = [] if length == 0 else words[-length:]
+            if _words_to_matcher(seg) & tpl_set:
+                return True
+
+        return False
 
 
-def _match_prefix(tag: str, prefix: str):
+class _PrefixPool:
     """
-    Check if a tag matches a given prefix.
-
-    :param tag: The tag to check.
-    :type tag: str
-    :param prefix: The prefix to match.
-    :type prefix: str
-    :return: True if the tag matches the prefix, False otherwise.
-    :rtype: bool
+    Helper class to manage prefixes for character tags.
     """
-    tag_words = _split_to_words(tag)
-    prefix_words = _split_to_words(prefix)
-    return tag_words[:len(prefix_words)] == prefix_words
+
+    def __init__(self, prefixes: Optional[List[str]] = None):
+        """
+        Initialize a PrefixPool instance.
+
+        :param prefixes: A list of prefixes to include, defaults to None
+        :type prefixes: Optional[List[str]], optional
+        """
+        self._prefixes: Dict[int, Set[_WordTupleTyping]] = {}
+        for prefix in (prefixes or []):
+            self._append(prefix)
+
+    def _append(self, text: str):
+        """
+        Append a prefix to the pool.
+
+        :param text: The prefix to append
+        :type text: str
+        """
+        for item in _words_to_matcher(_split_to_words(text), enable_forms=False):
+            if len(item) not in self._prefixes:
+                self._prefixes[len(item)] = set()
+            self._prefixes[len(item)].add(item)
+
+    def __contains__(self, text: str):
+        """
+        Check if a given text contains any prefix from the pool.
+
+        :param text: The text to check
+        :type text: str
+        :return: True if the text contains a prefix, False otherwise
+        :rtype: bool
+        """
+        words = _split_to_words(text)
+        for length, tpl_set in self._prefixes.items():
+            if length > len(words):
+                continue
+
+            seg = words[:length]
+            if _words_to_matcher(seg, enable_forms=False) & tpl_set:
+                return True
+
+        return False
 
 
-def _match_same(tag: str, expected: str):
+class CharacterTagPool:
     """
-    Check if a tag matches another tag, considering singular and plural forms.
-
-    :param tag: The tag to check.
-    :type tag: str
-    :param expected: The expected tag.
-    :type expected: str
-    :return: True if the tag matches the expected tag, False otherwise.
-    :rtype: bool
+    A pool of character-related tags for detection and removal of basic character tags.
     """
-    a = _split_to_words(tag)
-    as_ = [a, [*a[:-1], singular_form(a[-1])], [*a[:-1], plural_form(a[-1])]]
-    as_ = set([tuple(item) for item in as_])
 
-    b = _split_to_words(expected)
-    bs_ = [b, [*b[:-1], singular_form(b[-1])], [*b[:-1], plural_form(b[-1])]]
-    bs_ = set([tuple(item) for item in bs_])
+    def __init__(
+            self,
+            whitelist_suffixes: Optional[List[str]] = None,
+            whitelist_prefixes: Optional[List[str]] = None,
+            whitelist_words: Optional[List[str]] = None,
+            suffixes: Optional[List[str]] = None,
+            prefixes: Optional[List[str]] = None
+    ):
+        """
+        Initialize a CharacterTagPool instance.
 
-    return bool(as_ & bs_)
+        :param whitelist_suffixes: A list of whitelisted suffixes, defaults to None
+        :type whitelist_suffixes: Optional[List[str]], optional
+        :param suffixes: A list of suffixes to consider, defaults to None
+        :type suffixes: Optional[List[str]], optional
+        :param prefixes: A list of prefixes to consider, defaults to None
+        :type prefixes: Optional[List[str]], optional
+        """
+        self._whitelist_suffix = _SuffixPool(whitelist_suffixes or CHAR_WHITELIST_SUFFIX)
+        self._whitelist_prefix = _PrefixPool(whitelist_prefixes or CHAR_WHITELIST_PREFIX)
+        self._whitelist_words = _WordPool(whitelist_words or CHAR_WHITELIST_WORD)
+        self._suffixes = _SuffixPool(suffixes or CHAR_SUFFIXES)
+        self._prefixes = _PrefixPool(prefixes or CHAR_PREFIXES)
+
+    def _is_in_whitelist(self, tag: str) -> bool:
+        return (tag in self._whitelist_words) or (tag in self._whitelist_suffix) or (tag in self._whitelist_prefix)
+
+    def _is_in_common(self, tag: str) -> bool:
+        return (tag in self._suffixes) or (tag in self._prefixes)
+
+    def is_basic_character_tag(self, tag: str) -> bool:
+        """
+        Check if a given tag is a basic character tag.
+
+        :param tag: The tag to check
+        :type tag: str
+        :return: True if the tag is a basic character tag, False otherwise
+        :rtype: bool
+        """
+        if self._is_in_whitelist(tag):
+            return False
+        else:
+            return self._is_in_common(tag)
+
+    def drop_basic_character_tags(self, tags: Union[List[str], Mapping[str, float]]) \
+            -> Union[List[str], Mapping[str, float]]:
+        """
+        Drop basic character tags from a list or mapping of tags.
+
+        :param tags: The tags to process
+        :type tags: Union[List[str], Mapping[str, float]]
+        :return: Processed tags with basic character tags removed
+        :rtype: Union[List[str], Mapping[str, float]]
+        """
+        if isinstance(tags, dict):
+            return {tag: value for tag, value in tags.items() if not self.is_basic_character_tag(tag)}
+        elif isinstance(tags, list):
+            return [tag for tag in tags if not self.is_basic_character_tag(tag)]
+        else:
+            raise TypeError(f"Unsupported types of tags, dict or list expected, but {tags!r} found.")
+
+
+_DEFAULT_CHARACTER_POOL = CharacterTagPool()
 
 
 def is_basic_character_tag(tag: str) -> bool:
@@ -122,11 +322,7 @@ def is_basic_character_tag(tag: str) -> bool:
         >>> is_basic_character_tag('dress')
         False
     """
-    if any(_match_same(tag, wl_tag) for wl_tag in _CHAR_WHITELIST):
-        return False
-    else:
-        return (any(_match_suffix(tag, suffix) for suffix in _CHAR_SUFFIXES)
-                or any(_match_prefix(tag, prefix) for prefix in _CHAR_PREFIXES))
+    return _DEFAULT_CHARACTER_POOL.is_basic_character_tag(tag)
 
 
 def drop_basic_character_tags(tags: Union[List[str], Mapping[str, float]]) -> Union[List[str], Mapping[str, float]]:
@@ -153,9 +349,4 @@ def drop_basic_character_tags(tags: Union[List[str], Mapping[str, float]]) -> Un
         ... ])
         ['1girl', 'solo', 'chair', 'hear']
     """
-    if isinstance(tags, dict):
-        return {tag: value for tag, value in tags.items() if not is_basic_character_tag(tag)}
-    elif isinstance(tags, list):
-        return [tag for tag in tags if not is_basic_character_tag(tag)]
-    else:
-        raise TypeError(f"Unsupported types of tags, dict or list expected, but {tags!r} found.")
+    return _DEFAULT_CHARACTER_POOL.drop_basic_character_tags(tags)

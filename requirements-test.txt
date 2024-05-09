@@ -12,7 +12,6 @@ pytest-benchmark~=3.4.0
 easydict>=1.7,<2
 testtools>=2
 where>=1.0.2
-responses>=0.20.0
 pytest-image-diff>=0.0.11
 matplotlib
 natsort

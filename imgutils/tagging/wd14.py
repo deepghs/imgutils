@@ -6,52 +6,30 @@ Overview:
 from functools import lru_cache
 from typing import List, Tuple
 
-import cv2
 import huggingface_hub
 import numpy as np
+import onnxruntime
 import pandas as pd
+from PIL import Image
+from hbutils.testing.requires.version import VersionInfo
 
-from .overlap import drop_overlaps_for_dict
+from .format import remove_underline
+from .overlap import drop_overlap_tags
 from ..data import load_image, ImageTyping
 from ..utils import open_onnx_model
-
-
-def make_square(img, target_size):
-    old_size = img.shape[:2]
-    desired_size = max(old_size)
-    desired_size = max(desired_size, target_size)
-
-    delta_w = desired_size - old_size[1]
-    delta_h = desired_size - old_size[0]
-    top, bottom = delta_h // 2, delta_h - (delta_h // 2)
-    left, right = delta_w // 2, delta_w - (delta_w // 2)
-
-    color = [255, 255, 255]
-    # noinspection PyUnresolvedReferences
-    new_im = cv2.copyMakeBorder(
-        img, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color
-    )
-    return new_im
-
-
-def smart_resize(img, size):
-    # Assumes the image has already gone through make_square
-    if img.shape[0] > size:
-        # noinspection PyUnresolvedReferences
-        img = cv2.resize(img, (size, size), interpolation=cv2.INTER_AREA)
-    elif img.shape[0] < size:
-        # noinspection PyUnresolvedReferences
-        img = cv2.resize(img, (size, size), interpolation=cv2.INTER_CUBIC)
-    return img
-
 
 SWIN_MODEL_REPO = "SmilingWolf/wd-v1-4-swinv2-tagger-v2"
 CONV_MODEL_REPO = "SmilingWolf/wd-v1-4-convnext-tagger-v2"
 CONV2_MODEL_REPO = "SmilingWolf/wd-v1-4-convnextv2-tagger-v2"
 VIT_MODEL_REPO = "SmilingWolf/wd-v1-4-vit-tagger-v2"
 MOAT_MODEL_REPO = "SmilingWolf/wd-v1-4-moat-tagger-v2"
+CONV_V3_MODEL_REPO = 'SmilingWolf/wd-convnext-tagger-v3'
+SWIN_V3_MODEL_REPO = 'SmilingWolf/wd-swinv2-tagger-v3'
+VIT_V3_MODEL_REPO = 'SmilingWolf/wd-vit-tagger-v3'
 MODEL_FILENAME = "model.onnx"
 LABEL_FILENAME = "selected_tags.csv"
+
+_IS_V3_SUPPORT = VersionInfo(onnxruntime.__version__) >= '1.17'
 
 MODEL_NAMES = {
     "SwinV2": SWIN_MODEL_REPO,
@@ -59,45 +37,126 @@ MODEL_NAMES = {
     "ConvNextV2": CONV2_MODEL_REPO,
     "ViT": VIT_MODEL_REPO,
     "MOAT": MOAT_MODEL_REPO,
+
+    "SwinV2_v3": SWIN_V3_MODEL_REPO,
+    "ConvNext_v3": CONV_V3_MODEL_REPO,
+    "ViT_v3": VIT_V3_MODEL_REPO,
 }
+_DEFAULT_MODEL_NAME = 'SwinV2_v3'
 
 
-def _load_wd14_model(model_repo: str, model_filename: str):
-    return open_onnx_model(huggingface_hub.hf_hub_download(model_repo, model_filename))
+def _version_support_check(model_name):
+    if model_name.endswith('_v3') and not _IS_V3_SUPPORT:
+        raise EnvironmentError(f'V3 taggers not supported on onnxruntime {onnxruntime.__version__}, '
+                               f'please upgrade it to 1.17+ version.\n'
+                               f'If you are running on CPU, use "pip install -U onnxruntime" .\n'
+                               f'If you are running on GPU, use "pip install -U onnxruntime-gpu" .')  # pragma: no cover
 
 
 @lru_cache()
 def _get_wd14_model(model_name):
-    return _load_wd14_model(MODEL_NAMES[model_name], MODEL_FILENAME)
+    """
+    Load an ONNX model from the Hugging Face Hub.
+
+    :param model_name: The name of the model.
+    :type model_name: str
+    :return: The loaded ONNX model.
+    :rtype: ONNXModel
+    """
+    _version_support_check(model_name)
+    return open_onnx_model(huggingface_hub.hf_hub_download(MODEL_NAMES[model_name], MODEL_FILENAME))
 
 
 @lru_cache()
-def _get_wd14_labels() -> Tuple[List[str], List[int], List[int], List[int]]:
-    path = huggingface_hub.hf_hub_download(CONV2_MODEL_REPO, LABEL_FILENAME)
-    df = pd.read_csv(path)
+def _get_wd14_labels(model_name, no_underline: bool = False) -> Tuple[List[str], List[int], List[int], List[int]]:
+    """
+    Get labels for the WD14 model.
 
-    tag_names = df["name"].tolist()
+    :param model_name: The name of the model.
+    :type model_name: str
+    :param no_underline: If True, replaces underscores in tag names with spaces.
+    :type no_underline: bool
+    :return: A tuple containing the list of tag names, and lists of indexes for rating, general, and character categories.
+    :rtype: Tuple[List[str], List[int], List[int], List[int]]
+    """
+    path = huggingface_hub.hf_hub_download(MODEL_NAMES[model_name], LABEL_FILENAME)
+    df = pd.read_csv(path)
+    name_series = df["name"]
+    if no_underline:
+        name_series = name_series.map(remove_underline)
+    tag_names = name_series.tolist()
+
     rating_indexes = list(np.where(df["category"] == 9)[0])
     general_indexes = list(np.where(df["category"] == 0)[0])
     character_indexes = list(np.where(df["category"] == 4)[0])
     return tag_names, rating_indexes, general_indexes, character_indexes
 
 
-def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
-                  general_threshold: float = 0.35, character_threshold: float = 0.85,
-                  drop_overlap: bool = False):
+def _mcut_threshold(probs) -> float:
+    """
+    Maximum Cut Thresholding (MCut)
+    Largeron, C., Moulin, C., & Gery, M. (2012). MCut: A Thresholding Strategy
+     for Multi-label Classification. In 11th International Symposium, IDA 2012
+     (pp. 172-183).
+    """
+    sorted_probs = probs[probs.argsort()[::-1]]
+    difs = sorted_probs[:-1] - sorted_probs[1:]
+    t = difs.argmax()
+    thresh = (sorted_probs[t] + sorted_probs[t + 1]) / 2
+    return thresh
+
+
+def _prepare_image_for_tagging(image: ImageTyping, target_size: int):
+    image = load_image(image, force_background='white', mode='RGB')
+    image_shape = image.size
+    max_dim = max(image_shape)
+    pad_left = (max_dim - image_shape[0]) // 2
+    pad_top = (max_dim - image_shape[1]) // 2
+
+    padded_image = Image.new("RGB", (max_dim, max_dim), (255, 255, 255))
+    padded_image.paste(image, (pad_left, pad_top))
+
+    if max_dim != target_size:
+        padded_image = padded_image.resize((target_size, target_size), Image.BICUBIC)
+
+    image_array = np.asarray(padded_image, dtype=np.float32)
+    image_array = image_array[:, :, ::-1]
+    return np.expand_dims(image_array, axis=0)
+
+
+def get_wd14_tags(
+        image: ImageTyping,
+        model_name: str = _DEFAULT_MODEL_NAME,
+        general_threshold: float = 0.35,
+        general_mcut_enabled: bool = False,
+        character_threshold: float = 0.85,
+        character_mcut_enabled: bool = False,
+        no_underline: bool = False,
+        drop_overlap: bool = False,
+):
     """
     Overview:
-        Tagging image by wd14 v2 model. Similar to
-        `SmilingWolf/wd-v1-4-tags <https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags>`_ .
+        Get tags for an image with wd14 taggers.
+        Similar to `SmilingWolf/wd-v1-4-tags <https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags>`_ .
 
-    :param image: Image to tagging.
-    :param model_name: Name of the mode, should be one of the \
-        ``SwinV2``, ``ConvNext``, ``ConvNextV2``, ``ViT`` or ``MOAT``, default is ``ConvNextV2``.
-    :param general_threshold: Threshold for default tags, default is ``0.35``.
-    :param character_threshold: Threshold for character tags, default is ``0.85``.
-    :param drop_overlap: Drop overlap tags or not, default is ``False``.
-    :return: Tagging results for levels, features and characters.
+    :param image: The input image.
+    :type image: ImageTyping
+    :param model_name: The name of the model to use.
+    :type model_name: str
+    :param general_threshold: The threshold for general tags.
+    :type general_threshold: float
+    :param general_mcut_enabled: If True, applies MCut thresholding to general tags.
+    :type general_mcut_enabled: bool
+    :param character_threshold: The threshold for character tags.
+    :type character_threshold: float
+    :param character_mcut_enabled: If True, applies MCut thresholding to character tags.
+    :type character_mcut_enabled: bool
+    :param no_underline: If True, replaces underscores in tag names with spaces.
+    :type no_underline: bool
+    :param drop_overlap: If True, drops overlapping tags.
+    :type drop_overlap: bool
+    :return: A tuple containing dictionaries for rating, general, and character tags with their probabilities.
+    :rtype: Tuple[Dict[str, float], Dict[str, float], Dict[str, float]]
 
     Example:
         Here are some images for example
@@ -124,38 +183,35 @@ def get_wd14_tags(image: ImageTyping, model_name: str = "ConvNextV2",
         >>> chars
         {'hu_tao_(genshin_impact)': 0.9262397289276123, 'boo_tao_(genshin_impact)': 0.942080020904541}
     """
+    tag_names, rating_indexes, general_indexes, character_indexes = _get_wd14_labels(model_name, no_underline)
     model = _get_wd14_model(model_name)
-    _, height, width, _ = model.get_inputs()[0].shape
-
-    # Load image, PIL RGB to OpenCV BGR
-    image = load_image(image, mode='RGB', force_background='white')
-    image = np.asarray(image)[:, :, ::-1]
-
-    image = make_square(image, height)
-    image = smart_resize(image, height)
-    image = image.astype(np.float32)
-    image = np.expand_dims(image, 0)
+    _, target_size, _, _ = model.get_inputs()[0].shape
+    image = _prepare_image_for_tagging(image, target_size)
 
     input_name = model.get_inputs()[0].name
     label_name = model.get_outputs()[0].name
-    probs = model.run([label_name], {input_name: image})[0]
+    preds = model.run([label_name], {input_name: image})[0]
+    labels = list(zip(tag_names, preds[0].astype(float)))
 
-    tag_names, rating_indexes, general_indexes, character_indexes = _get_wd14_labels()
-    labels = list(zip(tag_names, probs[0].astype(float).tolist()))
-
-    # First 4 labels are actually ratings: pick one with argmax
     ratings_names = [labels[i] for i in rating_indexes]
     rating = dict(ratings_names)
 
-    # Then we have general tags: pick anywhere prediction confidence > threshold
     general_names = [labels[i] for i in general_indexes]
+    if general_mcut_enabled:
+        general_probs = np.array([x[1] for x in general_names])
+        general_threshold = _mcut_threshold(general_probs)
+
     general_res = [x for x in general_names if x[1] > general_threshold]
     general_res = dict(general_res)
     if drop_overlap:
-        general_res = drop_overlaps_for_dict(general_res)
+        general_res = drop_overlap_tags(general_res)
 
-    # Everything else is characters: pick anywhere prediction confidence > threshold
     character_names = [labels[i] for i in character_indexes]
+    if character_mcut_enabled:
+        character_probs = np.array([x[1] for x in character_names])
+        character_threshold = _mcut_threshold(character_probs)
+        character_threshold = max(0.15, character_threshold)
+
     character_res = [x for x in character_names if x[1] > character_threshold]
     character_res = dict(character_res)
 

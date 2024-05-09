@@ -6,6 +6,52 @@ import re
 from typing import Mapping
 
 RE_SPECIAL = re.compile(r'([\\()])')
+_KAOMOJIS = [
+    "0_0",
+    "(o)_(o)",
+    "+_+",
+    "+_-",
+    "._.",
+    "<o>_<o>",
+    "<|>_<|>",
+    "=_=",
+    ">_<",
+    "3_3",
+    "6_9",
+    ">_o",
+    "@_@",
+    "^_^",
+    "o_o",
+    "u_u",
+    "x_x",
+    "|_|",
+    "||_||",
+]
+
+
+def add_underline(tag):
+    """
+    Adds underscores to a tag string to make it compatible with image labeling conventions.
+
+    :param tag: The input tag string.
+    :type tag: str
+    :return: The tag string with underscores added.
+    :rtype: str
+    """
+    return tag.strip().replace(' ', '_')
+
+
+def remove_underline(tag):
+    """
+    Removes underscores from a tag string, restoring it to its original form.
+
+    :param tag: The input tag string.
+    :type tag: str
+    :return: The tag string with underscores removed.
+    :rtype: str
+    """
+    tag = tag.strip()
+    return tag.replace('_', ' ') if tag not in _KAOMOJIS else tag
 
 
 def tags_to_text(tags: Mapping[str, float],
@@ -47,7 +93,7 @@ def tags_to_text(tags: Mapping[str, float],
     for tag, score in tags_pairs:
         t_text = tag
         if use_spaces:
-            t_text = t_text.replace('_', ' ')
+            t_text = remove_underline(t_text)
         if use_escape:
             t_text = re.sub(RE_SPECIAL, r'\\\1', t_text)
         if include_score:

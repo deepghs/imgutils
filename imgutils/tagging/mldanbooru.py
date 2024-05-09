@@ -1,6 +1,6 @@
 """
 Overview:
-    Tagging utils based on ML-danbooru which is provided by 7eu7d. The code is here:
+    Tagging utils based on ML-danbooru which is provided by 7eu7d7. The code is here:
     `7eu7d7/ML-Danbooru <https://github.com/7eu7d7/ML-Danbooru>`_ .
 """
 from functools import lru_cache
@@ -11,7 +11,7 @@ import pandas as pd
 from PIL import Image
 from huggingface_hub import hf_hub_download
 
-from .overlap import drop_overlaps_for_dict
+from .overlap import drop_overlap_tags
 from ..data import load_image, ImageTyping
 from ..utils import open_onnx_model
 
@@ -109,5 +109,5 @@ def get_mldanbooru_tags(image: ImageTyping, use_real_name: bool = False,
 
     general_tags = {tag: float(ratio) for tag, ratio in pairs if ratio >= threshold}
     if drop_overlap:
-        general_tags = drop_overlaps_for_dict(general_tags)
+        general_tags = drop_overlap_tags(general_tags)
     return general_tags

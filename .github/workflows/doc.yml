@@ -29,7 +29,7 @@ jobs:
         with:
           swap-size-gb: 8
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.3.0
         with:
           fetch-depth: 20
           submodules: 'recursive'
@@ -44,6 +44,7 @@ jobs:
           sudo apt-get install -y make wget curl cloc graphviz pandoc
           dot -V
           python -m pip install -r requirements.txt
+          python -m pip install -r requirements-model.txt
           python -m pip install -r requirements-doc.txt
       - name: Prepare dataset
         uses: nick-fields/retry@v2
@@ -70,7 +71,7 @@ jobs:
         id: commit
         run: |
           git config user.name 'narugo1992'
-          git config user.email 'narugo@126.com'
+          git config user.email 'narugo992@gmail.com'
           git add -A
           git diff-index --quiet HEAD || git commit -a -m "dev(narugo): auto sync $(date -R)"
       - name: Push changes
@@ -101,7 +102,7 @@ jobs:
         with:
           swap-size-gb: 8
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.3.0
         with:
           fetch-depth: 20
           submodules: 'recursive'
@@ -148,7 +149,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_CONFIG_NAME: narugo1992
-          GIT_CONFIG_EMAIL: narugo@126.com
+          GIT_CONFIG_EMAIL: narugo992@gmail.com
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: public # The folder the action should deploy.
           CLEAN: true # Automatically remove deleted files from the deploy branch

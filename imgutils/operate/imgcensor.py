@@ -4,21 +4,14 @@ Overview:
 """
 import math
 import os.path
-import warnings
 from functools import lru_cache
-from typing import Tuple, Optional
+from typing import Literal, Tuple, Optional
 
 import numpy as np
 from PIL import Image
 from emoji import emojize
 from hbutils.system import TemporaryDirectory
-from hbutils.testing import vpython
 from scipy.ndimage import center_of_mass
-
-try:
-    from typing import Literal
-except (ImportError, ModuleNotFoundError):
-    from typing_extensions import Literal
 
 from .align import align_maxsize
 from .censor_ import BaseCensor, register_censor_method
@@ -403,38 +396,9 @@ class EmojiBasedCensor(BaseCensor):
 
             .. image:: censor_emoji.plot.py.svg
                 :align: center
-
-        .. warning::
-            Due to compatibility issues with pilmoji library in Python 3.7, and the fact that
-            Python 3.7 reached its end of life on June 27, 2023, custom emojis cannot be used in Python 3.7.
-            To ensure that the code can still be executed, the :class:`ImageBasedCensor` with
-            a pre-defined smiley face image will be used instead.
-            When used, the values of the ``emoji`` and ``style`` parameters will be ignored.
         """
         return _get_native_emoji_censor(emoji, style, self.rotate, self.step) \
             .censor_area(image, area, ratio_threshold, **kwargs)
 
 
-if vpython >= '3.8':
-    register_censor_method('emoji', EmojiBasedCensor)
-
-else:
-    @lru_cache()
-    def _py37_fallback():
-        warnings.warn('Due to compatibility issues with the pilmoji library, '
-                      'the emoji censor method is not supported in Python 3.7. '
-                      'A pre-defined single emoji image will be used for rendering, '
-                      'and the emoji and style parameters will be ignored.')
-
-
-    class _Python37FallbackCensor(ImageBasedCensor):
-        def __init__(self):
-            ImageBasedCensor.__init__(self, [_get_file_in_censor_assets('emoji_censor.png')])
-
-        def censor_area(self, image: Image.Image, area: Tuple[int, int, int, int], ratio_threshold: float = 0.5,
-                        **kwargs) -> Image.Image:
-            _py37_fallback()
-            return ImageBasedCensor.censor_area(self, image, area, ratio_threshold, **kwargs)
-
-
-    register_censor_method('emoji', _Python37FallbackCensor)
+register_censor_method('emoji', EmojiBasedCensor)

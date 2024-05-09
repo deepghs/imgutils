@@ -17,4 +17,5 @@ imgutils.tagging
     blacklist
     character
     order
+    match
 

@@ -1,15 +1,18 @@
 import glob
+import json
 import os.path
-from typing import List, Tuple
+from functools import lru_cache
+from typing import List, Tuple, Dict, Iterator
 
 import numpy as np
 import pytest
 from hbutils.testing import disable_output
+from huggingface_hub import HfFileSystem, HfApi
 from natsort import natsorted
 from sklearn.metrics import adjusted_rand_score
 
 from imgutils.metrics import ccip_difference, ccip_default_threshold, ccip_extract_feature, ccip_same, ccip_batch_same, \
-    ccip_clustering
+    ccip_clustering, ccip_merge, ccip_batch_differences
 from test.testings import get_testfile
 
 
@@ -99,6 +102,52 @@ def s_threshold(threshold) -> float:
     return threshold + 0.05
 
 
+MERGE_TAGS = [
+    'little_red_riding_hood_(grimm)',
+    'maria_cadenzavna_eve',
+    'misaka_mikoto',
+    'dido_(azur_lane)',
+    'hina_(dress)_(blue_archive)',
+    'warspite_(kancolle)',
+    'kallen_kaslana',
+    "kal'tsit_(arknights)",
+    'anastasia_(fate)',
+    "m16a1_(girls'_frontline)",
+]
+
+hf_fs = HfFileSystem(token=os.environ.get('HF_TOKEN'))
+hf_client = HfApi(token=os.environ.get('HF_TOKEN'))
+SRC_REPO = 'deepghs/character_index'
+
+
+@lru_cache()
+def _get_source_list() -> List[dict]:
+    return json.loads(hf_fs.read_text(f'datasets/{SRC_REPO}/characters.json'))
+
+
+@lru_cache()
+def _get_source_dict() -> Dict[str, dict]:
+    return {item['tag']: item for item in _get_source_list()}
+
+
+def list_character_tags() -> Iterator[str]:
+    for item in _get_source_list():
+        yield item['tag']
+
+
+def get_detailed_character_info(tag: str) -> dict:
+    return _get_source_dict()[tag]
+
+
+def get_np_feats(tag):
+    item = get_detailed_character_info(tag)
+    return np.load(hf_client.hf_hub_download(
+        repo_id=SRC_REPO,
+        repo_type='dataset',
+        filename=f'{item["hprefix"]}/{item["short_tag"]}/feat.npy'
+    ))
+
+
 @pytest.mark.unittest
 class TestMetricCCIP:
     def test_ccip_difference(self, img_1, img_2, img_3, img_4, img_5, img_6, img_7, s_threshold):
@@ -159,3 +208,12 @@ class TestMetricCCIP:
 
         with pytest.raises(KeyError):
             _ = ccip_clustering(images_12, min_samples=2, method='what_the_fxxk')
+
+    @pytest.mark.parametrize(['tag'], [
+        (tag,) for tag in MERGE_TAGS
+    ])
+    def test_ccip_merge(self, tag):
+        feats = get_np_feats(tag)
+        merged_emb = ccip_merge(feats)
+        assert ccip_batch_differences([merged_emb, *feats])[0, 1:].mean() <= 0.085
+        assert ccip_batch_same([merged_emb, *feats])[0, 1:].all()
