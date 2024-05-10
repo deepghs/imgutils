@@ -130,8 +130,8 @@
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
 
-<span class="kn">from</span> <span class="nn">.transparent</span> <span class="kn">import</span> <span class="n">_rgba_preprocess</span><span class="p">,</span> <span class="n">_rgba_postprocess</span>
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">..generic</span> <span class="kn">import</span> <span class="n">ImageEnhancer</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">area_batch_run</span>
 
 <span class="n">SCUNetModelTyping</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;GAN&#39;</span><span class="p">,</span> <span class="s1">&#39;PSNR&#39;</span><span class="p">]</span>
@@ -150,6 +150,37 @@
         <span class="sa">f</span><span class="s1">&#39;deepghs/image_restoration&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s1">&#39;SCUNet-</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s1">.onnx&#39;</span>
     <span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">_Enhancer</span><span class="p">(</span><span class="n">ImageEnhancer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">SCUNetModelTyping</span> <span class="o">=</span> <span class="s1">&#39;GAN&#39;</span><span class="p">,</span> <span class="n">tile_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                 <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tile_size</span> <span class="o">=</span> <span class="n">tile_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tile_overlap</span> <span class="o">=</span> <span class="n">tile_overlap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">silent</span> <span class="o">=</span> <span class="n">silent</span>
+
+    <span class="k">def</span> <span class="nf">_process_rgb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rgb_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">input_</span> <span class="o">=</span> <span class="n">rgb_array</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">_method</span><span class="p">(</span><span class="n">ix</span><span class="p">):</span>
+            <span class="n">ox</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_scunet_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">ix</span><span class="p">})</span>
+            <span class="k">return</span> <span class="n">ox</span>
+
+        <span class="n">output_</span> <span class="o">=</span> <span class="n">area_batch_run</span><span class="p">(</span>
+            <span class="n">input_</span><span class="p">,</span> <span class="n">_method</span><span class="p">,</span>
+            <span class="n">tile_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tile_size</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tile_overlap</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">silent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">,</span> <span class="n">process_title</span><span class="o">=</span><span class="s1">&#39;SCUNet Restore&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">output_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">output_</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_get_enhancer</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">SCUNetModelTyping</span> <span class="o">=</span> <span class="s1">&#39;GAN&#39;</span><span class="p">,</span> <span class="n">tile_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                  <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Enhancer</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">_Enhancer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tile_size</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">silent</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="restore_with_scunet"><a class="viewcode-back" href="../../../api_doc/restore/scunet.html#imgutils.restore.scunet.restore_with_scunet">[docs]</a><span class="k">def</span> <span class="nf">restore_with_scunet</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">SCUNetModelTyping</span> <span class="o">=</span> <span class="s1">&#39;GAN&#39;</span><span class="p">,</span>
@@ -173,23 +204,7 @@
 <span class="sd">    :return: The restored image.</span>
 <span class="sd">    :rtype: Image.Image</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">image</span><span class="p">,</span> <span class="n">alpha_mask</span> <span class="o">=</span> <span class="n">_rgba_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
-    <span class="n">input_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
-    <span class="n">input_</span> <span class="o">=</span> <span class="n">input_</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">_method</span><span class="p">(</span><span class="n">ix</span><span class="p">):</span>
-        <span class="n">ox</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_scunet_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">ix</span><span class="p">})</span>
-        <span class="k">return</span> <span class="n">ox</span>
-
-    <span class="n">output_</span> <span class="o">=</span> <span class="n">area_batch_run</span><span class="p">(</span>
-        <span class="n">input_</span><span class="p">,</span> <span class="n">_method</span><span class="p">,</span>
-        <span class="n">tile_size</span><span class="o">=</span><span class="n">tile_size</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="o">=</span><span class="n">tile_overlap</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
-        <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">process_title</span><span class="o">=</span><span class="s1">&#39;SCUNet Restore&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">output_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">output_</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-    <span class="n">ret_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">((</span><span class="n">output_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">),</span> <span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_rgba_postprocess</span><span class="p">(</span><span class="n">ret_image</span><span class="p">,</span> <span class="n">alpha_mask</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_get_enhancer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tile_size</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">silent</span><span class="p">)</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">image</span><span class="p">)</span></div>
 </pre></div>
 
 
