@@ -22,14 +22,17 @@ Overview:
 from functools import lru_cache
 from typing import Tuple, Any
 
-import cv2
 import numpy as np
 from PIL import Image
 from huggingface_hub import hf_hub_download
 
-from .transparent import _rgba_preprocess, _rgba_postprocess
-from ..data import ImageTyping, load_image
+from ..data import ImageTyping
+from ..generic import ImageEnhancer
 from ..utils import open_onnx_model, area_batch_run
+
+__all__ = [
+    'upscale_with_cdc',
+]
 
 
 @lru_cache()
@@ -62,56 +65,9 @@ def _open_cdc_upscaler_model(model: str) -> Tuple[Any, int]:
 _CDC_INPUT_UNIT = 16
 
 
-def upscale_with_cdc(image: ImageTyping, model: str = 'HGSR-MHR-anime-aug_X4_320',
-                     tile_size: int = 512, tile_overlap: int = 64, batch_size: int = 1,
-                     alpha_interpolation: int = cv2.INTER_LINEAR, silent: bool = False, ) -> Image.Image:
-    """
-    Upscale the input image using the CDC upscaler model.
-
-    :param image: The input image.
-    :type image: ImageTyping
-
-    :param model: The name of the model to use. (default: 'HGSR-MHR-anime-aug_X4_320')
-    :type model: str
-
-    :param tile_size: The size of each tile. (default: 512)
-    :type tile_size: int
-
-    :param tile_overlap: The overlap between tiles. (default: 64)
-    :type tile_overlap: int
-
-    :param batch_size: The batch size. (default: 1)
-    :type batch_size: int
-
-    :param alpha_interpolation: Interpolation for :func:`cv2.resize`. Default is ``cv2.INTER_LINEAR``.
-    :type alpha_interpolation: int
-
-    :param silent: Whether to suppress progress messages. (default: False)
-    :type silent: bool
-
-    :return: The upscaled image.
-    :rtype: Image.Image
-
-    .. note::
-        RGBA images are supported. When you pass an image with transparency channel (e.g. RGBA image),
-        this function will return an RGBA image, otherwise return a RGB image.
-
-    Example::
-        >>> from PIL import Image
-        >>> from imgutils.upscale import upscale_with_cdc
-        >>>
-        >>> image = Image.open('cute_waifu_aroma.png')
-        >>> image
-        <PIL.PngImagePlugin.PngImageFile image mode=RGBA size=1168x1168 at 0x7F0E8CA06880>
-        >>>
-        >>> upscale_with_cdc(image)
-        <PIL.Image.Image image mode=RGBA size=4672x4672 at 0x7F0E48EDB640>
-    """
-    image, alpha_mask = _rgba_preprocess(image)
-    image = load_image(image, mode='RGB', force_background='white')
-    input_ = np.array(image).astype(np.float32) / 255.0
-    input_ = input_.transpose((2, 0, 1))[None, ...]
-
+def _upscale_for_rgb(input_: np.ndarray, model: str = 'HGSR-MHR-anime-aug_X4_320',
+                     tile_size: int = 512, tile_overlap: int = 64, batch_size: int = 1, silent: bool = False):
+    assert len(input_.shape) == 4 and input_.shape[:2] == (1, 3)
     ort, scale = _open_cdc_upscaler_model(model)
 
     def _method(ix):
@@ -135,5 +91,75 @@ def upscale_with_cdc(image: ImageTyping, model: str = 'HGSR-MHR-anime-aug_X4_320
         scale=scale, silent=silent, process_title='CDC Upscale',
     )
     output_ = np.clip(output_, a_min=0.0, a_max=1.0)
-    ret_image = Image.fromarray((output_[0].transpose((1, 2, 0)) * 255).astype(np.uint8), 'RGB')
-    return _rgba_postprocess(ret_image, alpha_mask, interpolation=alpha_interpolation)
+    return output_
+
+
+class _Enhancer(ImageEnhancer):
+    def __init__(self, model: str = 'HGSR-MHR-anime-aug_X4_320',
+                 tile_size: int = 512, tile_overlap: int = 64, batch_size: int = 1, silent: bool = False):
+        self.model = model
+        self.tile_size = tile_size
+        self.tile_overlap = tile_overlap
+        self.batch_size = batch_size
+        self.silent = silent
+
+    def _process_rgb(self, rgb_array: np.ndarray):
+        return _upscale_for_rgb(
+            rgb_array[None, ...],
+            model=self.model,
+            tile_size=self.tile_size,
+            tile_overlap=self.tile_overlap,
+            batch_size=self.batch_size,
+            silent=self.silent,
+        )[0]
+
+
+@lru_cache()
+def _get_enhancer(model: str = 'HGSR-MHR-anime-aug_X4_320',
+                  tile_size: int = 512, tile_overlap: int = 64, batch_size: int = 1, silent: bool = False):
+    return _Enhancer(model, tile_size, tile_overlap, batch_size, silent)
+
+
+def upscale_with_cdc(image: ImageTyping, model: str = 'HGSR-MHR-anime-aug_X4_320',
+                     tile_size: int = 512, tile_overlap: int = 64, batch_size: int = 1,
+                     silent: bool = False) -> Image.Image:
+    """
+    Upscale the input image using the CDC upscaler model.
+
+    :param image: The input image.
+    :type image: ImageTyping
+
+    :param model: The name of the model to use. (default: 'HGSR-MHR-anime-aug_X4_320')
+    :type model: str
+
+    :param tile_size: The size of each tile. (default: 512)
+    :type tile_size: int
+
+    :param tile_overlap: The overlap between tiles. (default: 64)
+    :type tile_overlap: int
+
+    :param batch_size: The batch size. (default: 1)
+    :type batch_size: int
+
+    :param silent: Whether to suppress progress messages. (default: False)
+    :type silent: bool
+
+    :return: The upscaled image.
+    :rtype: Image.Image
+
+    .. note::
+        RGBA images are supported. When you pass an image with transparency channel (e.g. RGBA image),
+        this function will return an RGBA image, otherwise return a RGB image.
+
+    Example::
+        >>> from PIL import Image
+        >>> from imgutils.upscale import upscale_with_cdc
+        >>>
+        >>> image = Image.open('cute_waifu_aroma.png')
+        >>> image
+        <PIL.PngImagePlugin.PngImageFile image mode=RGBA size=1168x1168 at 0x7F0E8CA06880>
+        >>>
+        >>> upscale_with_cdc(image)
+        <PIL.Image.Image image mode=RGBA size=4672x4672 at 0x7F0E48EDB640>
+    """
+    return _get_enhancer(model, tile_size, tile_overlap, batch_size, silent).process(image)

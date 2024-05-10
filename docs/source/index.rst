@@ -33,6 +33,7 @@ configuration file's structure and their versions.
     api_doc/data/index
     api_doc/detect/index
     api_doc/edge/index
+    api_doc/generic/index
     api_doc/metrics/index
     api_doc/ocr/index
     api_doc/operate/index
