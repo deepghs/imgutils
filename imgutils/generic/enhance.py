@@ -58,7 +58,7 @@ class ImageEnhancer:
 
         :raises NotImplementedError: If the method is not implemented in a subclass.
         """
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def _process_alpha_channel_with_model(self, alpha_array: np.ndarray):
         """
