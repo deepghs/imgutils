@@ -1,7 +1,7 @@
 from typing import Optional
 
+import cv2
 import numpy as np
-import scipy.ndimage
 from PIL import Image
 
 from ..data.image import ImageTyping, load_image
@@ -42,7 +42,7 @@ def _rgba_preprocess(image: ImageTyping):
     return pimage, alpha_mask
 
 
-def _rgba_postprocess(pimage, alpha_mask: Optional[np.ndarray] = None):
+def _rgba_postprocess(pimage, alpha_mask: Optional[np.ndarray] = None, interpolation: int = cv2.INTER_LINEAR):
     """
     Postprocess the image after RGBA conversion.
 
@@ -52,6 +52,9 @@ def _rgba_postprocess(pimage, alpha_mask: Optional[np.ndarray] = None):
     :param alpha_mask: The alpha mask.
     :type alpha_mask: Optional[np.ndarray]
 
+    :param interpolation: Interpolation for :func:`cv2.resize`. Default is ``cv2.INTER_LINEAR``.
+    :type interpolation: int
+
     :return: Postprocessed image.
     :rtype: Image.Image
     """
@@ -60,12 +63,8 @@ def _rgba_postprocess(pimage, alpha_mask: Optional[np.ndarray] = None):
         return pimage
     else:
         channels = np.array(pimage)
-        alpha_mask = scipy.ndimage.zoom(
-            alpha_mask,
-            np.array(channels.shape[:2]) / np.array(alpha_mask.shape),
-            mode='nearest',
-            order=1,
-        )
+        alpha_mask = cv2.resize(alpha_mask, channels.shape[:2], interpolation=interpolation)
+        alpha_mask = np.clip(alpha_mask, a_min=0.0, a_max=1.0)
         alpha_channel = (alpha_mask * 255.0).astype(np.uint8)[..., np.newaxis]
         rgba_channels = np.concatenate([channels, alpha_channel], axis=-1)
         assert rgba_channels.shape == (*channels.shape[:-1], 4)

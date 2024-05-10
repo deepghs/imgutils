@@ -1,6 +1,7 @@
 import pytest
 from PIL import Image
 
+from imgutils.data import grid_transparent
 from imgutils.metrics import psnr
 from imgutils.upscale import upscale_with_cdc
 from imgutils.upscale.cdc import _open_cdc_upscaler_model
@@ -41,3 +42,9 @@ class TestUpscaleCDC:
             .resize(sample_image.size, Image.LANCZOS),
             sample_image,
         ) >= 28.0
+
+    def test_upscale_with_cdc_4x_rgba(self, sample_rgba_image, sample_rgba_image_4x):
+        assert psnr(
+            grid_transparent(upscale_with_cdc(sample_rgba_image)),
+            grid_transparent(sample_rgba_image_4x),
+        ) >= 34.5

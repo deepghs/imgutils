@@ -8,6 +8,11 @@ Overview:
     .. image:: cdc_demo.plot.py.svg
         :align: center
 
+    Here is the benchmark of CDC models:
+
+    .. image:: cdc_benchmark.plot.py.svg
+        :align: center
+
     .. note::
         CDC model has high quality, and really low running speed.
         As we tested, when it upscales an image with 1024x1024 resolution on 2060 GPU,
@@ -17,6 +22,7 @@ Overview:
 from functools import lru_cache
 from typing import Tuple, Any
 
+import cv2
 import numpy as np
 from PIL import Image
 from huggingface_hub import hf_hub_download
@@ -58,7 +64,7 @@ _CDC_INPUT_UNIT = 16
 
 def upscale_with_cdc(image: ImageTyping, model: str = 'HGSR-MHR-anime-aug_X4_320',
                      tile_size: int = 512, tile_overlap: int = 64, batch_size: int = 1,
-                     silent: bool = False) -> Image.Image:
+                     alpha_interpolation: int = cv2.INTER_LINEAR, silent: bool = False, ) -> Image.Image:
     """
     Upscale the input image using the CDC upscaler model.
 
@@ -76,6 +82,9 @@ def upscale_with_cdc(image: ImageTyping, model: str = 'HGSR-MHR-anime-aug_X4_320
 
     :param batch_size: The batch size. (default: 1)
     :type batch_size: int
+
+    :param alpha_interpolation: Interpolation for :func:`cv2.resize`. Default is ``cv2.INTER_LINEAR``.
+    :type alpha_interpolation: int
 
     :param silent: Whether to suppress progress messages. (default: False)
     :type silent: bool
@@ -127,4 +136,4 @@ def upscale_with_cdc(image: ImageTyping, model: str = 'HGSR-MHR-anime-aug_X4_320
     )
     output_ = np.clip(output_, a_min=0.0, a_max=1.0)
     ret_image = Image.fromarray((output_[0].transpose((1, 2, 0)) * 255).astype(np.uint8), 'RGB')
-    return _rgba_postprocess(ret_image, alpha_mask)
+    return _rgba_postprocess(ret_image, alpha_mask, interpolation=alpha_interpolation)
