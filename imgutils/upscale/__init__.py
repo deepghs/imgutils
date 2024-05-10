@@ -1,1 +1,5 @@
-from .cdc import upscale_with_cdc
+"""
+Overview:
+    Upscale image to a larger size.
+"""
+from .cdc import *
