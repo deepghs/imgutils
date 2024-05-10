@@ -114,6 +114,11 @@
 <span class="sd">    .. image:: cdc_demo.plot.py.svg</span>
 <span class="sd">        :align: center</span>
 
+<span class="sd">    Here is the benchmark of CDC models:</span>
+
+<span class="sd">    .. image:: cdc_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
 <span class="sd">    .. note::</span>
 <span class="sd">        CDC model has high quality, and really low running speed.</span>
 <span class="sd">        As we tested, when it upscales an image with 1024x1024 resolution on 2060 GPU,</span>
@@ -123,6 +128,7 @@
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span>
 
+<span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
@@ -164,7 +170,7 @@
 
 <div class="viewcode-block" id="upscale_with_cdc"><a class="viewcode-back" href="../../../api_doc/upscale/cdc.html#imgutils.upscale.cdc.upscale_with_cdc">[docs]</a><span class="k">def</span> <span class="nf">upscale_with_cdc</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;HGSR-MHR-anime-aug_X4_320&#39;</span><span class="p">,</span>
                      <span class="n">tile_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-                     <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+                     <span class="n">alpha_interpolation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">INTER_LINEAR</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Upscale the input image using the CDC upscaler model.</span>
 
@@ -182,6 +188,9 @@
 
 <span class="sd">    :param batch_size: The batch size. (default: 1)</span>
 <span class="sd">    :type batch_size: int</span>
+
+<span class="sd">    :param alpha_interpolation: Interpolation for :func:`cv2.resize`. Default is ``cv2.INTER_LINEAR``.</span>
+<span class="sd">    :type alpha_interpolation: int</span>
 
 <span class="sd">    :param silent: Whether to suppress progress messages. (default: False)</span>
 <span class="sd">    :type silent: bool</span>
@@ -233,7 +242,7 @@
     <span class="p">)</span>
     <span class="n">output_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">output_</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
     <span class="n">ret_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">((</span><span class="n">output_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span> <span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_rgba_postprocess</span><span class="p">(</span><span class="n">ret_image</span><span class="p">,</span> <span class="n">alpha_mask</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_rgba_postprocess</span><span class="p">(</span><span class="n">ret_image</span><span class="p">,</span> <span class="n">alpha_mask</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">alpha_interpolation</span><span class="p">)</span></div>
 </pre></div>
 
 
