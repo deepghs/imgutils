@@ -46,7 +46,8 @@ def _open_scunet_model(model: SCUNetModelTyping):
 
 
 def restore_with_scunet(image: ImageTyping, model: SCUNetModelTyping = 'GAN',
-                        tile_size: int = 128, tile_overlap: int = 16, silent: bool = False) -> Image.Image:
+                        tile_size: int = 128, tile_overlap: int = 16, batch_size: int = 4,
+                        silent: bool = False) -> Image.Image:
     """
     Restore an image using the SCUNet model.
 
@@ -58,6 +59,8 @@ def restore_with_scunet(image: ImageTyping, model: SCUNetModelTyping = 'GAN',
     :type tile_size: int
     :param tile_overlap: The overlap between tiles. Default is 16.
     :type tile_overlap: int
+    :param batch_size: The batch size of inference. Default is 4.
+    :type batch_size: int
     :param silent: If True, the progress will not be displayed. Default is False.
     :type silent: bool
     :return: The restored image.
@@ -74,8 +77,8 @@ def restore_with_scunet(image: ImageTyping, model: SCUNetModelTyping = 'GAN',
 
     output_ = area_batch_run(
         input_, _method,
-        tile_size=tile_size, tile_overlap=tile_overlap, silent=silent,
-        process_title='SCUNet Restore',
+        tile_size=tile_size, tile_overlap=tile_overlap, batch_size=batch_size,
+        silent=silent, process_title='SCUNet Restore',
     )
     output_ = np.clip(output_, a_min=0.0, a_max=1.0)
     ret_image = Image.fromarray((output_[0].transpose((1, 2, 0)) * 255).astype(np.int8), 'RGB')
