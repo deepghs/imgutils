@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>imgutils.upscale.cdc &mdash; imgutils 0.4.3 documentation</title>
+  <title>imgutils.upscale.cdc &mdash; imgutils 0.4.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -17,7 +17,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=79807b79"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b209ebb4"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -40,7 +40,7 @@
             imgutils
           </a>
               <div class="version">
-                0.4.3
+                0.4.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -66,6 +66,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
@@ -136,7 +137,7 @@ Please run CDC model on environments with GPU for better experience.</p>
 <h2>upscale_with_cdc<a class="headerlink" href="#upscale-with-cdc" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="imgutils.upscale.cdc.upscale_with_cdc">
-<span class="sig-prename descclassname"><span class="pre">imgutils.upscale.cdc.</span></span><span class="sig-name descname"><span class="pre">upscale_with_cdc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'HGSR-MHR-anime-aug_X4_320'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_overlap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_interpolation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/upscale/cdc.html#upscale_with_cdc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.upscale.cdc.upscale_with_cdc" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">imgutils.upscale.cdc.</span></span><span class="sig-name descname"><span class="pre">upscale_with_cdc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'HGSR-MHR-anime-aug_X4_320'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_overlap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/upscale/cdc.html#upscale_with_cdc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.upscale.cdc.upscale_with_cdc" title="Permalink to this definition"></a></dt>
 <dd><p>Upscale the input image using the CDC upscaler model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -146,7 +147,6 @@ Please run CDC model on environments with GPU for better experience.</p>
 <li><p><strong>tile_size</strong> (<em>int</em>) – The size of each tile. (default: 512)</p></li>
 <li><p><strong>tile_overlap</strong> (<em>int</em>) – The overlap between tiles. (default: 64)</p></li>
 <li><p><strong>batch_size</strong> (<em>int</em>) – The batch size. (default: 1)</p></li>
-<li><p><strong>alpha_interpolation</strong> (<em>int</em>) – Interpolation for <code class="xref py py-func docutils literal notranslate"><span class="pre">cv2.resize()</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">cv2.INTER_LINEAR</span></code>.</p></li>
 <li><p><strong>silent</strong> (<em>bool</em>) – Whether to suppress progress messages. (default: False)</p></li>
 </ul>
 </dd>
@@ -229,11 +229,10 @@ this function will return an RGBA image, otherwise return a RGB image.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/cdc/api_doc/upscale/cdc.html">dev/cdc</a></dd>
+                        <dd><a href="cdc.html">main</a></dd>
                         <dd><a href="../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../dev/color/index.html">dev/color</a></dd>
                         <dd><a href="../../../dev/cpu/index.html">dev/cpu</a></dd>
-                        <dd><a href="cdc.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
