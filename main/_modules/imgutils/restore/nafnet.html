@@ -72,6 +72,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
 </ul>
@@ -156,7 +157,8 @@
 
 
 <div class="viewcode-block" id="restore_with_nafnet"><a class="viewcode-back" href="../../../api_doc/restore/nafnet.html#imgutils.restore.nafnet.restore_with_nafnet">[docs]</a><span class="k">def</span> <span class="nf">restore_with_nafnet</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">NafNetModelTyping</span> <span class="o">=</span> <span class="s1">&#39;REDS&#39;</span><span class="p">,</span>
-                        <span class="n">tile_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+                        <span class="n">tile_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+                        <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Restore an image using the NAFNet model.</span>
 
@@ -168,6 +170,8 @@
 <span class="sd">    :type tile_size: int</span>
 <span class="sd">    :param tile_overlap: The overlap between tiles. Default is 16.</span>
 <span class="sd">    :type tile_overlap: int</span>
+<span class="sd">    :param batch_size: The batch size of inference. Default is 4.</span>
+<span class="sd">    :type batch_size: int</span>
 <span class="sd">    :param silent: If True, the progress will not be displayed. Default is False.</span>
 <span class="sd">    :type silent: bool</span>
 <span class="sd">    :return: The restored image.</span>
@@ -184,8 +188,8 @@
 
     <span class="n">output_</span> <span class="o">=</span> <span class="n">area_batch_run</span><span class="p">(</span>
         <span class="n">input_</span><span class="p">,</span> <span class="n">_method</span><span class="p">,</span>
-        <span class="n">tile_size</span><span class="o">=</span><span class="n">tile_size</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="o">=</span><span class="n">tile_overlap</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span>
-        <span class="n">process_title</span><span class="o">=</span><span class="s1">&#39;NafNet Restore&#39;</span><span class="p">,</span>
+        <span class="n">tile_size</span><span class="o">=</span><span class="n">tile_size</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="o">=</span><span class="n">tile_overlap</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span> <span class="n">process_title</span><span class="o">=</span><span class="s1">&#39;NafNet Restore&#39;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">output_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">output_</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
     <span class="n">ret_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">((</span><span class="n">output_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">),</span> <span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
@@ -236,11 +240,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/cdc/index.html">dev/cdc</a></dd>
+                        <dd><a href="nafnet.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/color/index.html">dev/color</a></dd>
                         <dd><a href="../../../../dev/cpu/index.html">dev/cpu</a></dd>
-                        <dd><a href="nafnet.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
