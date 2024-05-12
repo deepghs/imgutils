@@ -6,12 +6,12 @@ Overview:
 from functools import lru_cache
 from typing import List, Tuple
 
-import huggingface_hub
 import numpy as np
 import onnxruntime
 import pandas as pd
 from PIL import Image
 from hbutils.testing.requires.version import VersionInfo
+from huggingface_hub import hf_hub_download
 
 from .format import remove_underline
 from .overlap import drop_overlap_tags
@@ -64,7 +64,7 @@ def _get_wd14_model(model_name):
     :rtype: ONNXModel
     """
     _version_support_check(model_name)
-    return open_onnx_model(huggingface_hub.hf_hub_download(MODEL_NAMES[model_name], MODEL_FILENAME))
+    return open_onnx_model(hf_hub_download(MODEL_NAMES[model_name], MODEL_FILENAME))
 
 
 @lru_cache()
@@ -79,7 +79,7 @@ def _get_wd14_labels(model_name, no_underline: bool = False) -> Tuple[List[str],
     :return: A tuple containing the list of tag names, and lists of indexes for rating, general, and character categories.
     :rtype: Tuple[List[str], List[int], List[int], List[int]]
     """
-    path = huggingface_hub.hf_hub_download(MODEL_NAMES[model_name], LABEL_FILENAME)
+    path = hf_hub_download(MODEL_NAMES[model_name], LABEL_FILENAME)
     df = pd.read_csv(path)
     name_series = df["name"]
     if no_underline:
