@@ -15,6 +15,7 @@ from onnx.helper import make_tensor_value_info
 from tqdm import tqdm
 
 from imgutils.tagging.wd14 import MODEL_NAMES
+from imgutils.utils import open_onnx_model
 
 logging.try_init_root(logging.INFO)
 
@@ -104,7 +105,7 @@ if __name__ == '__main__':
             onnx.save_model(model, onnx_file)
 
             logging.info(f'Loading and testing for the exported model {onnx_file!r}.')
-            session = onnxruntime.InferenceSession(onnx_file)
+            session = open_onnx_model(onnx_file)
             assert len(session.get_inputs()) == 1
             assert len(session.get_outputs()) == 2
             assert session.get_outputs()[1].name == embs_outputs[0]
