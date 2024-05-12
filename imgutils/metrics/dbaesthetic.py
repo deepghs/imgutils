@@ -19,8 +19,9 @@ from typing import Dict, Optional, Tuple
 import numpy as np
 from huggingface_hub import hf_hub_download
 
-from imgutils.data import ImageTyping
-from imgutils.generic import ClassifyModel
+from ..data import ImageTyping
+from ..generic import ClassifyModel
+from ..utils import vreplace
 
 __all__ = [
     'anime_dbaesthetic',
@@ -38,30 +39,6 @@ _DEFAULT_LABEL_MAPPING = {
     'low': 0.1,
     'worst': 0.0,
 }
-
-
-def _value_replace(v, mapping):
-    """
-    Replaces values in a data structure using a mapping dictionary.
-
-    :param v: The input data structure.
-    :type v: Any
-    :param mapping: A dictionary mapping values to replacement values.
-    :type mapping: Dict
-    :return: The modified data structure.
-    :rtype: Any
-    """
-    if isinstance(v, (list, tuple)):
-        return type(v)([_value_replace(vitem, mapping) for vitem in v])
-    elif isinstance(v, dict):
-        return type(v)({key: _value_replace(value, mapping) for key, value in v.items()})
-    else:
-        try:
-            _ = hash(v)
-        except TypeError:  # pragma: no cover
-            return v
-        else:
-            return mapping.get(v, v)
 
 
 class AestheticModel:
@@ -171,7 +148,7 @@ class AestheticModel:
         score, confidence = self.get_aesthetic_score(image, model_name)
         percentile = self.score_to_percentile(score, model_name)
         label = self.percentile_to_label(percentile)
-        return _value_replace(
+        return vreplace(
             v=fmt,
             mapping={
                 'label': label,
