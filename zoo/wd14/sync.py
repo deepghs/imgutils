@@ -4,7 +4,6 @@ from functools import lru_cache
 
 import numpy as np
 import onnx
-import onnxruntime
 import pandas as pd
 from ditk import logging
 from hbutils.string import plural_word
@@ -47,7 +46,9 @@ _FC_NODE_PREFIXES_FOR_V3 = {
     "ViT_v3": ('core_model', 'head'),
 }
 
-if __name__ == '__main__':
+
+def sync():
+    import onnxruntime
     with TemporaryDirectory() as td:
         records = []
         for model_name in tqdm(MODEL_NAMES):
@@ -58,7 +59,6 @@ if __name__ == '__main__':
             embs_outputs = []
             if model_name in _FC_NODE_PREFIXES_FOR_V3:
                 prefix = _FC_NODE_PREFIXES_FOR_V3[model_name]
-
 
                 def _is_fc(name):
                     return _seg_split(name)[:len(prefix)] == prefix
@@ -151,3 +151,7 @@ if __name__ == '__main__':
             message=f'Upload {plural_word(len(df_records), "models")}',
             clear=True,
         )
+
+
+if __name__ == '__main__':
+    sync()
