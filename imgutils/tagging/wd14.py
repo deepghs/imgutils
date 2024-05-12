@@ -231,6 +231,6 @@ def get_wd14_tags(
             'general': general_res,
             'character': character_res,
             'tag': {**general_res, **character_res},
-            'embedding': embeddings,
+            'embedding': embeddings[0],
         }
     )
