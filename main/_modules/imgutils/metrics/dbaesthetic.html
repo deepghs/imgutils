@@ -126,8 +126,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
 
-<span class="kn">from</span> <span class="nn">imgutils.data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
-<span class="kn">from</span> <span class="nn">imgutils.generic</span> <span class="kn">import</span> <span class="n">ClassifyModel</span>
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">..generic</span> <span class="kn">import</span> <span class="n">ClassifyModel</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">vreplace</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;anime_dbaesthetic&#39;</span><span class="p">,</span>
@@ -145,30 +146,6 @@
     <span class="s1">&#39;low&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
     <span class="s1">&#39;worst&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
 <span class="p">}</span>
-
-
-<span class="k">def</span> <span class="nf">_value_replace</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">mapping</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Replaces values in a data structure using a mapping dictionary.</span>
-
-<span class="sd">    :param v: The input data structure.</span>
-<span class="sd">    :type v: Any</span>
-<span class="sd">    :param mapping: A dictionary mapping values to replacement values.</span>
-<span class="sd">    :type mapping: Dict</span>
-<span class="sd">    :return: The modified data structure.</span>
-<span class="sd">    :rtype: Any</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
-        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)([</span><span class="n">_value_replace</span><span class="p">(</span><span class="n">vitem</span><span class="p">,</span> <span class="n">mapping</span><span class="p">)</span> <span class="k">for</span> <span class="n">vitem</span> <span class="ow">in</span> <span class="n">v</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)({</span><span class="n">key</span><span class="p">:</span> <span class="n">_value_replace</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">mapping</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">_</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-            <span class="k">return</span> <span class="n">v</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">AestheticModel</span><span class="p">:</span>
@@ -278,7 +255,7 @@
         <span class="n">score</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aesthetic_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
         <span class="n">percentile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_to_percentile</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
         <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">percentile_to_label</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_value_replace</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">vreplace</span><span class="p">(</span>
             <span class="n">v</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
             <span class="n">mapping</span><span class="o">=</span><span class="p">{</span>
                 <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">label</span><span class="p">,</span>
@@ -413,11 +390,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/tagemb/index.html">dev/tagemb</a></dd>
+                        <dd><a href="dbaesthetic.html">main</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/color/index.html">dev/color</a></dd>
                         <dd><a href="../../../../dev/cpu/index.html">dev/cpu</a></dd>
-                        <dd><a href="dbaesthetic.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
