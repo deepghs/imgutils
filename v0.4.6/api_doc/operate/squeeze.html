@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.operate.squeeze &mdash; imgutils 0.4.6 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=2189e5c7"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.pose" href="../pose/index.html" />
+    <link rel="prev" title="imgutils.operate.imgcensor" href="imgcensor.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+              <div class="version">
+                0.4.6
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.operate</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="align.html">imgutils.operate.align</a></li>
+<li class="toctree-l2"><a class="reference internal" href="censor.html">imgutils.operate.censor_</a></li>
+<li class="toctree-l2"><a class="reference internal" href="imgcensor.html">imgutils.operate.imgcensor</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.operate.squeeze</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#squeeze">squeeze</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.operate.squeeze.squeeze"><code class="docutils literal notranslate"><span class="pre">squeeze()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#squeeze-with-transparency">squeeze_with_transparency</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.operate.squeeze.squeeze_with_transparency"><code class="docutils literal notranslate"><span class="pre">squeeze_with_transparency()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.operate</a></li>
+      <li class="breadcrumb-item active">imgutils.operate.squeeze</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/operate/squeeze.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.operate.squeeze">
+<span id="imgutils-operate-squeeze"></span><h1>imgutils.operate.squeeze<a class="headerlink" href="#module-imgutils.operate.squeeze" title="Permalink to this heading"></a></h1>
+<dl class="simple">
+<dt>Overview:</dt><dd><p>A utility for squeezing a specified region of an image.</p>
+</dd>
+</dl>
+<section id="squeeze">
+<h2>squeeze<a class="headerlink" href="#squeeze" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.operate.squeeze.squeeze">
+<span class="sig-prename descclassname"><span class="pre">imgutils.operate.squeeze.</span></span><span class="sig-name descname"><span class="pre">squeeze</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/squeeze.html#squeeze"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.squeeze.squeeze" title="Permalink to this definition"></a></dt>
+<dd><p>Extracts the corresponding region from the original image based on the provided mask (HxW format)
+and crops the image to fit the mask tightly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>mask</strong> (<em>np.ndarray</em>) – The mask representing the region of interest. It should be a NumPy array with shape <code class="docutils literal notranslate"><span class="pre">(H,</span> <span class="pre">W)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the shape of the image and mask do not match.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The cropped image that fits the mask tightly.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Image.Image</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.operate</span> <span class="kn">import</span> <span class="n">squeeze</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;jerry_with_space.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># set your custom mask, format: bool[H, W]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">squeezed</span> <span class="o">=</span> <span class="n">squeeze</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result:</p>
+<img alt="../../_images/squeeze.plot.py.svg" class="align-center" src="../../_images/squeeze.plot.py.svg" /></dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="squeeze-with-transparency">
+<h2>squeeze_with_transparency<a class="headerlink" href="#squeeze-with-transparency" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.operate.squeeze.squeeze_with_transparency">
+<span class="sig-prename descclassname"><span class="pre">imgutils.operate.squeeze.</span></span><span class="sig-name descname"><span class="pre">squeeze_with_transparency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">median_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/squeeze.html#squeeze_with_transparency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.squeeze.squeeze_with_transparency" title="Permalink to this definition"></a></dt>
+<dd><p>Automatically crops the image based on the transparency of each pixel using the <a class="reference internal" href="#imgutils.operate.squeeze.squeeze" title="imgutils.operate.squeeze.squeeze"><code class="xref py py-func docutils literal notranslate"><span class="pre">squeeze()</span></code></a> function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – The threshold value for pixel transparency. Pixels with transparency above this threshold
+will be considered as part of the region of interest. Default is <code class="docutils literal notranslate"><span class="pre">0.7</span></code>.</p></li>
+<li><p><strong>median_filter</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – The size of the median filter kernel to apply to the transparency mask.
+A larger value helps reduce noise in the mask. Set to None or 0 to disable median filtering. Default is <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cropped image based on the transparency of each pixel.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.operate</span> <span class="kn">import</span> <span class="n">squeeze_with_transparency</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;jerry_with_space.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">squeezed</span> <span class="o">=</span> <span class="n">squeeze_with_transparency</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result:</p>
+<img alt="../../_images/squeeze_with_transparency.plot.py.svg" class="align-center" src="../../_images/squeeze_with_transparency.plot.py.svg" /></dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="imgcensor.html" class="btn btn-neutral float-left" title="imgutils.operate.imgcensor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../pose/index.html" class="btn btn-neutral float-right" title="imgutils.pose" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.4.6
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.3.0/api_doc/operate/squeeze.html">v0.3.0</a></dd>
+                        <dd><a href="../../../v0.3.1/api_doc/operate/squeeze.html">v0.3.1</a></dd>
+                        <dd><a href="../../../v0.3.2/api_doc/operate/squeeze.html">v0.3.2</a></dd>
+                        <dd><a href="../../../v0.3.3/api_doc/operate/squeeze.html">v0.3.3</a></dd>
+                        <dd><a href="../../../v0.3.4/api_doc/operate/squeeze.html">v0.3.4</a></dd>
+                        <dd><a href="../../../v0.3.5/api_doc/operate/squeeze.html">v0.3.5</a></dd>
+                        <dd><a href="../../../v0.4.0/api_doc/operate/squeeze.html">v0.4.0</a></dd>
+                        <dd><a href="../../../v0.4.1/api_doc/operate/squeeze.html">v0.4.1</a></dd>
+                        <dd><a href="../../../v0.4.2/api_doc/operate/squeeze.html">v0.4.2</a></dd>
+                        <dd><a href="../../../v0.4.3/api_doc/operate/squeeze.html">v0.4.3</a></dd>
+                        <dd><a href="../../../v0.4.4/api_doc/operate/squeeze.html">v0.4.4</a></dd>
+                        <dd><a href="../../../v0.4.5/api_doc/operate/squeeze.html">v0.4.5</a></dd>
+                        <dd><a href="squeeze.html">v0.4.6</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../ccip/api_doc/operate/squeeze.html">ccip</a></dd>
+                        <dd><a href="../../../dev/color/api_doc/operate/squeeze.html">dev/color</a></dd>
+                        <dd><a href="../../../dev/cpu/api_doc/operate/squeeze.html">dev/cpu</a></dd>
+                        <dd><a href="../../../main/api_doc/operate/squeeze.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

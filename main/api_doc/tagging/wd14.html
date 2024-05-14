@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>imgutils.tagging.wd14 &mdash; imgutils 0.4.5 documentation</title>
+  <title>imgutils.tagging.wd14 &mdash; imgutils 0.4.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -17,7 +17,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=16716fad"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=2189e5c7"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -40,7 +40,7 @@
             imgutils
           </a>
               <div class="version">
-                0.4.5
+                0.4.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -164,6 +164,18 @@ Similar to <a class="reference external" href="https://huggingface.co/spaces/Smi
 <dd class="field-odd"><p>Tuple[Dict[str, float], Dict[str, float], Dict[str, float]]</p>
 </dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>About <code class="docutils literal notranslate"><span class="pre">fmt</span></code> argument, these are the available names:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rating</span></code>, a dict containing ratings and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">general</span></code>, a dict containing general tags and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">character</span></code>, a dict containing character tags and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code>, a dict containing all tags (including general and character, not including rating) and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">embedding</span></code>, a 1-dim embedding of image, recommended for index building after L2 normalization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prediction</span></code>, a 1-dim prediction result of image</p></li>
+</ul>
+</div>
 <dl>
 <dt>Example:</dt><dd><p>Here are some images for example</p>
 <img alt="../../_images/tagging_demo.plot.py.svg" class="align-center" src="../../_images/tagging_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
@@ -240,10 +252,10 @@ Similar to <a class="reference external" href="https://huggingface.co/spaces/Smi
                         <dd><a href="../../../v0.4.3/api_doc/tagging/wd14.html">v0.4.3</a></dd>
                         <dd><a href="../../../v0.4.4/api_doc/tagging/wd14.html">v0.4.4</a></dd>
                         <dd><a href="../../../v0.4.5/api_doc/tagging/wd14.html">v0.4.5</a></dd>
+                        <dd><a href="../../../v0.4.6/api_doc/tagging/wd14.html">v0.4.6</a></dd>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/tagemb/api_doc/tagging/wd14.html">dev/tagemb</a></dd>
                         <dd><a href="../../../ccip/api_doc/tagging/wd14.html">ccip</a></dd>
                         <dd><a href="../../../dev/color/api_doc/tagging/wd14.html">dev/color</a></dd>
                         <dd><a href="../../../dev/cpu/api_doc/tagging/wd14.html">dev/cpu</a></dd>
