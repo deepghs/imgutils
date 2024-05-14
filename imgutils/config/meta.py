@@ -7,7 +7,7 @@ Overview:
 __TITLE__ = 'imgutils'
 
 #: Version of this project.
-__VERSION__ = '0.4.5'
+__VERSION__ = '0.4.6'
 
 #: Short description of the project, will be included in ``setup.py``.
 __DESCRIPTION__ = 'A convenient and user-friendly anime-style image data processing library that integrates ' \
