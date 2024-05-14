@@ -120,15 +120,6 @@ def sync():
             assert tags_data.shape == (1, _get_model_tags_length(model_name))
             assert embeddings.shape == (1, emb_width)
 
-            records.append({
-                'Name': model_name,
-                'Source Repository': f'[{MODEL_NAMES[model_name]}](https://huggingface.co/{MODEL_NAMES[model_name]})',
-                'Tags Count': _get_model_tags_length(model_name),
-                'Embedding Width': emb_width,
-            })
-            _get_model_file.cache_clear()
-            _get_model_tags_length.cache_clear()
-
             if hf_fs.exists(f'datasets/deepghs/wd14_tagger_inversion/{model_name}/samples_200.npz'):
                 _make_inverse(
                     model_name=model_name,
@@ -136,6 +127,19 @@ def sync():
                     onnx_model_file=onnx_file,
                     scale=2000,
                 )
+                invertible = True
+            else:
+                invertible = False
+
+            records.append({
+                'Name': model_name,
+                'Source Repository': f'[{MODEL_NAMES[model_name]}](https://huggingface.co/{MODEL_NAMES[model_name]})',
+                'Tags Count': _get_model_tags_length(model_name),
+                'Embedding Width': emb_width,
+                'Inverse Supported': 'Yes' if invertible else 'No',
+            })
+            _get_model_file.cache_clear()
+            _get_model_tags_length.cache_clear()
 
         df_records = pd.DataFrame(records)
         with open(os.path.join(td, 'README.md'), 'w') as f:
