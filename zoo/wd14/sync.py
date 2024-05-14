@@ -8,13 +8,14 @@ import pandas as pd
 from ditk import logging
 from hbutils.string import plural_word
 from hbutils.system import TemporaryDirectory
-from hfutils.operate import upload_directory_as_directory
+from hfutils.operate import upload_directory_as_directory, get_hf_fs
 from huggingface_hub import hf_hub_download
 from onnx.helper import make_tensor_value_info
 from tqdm import tqdm
 
 from imgutils.tagging.wd14 import MODEL_NAMES
 from imgutils.utils import open_onnx_model
+from .inv import _make_inverse
 
 logging.try_init_root(logging.INFO)
 
@@ -48,6 +49,8 @@ _FC_NODE_PREFIXES_FOR_V3 = {
 
 
 def sync():
+    hf_fs = get_hf_fs()
+
     import onnxruntime
     with TemporaryDirectory() as td:
         records = []
@@ -125,6 +128,14 @@ def sync():
             })
             _get_model_file.cache_clear()
             _get_model_tags_length.cache_clear()
+
+            if hf_fs.exists(f'datasets/deepghs/wd14_tagger_inversion/{model_name}/samples_200.npz'):
+                _make_inverse(
+                    model_name=model_name,
+                    dst_dir=os.path.join(td, MODEL_NAMES[model_name]),
+                    onnx_model_file=onnx_file,
+                    scale=2000,
+                )
 
         df_records = pd.DataFrame(records)
         with open(os.path.join(td, 'README.md'), 'w') as f:
