@@ -21,11 +21,16 @@ class TestTaggingWd14:
         assert rating['general'] > 0.9
         assert tags['cat_girl'] >= 0.8
         assert not chars
+        assert isinstance(rating['general'], float)
+        assert isinstance(tags['cat_girl'], float)
 
         rating, tags, chars = get_wd14_tags(get_testfile('6125785.jpg'))
         assert 0.6 <= rating['general'] <= 0.8
         assert tags['1girl'] >= 0.95
         assert chars['hu_tao_(genshin_impact)'] >= 0.95
+        assert isinstance(rating['general'], float)
+        assert isinstance(tags['1girl'], float)
+        assert isinstance(chars['hu_tao_(genshin_impact)'], float)
 
     def test_wd14_tags_sample(self):
         rating, tags, chars = get_wd14_tags(get_testfile('nude_girl.png'))
