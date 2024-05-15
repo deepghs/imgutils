@@ -4,6 +4,7 @@ from functools import lru_cache
 from typing import List, Set
 
 import pandas as pd
+from ditk import logging
 from huggingface_hub import hf_hub_download
 from tqdm import tqdm
 from waifuc.source import DanbooruSource
@@ -95,5 +96,6 @@ def _make_tag_info(model_name='ConvNext') -> pd.DataFrame:
 
 
 if __name__ == "__main__":
+    logging.try_init_root(logging.INFO)
     df = _make_tag_info()
     df.to_csv('test_tags_info.csv', index=False)
