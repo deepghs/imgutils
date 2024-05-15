@@ -132,7 +132,7 @@ def sync():
             else:
                 invertible = False
 
-            df = _make_tag_info()
+            df = _make_tag_info(model_name)
             assert len(df) == _get_model_tags_length(model_name)
             df.to_csv(os.path.join(td, MODEL_NAMES[model_name], 'tags_info.csv'), index=False)
 
