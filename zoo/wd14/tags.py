@@ -8,6 +8,7 @@ from ditk import logging
 from huggingface_hub import hf_hub_download
 from tqdm import tqdm
 from waifuc.source import DanbooruSource
+from waifuc.utils import srequest
 
 from imgutils.tagging.wd14 import MODEL_NAMES, LABEL_FILENAME
 
@@ -22,14 +23,14 @@ def _db_session():
 @lru_cache(maxsize=65536)
 def _get_tag_by_id(tag_id: int):
     session = _db_session()
-    return session.get(f'https://danbooru.donmai.us/tags/{tag_id}.json').json()
+    return srequest(session, "GET", f'https://danbooru.donmai.us/tags/{tag_id}.json').json()
 
 
 @lru_cache(maxsize=125536)
 def _get_tag_by_name(tag_name: str):
     session = _db_session()
-    vs = session.get(
-        f'https://danbooru.donmai.us/tags.json',
+    vs = srequest(
+        session, 'GET', f'https://danbooru.donmai.us/tags.json',
         params={'search[name]': tag_name}
     ).json()
     return vs[0] if vs else None
@@ -39,8 +40,8 @@ def _get_tag_by_name(tag_name: str):
 def _simple_search_related_tags(tag: str) -> List[str]:
     session = _db_session()
     tags = []
-    for item in session.get(
-            'https://danbooru.donmai.us/tag_aliases.json',
+    for item in srequest(
+            session, 'GET', 'https://danbooru.donmai.us/tag_aliases.json',
             params={
                 'search[name_matches]': tag,
             }
