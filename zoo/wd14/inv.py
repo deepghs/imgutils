@@ -63,6 +63,27 @@ def _make_inverse(model_name, dst_dir: str, onnx_model_file: Optional[str] = Non
     def inv_sigmoid(x):
         return np.log(x) - np.log(1 - x)
 
+    def is_inv_safe(v_epi):
+        eps = 10 ** -v_epi
+        p = np.concatenate([
+            np.ones(10).astype(np.float32),
+            np.zeros(10).astype(np.float32),
+        ])
+        x = np.clip(p, a_min=eps, a_max=1.0 - eps)
+        y = inv_sigmoid(x)
+        return not bool(np.isnan(y).any() or np.isinf(y).any())
+
+    def get_max_safe_epi(tol=1e-6):
+        sl, sr = 1.0, 30.0
+        while sl < sr - tol:
+            sm = (sl + sr) / 2
+            if is_inv_safe(sm):
+                sl = sm
+            else:
+                sr = sm
+
+        return sl
+
     origin = np.load(hf_hub_download(
         repo_id='deepghs/wd14_tagger_inversion',
         repo_type='dataset',
@@ -71,6 +92,7 @@ def _make_inverse(model_name, dst_dir: str, onnx_model_file: Optional[str] = Non
     predictions = origin['preds']
     embeddings = origin['embs']
 
+    right = min(right, get_max_safe_epi())
     records = []
     for r in range(rounds):
         xs, ys = [], []
