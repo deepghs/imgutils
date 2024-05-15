@@ -145,7 +145,7 @@ def sync():
                 'Inverse Supported': 'Yes' if invertible else 'No',
             })
             _get_model_file.cache_clear()
-            _get_model_tags_length.cache_clear() 
+            _get_model_tags_length.cache_clear()
 
         df_records = pd.DataFrame(records)
         with open(os.path.join(td, 'README.md'), 'w') as f:
