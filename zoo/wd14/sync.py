@@ -170,7 +170,7 @@ def sync():
             local_directory=td,
             path_in_repo='.',
             message=f'Upload {plural_word(len(df_records), "models")}',
-            clear=True, 
+            clear=True,
         )
 
 
