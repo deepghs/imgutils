@@ -92,7 +92,8 @@ def _make_inverse(model_name, dst_dir: str, onnx_model_file: Optional[str] = Non
     predictions = origin['preds']
     embeddings = origin['embs']
 
-    right = min(right, get_max_safe_epi())
+    max_safe_epi = get_max_safe_epi()
+    right = min(right, max_safe_epi)
     records = []
     for r in range(rounds):
         xs, ys = [], []
@@ -131,6 +132,7 @@ def _make_inverse(model_name, dst_dir: str, onnx_model_file: Optional[str] = Non
 
         rg = right - left
         left, right = xs[idx] - rg * 0.1, xs[idx] + rg * 0.1
+        right = min(right, max_safe_epi)
 
     df = pd.DataFrame(records)
     df = df.sort_values(by=['epi'], ascending=[True])
