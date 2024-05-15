@@ -43,6 +43,7 @@ def _seg_split(text):
 
 _FC_KEYWORDS_FOR_V2 = {'predictions_dense'}
 _FC_NODE_PREFIXES_FOR_V3 = {
+    "SwinV2": ('core_model', 'head', 'fc'),
     "SwinV2_v3": ('core_model', 'head', 'fc'),
     "ConvNext_v3": ('core_model', 'head', 'fc'),
     "ViT_v3": ('core_model', 'head'),
