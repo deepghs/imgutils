@@ -16,6 +16,7 @@ from tqdm import tqdm
 from imgutils.tagging.wd14 import MODEL_NAMES
 from imgutils.utils import open_onnx_model
 from .inv import _make_inverse
+from .tags import _make_tag_info
 
 logging.try_init_root(logging.INFO)
 
@@ -130,6 +131,10 @@ def sync():
                 invertible = True
             else:
                 invertible = False
+
+            df = _make_tag_info()
+            assert len(df) == _get_model_tags_length(model_name)
+            df.to_csv(os.path.join(td, MODEL_NAMES[model_name], 'tags_info.csv'), index=False)
 
             records.append({
                 'Name': model_name,
