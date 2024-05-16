@@ -4,6 +4,7 @@ Overview:
     `SmilingWolf/wd-v1-4-tags <https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags>`_ .
 """
 import json
+import warnings
 from functools import lru_cache
 from typing import List, Tuple, Optional, Dict, Union
 
@@ -259,8 +260,10 @@ def _inv_sigmoid(x):
     return np.log(x) - np.log(1 - x)
 
 
-def inv_wd14_by_predictions(predictions: np.ndarray, model_name: str = _DEFAULT_MODEL_NAME,
-                            epi: Optional[float] = None, norm: bool = False) -> np.ndarray:
+def get_wd14_embeddings_by_predictions(
+        predictions: np.ndarray, model_name: str = _DEFAULT_MODEL_NAME,
+        epi: Optional[float] = None, norm: bool = False
+) -> np.ndarray:
     best_epi, inv_weights, bias = _inv_data(model_name)
     eps = 10 ** -(epi if epi is not None else best_epi)
     pred_input = np.clip(predictions, a_min=eps, a_max=1.0 - eps)
@@ -291,8 +294,10 @@ def _wd14_alias_map(model_name: str = _DEFAULT_MODEL_NAME) -> Tuple[Dict[str, Tu
     return retval, df_tags
 
 
-def get_wd14_pred_mask_by_tags(tags: Union[List[str], Dict[str, float]],
-                               model_name: str = _DEFAULT_MODEL_NAME) -> np.ndarray:
+def get_wd14_pred_mask_by_tags(
+        tags: Union[List[str], Dict[str, float]], model_name: str = _DEFAULT_MODEL_NAME,
+        raise_when_tag_unknown: bool = True
+) -> np.ndarray:
     from .format import add_underline
 
     if isinstance(tags, (list, tuple)):
@@ -304,9 +309,13 @@ def get_wd14_pred_mask_by_tags(tags: Union[List[str], Dict[str, float]],
     for tag, value in tags.items():
         origin_tag, tag = tag, add_underline(tag)
         if tag not in mapping:
-            raise ValueError(f'Unknown tag {origin_tag!r}.')
-
-        real_tag_name, position = mapping[tag]
-        arr[position] = value
+            if raise_when_tag_unknown:
+                raise ValueError(f'Unknown tag {origin_tag!r}, not found in model {model_name!r}')
+            else:
+                warnings.warn(f'Unknown tag {origin_tag!r}, not found in model {model_name!r}. '
+                              f'So tag {origin_tag!r} will be ignored.')
+        else:
+            real_tag_name, position = mapping[tag]
+            arr[position] = value
 
     return arr
