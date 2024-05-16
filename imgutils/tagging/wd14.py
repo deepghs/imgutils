@@ -271,7 +271,7 @@ def inv_wd14_by_predictions(predictions: np.ndarray, model_name: str = _DEFAULT_
 
 
 @lru_cache()
-def _wd14_alias_map(model_name: str = _DEFAULT_MODEL_NAME) -> Tuple[Dict[str, Tuple[str, int]], int]:
+def _wd14_alias_map(model_name: str = _DEFAULT_MODEL_NAME) -> Tuple[Dict[str, Tuple[str, int]], pd.DataFrame]:
     df_tags = pd.read_csv(hf_hub_download(
         repo_id='deepghs/wd14_tagger_with_embeddings',
         repo_type='model',
@@ -288,7 +288,7 @@ def _wd14_alias_map(model_name: str = _DEFAULT_MODEL_NAME) -> Tuple[Dict[str, Tu
             for tag_form in forms:
                 retval[tag_form] = (item['name'], i)
 
-    return retval, len(df_tags)
+    return retval, df_tags
 
 
 def get_wd14_pred_mask_by_tags(tags: Union[List[str], Dict[str, float]],
@@ -298,10 +298,9 @@ def get_wd14_pred_mask_by_tags(tags: Union[List[str], Dict[str, float]],
     if isinstance(tags, (list, tuple)):
         tags = {tag: 1.0 for tag in tags}
 
-    mapping, width = _wd14_alias_map(model_name)
+    mapping, df_tags = _wd14_alias_map(model_name)
+    width = len(df_tags)
     arr = np.zeros((width,), dtype=np.float32)
-    # arr = np.random.randn(width).astype(np.float32) + 0.5 * 0.25
-    # arr = np.clip(arr, a_min=0.0, a_max=1.0)
     for tag, value in tags.items():
         origin_tag, tag = tag, add_underline(tag)
         if tag not in mapping:
