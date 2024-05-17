@@ -158,6 +158,7 @@ def _make_inverse(model_name, dst_dir: str, onnx_model_file: Optional[str] = Non
         best_eps=10 ** -best_record["epi"],
         bias=bias,
         inv_weights=inv_weights,
+        weights=weights,
     )
 
     plt.cla()
