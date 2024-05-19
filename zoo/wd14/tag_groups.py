@@ -15,6 +15,7 @@ from waifuc.utils import srequest
 
 from zoo.wd14.tags import _db_session, _get_tag_by_name
 
+logging.try_init_root(logging.INFO)
 session = _db_session()
 
 
@@ -165,6 +166,7 @@ def _make_table(limit: Optional[int] = None):
 
     df_record = pd.DataFrame(records)
     df_record = df_record.replace(np.NaN, False)
+    df_record = df_record.sort_values(by=['posts', 'id'], ascending=[False, True])
 
     groupx = []
     for group_name, (group_category, group_parent) in all_groups.items():
@@ -183,7 +185,7 @@ def sync(repository='deepghs/danbooru_tag_groups'):
     if not hf_client.repo_exists(repo_id=repository, repo_type='dataset'):
         hf_client.create_repo(repo_id=repository, repo_type='dataset', private=True)
 
-    df_record, df_groups = _make_table()
+    df_record, df_groups = _make_table(limit=60)
     with TemporaryDirectory() as td:
         df_record.to_csv(os.path.join(td, 'tags.csv'), index=False)
         df_groups.to_csv(os.path.join(td, 'groups.csv'), index=False)
@@ -198,5 +200,4 @@ def sync(repository='deepghs/danbooru_tag_groups'):
 
 
 if __name__ == '__main__':
-    logging.try_init_root(logging.INFO)
     sync()

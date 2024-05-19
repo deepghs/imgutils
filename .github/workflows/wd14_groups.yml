@@ -1,0 +1,44 @@
+name: Sync WD14 Groups
+
+on:
+  #  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 18 * * 6'
+
+jobs:
+  sync:
+    name: Sync Waifu2x ONNX
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - 'ubuntu-latest'
+        python-version:
+          - '3.8'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 20
+      - name: Set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set up python dependences
+        run: |
+          pip install --upgrade pip
+          pip install --upgrade flake8 setuptools wheel twine
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f requirements-build.txt ]; then pip install -r requirements-build.txt; fi
+          if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
+          if [ -f requirements-test.txt ]; then pip install -r requirements-zoo.txt; fi
+          pip install --upgrade build
+      - name: Sync Models
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+        run: |
+          python -m zoo.wd14.tag_groups
