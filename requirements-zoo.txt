@@ -25,3 +25,5 @@ tabulate
 hfmirror>=0.0.7
 tabulate
 git+https://github.com/deepghs/waifuc.git@main#egg=waifuc
+pyquery
+httpx
