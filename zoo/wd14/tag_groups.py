@@ -185,7 +185,7 @@ def sync(repository='deepghs/danbooru_tag_groups'):
     if not hf_client.repo_exists(repo_id=repository, repo_type='dataset'):
         hf_client.create_repo(repo_id=repository, repo_type='dataset', private=True)
 
-    df_record, df_groups = _make_table(limit=60)
+    df_record, df_groups = _make_table()
     with TemporaryDirectory() as td:
         df_record.to_csv(os.path.join(td, 'tags.csv'), index=False)
         df_groups.to_csv(os.path.join(td, 'groups.csv'), index=False)
