@@ -10,6 +10,7 @@ from tqdm import tqdm
 from waifuc.source import DanbooruSource
 from waifuc.utils import srequest
 
+from imgutils.tagging import is_basic_character_tag
 from imgutils.tagging.wd14 import MODEL_NAMES, LABEL_FILENAME
 
 
@@ -79,6 +80,13 @@ def _tags_name_set(model_name) -> Set[str]:
 
 
 def _make_tag_info(model_name='ConvNext') -> pd.DataFrame:
+    with open(hf_hub_download(
+            repo_id='deepghs/tags_meta',
+            repo_type='dataset',
+            filename='attire_tags.json',
+    ), 'r') as f:
+        attire_tags = json.load(f)
+
     df = _tags_list(model_name)
     records = []
     for item in tqdm(df.to_dict('records')):
@@ -90,6 +98,8 @@ def _make_tag_info(model_name='ConvNext') -> pd.DataFrame:
             item['aliases'] = json.dumps(aliases)
         else:
             item['aliases'] = json.dumps([item['name']])
+        item['is_core'] = (item['category'] == 0) and (is_basic_character_tag(item['name']))
+        item['is_attire'] = (item['category'] == 0) and (item['name'] in attire_tags)
         records.append(item)
 
     df_records = pd.DataFrame(records)
