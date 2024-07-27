@@ -33,6 +33,8 @@ LABEL_FILENAME = "selected_tags.csv"
 _IS_V3_SUPPORT = VersionInfo(onnxruntime.__version__) >= '1.17'
 
 MODEL_NAMES = {
+    "ViT_Large": VIT_LARGE_MODEL_REPO,
+
     "SwinV2": SWIN_MODEL_REPO,
     "ConvNext": CONV_MODEL_REPO,
     "ConvNextV2": CONV2_MODEL_REPO,
@@ -42,8 +44,6 @@ MODEL_NAMES = {
     "SwinV2_v3": SWIN_V3_MODEL_REPO,
     "ConvNext_v3": CONV_V3_MODEL_REPO,
     "ViT_v3": VIT_V3_MODEL_REPO,
-
-    "ViT_Large": VIT_LARGE_MODEL_REPO,
 }
 _DEFAULT_MODEL_NAME = 'SwinV2_v3'
 
