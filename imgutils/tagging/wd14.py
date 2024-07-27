@@ -43,7 +43,7 @@ MODEL_NAMES = {
     "ConvNext_v3": CONV_V3_MODEL_REPO,
     "ViT_v3": VIT_V3_MODEL_REPO,
 
-    "Vit_Large": VIT_LARGE_MODEL_REPO,
+    "ViT_Large": VIT_LARGE_MODEL_REPO,
 }
 _DEFAULT_MODEL_NAME = 'SwinV2_v3'
 

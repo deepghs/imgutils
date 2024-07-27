@@ -47,6 +47,7 @@ _FC_NODE_PREFIXES_FOR_V3 = {
     "SwinV2_v3": ('core_model', 'head', 'fc'),
     "ConvNext_v3": ('core_model', 'head', 'fc'),
     "ViT_v3": ('core_model', 'head'),
+    "ViT_Large": ('core_model', 'head'),
 }
 
 
