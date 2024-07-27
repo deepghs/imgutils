@@ -110,8 +110,10 @@
 <span class="sd">    Tagging utils based on wd14 v2, inspired by</span>
 <span class="sd">    `SmilingWolf/wd-v1-4-tags &lt;https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags&gt;`_ .</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">onnxruntime</span>
@@ -365,8 +367,10 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">inv_wd14_by_predictions</span><span class="p">(</span><span class="n">predictions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
-                            <span class="n">epi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">norm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_wd14_embeddings_by_predictions</span><span class="p">(</span>
+        <span class="n">predictions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
+        <span class="n">epi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">norm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">best_epi</span><span class="p">,</span> <span class="n">inv_weights</span><span class="p">,</span> <span class="n">bias</span> <span class="o">=</span> <span class="n">_inv_data</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
     <span class="n">eps</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="o">-</span><span class="p">(</span><span class="n">epi</span> <span class="k">if</span> <span class="n">epi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">best_epi</span><span class="p">)</span>
     <span class="n">pred_input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="n">eps</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">eps</span><span class="p">)</span>
@@ -374,6 +378,54 @@
     <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
         <span class="n">inv_emb_output</span> <span class="o">=</span> <span class="n">inv_emb_output</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">inv_emb_output</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">inv_emb_output</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_wd14_alias_map</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+    <span class="n">df_tags</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;deepghs/wd14_tagger_with_embeddings&#39;</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">MODEL_NAMES</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span><span class="si">}</span><span class="s1">/tags_info.csv&#39;</span><span class="p">,</span>
+    <span class="p">))</span>
+
+    <span class="kn">from</span> <span class="nn">.match</span> <span class="kn">import</span> <span class="n">_cached_singular_form</span><span class="p">,</span> <span class="n">_cache_plural_form</span>
+
+    <span class="n">retval</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df_tags</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">)):</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;aliases&#39;</span><span class="p">])})</span>
+        <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
+            <span class="n">forms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">({</span><span class="n">tag</span><span class="p">,</span> <span class="n">_cached_singular_form</span><span class="p">(</span><span class="n">tag</span><span class="p">),</span> <span class="n">_cache_plural_form</span><span class="p">(</span><span class="n">tag</span><span class="p">)})</span>
+            <span class="k">for</span> <span class="n">tag_form</span> <span class="ow">in</span> <span class="n">forms</span><span class="p">:</span>
+                <span class="n">retval</span><span class="p">[</span><span class="n">tag_form</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">i</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">retval</span><span class="p">,</span> <span class="n">df_tags</span>
+
+
+<span class="k">def</span> <span class="nf">get_wd14_pred_mask_by_tags</span><span class="p">(</span>
+        <span class="n">tags</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
+        <span class="n">raise_when_tag_unknown</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.format</span> <span class="kn">import</span> <span class="n">add_underline</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="p">{</span><span class="n">tag</span><span class="p">:</span> <span class="mf">1.0</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">}</span>
+
+    <span class="n">mapping</span><span class="p">,</span> <span class="n">df_tags</span> <span class="o">=</span> <span class="n">_wd14_alias_map</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_tags</span><span class="p">)</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">width</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">tags</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">origin_tag</span><span class="p">,</span> <span class="n">tag</span> <span class="o">=</span> <span class="n">tag</span><span class="p">,</span> <span class="n">add_underline</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">raise_when_tag_unknown</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown tag </span><span class="si">{</span><span class="n">origin_tag</span><span class="si">!r}</span><span class="s1">, not found in model </span><span class="si">{</span><span class="n">model_name</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown tag </span><span class="si">{</span><span class="n">origin_tag</span><span class="si">!r}</span><span class="s1">, not found in model </span><span class="si">{</span><span class="n">model_name</span><span class="si">!r}</span><span class="s1">. &#39;</span>
+                              <span class="sa">f</span><span class="s1">&#39;So tag </span><span class="si">{</span><span class="n">origin_tag</span><span class="si">!r}</span><span class="s1"> will be ignored.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">real_tag_name</span><span class="p">,</span> <span class="n">position</span> <span class="o">=</span> <span class="n">mapping</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
+            <span class="n">arr</span><span class="p">[</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">return</span> <span class="n">arr</span>
 </pre></div>
 
 
@@ -423,11 +475,11 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="wd14.html">dev/taginv</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
                         <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../color/index.html">dev/color</a></dd>
                         <dd><a href="../../../../cpu/index.html">dev/cpu</a></dd>
-                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                        <dd><a href="wd14.html">dev/taginv</a></dd>
                 </dl>
         </div>
     </div><script>
