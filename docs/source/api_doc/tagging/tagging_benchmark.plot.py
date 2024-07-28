@@ -62,6 +62,7 @@ if __name__ == '__main__':
             ('wd14-swinv2-v3', Wd14Benchmark("SwinV2_v3")),
             ('wd14-vit-v3', Wd14Benchmark("ViT_v3")),
             ('wd14-convnext-v3', Wd14Benchmark("ConvNext_v3")),
+            ('wd14-vit-large-tagger-v3', Wd14Benchmark("ViT_Large")),
             ('mldanbooru', MLDanbooruBenchmark()),
         ],
         title='Benchmark for Tagging Models',
