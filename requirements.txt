@@ -8,7 +8,7 @@ opencv-python
 opencv-contrib-python
 pandas
 scipy
-emoji>=2.5.0
+emoji>=2.5.0,<2.12
 pilmoji>=1.3.0
 shapely
 pyclipper
