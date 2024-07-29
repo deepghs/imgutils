@@ -134,12 +134,14 @@
 <span class="n">SWIN_V3_MODEL_REPO</span> <span class="o">=</span> <span class="s1">&#39;SmilingWolf/wd-swinv2-tagger-v3&#39;</span>
 <span class="n">VIT_V3_MODEL_REPO</span> <span class="o">=</span> <span class="s1">&#39;SmilingWolf/wd-vit-tagger-v3&#39;</span>
 <span class="n">VIT_LARGE_MODEL_REPO</span> <span class="o">=</span> <span class="s1">&#39;SmilingWolf/wd-vit-large-tagger-v3&#39;</span>
+<span class="n">EVA02_LARGE_MODEL_DSV3_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-eva02-large-tagger-v3&quot;</span>
 <span class="n">MODEL_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;model.onnx&quot;</span>
 <span class="n">LABEL_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;selected_tags.csv&quot;</span>
 
 <span class="n">_IS_V3_SUPPORT</span> <span class="o">=</span> <span class="n">VersionInfo</span><span class="p">(</span><span class="n">onnxruntime</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="s1">&#39;1.17&#39;</span>
 
 <span class="n">MODEL_NAMES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;EVA02_Large&quot;</span><span class="p">:</span> <span class="n">EVA02_LARGE_MODEL_DSV3_REPO</span><span class="p">,</span>
     <span class="s2">&quot;ViT_Large&quot;</span><span class="p">:</span> <span class="n">VIT_LARGE_MODEL_REPO</span><span class="p">,</span>
 
     <span class="s2">&quot;SwinV2&quot;</span><span class="p">:</span> <span class="n">SWIN_MODEL_REPO</span><span class="p">,</span>
@@ -402,6 +404,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/eva2/index.html">dev/eva2</a></dd>
                         <dd><a href="../../../../ccip/index.html">ccip</a></dd>
                         <dd><a href="../../../../dev/color/index.html">dev/color</a></dd>
                         <dd><a href="wd14.html">main</a></dd>
