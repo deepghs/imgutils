@@ -132,12 +132,13 @@ def sync(tag_lazy_mode: bool = False, models: Optional[List[str]] = None):
             assert tags_data.shape == (1, _get_model_tags_length(model_name))
             assert embeddings.shape == (1, emb_width)
 
-            if hf_fs.exists(f'datasets/deepghs/wd14_tagger_inversion/{model_name}/samples_200.npz'):
+            use_scale = 2000
+            if hf_fs.exists(f'datasets/deepghs/wd14_tagger_inversion/{model_name}/samples_{use_scale}.npz'):
                 _make_inverse(
                     model_name=model_name,
                     dst_dir=os.path.join(td, MODEL_NAMES[model_name]),
                     onnx_model_file=onnx_file,
-                    scale=2000,
+                    scale=use_scale,
                 )
                 invertible = True
             else:
