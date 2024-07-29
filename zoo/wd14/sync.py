@@ -51,7 +51,7 @@ _FC_NODE_PREFIXES_FOR_V3 = {
 }
 
 
-def sync():
+def sync(tag_lazy_mode: bool = False):
     hf_fs = get_hf_fs()
 
     import onnxruntime
@@ -134,7 +134,7 @@ def sync():
             else:
                 invertible = False
 
-            df = _make_tag_info(model_name)
+            df = _make_tag_info(model_name, lazy_mode=tag_lazy_mode)
             assert len(df) == _get_model_tags_length(model_name)
             df.to_csv(os.path.join(td, MODEL_NAMES[model_name], 'tags_info.csv'), index=False)
 
@@ -176,4 +176,6 @@ def sync():
 
 
 if __name__ == '__main__':
-    sync()
+    sync(
+        tag_lazy_mode=bool(os.environ.get('TAG_LAZY_MODE')),
+    )

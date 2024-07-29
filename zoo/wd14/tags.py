@@ -1,10 +1,13 @@
 import json
 import logging
+import os
 from functools import lru_cache
-from typing import List, Set
+from typing import List, Set, Dict
 
+import numpy as np
 import pandas as pd
 from ditk import logging
+from hfutils.operate import get_hf_fs
 from huggingface_hub import hf_hub_download
 from tqdm import tqdm
 from waifuc.source import DanbooruSource
@@ -79,7 +82,24 @@ def _tags_name_set(model_name) -> Set[str]:
     return set(_tags_list(model_name)['name'])
 
 
-def _make_tag_info(model_name='ConvNext') -> pd.DataFrame:
+@lru_cache()
+def _load_all_previous(repository: str = 'deepghs/wd14_tagger_with_embeddings') -> Dict[int, dict]:
+    hf_fs = get_hf_fs()
+    d = {}
+    for path in hf_fs.glob(f'{repository}/**/tags_info.csv'):
+        relpath = os.path.relpath(path, f'{repository}')
+        df = pd.read_csv(hf_hub_download(
+            repo_id=repository,
+            repo_type='model',
+            filename=relpath,
+        )).replace(np.nan, None)
+        for item in df.to_dict('records'):
+            if item['tag_id'] not in d:
+                d[item['tag_id']] = item
+    return d
+
+
+def _make_tag_info(model_name='ConvNext', lazy_mode: bool = False) -> pd.DataFrame:
     with open(hf_hub_download(
             repo_id='deepghs/tags_meta',
             repo_type='dataset',
@@ -88,18 +108,22 @@ def _make_tag_info(model_name='ConvNext') -> pd.DataFrame:
         attire_tags = json.load(f)
 
     df = _tags_list(model_name)
+    d = _load_all_previous()
     records = []
     for item in tqdm(df.to_dict('records')):
-        if item['category'] != 9:
-            tag_info = _get_tag_by_id(item['tag_id'])
-            item['count'] = tag_info['post_count']
-            aliases = _search_related_tags(item['name'], model_name)
-            logging.info(f'Aliases {aliases!r} --> {item["name"]!r}')
-            item['aliases'] = json.dumps(aliases)
+        if lazy_mode and item['tag_id'] in d:
+            item = d[item['tag_id']]
         else:
-            item['aliases'] = json.dumps([item['name']])
-        item['is_core'] = (item['category'] == 0) and (is_basic_character_tag(item['name']))
-        item['is_attire'] = (item['category'] == 0) and (item['name'] in attire_tags)
+            if item['category'] != 9:
+                tag_info = _get_tag_by_id(item['tag_id'])
+                item['count'] = tag_info['post_count']
+                aliases = _search_related_tags(item['name'], model_name)
+                logging.info(f'Aliases {aliases!r} --> {item["name"]!r}')
+                item['aliases'] = json.dumps(aliases)
+            else:
+                item['aliases'] = json.dumps([item['name']])
+            item['is_core'] = (item['category'] == 0) and (is_basic_character_tag(item['name']))
+            item['is_attire'] = (item['category'] == 0) and (item['name'] in attire_tags)
         records.append(item)
 
     df_records = pd.DataFrame(records)

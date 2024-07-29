@@ -3,6 +3,11 @@ name: Sync WD14 Models
 on:
   #  push:
   workflow_dispatch:
+    inputs:
+      tag_lazy_mode:
+        description: 'Enable Tag Lazy Mode'
+        type: boolean
+        default: false
   schedule:
     - cron: '30 18 * * 0'
 
@@ -36,6 +41,16 @@ jobs:
           if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
           if [ -f requirements-test.txt ]; then pip install -r requirements-zoo.txt; fi
           pip install --upgrade build
+      - name: Enable Tag Lazy Mode
+        if: ${{ (github.event.inputs.drop_multi || 'false') == 'true' }}
+        shell: bash
+        run: |
+          echo 'TAG_LAZY_MODE=1' >> $GITHUB_ENV
+      - name: Disable Tag Lazy Mode
+        if: ${{ (github.event.inputs.drop_multi || 'false') == 'false' }}
+        shell: bash
+        run: |
+          echo 'TAG_LAZY_MODE=' >> $GITHUB_ENV
       - name: Sync Models
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
