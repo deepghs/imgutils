@@ -1,6 +1,7 @@
 import os.path
 import re
 from functools import lru_cache
+from typing import List, Optional
 
 import numpy as np
 import onnx
@@ -48,16 +49,24 @@ _FC_NODE_PREFIXES_FOR_V3 = {
     "ConvNext_v3": ('core_model', 'head', 'fc'),
     "ViT_v3": ('core_model', 'head'),
     "ViT_Large": ('core_model', 'head'),
+    "EVA02_Large": ('core_model', 'head'),
 }
 
 
-def sync(tag_lazy_mode: bool = False):
+def sync(tag_lazy_mode: bool = False, models: Optional[List[str]] = None):
     hf_fs = get_hf_fs()
+
+    if models:
+        _make_all = False
+        _model_names = models
+    else:
+        _make_all = True
+        _model_names = MODEL_NAMES
 
     import onnxruntime
     with TemporaryDirectory() as td:
         records = []
-        for model_name in tqdm(MODEL_NAMES):
+        for model_name in tqdm(_model_names):
             model_file = _get_model_file(model_name)
             logging.info(f'Model name: {model_name!r}, model file: {model_file!r}')
             logging.info(f'Loading model {model_name!r} ...')
@@ -171,11 +180,13 @@ def sync(tag_lazy_mode: bool = False):
             local_directory=td,
             path_in_repo='.',
             message=f'Upload {plural_word(len(df_records), "models")}',
-            clear=True,
+            clear=True if _make_all else False,
         )
 
 
 if __name__ == '__main__':
+    _MODELS = list(filter(bool, re.split('[,\s]+', os.environ.get('MODELS') or '')))
     sync(
         tag_lazy_mode=bool(os.environ.get('TAG_LAZY_MODE')),
+        models=_MODELS if _MODELS else None,
     )

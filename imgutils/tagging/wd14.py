@@ -27,12 +27,14 @@ CONV_V3_MODEL_REPO = 'SmilingWolf/wd-convnext-tagger-v3'
 SWIN_V3_MODEL_REPO = 'SmilingWolf/wd-swinv2-tagger-v3'
 VIT_V3_MODEL_REPO = 'SmilingWolf/wd-vit-tagger-v3'
 VIT_LARGE_MODEL_REPO = 'SmilingWolf/wd-vit-large-tagger-v3'
+EVA02_LARGE_MODEL_DSV3_REPO = "SmilingWolf/wd-eva02-large-tagger-v3"
 MODEL_FILENAME = "model.onnx"
 LABEL_FILENAME = "selected_tags.csv"
 
 _IS_V3_SUPPORT = VersionInfo(onnxruntime.__version__) >= '1.17'
 
 MODEL_NAMES = {
+    "EVA02_Large": EVA02_LARGE_MODEL_DSV3_REPO,
     "ViT_Large": VIT_LARGE_MODEL_REPO,
 
     "SwinV2": SWIN_MODEL_REPO,
