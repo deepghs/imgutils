@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.validate.dbrating &mdash; imgutils 0.4.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=6debc21c"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+              <div class="version">
+                0.4.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.validate.dbrating</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.validate.dbrating</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    A model for rating anime images into 4 classes (``general``, ``sensitive``, ``questionable`` and ``explicit``),</span>
+<span class="sd">    based on danbooru rating system.</span>
+
+<span class="sd">    The following are sample images for testing.</span>
+
+<span class="sd">    .. collapse:: The following are sample images for testing. (WARNING: NSFW!!!)</span>
+
+<span class="sd">        .. image:: dbrating.plot.py.svg</span>
+<span class="sd">            :align: center</span>
+
+<span class="sd">    This is an overall benchmark of all the rating validation models:</span>
+
+<span class="sd">    .. image:: dbrating_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    The models are hosted on</span>
+<span class="sd">    `huggingface - deepghs/anime_dbrating &lt;https://huggingface.co/deepghs/anime_dbrating&gt;`_.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This model is based on danbooru rating system, trained with 1.2 million images.</span>
+<span class="sd">        If you need 3-level rating prediction, use :func:`imgutils.validate.rating.anime_rating`.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Please note that the classification of ``general``, ``sensitive``, ``questionable`` and ``explicit`` types</span>
+<span class="sd">        does not have clear boundaries, making it challenging to clean the training data. As a result,</span>
+<span class="sd">        there is no strict ground truth for the rating classification problem. The judgment functionality</span>
+<span class="sd">        provided by the current module is intended as a quick and rough estimation.</span>
+
+<span class="sd">        **If you require an accurate filtering or judgment function specifically for R-18 images,</span>
+<span class="sd">        it is recommended to consider using object detection-based methods**,</span>
+<span class="sd">        such as using :func:`imgutils.detect.censor.detect_censors` to detect sensitive regions as the basis for judgment.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">..generic</span> <span class="kn">import</span> <span class="n">classify_predict</span><span class="p">,</span> <span class="n">classify_predict_score</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;anime_dbrating_score&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;anime_dbrating&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">_DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;mobilenetv3_large_100_v0_ls0.2&#39;</span>
+<span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/anime_dbrating&#39;</span>
+
+
+<div class="viewcode-block" id="anime_dbrating_score"><a class="viewcode-back" href="../../../api_doc/validate/dbrating.html#imgutils.validate.dbrating.anime_dbrating_score">[docs]</a><span class="k">def</span> <span class="nf">anime_dbrating_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Overview:</span>
+<span class="sd">        Predict the rating of the given image, return the score with as a dict object.</span>
+
+<span class="sd">    :param image: Image to rating.</span>
+<span class="sd">    :param model_name: Model to use. Default is ``mobilenetv3_large_100_v0_ls0.2``.</span>
+<span class="sd">        All available models are listed on the benchmark plot above.</span>
+<span class="sd">        If you need better accuracy, just set this to ``caformer_s36_v0_ls0.2``.</span>
+<span class="sd">    :return: A dict with ratings and scores.</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_dbrating</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;general/1.jpg&#39;)</span>
+<span class="sd">        (&#39;general&#39;, 0.7508869767189026)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;general/2.jpg&#39;)</span>
+<span class="sd">        (&#39;general&#39;, 0.7034655809402466)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;general/3.jpg&#39;)</span>
+<span class="sd">        (&#39;general&#39;, 0.728887677192688)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;general/4.jpg&#39;)</span>
+<span class="sd">        (&#39;general&#39;, 0.7404400110244751)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;sensitive/5.jpg&#39;)</span>
+<span class="sd">        (&#39;sensitive&#39;, 0.7446154952049255)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;sensitive/6.jpg&#39;)</span>
+<span class="sd">        (&#39;sensitive&#39;, 0.7514738440513611)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;sensitive/7.jpg&#39;)</span>
+<span class="sd">        (&#39;sensitive&#39;, 0.768704354763031)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;sensitive/8.jpg&#39;)</span>
+<span class="sd">        (&#39;sensitive&#39;, 0.8219676613807678)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;questionable/9.jpg&#39;)</span>
+<span class="sd">        (&#39;questionable&#39;, 0.7267540693283081)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;questionable/10.jpg&#39;)</span>
+<span class="sd">        (&#39;questionable&#39;, 0.7645740509033203)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;questionable/11.jpg&#39;)</span>
+<span class="sd">        (&#39;questionable&#39;, 0.7216582894325256)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;questionable/12.jpg&#39;)</span>
+<span class="sd">        (&#39;questionable&#39;, 0.7615436315536499)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;explicit/13.jpg&#39;)</span>
+<span class="sd">        (&#39;explicit&#39;, 0.815083920955658)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;explicit/14.jpg&#39;)</span>
+<span class="sd">        (&#39;explicit&#39;, 0.8321858644485474)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;explicit/15.jpg&#39;)</span>
+<span class="sd">        (&#39;explicit&#39;, 0.8204999566078186)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating(&#39;explicit/16.jpg&#39;)</span>
+<span class="sd">        (&#39;explicit&#39;, 0.820833146572113)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">classify_predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_REPO_ID</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="anime_dbrating"><a class="viewcode-back" href="../../../api_doc/validate/dbrating.html#imgutils.validate.dbrating.anime_dbrating">[docs]</a><span class="k">def</span> <span class="nf">anime_dbrating</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Overview:</span>
+<span class="sd">        Predict the rating of the given image, return the class and its score.</span>
+
+<span class="sd">    :param image: Image to rating.</span>
+<span class="sd">    :param model_name: Model to use. Default is ``mobilenetv3_large_100_v0_ls0.2``. All available models are listed</span>
+<span class="sd">        on the benchmark plot above. If you need better accuracy, just set this to ``caformer_s36_v0_ls0.2``.</span>
+<span class="sd">    :return: A tuple contains the rating and its score.</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_dbrating_score</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; os.chdir(&#39;docs/source/api_doc/validate/dbrating&#39;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;general/1.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.7508870363235474, &#39;sensitive&#39;: 0.11212056130170822, &#39;questionable&#39;: 0.06781744956970215, &#39;explicit&#39;: 0.06917501986026764}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;general/2.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.7034654021263123, &#39;sensitive&#39;: 0.15903906524181366, &#39;questionable&#39;: 0.06688199192285538, &#39;explicit&#39;: 0.07061357796192169}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;general/3.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.7288877964019775, &#39;sensitive&#39;: 0.1476859599351883, &#39;questionable&#39;: 0.060362350195646286, &#39;explicit&#39;: 0.06306383013725281}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;general/4.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.7404399514198303, &#39;sensitive&#39;: 0.10337048768997192, &#39;questionable&#39;: 0.08087948709726334, &#39;explicit&#39;: 0.07530999928712845}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;sensitive/5.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.055992450565099716, &#39;sensitive&#39;: 0.7446154356002808, &#39;questionable&#39;: 0.13191790878772736, &#39;explicit&#39;: 0.06747424602508545}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;sensitive/6.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.06458679586648941, &#39;sensitive&#39;: 0.7514738440513611, &#39;questionable&#39;: 0.10566363483667374, &#39;explicit&#39;: 0.07827574014663696}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;sensitive/7.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.07079866528511047, &#39;sensitive&#39;: 0.7687042951583862, &#39;questionable&#39;: 0.09974884241819382, &#39;explicit&#39;: 0.06074819341301918}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;sensitive/8.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.050435908138751984, &#39;sensitive&#39;: 0.8219675421714783, &#39;questionable&#39;: 0.0593985915184021, &#39;explicit&#39;: 0.06819795072078705}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;questionable/9.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.06569571048021317, &#39;sensitive&#39;: 0.1177448257803917, &#39;questionable&#39;: 0.726753830909729, &#39;explicit&#39;: 0.08980562537908554}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;questionable/10.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.06481882929801941, &#39;sensitive&#39;: 0.06922297924757004, &#39;questionable&#39;: 0.7645740509033203, &#39;explicit&#39;: 0.10138414055109024}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;questionable/11.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.06351721286773682, &#39;sensitive&#39;: 0.07683827728033066, &#39;questionable&#39;: 0.7216582894325256, &#39;explicit&#39;: 0.13798624277114868}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;questionable/12.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.05942752957344055, &#39;sensitive&#39;: 0.10584963858127594, &#39;questionable&#39;: 0.7615437507629395, &#39;explicit&#39;: 0.07317910343408585}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;explicit/13.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.060196295380592346, &#39;sensitive&#39;: 0.06751583516597748, &#39;questionable&#39;: 0.0572039857506752, &#39;explicit&#39;: 0.815083920955658}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;explicit/14.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.05398125201463699, &#39;sensitive&#39;: 0.06124086305499077, &#39;questionable&#39;: 0.0525919646024704, &#39;explicit&#39;: 0.8321859240531921}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;explicit/15.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.05922013148665428, &#39;sensitive&#39;: 0.06274889409542084, &#39;questionable&#39;: 0.057530902326107025, &#39;explicit&#39;: 0.8205001354217529}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbrating_score(&#39;explicit/16.jpg&#39;)</span>
+<span class="sd">        {&#39;general&#39;: 0.05683052912354469, &#39;sensitive&#39;: 0.06635929644107819, &#39;questionable&#39;: 0.05597696080803871, &#39;explicit&#39;: 0.8208332657814026}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">classify_predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_REPO_ID</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.4.8
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../v0.3.2/index.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../v0.3.3/index.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../v0.3.4/index.html">v0.3.4</a></dd>
+                        <dd><a href="../../../../v0.3.5/index.html">v0.3.5</a></dd>
+                        <dd><a href="../../../../v0.4.0/index.html">v0.4.0</a></dd>
+                        <dd><a href="../../../../v0.4.1/index.html">v0.4.1</a></dd>
+                        <dd><a href="../../../../v0.4.2/index.html">v0.4.2</a></dd>
+                        <dd><a href="../../../../v0.4.3/index.html">v0.4.3</a></dd>
+                        <dd><a href="../../../../v0.4.4/index.html">v0.4.4</a></dd>
+                        <dd><a href="../../../../v0.4.5/index.html">v0.4.5</a></dd>
+                        <dd><a href="../../../../v0.4.6/index.html">v0.4.6</a></dd>
+                        <dd><a href="../../../../v0.4.7/index.html">v0.4.7</a></dd>
+                        <dd><a href="dbrating.html">v0.4.8</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../../dev/color/index.html">dev/color</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
