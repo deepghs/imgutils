@@ -9,7 +9,7 @@
 [![Package Release](https://github.com/deepghs/imgutils/workflows/Package%20Release/badge.svg)](https://github.com/deepghs/imgutils/actions?query=workflow%3A%22Package+Release%22)
 [![codecov](https://codecov.io/gh/deepghs/imgutils/branch/main/graph/badge.svg?token=XJVDP4EFAT)](https://codecov.io/gh/deepghs/imgutils)
 
-[![Discord](https://img.shields.io/discord/1157587327879745558?style=social&link=https%3A%2F%2Fdiscord.gg%2FTwdHJ42N72)](https://discord.gg/TwdHJ42N72)
+[![Discord](https://img.shields.io/discord/1157587327879745558?style=social&logo=discord&link=https%3A%2F%2Fdiscord.gg%2FTwdHJ42N72)](https://discord.gg/TwdHJ42N72)
 ![GitHub Org's stars](https://img.shields.io/github/stars/deepghs)
 [![GitHub stars](https://img.shields.io/github/stars/deepghs/imgutils)](https://github.com/deepghs/imgutils/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/deepghs/imgutils)](https://github.com/deepghs/imgutils/network)
