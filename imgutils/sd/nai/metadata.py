@@ -15,10 +15,10 @@ from ...data import load_image, ImageTyping
 class NAIMetadata:
     software: str
     source: str
+    parameters: dict
     title: Optional[str] = None
     generation_time: Optional[float] = None
     description: Optional[str] = None
-    parameters: Optional[dict] = None
 
     @property
     def pnginfo(self) -> PngInfo:
@@ -46,14 +46,14 @@ def _get_naimeta_raw(image: ImageTyping) -> dict:
 
 def get_naimeta_from_image(image: ImageTyping) -> Optional[NAIMetadata]:
     data = _get_naimeta_raw(image)
-    if data.get('Software') and data.get('Source'):
+    if data.get('Software') and data.get('Source') and data.get('Comment'):
         return NAIMetadata(
             software=data['Software'],
             source=data['Source'],
+            parameters=json.loads(data['Comment']),
             title=data.get('Title'),
             generation_time=float(data['Generation time']) if data.get('Generation time') else None,
             description=data.get('Description'),
-            parameters=json.loads(data['Comment']) if data.get('Comment') else None,
         )
     else:
         return None
