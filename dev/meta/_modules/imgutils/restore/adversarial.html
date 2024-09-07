@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.restore.adversarial &mdash; imgutils 0.4.8 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=6debc21c"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+              <div class="version">
+                0.4.8
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.restore.adversarial</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.restore.adversarial</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    Useful tools to remove adversarial noises, just using opencv library without any models.</span>
+
+<span class="sd">    .. image:: adversarial_demo.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    This is an overall benchmark of all the adversarial denoising:</span>
+
+<span class="sd">    .. image:: adversarial_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This tool is inspired from `Huggingface - mf666/mist-fucker &lt;https://huggingface.co/spaces/mf666/mist-fucker&gt;`_.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">cv2.ximgproc</span> <span class="kn">import</span> <span class="n">guidedFilter</span>
+
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span>
+
+
+<div class="viewcode-block" id="remove_adversarial_noise"><a class="viewcode-back" href="../../../api_doc/restore/adversarial.html#imgutils.restore.adversarial.remove_adversarial_noise">[docs]</a><span class="k">def</span> <span class="nf">remove_adversarial_noise</span><span class="p">(</span>
+        <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">diameter_min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">diameter_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="n">sigma_color_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">6.0</span><span class="p">,</span> <span class="n">sigma_color_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span>
+        <span class="n">sigma_space_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">6.0</span><span class="p">,</span> <span class="n">sigma_space_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">,</span>
+        <span class="n">radius_min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">radius_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">eps_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">16.0</span><span class="p">,</span> <span class="n">eps_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">24.0</span><span class="p">,</span>
+        <span class="n">b_iters</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span> <span class="n">g_iters</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove adversarial noise from an image using random bilateral and guided filtering.</span>
+
+<span class="sd">    This function applies random bilateral filtering and random guided filtering iteratively to reduce adversarial noise</span>
+<span class="sd">    in the input image.</span>
+
+<span class="sd">    :param image: The input image.</span>
+<span class="sd">    :type image: Image.Image</span>
+
+<span class="sd">    :param diameter_min: Minimum diameter for bilateral filtering.</span>
+<span class="sd">    :type diameter_min: int, optional</span>
+
+<span class="sd">    :param diameter_max: Maximum diameter for bilateral filtering.</span>
+<span class="sd">    :type diameter_max: int, optional</span>
+
+<span class="sd">    :param sigma_color_min: Minimum filter sigma in the color space for bilateral filtering.</span>
+<span class="sd">    :type sigma_color_min: float, optional</span>
+
+<span class="sd">    :param sigma_color_max: Maximum filter sigma in the color space for bilateral filtering.</span>
+<span class="sd">    :type sigma_color_max: float, optional</span>
+
+<span class="sd">    :param sigma_space_min: Minimum filter sigma in the coordinate space for bilateral filtering.</span>
+<span class="sd">    :type sigma_space_min: float, optional</span>
+
+<span class="sd">    :param sigma_space_max: Maximum filter sigma in the coordinate space for bilateral filtering.</span>
+<span class="sd">    :type sigma_space_max: float, optional</span>
+
+<span class="sd">    :param radius_min: Minimum radius for guided filtering.</span>
+<span class="sd">    :type radius_min: int, optional</span>
+
+<span class="sd">    :param radius_max: Maximum radius for guided filtering.</span>
+<span class="sd">    :type radius_max: int, optional</span>
+
+<span class="sd">    :param eps_min: Minimum guided filter regularization term.</span>
+<span class="sd">    :type eps_min: float, optional</span>
+
+<span class="sd">    :param eps_max: Maximum guided filter regularization term.</span>
+<span class="sd">    :type eps_max: float, optional</span>
+
+<span class="sd">    :param b_iters: Number of iterations for bilateral filtering.</span>
+<span class="sd">    :type b_iters: int, optional</span>
+
+<span class="sd">    :param g_iters: Number of iterations for guided filtering.</span>
+<span class="sd">    :type g_iters: int, optional</span>
+
+<span class="sd">    :return: Image with adversarial noise removed.</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Apply random bilateral filtering iteratively</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">b_iters</span><span class="p">):</span>
+        <span class="n">diameter</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">diameter_min</span><span class="p">,</span> <span class="n">diameter_max</span><span class="p">)</span>
+        <span class="n">sigma_color</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">sigma_color_min</span><span class="p">,</span> <span class="n">sigma_color_max</span><span class="p">)</span>
+        <span class="n">sigma_space</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">sigma_space_min</span><span class="p">,</span> <span class="n">sigma_space_max</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">bilateralFilter</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">sigma_color</span><span class="p">,</span> <span class="n">sigma_space</span><span class="p">)</span>
+
+    <span class="c1"># Apply random guided filtering iteratively</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">g_iters</span><span class="p">):</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">radius_min</span><span class="p">,</span> <span class="n">radius_max</span><span class="p">)</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">eps_min</span><span class="p">,</span> <span class="n">eps_max</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">guidedFilter</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+
+    <span class="c1"># Clip the values and convert back to uint8 for PIL Image</span>
+    <span class="n">output_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">output_image</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/meta
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../../v0.3.2/index.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../../v0.3.3/index.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../../v0.3.4/index.html">v0.3.4</a></dd>
+                        <dd><a href="../../../../../v0.3.5/index.html">v0.3.5</a></dd>
+                        <dd><a href="../../../../../v0.4.0/index.html">v0.4.0</a></dd>
+                        <dd><a href="../../../../../v0.4.1/index.html">v0.4.1</a></dd>
+                        <dd><a href="../../../../../v0.4.2/index.html">v0.4.2</a></dd>
+                        <dd><a href="../../../../../v0.4.3/index.html">v0.4.3</a></dd>
+                        <dd><a href="../../../../../v0.4.4/index.html">v0.4.4</a></dd>
+                        <dd><a href="../../../../../v0.4.5/index.html">v0.4.5</a></dd>
+                        <dd><a href="../../../../../v0.4.6/index.html">v0.4.6</a></dd>
+                        <dd><a href="../../../../../v0.4.7/index.html">v0.4.7</a></dd>
+                        <dd><a href="../../../../../v0.4.8/index.html">v0.4.8</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="adversarial.html">dev/meta</a></dd>
+                        <dd><a href="../../../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../../color/index.html">dev/color</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
