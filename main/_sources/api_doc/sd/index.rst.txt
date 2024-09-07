@@ -11,4 +11,5 @@ imgutils.sd
 
     metadata
     model
+    nai
 
