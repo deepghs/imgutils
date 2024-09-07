@@ -195,7 +195,13 @@ def parse_sdmeta_from_text(x: str) -> SDMetaData:
         <class 'imgutils.sd.metadata.SDMetaData'>
     """
     x = textwrap.dedent(x).strip()
-    *prompt_lines, argument_line = x.splitlines(keepends=False)
+    all_lines = x.splitlines(keepends=False)
+    if len(all_lines) >= 1:
+        prompt_lines = all_lines[:-1]
+        argument_line = all_lines[-1]
+    else:
+        prompt_lines = []
+        argument_line = ''
     if len(_PARAM_PATTERN.findall(argument_line)) < 3:
         prompt_lines.append(argument_line)
         argument_line = ''
