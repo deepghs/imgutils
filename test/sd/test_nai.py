@@ -1,6 +1,8 @@
 import pytest
+from hbutils.testing import isolated_directory
 
-from imgutils.sd import get_naimeta_from_image, NAIMetadata
+from imgutils.data import load_image
+from imgutils.sd import get_naimeta_from_image, NAIMetadata, add_naimeta_to_image, save_image_with_naimeta
 from ..testings import get_testfile
 
 
@@ -22,6 +24,20 @@ def nai3_clear_file():
 @pytest.fixture()
 def nai3_clear_rgba_file():
     return get_testfile('nai3_clear_rgba.png')
+
+
+@pytest.fixture()
+def nai3_clear_rgb_image():
+    image = load_image(get_testfile('nai3_clear.png'))
+    image.load()
+    return image
+
+
+@pytest.fixture()
+def nai3_clear_rgba_image():
+    image = load_image(get_testfile('nai3_clear_rgba.png'))
+    image.load()
+    return image
 
 
 @pytest.fixture()
@@ -76,3 +92,45 @@ class TestSDNai:
 
     def test_get_naimeta_from_image_cleared_rgba(self, nai3_clear_rgba_file, nai3_meta_without_title):
         assert get_naimeta_from_image(nai3_clear_rgba_file) is None
+
+    def test_add_naimeta_to_image(self, nai3_clear_rgb_image, nai3_meta_without_title):
+        assert get_naimeta_from_image(nai3_clear_rgb_image) is None
+        image = add_naimeta_to_image(nai3_clear_rgb_image, metadata=nai3_meta_without_title)
+        assert get_naimeta_from_image(image) == pytest.approx(nai3_meta_without_title)
+
+    def test_add_naimeta_to_image_rgba(self, nai3_clear_rgba_image, nai3_meta_without_title):
+        assert get_naimeta_from_image(nai3_clear_rgba_image) is None
+        image = add_naimeta_to_image(nai3_clear_rgba_image, metadata=nai3_meta_without_title)
+        assert get_naimeta_from_image(image) == pytest.approx(nai3_meta_without_title)
+
+    def test_save_image_with_naimeta(self, nai3_clear_file, nai3_meta_without_title):
+        with isolated_directory():
+            save_image_with_naimeta(nai3_clear_file, 'image.png', metadata=nai3_meta_without_title)
+            assert get_naimeta_from_image('image.png') == pytest.approx(nai3_meta_without_title)
+
+    def test_save_image_with_naimeta_rgba(self, nai3_clear_rgba_file, nai3_meta_without_title):
+        with isolated_directory():
+            save_image_with_naimeta(nai3_clear_rgba_file, 'image.png', metadata=nai3_meta_without_title)
+            assert get_naimeta_from_image('image.png') == pytest.approx(nai3_meta_without_title)
+
+    def test_save_image_with_naimeta_pnginfo_only(self, nai3_clear_file, nai3_meta_without_title):
+        with isolated_directory():
+            save_image_with_naimeta(nai3_clear_file, 'image.png',
+                                    metadata=nai3_meta_without_title, add_lsb_meta=False)
+            assert get_naimeta_from_image('image.png') == pytest.approx(nai3_meta_without_title)
+
+    def test_save_image_with_naimeta_lsbmeta_only(self, nai3_clear_file, nai3_meta_without_title):
+        with isolated_directory():
+            save_image_with_naimeta(nai3_clear_file, 'image.png',
+                                    metadata=nai3_meta_without_title, save_pnginfo=False)
+            assert get_naimeta_from_image('image.png') == pytest.approx(nai3_meta_without_title)
+
+    def test_save_image_with_naimeta_both_no(self, nai3_clear_file, nai3_meta_without_title):
+        with isolated_directory():
+            with pytest.warns(Warning):
+                save_image_with_naimeta(
+                    nai3_clear_file, 'image.png',
+                    metadata=nai3_meta_without_title,
+                    save_pnginfo=False, add_lsb_meta=False,
+                )
+            assert get_naimeta_from_image('image.png') is None

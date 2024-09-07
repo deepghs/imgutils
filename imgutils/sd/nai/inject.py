@@ -13,15 +13,10 @@ block_length = 2019
 code_block_len = 1920
 
 
-def bit_shuffle(data_bytes, w, h, use_bytes=False):
+def bit_shuffle(data_bytes, w, h):
     bits = np.frombuffer(data_bytes, dtype=np.uint8)
-    bit_fac = 8
-    if use_bytes:
-        bit_fac = 1
-    else:
-        bits = np.unpackbits(bits)
+    bit_fac = 1
     bits = bits.reshape((h, w, 3 * bit_fac))
-    code_block_len = 1920
     flat_tile_len = (w * h * 3) // code_block_len
     tile_w = 32
     if flat_tile_len // tile_w > 100:
@@ -44,13 +39,11 @@ def bit_shuffle(data_bytes, w, h, use_bytes=False):
     bits = np.concatenate((easy_tiles, rest_tiles), axis=0)
     dim = bits.shape[-1]
     bits = bits.reshape((-1,))
-    if not use_bytes:
-        bits = np.packbits(bits)
     return bytearray(bits.tobytes()), dim, rest_tiles.shape[0], rest_dim
 
 
 def split_byte_ranges(data_bytes, n, w, h):
-    data_bytes, dim, rest_size, rest_dim = bit_shuffle(data_bytes.copy(), w, h, use_bytes=True)
+    data_bytes, dim, rest_size, rest_dim = bit_shuffle(data_bytes.copy(), w, h)
     chunks = []
     for i in range(0, len(data_bytes), n):
         chunks.append(data_bytes[i:i + n])
@@ -63,6 +56,7 @@ def pad(data_bytes):
 
 # Returns codes for the data in data_bytes
 def fec_encode(data_bytes, w, h):
+    # noinspection PyArgumentList
     encoder = bchlib.BCH(16, prim_poly=17475)
     # import galois
     # encoder = galois.BCH(16383, 16383-224, d=17, c=224)
@@ -74,9 +68,6 @@ class LSBInjector:
     def __init__(self, data):
         self.data = data
         self.buffer = bytearray()
-
-    def put_byte(self, byte):
-        self.buffer.append(byte)
 
     def put_32bit_integer(self, integer_value):
         self.buffer.extend(integer_value.to_bytes(4, byteorder='big'))
@@ -113,18 +104,17 @@ def serialize_metadata(metadata: PngInfo) -> bytes:
             if data[0] == b"tEXt" or data[0] == b"iTXt"
         ]
     }
-    # Save space by getting rid of reduntant metadata (Title is static)
-    if "Title" in data:
-        del data["Title"]
     # Encode and compress data using gzip
     data_encoded = json.dumps(data)
     return gzip.compress(bytes(data_encoded, "utf-8"))
 
 
 def inject_data(image: Image.Image, data: PngInfo) -> Image.Image:
+    # noinspection PyTypeChecker
     rgb = np.array(image.convert('RGB'))
     image = image.convert('RGBA')
     w, h = image.size
+    # noinspection PyTypeChecker
     pixels = np.array(image)
     injector = LSBInjector(pixels)
     injector.put_string("stealth_pngcomp")

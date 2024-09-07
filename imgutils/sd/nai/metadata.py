@@ -1,5 +1,6 @@
 import json
 import os
+import warnings
 from dataclasses import dataclass
 from typing import Optional, Union
 
@@ -65,7 +66,7 @@ def _get_pnginfo(metadata: Union[NAIMetadata, PngInfo]) -> PngInfo:
     elif isinstance(metadata, PngInfo):
         pnginfo = metadata
     else:
-        raise TypeError(f'Unknown metadata type for NAI - {metadata!r}.')
+        raise TypeError(f'Unknown metadata type for NAI - {metadata!r}.')  # pragma: no cover
     return pnginfo
 
 
@@ -80,6 +81,8 @@ def save_image_with_naimeta(image: ImageTyping, dst_file: Union[str, os.PathLike
                             add_lsb_meta: bool = True, save_pnginfo: bool = True, **kwargs) -> Image.Image:
     pnginfo = _get_pnginfo(metadata)
     image = load_image(image, mode=None, force_background=None)
+    if not add_lsb_meta and not save_pnginfo:
+        warnings.warn(f'Both LSB meta and pnginfo is disabled, no metadata will be saved to {dst_file!r}.')
     if add_lsb_meta:
         image = add_naimeta_to_image(image, metadata=pnginfo)
     if save_pnginfo:
