@@ -4,3 +4,4 @@ Overview:
 """
 from .metadata import parse_sdmeta_from_text, get_sdmeta_from_image, SDMetaData
 from .model import read_metadata, save_with_metadata
+from .nai import get_naimeta_from_image, NAIMetadata
