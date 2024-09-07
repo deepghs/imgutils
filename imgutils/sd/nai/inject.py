@@ -1,4 +1,17 @@
-# MIT: https://github.com/NovelAI/novelai-image-metadata/blob/main/nai_meta_writer.py
+"""
+This module provides functionality for injecting metadata and error correction codes into PNG images.
+
+It includes classes and functions for:
+
+- Bit shuffling and error correction encoding
+- LSB (Least Significant Bit) injection of data into image pixels
+- Serializing PNG metadata
+- Injecting encoded data and metadata into PNG images
+
+The module uses techniques like BCH error correction, bit manipulation, and LSB steganography
+to embed data robustly into image files.
+"""
+
 import gzip
 import json
 
@@ -14,6 +27,18 @@ code_block_len = 1920
 
 
 def bit_shuffle(data_bytes, w, h):
+    """
+    Shuffle the bits of input data into a specific pattern based on image dimensions.
+
+    :param data_bytes: Input data bytes to be shuffled
+    :type data_bytes: bytes
+    :param w: Width of the image
+    :type w: int
+    :param h: Height of the image
+    :type h: int
+    :return: Tuple containing shuffled data, dimension, rest tile size, and rest dimension
+    :rtype: tuple(bytearray, int, int, int)
+    """
     bits = np.frombuffer(data_bytes, dtype=np.uint8)
     bit_fac = 1
     bits = bits.reshape((h, w, 3 * bit_fac))
@@ -43,6 +68,21 @@ def bit_shuffle(data_bytes, w, h):
 
 
 def split_byte_ranges(data_bytes, n, w, h):
+    """
+    Split the input data bytes into chunks after shuffling.
+
+    :param data_bytes: Input data bytes
+    :type data_bytes: bytes
+    :param n: Size of each chunk
+    :type n: int
+    :param w: Width of the image
+    :type w: int
+    :param h: Height of the image
+    :type h: int
+    :return: Tuple containing list of chunks, dimension, rest size, and rest dimension
+    :rtype: tuple(list, int, int, int)
+    """
+    # noinspection PyUnresolvedReferences
     data_bytes, dim, rest_size, rest_dim = bit_shuffle(data_bytes.copy(), w, h)
     chunks = []
     for i in range(0, len(data_bytes), n):
@@ -51,34 +91,82 @@ def split_byte_ranges(data_bytes, n, w, h):
 
 
 def pad(data_bytes):
+    """
+    Pad the input data bytes to a fixed length of 2019 bytes.
+
+    :param data_bytes: Input data bytes
+    :type data_bytes: bytes
+    :return: Padded data bytes
+    :rtype: bytearray
+    """
     return bytearray(data_bytes + b'\x00' * (2019 - len(data_bytes)))
 
 
-# Returns codes for the data in data_bytes
 def fec_encode(data_bytes, w, h):
+    """
+    Perform Forward Error Correction (FEC) encoding on the input data.
+
+    :param data_bytes: Input data bytes
+    :type data_bytes: bytes
+    :param w: Width of the image
+    :type w: int
+    :param h: Height of the image
+    :type h: int
+    :return: FEC encoded data
+    :rtype: bytes
+    """
     # noinspection PyArgumentList
     encoder = bchlib.BCH(16, prim_poly=17475)
-    # import galois
-    # encoder = galois.BCH(16383, 16383-224, d=17, c=224)
     chunks = [bytearray(encoder.encode(pad(x))) for x in split_byte_ranges(data_bytes, 2019, w, h)[0]]
     return b''.join(chunks)
 
 
 class LSBInjector:
+    """
+    A class for injecting data into the least significant bits of image pixels.
+    """
+
     def __init__(self, data):
+        """
+        Initialize the LSBInjector with image data.
+
+        :param data: Image data
+        :type data: numpy.ndarray
+        """
         self.data = data
         self.buffer = bytearray()
 
     def put_32bit_integer(self, integer_value):
+        """
+        Add a 32-bit integer to the buffer.
+
+        :param integer_value: Integer to be added
+        :type integer_value: int
+        """
         self.buffer.extend(integer_value.to_bytes(4, byteorder='big'))
 
     def put_bytes(self, bytes_list):
+        """
+        Add bytes to the buffer.
+
+        :param bytes_list: Bytes to be added
+        :type bytes_list: bytes
+        """
         self.buffer.extend(bytes_list)
 
     def put_string(self, string):
+        """
+        Add a string to the buffer (encoded as UTF-8).
+
+        :param string: String to be added
+        :type string: str
+        """
         self.put_bytes(string.encode('utf-8'))
 
     def finalize(self):
+        """
+        Finalize the injection process by embedding the buffer data into the image's least significant bits.
+        """
         buffer = np.frombuffer(self.buffer, dtype=np.uint8)
         buffer = np.unpackbits(buffer)
         data = self.data[..., -1].T
@@ -93,7 +181,14 @@ class LSBInjector:
 
 
 def serialize_metadata(metadata: PngInfo) -> bytes:
-    # Extract metadata from PNG chunks
+    """
+    Serialize PNG metadata into a compressed byte string.
+
+    :param metadata: PNG metadata
+    :type metadata: PIL.PngImagePlugin.PngInfo
+    :return: Serialized and compressed metadata
+    :rtype: bytes
+    """
     data = {
         k: v
         for k, v in [
@@ -104,12 +199,21 @@ def serialize_metadata(metadata: PngInfo) -> bytes:
             if data[0] == b"tEXt" or data[0] == b"iTXt"
         ]
     }
-    # Encode and compress data using gzip
     data_encoded = json.dumps(data)
     return gzip.compress(bytes(data_encoded, "utf-8"))
 
 
 def inject_data(image: Image.Image, data: PngInfo) -> Image.Image:
+    """
+    Inject metadata and error correction data into an image.
+
+    :param image: Input image
+    :type image: PIL.Image.Image
+    :param data: PNG metadata to be injected
+    :type data: PIL.PngImagePlugin.PngInfo
+    :return: Image with injected data
+    :rtype: PIL.Image.Image
+    """
     # noinspection PyTypeChecker
     rgb = np.array(image.convert('RGB'))
     image = image.convert('RGBA')
