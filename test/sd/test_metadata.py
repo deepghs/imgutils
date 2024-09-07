@@ -397,3 +397,6 @@ Steps: 20, Sampler: DPM++ 2M SDE Karras, CFG scale: 7, Seed: 2647703743, Size: 7
             assert get_sdmeta_from_image(f) == sdimg_3_std
         with _test_pnginfo(sdimg_4_std.pnginfo) as f:
             assert get_sdmeta_from_image(f) == sdimg_4_std
+
+    def test_empty_info_parse(self):
+        assert parse_sdmeta_from_text('') == SDMetaData('', '', {})
