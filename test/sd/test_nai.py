@@ -205,3 +205,6 @@ class TestSDNai:
                     save_pnginfo=False, add_lsb_meta=False,
                 )
             assert get_naimeta_from_image('image.png') is None
+
+    def test_image_error_with_wrong_format(self):
+        assert get_naimeta_from_image(get_testfile('118519492_p0.png')) is None
