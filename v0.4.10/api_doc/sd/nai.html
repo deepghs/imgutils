@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.sd.nai &mdash; imgutils 0.4.10 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=9b01a136"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.segment" href="../segment/index.html" />
+    <link rel="prev" title="imgutils.sd.model" href="model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+              <div class="version">
+                0.4.10
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.sd</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="metadata.html">imgutils.sd.metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html">imgutils.sd.model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.sd.nai</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#naimetadata">NAIMetadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.NAIMetadata"><code class="docutils literal notranslate"><span class="pre">NAIMetadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-naimeta-from-image">get_naimeta_from_image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.get_naimeta_from_image"><code class="docutils literal notranslate"><span class="pre">get_naimeta_from_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#add-naimeta-to-image">add_naimeta_to_image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.add_naimeta_to_image"><code class="docutils literal notranslate"><span class="pre">add_naimeta_to_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#save-image-with-naimeta">save_image_with_naimeta</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.save_image_with_naimeta"><code class="docutils literal notranslate"><span class="pre">save_image_with_naimeta()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lsbextractor">LSBExtractor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.LSBExtractor"><code class="docutils literal notranslate"><span class="pre">LSBExtractor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#imagelsbdataextractor">ImageLsbDataExtractor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.ImageLsbDataExtractor"><code class="docutils literal notranslate"><span class="pre">ImageLsbDataExtractor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#serialize-metadata">serialize_metadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.serialize_metadata"><code class="docutils literal notranslate"><span class="pre">serialize_metadata()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#inject-data">inject_data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.inject_data"><code class="docutils literal notranslate"><span class="pre">inject_data()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.sd</a></li>
+      <li class="breadcrumb-item active">imgutils.sd.nai</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/sd/nai.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.sd.nai">
+<span id="imgutils-sd-nai"></span><h1>imgutils.sd.nai<a class="headerlink" href="#module-imgutils.sd.nai" title="Permalink to this heading"></a></h1>
+<p>This module provides functionality for handling LSB (Least Significant Bit) data extraction and injection,
+as well as managing Novel AI (NAI) metadata in images.</p>
+<p>The module includes the following main components:</p>
+<ol class="arabic simple">
+<li><p>LSB extraction from images</p></li>
+<li><p>Data injection into images</p></li>
+<li><p>NAI metadata handling (extraction, creation, addition, and saving)</p></li>
+</ol>
+<p>This module is particularly useful for working with steganography in images and
+managing metadata for AI-generated images.</p>
+<section id="naimetadata">
+<h2>NAIMetadata<a class="headerlink" href="#naimetadata" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.sd.nai.NAIMetadata">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">NAIMetadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">software</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generation_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/sd/nai/metadata.html#NAIMetadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.NAIMetadata" title="Permalink to this definition"></a></dt>
+<dd><p>A dataclass representing Novel AI (NAI) metadata.</p>
+<p>This class encapsulates various metadata fields associated with NAI-generated images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>software</strong> (<em>str</em>) – The software used to generate the image.</p></li>
+<li><p><strong>source</strong> (<em>str</em>) – The source of the image.</p></li>
+<li><p><strong>parameters</strong> (<em>dict</em>) – A dictionary containing generation parameters.</p></li>
+<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The title of the image (optional).</p></li>
+<li><p><strong>generation_time</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – The time taken to generate the image (optional).</p></li>
+<li><p><strong>description</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A description of the image (optional).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.sd.nai.NAIMetadata.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">software</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generation_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#imgutils.sd.nai.NAIMetadata.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="imgutils.sd.nai.NAIMetadata.pnginfo">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pnginfo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">PngInfo</span></em><a class="headerlink" href="#imgutils.sd.nai.NAIMetadata.pnginfo" title="Permalink to this definition"></a></dt>
+<dd><p>Convert the NAIMetadata to a PngInfo object.</p>
+<p>This property creates a PngInfo object with the metadata information,
+which can be used when saving PNG images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A PngInfo object containing the metadata.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>PngInfo</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="get-naimeta-from-image">
+<h2>get_naimeta_from_image<a class="headerlink" href="#get-naimeta-from-image" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.sd.nai.get_naimeta_from_image">
+<span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">get_naimeta_from_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.metadata.NAIMetadata"><span class="pre">NAIMetadata</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/imgutils/sd/nai/metadata.html#get_naimeta_from_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.get_naimeta_from_image" title="Permalink to this definition"></a></dt>
+<dd><p>Extract and create a NAIMetadata object from an image.</p>
+<p>This function attempts to extract NAI metadata from the given image and create a NAIMetadata object.
+If the required metadata fields are not present, it returns None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A NAIMetadata object if successful, None otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[<a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.NAIMetadata">NAIMetadata</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="add-naimeta-to-image">
+<h2>add_naimeta_to_image<a class="headerlink" href="#add-naimeta-to-image" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.sd.nai.add_naimeta_to_image">
+<span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">add_naimeta_to_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.metadata.NAIMetadata"><span class="pre">NAIMetadata</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PngInfo</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/sd/nai/metadata.html#add_naimeta_to_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.add_naimeta_to_image" title="Permalink to this definition"></a></dt>
+<dd><p>Add NAI metadata to an image.</p>
+<p>This function injects the provided metadata into the image using LSB injection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>metadata</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.NAIMetadata"><em>NAIMetadata</em></a><em>, </em><em>PngInfo</em><em>]</em>) – The metadata to add to the image.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The image with added metadata.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="save-image-with-naimeta">
+<h2>save_image_with_naimeta<a class="headerlink" href="#save-image-with-naimeta" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.sd.nai.save_image_with_naimeta">
+<span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">save_image_with_naimeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.metadata.NAIMetadata"><span class="pre">NAIMetadata</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PngInfo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_lsb_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_pnginfo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/sd/nai/metadata.html#save_image_with_naimeta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.save_image_with_naimeta" title="Permalink to this definition"></a></dt>
+<dd><p>Save an image with NAI metadata.</p>
+<p>This function saves the given image to a file, optionally adding NAI metadata using LSB injection
+and/or saving it as PNG metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>dst_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>os.PathLike</em><em>]</em>) – The destination file path.</p></li>
+<li><p><strong>metadata</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.NAIMetadata"><em>NAIMetadata</em></a><em>, </em><em>PngInfo</em><em>]</em>) – The metadata to add to the image.</p></li>
+<li><p><strong>add_lsb_meta</strong> (<em>bool</em>) – Whether to add metadata using LSB injection. Defaults to True.</p></li>
+<li><p><strong>save_pnginfo</strong> (<em>bool</em>) – Whether to save metadata as PNG metadata. Defaults to True.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to pass to the image save function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The saved image.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Warning</strong> – If both LSB meta and pnginfo are disabled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="lsbextractor">
+<h2>LSBExtractor<a class="headerlink" href="#lsbextractor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.sd.nai.LSBExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">LSBExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/sd/nai/extract.html#LSBExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.LSBExtractor" title="Permalink to this definition"></a></dt>
+<dd><p>A class for extracting data hidden in the least significant bits of image pixels.</p>
+<p>This class provides methods to extract individual bits, bytes, and multi-byte values
+from image data using LSB steganography techniques.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>np.ndarray</em>) – The image data as a numpy array.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.sd.nai.LSBExtractor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/sd/nai/extract.html#LSBExtractor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.LSBExtractor.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the LSBExtractor with image data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>np.ndarray</em>) – The image data as a numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.sd.nai.LSBExtractor.get_next_n_bytes">
+<span class="sig-name descname"><span class="pre">get_next_n_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/sd/nai/extract.html#LSBExtractor.get_next_n_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.LSBExtractor.get_next_n_bytes" title="Permalink to this definition"></a></dt>
+<dd><p>Extract and return the next n bytes of data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – The number of bytes to extract.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The extracted bytes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytearray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.sd.nai.LSBExtractor.get_one_byte">
+<span class="sig-name descname"><span class="pre">get_one_byte</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/sd/nai/extract.html#LSBExtractor.get_one_byte"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.LSBExtractor.get_one_byte" title="Permalink to this definition"></a></dt>
+<dd><p>Extract and return one byte of data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A single byte of extracted data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytearray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.sd.nai.LSBExtractor.read_32bit_integer">
+<span class="sig-name descname"><span class="pre">read_32bit_integer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/sd/nai/extract.html#LSBExtractor.read_32bit_integer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.LSBExtractor.read_32bit_integer" title="Permalink to this definition"></a></dt>
+<dd><p>Extract and return a 32-bit integer from the image data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The extracted 32-bit integer, or None if not enough data is available.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="imagelsbdataextractor">
+<h2>ImageLsbDataExtractor<a class="headerlink" href="#imagelsbdataextractor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.sd.nai.ImageLsbDataExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">ImageLsbDataExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">magic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'stealth_pngcomp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/sd/nai/extract.html#ImageLsbDataExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.ImageLsbDataExtractor" title="Permalink to this definition"></a></dt>
+<dd><p>A class for extracting hidden JSON data from images using LSB steganography.</p>
+<p>This class uses the LSBExtractor to read hidden data from an image,
+expecting a specific magic number and format for the hidden data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>magic</strong> (<em>str</em>) – The magic string used to identify the start of the hidden data.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.sd.nai.ImageLsbDataExtractor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">magic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'stealth_pngcomp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/sd/nai/extract.html#ImageLsbDataExtractor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.ImageLsbDataExtractor.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the ImageLsbDataExtractor with a magic string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>magic</strong> (<em>str</em>) – The magic string used to identify the start of the hidden data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.sd.nai.ImageLsbDataExtractor.extract_data">
+<span class="sig-name descname"><span class="pre">extract_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/imgutils/sd/nai/extract.html#ImageLsbDataExtractor.extract_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.ImageLsbDataExtractor.extract_data" title="Permalink to this definition"></a></dt>
+<dd><p>Extract hidden JSON data from the given image.</p>
+<p>This method reads the LSB data from the image, verifies the magic number,
+and extracts, decompresses, and decodes the hidden JSON data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>Image.Image</em>) – The input image.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The extracted JSON data as a dictionary.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the image is not in RGBA mode or if the magic number doesn’t match.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="serialize-metadata">
+<h2>serialize_metadata<a class="headerlink" href="#serialize-metadata" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.sd.nai.serialize_metadata">
+<span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">serialize_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PngInfo</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/imgutils/sd/nai/inject.html#serialize_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.serialize_metadata" title="Permalink to this definition"></a></dt>
+<dd><p>Serialize PNG metadata into a compressed byte string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metadata</strong> (<em>PIL.PngImagePlugin.PngInfo</em>) – PNG metadata</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Serialized and compressed metadata</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="inject-data">
+<h2>inject_data<a class="headerlink" href="#inject-data" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.sd.nai.inject_data">
+<span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">inject_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PngInfo</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/sd/nai/inject.html#inject_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.inject_data" title="Permalink to this definition"></a></dt>
+<dd><p>Inject metadata and error correction data into an image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>PIL.Image.Image</em>) – Input image</p></li>
+<li><p><strong>data</strong> (<em>PIL.PngImagePlugin.PngInfo</em>) – PNG metadata to be injected</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Image with injected data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PIL.Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="model.html" class="btn btn-neutral float-left" title="imgutils.sd.model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../segment/index.html" class="btn btn-neutral float-right" title="imgutils.segment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.4.10
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../v0.3.2/index.html">v0.3.2</a></dd>
+                        <dd><a href="../../../v0.3.3/index.html">v0.3.3</a></dd>
+                        <dd><a href="../../../v0.3.4/index.html">v0.3.4</a></dd>
+                        <dd><a href="../../../v0.3.5/index.html">v0.3.5</a></dd>
+                        <dd><a href="../../../v0.4.0/index.html">v0.4.0</a></dd>
+                        <dd><a href="../../../v0.4.1/index.html">v0.4.1</a></dd>
+                        <dd><a href="nai.html">v0.4.10</a></dd>
+                        <dd><a href="../../../v0.4.2/index.html">v0.4.2</a></dd>
+                        <dd><a href="../../../v0.4.3/index.html">v0.4.3</a></dd>
+                        <dd><a href="../../../v0.4.4/index.html">v0.4.4</a></dd>
+                        <dd><a href="../../../v0.4.5/index.html">v0.4.5</a></dd>
+                        <dd><a href="../../../v0.4.6/index.html">v0.4.6</a></dd>
+                        <dd><a href="../../../v0.4.7/index.html">v0.4.7</a></dd>
+                        <dd><a href="../../../v0.4.8/index.html">v0.4.8</a></dd>
+                        <dd><a href="../../../v0.4.9/api_doc/sd/nai.html">v0.4.9</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../ccip/index.html">ccip</a></dd>
+                        <dd><a href="../../../dev/color/index.html">dev/color</a></dd>
+                        <dd><a href="../../../main/api_doc/sd/nai.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
