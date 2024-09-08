@@ -164,7 +164,10 @@ class ImageLsbDataExtractor(object):
             raise ValueError(f'Image magic number mismatch, '
                              f'{self._magic_bytes!r} expected but {read_magic!r}.')
 
-        read_len = reader.read_32bit_integer() // 8
+        next_int = reader.read_32bit_integer()
+        if next_int is None:
+            raise ValueError('No next int32 to read.')
+        read_len = next_int // 8
         json_data = reader.get_next_n_bytes(read_len)
 
         json_data = json.loads(gzip.decompress(json_data).decode("utf-8"))

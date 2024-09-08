@@ -15,6 +15,7 @@ This module is particularly useful for working with AI-generated images and thei
 import json
 import os
 import warnings
+import zlib
 from dataclasses import dataclass
 from typing import Optional, Union
 
@@ -95,7 +96,11 @@ def _get_naimeta_raw(image: ImageTyping) -> dict:
     image = load_image(image, force_background=None, mode=None)
     try:
         return ImageLsbDataExtractor().extract_data(image)
-    except (ValueError, json.JSONDecodeError):
+    except (ValueError, json.JSONDecodeError, zlib.error, OSError, UnicodeDecodeError):
+        # ValueError: binary data with wrong format
+        # json.JSONDecodeError: zot a json-formatted data
+        # zlib.error, OSError: not zlib compressed binary data
+        # UnicodeDecodeError: cannot decode as utf-8 text
         return image.info or {}
 
 
