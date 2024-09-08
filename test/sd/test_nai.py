@@ -206,5 +206,9 @@ class TestSDNai:
                 )
             assert get_naimeta_from_image('image.png') is None
 
-    def test_image_error_with_wrong_format(self):
-        assert get_naimeta_from_image(get_testfile('118519492_p0.png')) is None
+    @pytest.mark.parametrize(['file'], [
+        ('118519492_p0.png',),
+        ('118438300_p1.png',),
+    ])
+    def test_image_error_with_wrong_format(self, file):
+        assert get_naimeta_from_image(get_testfile(file)) is None
