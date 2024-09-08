@@ -73,6 +73,8 @@ class LSBExtractor(object):
             if self.row == self.rows:
                 self.row = 0
                 self.col += 1
+        else:
+            raise IOError('Cannot read more bits.')
 
     def get_one_byte(self):
         """

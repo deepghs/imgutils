@@ -96,10 +96,11 @@ def _get_naimeta_raw(image: ImageTyping) -> dict:
     image = load_image(image, force_background=None, mode=None)
     try:
         return ImageLsbDataExtractor().extract_data(image)
-    except (ValueError, json.JSONDecodeError, zlib.error, OSError, UnicodeDecodeError):
+    except (ValueError, json.JSONDecodeError, zlib.error, OSError, IOError, UnicodeDecodeError):
         # ValueError: binary data with wrong format
         # json.JSONDecodeError: zot a json-formatted data
         # zlib.error, OSError: not zlib compressed binary data
+        # IOError: unable to read more from images
         # UnicodeDecodeError: cannot decode as utf-8 text
         return image.info or {}
 
