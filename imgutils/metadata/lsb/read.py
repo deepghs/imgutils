@@ -36,7 +36,7 @@ from imgutils.data import ImageTyping
 from ...data import load_image
 
 
-class LSBExtractor(object):
+class LSBExtractor:
     """
     A class for extracting data hidden in the least significant bits of image pixels.
 
@@ -67,6 +67,8 @@ class LSBExtractor(object):
 
         This method updates the internal state of the extractor,
         moving to the next pixel as necessary.
+
+        :raises IOError: If there are no more bits to extract.
         """
         if self.row < self.rows and self.col < self.cols:
             bit = self.data[self.row, self.col, self.dim - 1] & 1
@@ -84,6 +86,8 @@ class LSBExtractor(object):
         """
         Extract and return one byte of data.
 
+        This method extracts 8 bits from the image data to form a single byte.
+
         :return: A single byte of extracted data.
         :rtype: bytearray
         """
@@ -97,6 +101,8 @@ class LSBExtractor(object):
     def get_next_n_bytes(self, n):
         """
         Extract and return the next n bytes of data.
+
+        This method extracts multiple bytes from the image data.
 
         :param n: The number of bytes to extract.
         :type n: int
@@ -115,6 +121,8 @@ class LSBExtractor(object):
         """
         Extract and return a 32-bit integer from the image data.
 
+        This method reads 4 bytes and interprets them as a big-endian 32-bit integer.
+
         :return: The extracted 32-bit integer, or None if not enough data is available.
         :rtype: int or None
         """
@@ -126,7 +134,7 @@ class LSBExtractor(object):
             return None
 
 
-class ImageLsbDataExtractor(object):
+class ImageLsbDataExtractor:
     """
     A class for extracting hidden JSON data from images using LSB steganography.
 
@@ -147,6 +155,18 @@ class ImageLsbDataExtractor(object):
         self._magic_bytes = magic.encode('utf-8')
 
     def extract_data(self, image: Image.Image) -> bytes:
+        """
+        Extract hidden data from the given image.
+
+        This method checks for the magic number, reads the length of the hidden data,
+        and then extracts the data.
+
+        :param image: The image to extract data from.
+        :type image: Image.Image
+        :return: The extracted raw data.
+        :rtype: bytes
+        :raises ValueError: If the image is not in RGBA mode or if the magic number doesn't match.
+        """
         if image.mode != 'RGBA':
             raise ValueError(f'Image should be in RGBA mode, but {image.mode!r} found.')
         # noinspection PyTypeChecker
@@ -167,12 +187,38 @@ class ImageLsbDataExtractor(object):
 
 
 class LSBReadError(Exception):
+    """
+    Custom exception class for LSB reading errors.
+
+    This exception is raised when there's an error during the LSB data extraction process.
+
+    :param err: The original exception that caused the LSB read error.
+    :type err: Exception
+    """
+
     def __init__(self, err: Exception):
+        """
+        Initialize the LSBReadError with the original exception.
+
+        :param err: The original exception that caused the LSB read error.
+        :type err: Exception
+        """
         Exception.__init__(self, (f'LSB Read Error - {err!r}', err))
         self.error = err
 
 
 def read_lsb_raw_bytes(image: ImageTyping) -> bytes:
+    """
+    Read raw bytes of LSB-encoded data from an image.
+
+    This function loads the image and uses ImageLsbDataExtractor to extract the hidden data.
+
+    :param image: The image to extract data from. Can be a file path, URL, or Image object.
+    :type image: ImageTyping
+    :return: The extracted raw data.
+    :rtype: bytes
+    :raises LSBReadError: If there's an error during the extraction process.
+    """
     image = load_image(image, mode=None, force_background=None)
     try:
         return ImageLsbDataExtractor().extract_data(image)
@@ -184,11 +230,23 @@ def read_lsb_raw_bytes(image: ImageTyping) -> bytes:
 
 
 def read_lsb_metadata(image: ImageTyping):
+    """
+    Read and decode LSB-encoded metadata from an image.
+
+    This function extracts the raw bytes, decompresses them using gzip,
+    and then decodes the result as a JSON object.
+
+    :param image: The image to extract metadata from. Can be a file path, URL, or Image object.
+    :type image: ImageTyping
+    :return: The decoded metadata as a Python object.
+    :rtype: dict
+    :raises LSBReadError: If there's an error during the extraction or decoding process.
+    """
     try:
         raw_data = read_lsb_raw_bytes(image)
         return json.loads(gzip.decompress(raw_data).decode("utf-8"))
     except (json.JSONDecodeError, zlib.error, EOFError, UnicodeDecodeError) as err:
         # zlib.error: unable to decompress via zlib method
-        # json.JSONDecodeError, EOFError: zot a json-formatted data
+        # json.JSONDecodeError, EOFError: not a json-formatted data
         # UnicodeDecodeError: cannot decode as utf-8 text
         raise LSBReadError(err)

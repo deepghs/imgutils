@@ -33,6 +33,9 @@ def bit_shuffle(data_bytes, w, h):
     """
     Shuffle the bits of input data into a specific pattern based on image dimensions.
 
+    This function reorganizes the input data bits into a 2D pattern that matches the image dimensions.
+    It's used to spread the data across the image for more robust embedding.
+
     :param data_bytes: Input data bytes to be shuffled
     :type data_bytes: bytes
     :param w: Width of the image
@@ -74,6 +77,9 @@ def split_byte_ranges(data_bytes, n, w, h):
     """
     Split the input data bytes into chunks after shuffling.
 
+    This function first shuffles the input data using the bit_shuffle function,
+    then splits it into chunks of size n.
+
     :param data_bytes: Input data bytes
     :type data_bytes: bytes
     :param n: Size of each chunk
@@ -97,6 +103,8 @@ def pad(data_bytes):
     """
     Pad the input data bytes to a fixed length of 2019 bytes.
 
+    This function ensures that all data chunks have a consistent length for error correction encoding.
+
     :param data_bytes: Input data bytes
     :type data_bytes: bytes
     :return: Padded data bytes
@@ -108,6 +116,9 @@ def pad(data_bytes):
 def fec_encode(data_bytes, w, h):
     """
     Perform Forward Error Correction (FEC) encoding on the input data.
+
+    This function applies BCH error correction encoding to the input data after splitting and padding.
+    It enhances the robustness of the embedded data against corruption.
 
     :param data_bytes: Input data bytes
     :type data_bytes: bytes
@@ -127,6 +138,9 @@ def fec_encode(data_bytes, w, h):
 class LSBInjector:
     """
     A class for injecting data into the least significant bits of image pixels.
+
+    This class provides methods to prepare data for injection and embed it into an image's
+    least significant bits, which is a form of steganography.
     """
 
     def __init__(self, data):
@@ -169,6 +183,8 @@ class LSBInjector:
     def finalize(self):
         """
         Finalize the injection process by embedding the buffer data into the image's least significant bits.
+
+        This method actually performs the LSB injection, modifying the image data to include the prepared buffer.
         """
         buffer = np.frombuffer(self.buffer, dtype=np.uint8)
         buffer = np.unpackbits(buffer)
@@ -184,6 +200,17 @@ class LSBInjector:
 
 
 def serialize_pnginfo(metadata: PngInfo) -> bytes:
+    """
+    Serialize PNG metadata into a compressed byte string.
+
+    This function extracts metadata from a PngInfo object, converts it to JSON,
+    and then compresses it using gzip.
+
+    :param metadata: PNG metadata
+    :type metadata: PngInfo
+    :return: Compressed serialized metadata
+    :rtype: bytes
+    """
     data = {
         k: v
         for k, v in [
@@ -199,11 +226,34 @@ def serialize_pnginfo(metadata: PngInfo) -> bytes:
 
 
 def serialize_json(metadata) -> bytes:
+    """
+    Serialize any JSON-serializable metadata into a compressed byte string.
+
+    This function converts the input metadata to JSON and then compresses it using gzip.
+
+    :param metadata: Metadata to be serialized
+    :type metadata: Any
+    :return: Compressed serialized metadata
+    :rtype: bytes
+    """
     data_encoded = json.dumps(metadata)
     return gzip.compress(bytes(data_encoded, "utf-8"))
 
 
 def inject_data(image: Image.Image, data: Union[bytes, bytearray]) -> Image.Image:
+    """
+    Inject data into an image using LSB steganography and error correction.
+
+    This function embeds the given data into the least significant bits of the image pixels,
+    along with error correction information for robustness.
+
+    :param image: Input image
+    :type image: Image.Image
+    :param data: Data to be injected
+    :type data: Union[bytes, bytearray]
+    :return: Image with injected data
+    :rtype: Image.Image
+    """
     # noinspection PyTypeChecker
     rgb = np.array(image.convert('RGB'))
     image = image.convert('RGBA')
@@ -222,15 +272,40 @@ def inject_data(image: Image.Image, data: Union[bytes, bytearray]) -> Image.Imag
 
 
 def write_lsb_raw_bytes(image: ImageTyping, data: Union[bytes, bytearray]) -> Image.Image:
+    """
+    Write raw bytes into an image using LSB steganography.
+
+    This function is a wrapper around inject_data that handles image loading.
+
+    :param image: Input image or path to image
+    :type image: ImageTyping
+    :param data: Raw data to be written
+    :type data: Union[bytes, bytearray]
+    :return: Image with injected data
+    :rtype: Image.Image
+    """
     image = load_image(image, mode=None, force_background=None)
     return inject_data(image, data=data)
 
 
 def write_lsb_metadata(image: ImageTyping, data: Any) -> Image.Image:
+    """
+    Write metadata into an image using LSB steganography.
+
+    This function handles different types of metadata, serializing them appropriately
+    before injection into the image.
+
+    :param image: Input image or path to image
+    :type image: ImageTyping
+    :param data: Metadata to be written (can be raw bytes, PngInfo, or JSON-serializable data)
+    :type data: Any
+    :return: Image with injected metadata
+    :rtype: Image.Image
+    """
     if isinstance(data, (bytes, bytearray)):
         pass
     elif isinstance(data, PngInfo):
         data = serialize_pnginfo(data)
     else:
         data = serialize_json(data)
-    return inject_data(image, data=data)
+    return write_lsb_raw_bytes(image, data=data)
