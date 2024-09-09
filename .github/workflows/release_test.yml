@@ -38,7 +38,7 @@ jobs:
           make package
           ls -al dist
       - name: Upload packed files to artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-artifacts-source-pack
           path: ./dist/*
