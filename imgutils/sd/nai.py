@@ -21,8 +21,9 @@ from typing import Optional, Union
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 
-from imgutils.data import load_image, ImageTyping
-from imgutils.metadata import read_lsb_metadata, write_lsb_metadata, LSBReadError
+from ..data import load_image, ImageTyping
+from ..metadata import read_lsb_metadata, write_lsb_metadata, LSBReadError, read_geninfo_parameters, \
+    read_geninfo_exif, read_geninfo_gif
 
 
 @dataclass
@@ -78,6 +79,17 @@ class NAIMetadata:
         return info
 
 
+class _InvalidNAIMetaError(Exception):
+    pass
+
+
+def _naimeta_validate(data):
+    if isinstance(data, dict) and data.get('Software') and data.get('Source') and data.get('Comment'):
+        return data
+    else:
+        raise _InvalidNAIMetaError
+
+
 def _get_naimeta_raw(image: ImageTyping) -> dict:
     """
     Extract raw NAI metadata from an image.
@@ -93,9 +105,29 @@ def _get_naimeta_raw(image: ImageTyping) -> dict:
     """
     image = load_image(image, force_background=None, mode=None)
     try:
-        return read_lsb_metadata(image)
-    except LSBReadError:
-        return image.info or {}
+        return _naimeta_validate(read_lsb_metadata(image))
+    except (LSBReadError, _InvalidNAIMetaError):
+        pass
+
+    try:
+        return _naimeta_validate(image.info or {})
+    except (LSBReadError, _InvalidNAIMetaError):
+        pass
+
+    try:
+        return _naimeta_validate(json.loads(read_geninfo_parameters(image)))
+    except (TypeError, json.JSONDecodeError, _InvalidNAIMetaError):
+        pass
+
+    try:
+        return _naimeta_validate(json.loads(read_geninfo_exif(image)))
+    except (TypeError, json.JSONDecodeError, _InvalidNAIMetaError):
+        pass
+
+    try:
+        return _naimeta_validate(json.loads(read_geninfo_gif(image)))
+    except (TypeError, json.JSONDecodeError, _InvalidNAIMetaError):
+        raise _InvalidNAIMetaError
 
 
 def get_naimeta_from_image(image: ImageTyping) -> Optional[NAIMetadata]:
@@ -111,8 +143,11 @@ def get_naimeta_from_image(image: ImageTyping) -> Optional[NAIMetadata]:
     :return: A NAIMetadata object if successful, None otherwise.
     :rtype: Optional[NAIMetadata]
     """
-    data = _get_naimeta_raw(image)
-    if data.get('Software') and data.get('Source') and data.get('Comment'):
+    try:
+        data = _get_naimeta_raw(image)
+    except _InvalidNAIMetaError:
+        return None
+    else:
         return NAIMetadata(
             software=data['Software'],
             source=data['Source'],
@@ -121,8 +156,6 @@ def get_naimeta_from_image(image: ImageTyping) -> Optional[NAIMetadata]:
             generation_time=float(data['Generation time']) if data.get('Generation time') else None,
             description=data.get('Description'),
         )
-    else:
-        return None
 
 
 def _get_pnginfo(metadata: Union[NAIMetadata, PngInfo]) -> PngInfo:

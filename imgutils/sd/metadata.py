@@ -15,6 +15,7 @@ from typing import Dict, Any, Optional
 from PIL.PngImagePlugin import PngInfo
 
 from ..data import ImageTyping, load_image
+from ..metadata import read_geninfo_parameters, read_geninfo_exif
 
 _PARAM_PATTERN = re.compile(r'\s*(?P<key>[\w ]+):\s*(?P<value>"(?:\\.|[^\\"])+"|[^,]*)(?:,|$)')
 _SIZE_PATTERN = re.compile(r"^(?P<size1>-?\d+)\s*x\s*(?P<size2>-?\d+)$")
@@ -256,7 +257,9 @@ def get_sdmeta_from_image(image: ImageTyping) -> Optional[SDMetaData]:
         <class 'imgutils.sd.metadata.SDMetaData'>
     """
     image = load_image(image, mode=None, force_background=None)
-    pnginfo_text = image.info.get('parameters')
+    pnginfo_text = (read_geninfo_parameters(image) or
+                    read_geninfo_exif(image) or
+                    read_geninfo_parameters(image))
     if pnginfo_text:
         return parse_sdmeta_from_text(pnginfo_text)
     else:

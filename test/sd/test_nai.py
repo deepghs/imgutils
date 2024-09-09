@@ -7,6 +7,11 @@ from ..testings import get_testfile
 
 
 @pytest.fixture()
+def nai3_webp_file():
+    return get_testfile('nai3_webp.webp')
+
+
+@pytest.fixture()
 def nai3_file():
     return get_testfile('nai3.png')
 
@@ -38,6 +43,37 @@ def nai3_clear_rgba_image():
     image = load_image(get_testfile('nai3_clear_rgba.png'))
     image.load()
     return image
+
+
+@pytest.fixture()
+def nai3_webp_meta():
+    return NAIMetadata(
+        software='NovelAI',
+        source='Stable Diffusion XL C1E1DE52',
+        parameters={
+            'prompt': '2girls,side-by-side,nekomata okayu,shiina mahiru,symmetrical pose,general,masterpiece,, '
+                      'best quality, amazing quality, very aesthetic, absurdres',
+            'steps': 28, 'height': 832, 'width': 1216, 'scale': 5.0, 'uncond_scale': 0.0, 'cfg_rescale': 0.0,
+            'seed': 210306140, 'n_samples': 1, 'hide_debug_overlay': False, 'noise_schedule': 'native',
+            'legacy_v3_extend': False, 'reference_information_extracted_multiple': [],
+            'reference_strength_multiple': [], 'sampler': 'k_euler_ancestral', 'controlnet_strength': 1.0,
+            'controlnet_model': None, 'dynamic_thresholding': False, 'dynamic_thresholding_percentile': 0.999,
+            'dynamic_thresholding_mimic_scale': 10.0, 'sm': False, 'sm_dyn': False, 'skip_cfg_above_sigma': None,
+            'skip_cfg_below_sigma': 0.0, 'lora_unet_weights': None, 'lora_clip_weights': None,
+            'deliberate_euler_ancestral_bug': True, 'prefer_brownian': False,
+            'cfg_sched_eligibility': 'enable_for_post_summer_samplers', 'explike_fine_detail': False,
+            'minimize_sigma_inf': False, 'uncond_per_vibe': True, 'wonky_vibe_correlation': True, 'version': 1,
+            'uc': 'lowres, {bad}, error, fewer, extra, missing, worst quality, jpeg artifacts, bad quality, '
+                  'watermark, unfinished, displeasing, chromatic aberration, signature, extra digits, '
+                  'artistic error, username, scan, [abstract], ',
+            'request_type': 'PromptGenerateRequest',
+            'signed_hash': 'nM6vZLFGJWW7SH2xc4lpRY9sJGbPQKXaUzhUVX/u2NvCAyLg9abn90XBCiNmwqh1hK5hk+o7wYHkPJvhkfAnBg=='
+        },
+        title=None,
+        generation_time=6.494704299024306,
+        description='2girls,side-by-side,nekomata okayu,shiina mahiru,symmetrical pose,general,masterpiece,, '
+                    'best quality, amazing quality, very aesthetic, absurdres'
+    )
 
 
 @pytest.fixture()
@@ -212,3 +248,6 @@ class TestSDNai:
     ])
     def test_image_error_with_wrong_format(self, file):
         assert get_naimeta_from_image(get_testfile(file)) is None
+
+    def test_get_naimeta_from_image_webp(self, nai3_webp_file, nai3_webp_meta):
+        assert get_naimeta_from_image(nai3_webp_file) == pytest.approx(nai3_webp_meta)
