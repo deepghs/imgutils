@@ -245,8 +245,8 @@ def read_lsb_metadata(image: ImageTyping):
     try:
         raw_data = read_lsb_raw_bytes(image)
         return json.loads(gzip.decompress(raw_data).decode("utf-8"))
-    except (json.JSONDecodeError, zlib.error, EOFError, UnicodeDecodeError) as err:
-        # zlib.error: unable to decompress via zlib method
+    except (json.JSONDecodeError, zlib.error, gzip.BadGzipFile, EOFError, UnicodeDecodeError) as err:
+        # zlib.error, gzip.BadGzipFile: unable to decompress via zlib method
         # json.JSONDecodeError, EOFError: not a json-formatted data
         # UnicodeDecodeError: cannot decode as utf-8 text
         raise LSBReadError(err)
