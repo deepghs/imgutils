@@ -14,12 +14,15 @@ to embed data robustly into image files.
 
 import gzip
 import json
+from typing import Union, Any
 
 # BCH error correction
 import bchlib
 import numpy as np
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
+
+from ...data import load_image, ImageTyping
 
 correctable_bits = 16
 block_length = 2019
@@ -180,15 +183,7 @@ class LSBInjector:
         self.data[..., -1] = data
 
 
-def serialize_metadata(metadata: PngInfo) -> bytes:
-    """
-    Serialize PNG metadata into a compressed byte string.
-
-    :param metadata: PNG metadata
-    :type metadata: PIL.PngImagePlugin.PngInfo
-    :return: Serialized and compressed metadata
-    :rtype: bytes
-    """
+def serialize_pnginfo(metadata: PngInfo) -> bytes:
     data = {
         k: v
         for k, v in [
@@ -203,17 +198,12 @@ def serialize_metadata(metadata: PngInfo) -> bytes:
     return gzip.compress(bytes(data_encoded, "utf-8"))
 
 
-def inject_data(image: Image.Image, data: PngInfo) -> Image.Image:
-    """
-    Inject metadata and error correction data into an image.
+def serialize_json(metadata) -> bytes:
+    data_encoded = json.dumps(metadata)
+    return gzip.compress(bytes(data_encoded, "utf-8"))
 
-    :param image: Input image
-    :type image: PIL.Image.Image
-    :param data: PNG metadata to be injected
-    :type data: PIL.PngImagePlugin.PngInfo
-    :return: Image with injected data
-    :rtype: PIL.Image.Image
-    """
+
+def inject_data(image: Image.Image, data: Union[bytes, bytearray]) -> Image.Image:
     # noinspection PyTypeChecker
     rgb = np.array(image.convert('RGB'))
     image = image.convert('RGBA')
@@ -222,7 +212,6 @@ def inject_data(image: Image.Image, data: PngInfo) -> Image.Image:
     pixels = np.array(image)
     injector = LSBInjector(pixels)
     injector.put_string("stealth_pngcomp")
-    data = serialize_metadata(data)
     injector.put_32bit_integer(len(data) * 8)
     injector.put_bytes(data)
     fec_data = fec_encode(bytearray(rgb.tobytes()), w, h)
@@ -230,3 +219,18 @@ def inject_data(image: Image.Image, data: PngInfo) -> Image.Image:
     injector.put_bytes(fec_data)
     injector.finalize()
     return Image.fromarray(injector.data)
+
+
+def write_lsb_raw_bytes(image: ImageTyping, data: Union[bytes, bytearray]) -> Image.Image:
+    image = load_image(image, mode=None, force_background=None)
+    return inject_data(image, data=data)
+
+
+def write_lsb_metadata(image: ImageTyping, data: Any) -> Image.Image:
+    if isinstance(data, (bytes, bytearray)):
+        pass
+    elif isinstance(data, PngInfo):
+        data = serialize_pnginfo(data)
+    else:
+        data = serialize_json(data)
+    return inject_data(image, data=data)

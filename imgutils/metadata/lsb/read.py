@@ -27,9 +27,13 @@ Usage:
 
 import gzip
 import json
+import zlib
 
 import numpy as np
 from PIL import Image
+
+from imgutils.data import ImageTyping
+from ...data import load_image
 
 
 class LSBExtractor(object):
@@ -142,19 +146,7 @@ class ImageLsbDataExtractor(object):
         """
         self._magic_bytes = magic.encode('utf-8')
 
-    def extract_data(self, image: Image.Image) -> dict:
-        """
-        Extract hidden JSON data from the given image.
-
-        This method reads the LSB data from the image, verifies the magic number,
-        and extracts, decompresses, and decodes the hidden JSON data.
-
-        :param image: The input image.
-        :type image: Image.Image
-        :return: The extracted JSON data as a dictionary.
-        :rtype: dict
-        :raises ValueError: If the image is not in RGBA mode or if the magic number doesn't match.
-        """
+    def extract_data(self, image: Image.Image) -> bytes:
         if image.mode != 'RGBA':
             raise ValueError(f'Image should be in RGBA mode, but {image.mode!r} found.')
         # noinspection PyTypeChecker
@@ -170,7 +162,33 @@ class ImageLsbDataExtractor(object):
         if next_int is None:
             raise ValueError('No next int32 to read.')
         read_len = next_int // 8
-        json_data = reader.get_next_n_bytes(read_len)
+        raw_data = reader.get_next_n_bytes(read_len)
+        return raw_data
 
-        json_data = json.loads(gzip.decompress(json_data).decode("utf-8"))
-        return json_data
+
+class LSBReadError(Exception):
+    def __init__(self, err: Exception):
+        Exception.__init__(self, (f'LSB Read Error - {err!r}', err))
+        self.error = err
+
+
+def read_lsb_raw_bytes(image: ImageTyping) -> bytes:
+    image = load_image(image, mode=None, force_background=None)
+    try:
+        return ImageLsbDataExtractor().extract_data(image)
+    except (ValueError, OSError, IOError, EOFError) as err:
+        # ValueError: binary data with wrong format
+        # IOError, EOFError: unable to read more from images
+        # UnicodeDecodeError: cannot decode as utf-8 text
+        raise LSBReadError(err)
+
+
+def read_lsb_metadata(image: ImageTyping):
+    try:
+        raw_data = read_lsb_raw_bytes(image)
+        return json.loads(gzip.decompress(raw_data).decode("utf-8"))
+    except (json.JSONDecodeError, zlib.error, EOFError, UnicodeDecodeError) as err:
+        # zlib.error: unable to decompress via zlib method
+        # json.JSONDecodeError, EOFError: zot a json-formatted data
+        # UnicodeDecodeError: cannot decode as utf-8 text
+        raise LSBReadError(err)

@@ -15,16 +15,14 @@ This module is particularly useful for working with AI-generated images and thei
 import json
 import os
 import warnings
-import zlib
 from dataclasses import dataclass
 from typing import Optional, Union
 
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 
-from .extract import ImageLsbDataExtractor
-from .inject import inject_data
-from ...data import load_image, ImageTyping
+from imgutils.data import load_image, ImageTyping
+from imgutils.metadata import read_lsb_metadata, write_lsb_metadata, LSBReadError
 
 
 @dataclass
@@ -95,13 +93,8 @@ def _get_naimeta_raw(image: ImageTyping) -> dict:
     """
     image = load_image(image, force_background=None, mode=None)
     try:
-        return ImageLsbDataExtractor().extract_data(image)
-    except (ValueError, json.JSONDecodeError, zlib.error, OSError, IOError, UnicodeDecodeError):
-        # ValueError: binary data with wrong format
-        # json.JSONDecodeError: zot a json-formatted data
-        # zlib.error, OSError: not zlib compressed binary data
-        # IOError: unable to read more from images
-        # UnicodeDecodeError: cannot decode as utf-8 text
+        return read_lsb_metadata(image)
+    except LSBReadError:
         return image.info or {}
 
 
@@ -171,7 +164,7 @@ def add_naimeta_to_image(image: ImageTyping, metadata: Union[NAIMetadata, PngInf
     """
     pnginfo = _get_pnginfo(metadata)
     image = load_image(image, mode=None, force_background=None)
-    return inject_data(image, data=pnginfo)
+    return write_lsb_metadata(image, data=pnginfo)
 
 
 def save_image_with_naimeta(image: ImageTyping, dst_file: Union[str, os.PathLike],
