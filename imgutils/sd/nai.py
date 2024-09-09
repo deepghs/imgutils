@@ -13,6 +13,7 @@ This module is particularly useful for working with AI-generated images and thei
 """
 
 import json
+import mimetypes
 import os
 import warnings
 from dataclasses import dataclass
@@ -23,7 +24,9 @@ from PIL.PngImagePlugin import PngInfo
 
 from ..data import load_image, ImageTyping
 from ..metadata import read_lsb_metadata, write_lsb_metadata, LSBReadError, read_geninfo_parameters, \
-    read_geninfo_exif, read_geninfo_gif
+    read_geninfo_exif, read_geninfo_gif, write_geninfo_exif, write_geninfo_gif
+
+mimetypes.add_type('image/webp', '.webp')
 
 
 @dataclass
@@ -55,6 +58,21 @@ class NAIMetadata:
     description: Optional[str] = None
 
     @property
+    def json(self) -> dict:
+        data = {
+            'Software': self.software,
+            'Source': self.source,
+            'Comment': json.dumps(self.parameters),
+        }
+        if self.title is not None:
+            data['Title'] = self.title
+        if self.generation_time is not None:
+            data['Generation time'] = json.dumps(self.generation_time)
+        if self.description is not None:
+            data['Description'] = self.description
+        return data
+
+    @property
     def pnginfo(self) -> PngInfo:
         """
         Convert the NAIMetadata to a PngInfo object.
@@ -66,16 +84,8 @@ class NAIMetadata:
         :rtype: PngInfo
         """
         info = PngInfo()
-        info.add_text('Software', self.software)
-        info.add_text('Source', self.source)
-        if self.title is not None:
-            info.add_text('Title', self.title)
-        if self.generation_time is not None:
-            info.add_text('Generation time', json.dumps(self.generation_time)),
-        if self.description is not None:
-            info.add_text('Description', self.description)
-        if self.parameters is not None:
-            info.add_text('Comment', json.dumps(self.parameters))
+        for key, value in self.json.items():
+            info.add_text(key, value)
         return info
 
 
@@ -158,81 +168,60 @@ def get_naimeta_from_image(image: ImageTyping) -> Optional[NAIMetadata]:
         )
 
 
-def _get_pnginfo(metadata: Union[NAIMetadata, PngInfo]) -> PngInfo:
-    """
-    Convert metadata to PngInfo object.
+def add_naimeta_to_image(image: ImageTyping, metadata: NAIMetadata) -> Image.Image:
+    image = load_image(image, mode=None, force_background=None)
+    return write_lsb_metadata(image, data=metadata.pnginfo)
 
-    This function takes either a NAIMetadata object or a PngInfo object and returns a PngInfo object.
 
-    :param metadata: The metadata to convert.
-    :type metadata: Union[NAIMetadata, PngInfo]
+def _save_png_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: NAIMetadata, **kwargs):
+    image.save(dst_file, pnginfo=metadata.pnginfo, **kwargs)
 
-    :return: A PngInfo object.
-    :rtype: PngInfo
 
-    :raises TypeError: If the metadata is neither NAIMetadata nor PngInfo.
-    """
-    if isinstance(metadata, NAIMetadata):
-        pnginfo = metadata.pnginfo
-    elif isinstance(metadata, PngInfo):
-        pnginfo = metadata
+def _save_exif_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: NAIMetadata, **kwargs):
+    write_geninfo_exif(image, dst_file, json.dumps(metadata.json), **kwargs)
+
+
+def _save_gif_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: NAIMetadata, **kwargs):
+    write_geninfo_gif(image, dst_file, json.dumps(metadata.json), **kwargs)
+
+
+_FN_IMG_SAVE = {
+    'image/png': _save_png_with_naimeta,
+    'image/jpeg': _save_exif_with_naimeta,
+    'image/webp': _save_exif_with_naimeta,
+    'image/tiff': _save_exif_with_naimeta,
+    'image/gif': _save_gif_with_naimeta,
+}
+_LSB_ALLOWED_TYPES = {'image/png', 'image/tiff', 'image/gif', 'image/bmp'}
+
+
+def save_image_with_naimeta(
+        image: ImageTyping, dst_file: Union[str, os.PathLike], metadata: NAIMetadata,
+        add_lsb_meta: Union[str, bool] = 'auto', save_metainfo: bool = True, **kwargs) -> Image.Image:
+    mimetype, _ = mimetypes.guess_type(dst_file)
+    if add_lsb_meta == 'auto':
+        if mimetype in _LSB_ALLOWED_TYPES:
+            add_lsb_meta = True
+        else:
+            add_lsb_meta = False
     else:
-        raise TypeError(f'Unknown metadata type for NAI - {metadata!r}.')  # pragma: no cover
-    return pnginfo
-
-
-def add_naimeta_to_image(image: ImageTyping, metadata: Union[NAIMetadata, PngInfo]) -> Image.Image:
-    """
-    Add NAI metadata to an image.
-
-    This function injects the provided metadata into the image using LSB injection.
-
-    :param image: The input image.
-    :type image: ImageTyping
-    :param metadata: The metadata to add to the image.
-    :type metadata: Union[NAIMetadata, PngInfo]
-
-    :return: The image with added metadata.
-    :rtype: Image.Image
-    """
-    pnginfo = _get_pnginfo(metadata)
-    image = load_image(image, mode=None, force_background=None)
-    return write_lsb_metadata(image, data=pnginfo)
-
-
-def save_image_with_naimeta(image: ImageTyping, dst_file: Union[str, os.PathLike],
-                            metadata: Union[NAIMetadata, PngInfo],
-                            add_lsb_meta: bool = True, save_pnginfo: bool = True, **kwargs) -> Image.Image:
-    """
-    Save an image with NAI metadata.
-
-    This function saves the given image to a file, optionally adding NAI metadata using LSB injection
-    and/or saving it as PNG metadata.
-
-    :param image: The input image.
-    :type image: ImageTyping
-    :param dst_file: The destination file path.
-    :type dst_file: Union[str, os.PathLike]
-    :param metadata: The metadata to add to the image.
-    :type metadata: Union[NAIMetadata, PngInfo]
-    :param add_lsb_meta: Whether to add metadata using LSB injection. Defaults to True.
-    :type add_lsb_meta: bool
-    :param save_pnginfo: Whether to save metadata as PNG metadata. Defaults to True.
-    :type save_pnginfo: bool
-    :param kwargs: Additional keyword arguments to pass to the image save function.
-
-    :return: The saved image.
-    :rtype: Image.Image
-
-    :raises Warning: If both LSB meta and pnginfo are disabled.
-    """
-    pnginfo = _get_pnginfo(metadata)
-    image = load_image(image, mode=None, force_background=None)
-    if not add_lsb_meta and not save_pnginfo:
+        if add_lsb_meta and mimetype not in _LSB_ALLOWED_TYPES:
+            raise ValueError('LSB metadata cannot be saved to lossy image format, '
+                             'add_lsb_meta will be disabled. '
+                             f'Only {", ".join(sorted(_LSB_ALLOWED_TYPES))} images supported.')
+    if not add_lsb_meta and not save_metainfo:
         warnings.warn(f'Both LSB meta and pnginfo is disabled, no metadata will be saved to {dst_file!r}.')
+
+    image = load_image(image, mode=None, force_background=None)
     if add_lsb_meta:
-        image = add_naimeta_to_image(image, metadata=pnginfo)
-    if save_pnginfo:
-        kwargs['pnginfo'] = pnginfo
-    image.save(dst_file, **kwargs)
+        image = add_naimeta_to_image(image, metadata=metadata)
+    if save_metainfo:
+        mimetype, _ = mimetypes.guess_type(dst_file)
+        if mimetype not in _FN_IMG_SAVE:
+            raise SystemError(f'Not supported to save as a {mimetype!r} type, '
+                              f'supported mimetypes are {sorted(_FN_IMG_SAVE.keys())!r}.')
+        else:
+            _FN_IMG_SAVE[mimetype](image, dst_file, metadata, **kwargs)
+    else:
+        image.save(dst_file, **kwargs)
     return image
