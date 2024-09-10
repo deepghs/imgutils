@@ -10,7 +10,7 @@ SDMetaData
 -------------------------
 
 .. autoclass:: SDMetaData
-    :members: __str__, pnginfo
+    :members: __str__, text, pnginfo
 
 
 
