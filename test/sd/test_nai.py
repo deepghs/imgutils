@@ -178,18 +178,6 @@ class TestSDNai:
         image = add_naimeta_to_image(nai3_clear_rgba_image, metadata=nai3_meta_without_title)
         assert get_naimeta_from_image(image) == pytest.approx(nai3_meta_without_title)
 
-    def test_save_image_with_naimeta_metainfo_only(self, nai3_clear_file, nai3_meta_without_title):
-        with isolated_directory():
-            save_image_with_naimeta(nai3_clear_file, 'image.png',
-                                    metadata=nai3_meta_without_title, add_lsb_meta=False)
-            assert get_naimeta_from_image('image.png') == pytest.approx(nai3_meta_without_title)
-
-    def test_save_image_with_naimeta_lsbmeta_only(self, nai3_clear_file, nai3_meta_without_title):
-        with isolated_directory():
-            save_image_with_naimeta(nai3_clear_file, 'image.png',
-                                    metadata=nai3_meta_without_title, save_metainfo=False)
-            assert get_naimeta_from_image('image.png') == pytest.approx(nai3_meta_without_title)
-
     def test_save_image_with_naimeta_both_no(self, nai3_clear_file, nai3_meta_without_title):
         with isolated_directory():
             with pytest.warns(Warning):
@@ -270,48 +258,54 @@ class TestSDNai:
             assert get_naimeta_from_image(f'image{ext}') == \
                    (pytest.approx(nai3_meta_without_title) if okay else None)
 
-    @pytest.mark.parametrize(['ext'], [
-        ('.webp',),
-        ('.jpg',),
-        ('.jpeg',),
+    @pytest.mark.parametrize(['ext', 'okay'], [
+        ('.png', True),
+        ('.webp', False),
+        ('.jpg', False),
+        ('.jpeg', False),
+        ('.tiff', True),
+        ('.gif', False),
     ])
-    def test_save_image_with_naimeta_exifs_lsb_true_lossy(self, nai3_clear_file, nai3_meta_without_title, ext):
-        with isolated_directory(), pytest.raises(ValueError):
-            save_image_with_naimeta(nai3_clear_file, f'image{ext}',
-                                    add_lsb_meta=True, metadata=nai3_meta_without_title)
-
-    @pytest.mark.parametrize(['ext'], [
-        ('.tiff',),
-        ('.gif',),
-    ])
-    def test_save_image_with_naimeta_exifs_lsb_true_non_lossy(self, nai3_clear_file, nai3_meta_without_title, ext):
+    def test_save_image_with_naimeta_lsb_true(self, nai3_clear_file, nai3_meta_without_title,
+                                              ext, okay):
         with isolated_directory():
-            save_image_with_naimeta(nai3_clear_file, f'image{ext}',
-                                    add_lsb_meta=True, metadata=nai3_meta_without_title)
-            assert get_naimeta_from_image(f'image{ext}') == pytest.approx(nai3_meta_without_title)
+            if okay:
+                save_image_with_naimeta(nai3_clear_file, f'image{ext}',
+                                        add_lsb_meta=True, metadata=nai3_meta_without_title)
+                assert get_naimeta_from_image(f'image{ext}') == pytest.approx(nai3_meta_without_title)
+            else:
+                with pytest.raises(ValueError):
+                    save_image_with_naimeta(nai3_clear_file, f'image{ext}',
+                                            add_lsb_meta=True, metadata=nai3_meta_without_title)
 
-    @pytest.mark.parametrize(['ext'], [
-        ('.webp',),
-        ('.jpg',),
-        ('.jpeg',),
-        ('.tiff',),
-        ('.gif',),
+    @pytest.mark.parametrize(['ext', 'warns', 'okay'], [
+        ('.png', False, True),
+        ('.webp', False, True),
+        ('.jpg', False, True),
+        ('.jpeg', False, True),
+        ('.tiff', True, False),
+        ('.gif', False, True),
     ])
-    def test_save_image_with_naimeta_metainfo_only_exifs(self, nai3_clear_file, nai3_meta_without_title, ext):
-        with isolated_directory(), pytest.warns(None):
+    def test_save_image_with_naimeta_metainfo_only(self, nai3_clear_file, nai3_meta_without_title,
+                                                   ext, warns, okay):
+        with isolated_directory(), pytest.warns(Warning if warns else None):
             save_image_with_naimeta(nai3_clear_file, f'image{ext}',
                                     metadata=nai3_meta_without_title, add_lsb_meta=False)
-            assert get_naimeta_from_image(f'image{ext}') == pytest.approx(nai3_meta_without_title)
+            assert get_naimeta_from_image(f'image{ext}') == \
+                   (pytest.approx(nai3_meta_without_title) if okay else None)
 
-    @pytest.mark.parametrize(['ext'], [
-        ('.webp',),
-        ('.jpg',),
-        ('.jpeg',),
-        ('.tiff',),
-        ('.gif',),
+    @pytest.mark.parametrize(['ext', 'warns', 'okay'], [
+        ('.png', False, True),
+        ('.webp', True, False),
+        ('.jpg', True, False),
+        ('.jpeg', True, False),
+        ('.tiff', False, True),
+        ('.gif', True, False),
     ])
-    def test_save_image_with_naimeta_lsbmeta_only_exifs(self, nai3_clear_file, nai3_meta_without_title, ext):
-        with isolated_directory(), pytest.warns(Warning):
+    def test_save_image_with_naimeta_lsbmeta_only(self, nai3_clear_file, nai3_meta_without_title,
+                                                  ext, warns, okay):
+        with isolated_directory(), pytest.warns(Warning if warns else None):
             save_image_with_naimeta(nai3_clear_file, f'image{ext}',
                                     metadata=nai3_meta_without_title, save_metainfo=False)
-            assert get_naimeta_from_image(f'image{ext}') is None
+            assert get_naimeta_from_image(f'image{ext}') == \
+                   (pytest.approx(nai3_meta_without_title) if okay else None)

@@ -189,15 +189,14 @@ _FN_IMG_SAVE = {
     'image/png': _save_png_with_naimeta,
     'image/jpeg': _save_exif_with_naimeta,
     'image/webp': _save_exif_with_naimeta,
-    'image/tiff': _save_exif_with_naimeta,
     'image/gif': _save_gif_with_naimeta,
 }
-_LSB_ALLOWED_TYPES = {'image/png', 'image/tiff', 'image/gif', 'image/bmp'}
+_LSB_ALLOWED_TYPES = {'image/png', 'image/tiff'}
 
 
 def save_image_with_naimeta(
         image: ImageTyping, dst_file: Union[str, os.PathLike], metadata: NAIMetadata,
-        add_lsb_meta: Union[str, bool] = 'auto', save_metainfo: bool = True, **kwargs) -> Image.Image:
+        add_lsb_meta: Union[str, bool] = 'auto', save_metainfo: Union[str, bool] = 'auto', **kwargs) -> Image.Image:
     mimetype, _ = mimetypes.guess_type(dst_file)
     if add_lsb_meta == 'auto':
         if mimetype in _LSB_ALLOWED_TYPES:
@@ -206,9 +205,18 @@ def save_image_with_naimeta(
             add_lsb_meta = False
     else:
         if add_lsb_meta and mimetype not in _LSB_ALLOWED_TYPES:
-            raise ValueError('LSB metadata cannot be saved to lossy image format, '
+            raise ValueError('LSB metadata cannot be saved to lossy image format or RGBA-incompatible format, '
                              'add_lsb_meta will be disabled. '
                              f'Only {", ".join(sorted(_LSB_ALLOWED_TYPES))} images supported.')
+    if save_metainfo == 'auto':
+        if mimetype in _FN_IMG_SAVE:
+            save_metainfo = True
+        else:
+            save_metainfo = False
+    else:
+        if save_metainfo and mimetype not in _FN_IMG_SAVE:
+            raise SystemError(f'Not supported to save as a {mimetype!r} type, '
+                              f'supported mimetypes are {sorted(_FN_IMG_SAVE.keys())!r}.')
     if not add_lsb_meta and not save_metainfo:
         warnings.warn(f'Both LSB meta and pnginfo is disabled, no metadata will be saved to {dst_file!r}.')
 
@@ -216,12 +224,7 @@ def save_image_with_naimeta(
     if add_lsb_meta:
         image = add_naimeta_to_image(image, metadata=metadata)
     if save_metainfo:
-        mimetype, _ = mimetypes.guess_type(dst_file)
-        if mimetype not in _FN_IMG_SAVE:
-            raise SystemError(f'Not supported to save as a {mimetype!r} type, '
-                              f'supported mimetypes are {sorted(_FN_IMG_SAVE.keys())!r}.')
-        else:
-            _FN_IMG_SAVE[mimetype](image, dst_file, metadata, **kwargs)
+        _FN_IMG_SAVE[mimetype](image, dst_file, metadata, **kwargs)
     else:
         image.save(dst_file, **kwargs)
     return image
