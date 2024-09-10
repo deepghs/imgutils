@@ -10,7 +10,7 @@ SDMetaData
 -------------------------
 
 .. autoclass:: SDMetaData
-    :members: __str__, pnginfo
+    :members: __str__, text, pnginfo
 
 
 
@@ -25,6 +25,13 @@ get_sdmeta_from_image
 ------------------------------------------
 
 .. autofunction:: get_sdmeta_from_image
+
+
+
+save_image_with_sdmeta
+------------------------------------------
+
+.. autofunction:: save_image_with_sdmeta
 
 
 

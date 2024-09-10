@@ -5,9 +5,20 @@ from contextlib import contextmanager
 import pytest
 from PIL import Image
 from hbutils.system import TemporaryDirectory
+from hbutils.testing import isolated_directory
 
-from imgutils.sd import get_sdmeta_from_image, SDMetaData, parse_sdmeta_from_text
+from imgutils.sd import get_sdmeta_from_image, SDMetaData, parse_sdmeta_from_text, save_image_with_sdmeta
 from test.testings import get_testfile
+
+
+@pytest.fixture()
+def nai3_file():
+    return get_testfile('nai3.png')
+
+
+@pytest.fixture()
+def clean_image():
+    return get_testfile('nai3_clear.png')
 
 
 @pytest.fixture()
@@ -400,3 +411,29 @@ Steps: 20, Sampler: DPM++ 2M SDE Karras, CFG scale: 7, Seed: 2647703743, Size: 7
 
     def test_empty_info_parse(self):
         assert parse_sdmeta_from_text('') == SDMetaData('', '', {})
+
+    @pytest.mark.parametrize(['ext', 'result'], [
+        ('.png', True),
+        ('.jpg', True),
+        ('.jpeg', True),
+        ('.webp', True),
+        ('.gif', True),
+        ('.tiff', SystemError),
+    ])
+    def test_save_image_with_sdmeta(self, clean_image, sdimg_4_std, ext, result):
+        assert get_sdmeta_from_image(clean_image) is None
+        with isolated_directory():
+            if isinstance(result, type) and issubclass(result, Exception):
+                with pytest.raises(result):
+                    save_image_with_sdmeta(clean_image, f'image{ext}', metadata=sdimg_4_std)
+            else:
+                save_image_with_sdmeta(clean_image, f'image{ext}', metadata=sdimg_4_std)
+                assert get_sdmeta_from_image(f'image{ext}') == sdimg_4_std
+
+    @pytest.mark.parametrize(['file'], [
+        ('nai3.png',),
+        ('nai3_clear.png',),
+        ('nai3_info_rgb.png',),
+    ])
+    def test_clean_image(self, file):
+        assert get_sdmeta_from_image(get_testfile(file)) is None
