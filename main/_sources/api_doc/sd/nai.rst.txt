@@ -6,11 +6,20 @@ imgutils.sd.nai
 .. automodule:: imgutils.sd.nai
 
 
+NAIMetaData
+------------------------------------------------
+
+.. autoclass:: NAIMetaData
+    :members: __init__, pnginfo
+
+
+
 NAIMetadata
 ------------------------------------------------
 
-.. autoclass:: NAIMetadata
-    :members: __init__, pnginfo
+.. class:: NAIMetadata
+
+    Alias of :class:`NAIMetaData`
 
 
 
@@ -32,34 +41,5 @@ save_image_with_naimeta
 ------------------------------------------------
 
 .. autofunction:: save_image_with_naimeta
-
-
-LSBExtractor
-------------------------------------------------
-
-.. autoclass:: LSBExtractor
-    :members: __init__, get_one_byte, get_next_n_bytes, read_32bit_integer
-
-
-
-ImageLsbDataExtractor
-------------------------------------------------
-
-.. autoclass:: ImageLsbDataExtractor
-    :members: __init__, extract_data
-
-
-
-serialize_metadata
-------------------------------------------------
-
-.. autofunction:: serialize_metadata
-
-
-
-inject_data
-------------------------------------------------
-
-.. autofunction:: inject_data
 
 
