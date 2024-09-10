@@ -90,7 +90,7 @@ def read_geninfo_gif(image: ImageTyping) -> Optional[str]:
     """
     image = load_image(image, mode=None, force_background=None)
     infos = image.info or {}
-    if "comment" in infos:  # for gif
+    if "comment" in infos and isinstance(infos['comment'], (bytes, bytearray)):  # for gif
         return infos["comment"].decode("utf8", errors="ignore")
     else:
         return None
