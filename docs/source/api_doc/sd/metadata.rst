@@ -28,3 +28,10 @@ get_sdmeta_from_image
 
 
 
+save_image_with_sdmeta
+------------------------------------------
+
+.. autofunction:: save_image_with_sdmeta
+
+
+

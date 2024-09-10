@@ -2,7 +2,7 @@ import pytest
 from hbutils.testing import isolated_directory
 
 from imgutils.data import load_image
-from imgutils.sd import get_naimeta_from_image, NAIMetadata, add_naimeta_to_image, save_image_with_naimeta
+from imgutils.sd import get_naimeta_from_image, NAIMetaData, add_naimeta_to_image, save_image_with_naimeta
 from ..testings import get_testfile
 
 
@@ -47,7 +47,7 @@ def nai3_clear_rgba_image():
 
 @pytest.fixture()
 def nai3_webp_meta():
-    return NAIMetadata(
+    return NAIMetaData(
         software='NovelAI',
         source='Stable Diffusion XL C1E1DE52',
         parameters={
@@ -78,7 +78,7 @@ def nai3_webp_meta():
 
 @pytest.fixture()
 def nai3_meta_without_title():
-    return NAIMetadata(
+    return NAIMetaData(
         software='NovelAI',
         source='Stable Diffusion XL C1E1DE52',
         title=None,
@@ -117,7 +117,7 @@ def nai3_meta_without_title():
 
 @pytest.fixture()
 def nai3_meta():
-    return NAIMetadata(
+    return NAIMetaData(
         software='NovelAI',
         source='Stable Diffusion XL C1E1DE52',
         title='This is title',

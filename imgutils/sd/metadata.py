@@ -7,15 +7,19 @@ Overview:
 """
 import io
 import json
+import mimetypes
+import os
 import re
 import textwrap
 from dataclasses import dataclass
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Union
 
+from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 
 from ..data import ImageTyping, load_image
-from ..metadata import read_geninfo_parameters, read_geninfo_exif
+from ..metadata import read_geninfo_parameters, read_geninfo_exif, write_geninfo_exif, write_geninfo_gif, \
+    read_geninfo_gif
 
 _PARAM_PATTERN = re.compile(r'\s*(?P<key>[\w ]+):\s*(?P<value>"(?:\\.|[^\\"])+"|[^,]*)(?:,|$)')
 _SIZE_PATTERN = re.compile(r"^(?P<size1>-?\d+)\s*x\s*(?P<size2>-?\d+)$")
@@ -104,6 +108,10 @@ class SDMetaData:
                 ]), file=sio)
 
             return sio.getvalue().strip()
+
+    @property
+    def text(self) -> str:
+        return self._sdmeta_text()
 
     @property
     def pnginfo(self) -> PngInfo:
@@ -259,8 +267,38 @@ def get_sdmeta_from_image(image: ImageTyping) -> Optional[SDMetaData]:
     image = load_image(image, mode=None, force_background=None)
     pnginfo_text = (read_geninfo_parameters(image) or
                     read_geninfo_exif(image) or
-                    read_geninfo_parameters(image))
+                    read_geninfo_gif(image))
     if pnginfo_text:
         return parse_sdmeta_from_text(pnginfo_text)
     else:
         return None
+
+
+def _save_png_with_sdmeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: SDMetaData, **kwargs):
+    image.save(dst_file, pnginfo=metadata.pnginfo, **kwargs)
+
+
+def _save_exif_with_sdmeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: SDMetaData, **kwargs):
+    write_geninfo_exif(image, dst_file, metadata.text, **kwargs)
+
+
+def _save_gif_with_sdmeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: SDMetaData, **kwargs):
+    write_geninfo_gif(image, dst_file, metadata.text, **kwargs)
+
+
+_FN_IMG_SAVE = {
+    'image/png': _save_png_with_sdmeta,
+    'image/jpeg': _save_exif_with_sdmeta,
+    'image/webp': _save_exif_with_sdmeta,
+    'image/gif': _save_gif_with_sdmeta,
+}
+
+
+def save_image_with_sdmeta(image: ImageTyping, dst_file: Union[str, os.PathLike], metadata: SDMetaData, **kwargs):
+    mimetype, _ = mimetypes.guess_type(str(dst_file))
+    if mimetype not in _FN_IMG_SAVE:
+        raise SystemError(f'Not supported to save as a {mimetype!r} type, '
+                          f'supported mimetypes are {sorted(_FN_IMG_SAVE.keys())!r}.')
+
+    image = load_image(image, mode=None, force_background=None)
+    _FN_IMG_SAVE[mimetype](image, dst_file, metadata, **kwargs)

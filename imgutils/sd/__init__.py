@@ -17,6 +17,6 @@ Submodules:
 For detailed usage of each function and class, please refer to their individual docstrings.
 """
 
-from .metadata import parse_sdmeta_from_text, get_sdmeta_from_image, SDMetaData
+from .metadata import parse_sdmeta_from_text, get_sdmeta_from_image, SDMetaData, save_image_with_sdmeta
 from .model import read_metadata, save_with_metadata
-from .nai import get_naimeta_from_image, NAIMetadata, add_naimeta_to_image, save_image_with_naimeta
+from .nai import get_naimeta_from_image, NAIMetaData, add_naimeta_to_image, save_image_with_naimeta, NAIMetadata

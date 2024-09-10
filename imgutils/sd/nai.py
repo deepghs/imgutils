@@ -30,7 +30,7 @@ mimetypes.add_type('image/webp', '.webp')
 
 
 @dataclass
-class NAIMetadata:
+class NAIMetaData:
     """
     A dataclass representing Novel AI (NAI) metadata.
 
@@ -93,6 +93,9 @@ class NAIMetadata:
         for key, value in self.json.items():
             info.add_text(key, value)
         return info
+
+
+NAIMetadata = NAIMetaData
 
 
 class _InvalidNAIMetaError(Exception):
@@ -158,7 +161,7 @@ def _get_naimeta_raw(image: ImageTyping) -> dict:
         raise _InvalidNAIMetaError
 
 
-def get_naimeta_from_image(image: ImageTyping) -> Optional[NAIMetadata]:
+def get_naimeta_from_image(image: ImageTyping) -> Optional[NAIMetaData]:
     """
     Extract and create a NAIMetadata object from an image.
 
@@ -168,14 +171,14 @@ def get_naimeta_from_image(image: ImageTyping) -> Optional[NAIMetadata]:
     :param image: The input image.
     :type image: ImageTyping
     :return: A NAIMetadata object if successful, None otherwise.
-    :rtype: Optional[NAIMetadata]
+    :rtype: Optional[NAIMetaData]
     """
     try:
         data = _get_naimeta_raw(image)
     except _InvalidNAIMetaError:
         return None
     else:
-        return NAIMetadata(
+        return NAIMetaData(
             software=data['Software'],
             source=data['Source'],
             parameters=json.loads(data['Comment']),
@@ -185,14 +188,14 @@ def get_naimeta_from_image(image: ImageTyping) -> Optional[NAIMetadata]:
         )
 
 
-def add_naimeta_to_image(image: ImageTyping, metadata: NAIMetadata) -> Image.Image:
+def add_naimeta_to_image(image: ImageTyping, metadata: NAIMetaData) -> Image.Image:
     """
     Add NAI metadata to an image using LSB (Least Significant Bit) encoding.
 
     :param image: The input image.
     :type image: ImageTyping
     :param metadata: The NAIMetadata object to add to the image.
-    :type metadata: NAIMetadata
+    :type metadata: NAIMetaData
     :return: The image with added metadata.
     :rtype: Image.Image
     """
@@ -200,7 +203,7 @@ def add_naimeta_to_image(image: ImageTyping, metadata: NAIMetadata) -> Image.Ima
     return write_lsb_metadata(image, data=metadata.pnginfo)
 
 
-def _save_png_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: NAIMetadata, **kwargs):
+def _save_png_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: NAIMetaData, **kwargs):
     """
     Save a PNG image with NAI metadata.
 
@@ -209,13 +212,13 @@ def _save_png_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike]
     :param dst_file: The destination file path.
     :type dst_file: Union[str, os.PathLike]
     :param metadata: The NAIMetadata object to include in the image.
-    :type metadata: NAIMetadata
+    :type metadata: NAIMetaData
     :param kwargs: Additional keyword arguments for image saving.
     """
     image.save(dst_file, pnginfo=metadata.pnginfo, **kwargs)
 
 
-def _save_exif_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: NAIMetadata, **kwargs):
+def _save_exif_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: NAIMetaData, **kwargs):
     """
     Save an image with NAI metadata in EXIF format.
 
@@ -224,13 +227,13 @@ def _save_exif_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike
     :param dst_file: The destination file path.
     :type dst_file: Union[str, os.PathLike]
     :param metadata: The NAIMetadata object to include in the image.
-    :type metadata: NAIMetadata
+    :type metadata: NAIMetaData
     :param kwargs: Additional keyword arguments for image saving.
     """
     write_geninfo_exif(image, dst_file, json.dumps(metadata.json), **kwargs)
 
 
-def _save_gif_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: NAIMetadata, **kwargs):
+def _save_gif_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: NAIMetaData, **kwargs):
     """
     Save a GIF image with NAI metadata.
 
@@ -239,7 +242,7 @@ def _save_gif_with_naimeta(image: Image.Image, dst_file: Union[str, os.PathLike]
     :param dst_file: The destination file path.
     :type dst_file: Union[str, os.PathLike]
     :param metadata: The NAIMetadata object to include in the image.
-    :type metadata: NAIMetadata
+    :type metadata: NAIMetaData
     :param kwargs: Additional keyword arguments for image saving.
     """
     write_geninfo_gif(image, dst_file, json.dumps(metadata.json), **kwargs)
@@ -255,7 +258,7 @@ _LSB_ALLOWED_TYPES = {'image/png', 'image/tiff'}
 
 
 def save_image_with_naimeta(
-        image: ImageTyping, dst_file: Union[str, os.PathLike], metadata: NAIMetadata,
+        image: ImageTyping, dst_file: Union[str, os.PathLike], metadata: NAIMetaData,
         add_lsb_meta: Union[str, bool] = 'auto', save_metainfo: Union[str, bool] = 'auto', **kwargs) -> Image.Image:
     """
     Save an image with NAI metadata.
@@ -268,7 +271,7 @@ def save_image_with_naimeta(
     :param dst_file: The destination file path.
     :type dst_file: Union[str, os.PathLike]
     :param metadata: The NAIMetadata object to include in the image.
-    :type metadata: NAIMetadata
+    :type metadata: NAIMetaData
     :param add_lsb_meta: Whether to add LSB metadata. Can be 'auto', True, or False.
     :type add_lsb_meta: Union[str, bool]
     :param save_metainfo: Whether to save metainfo. Can be 'auto', True, or False.
@@ -279,7 +282,7 @@ def save_image_with_naimeta(
     :raises ValueError: If LSB metadata cannot be saved to the specified image format.
     :raises SystemError: If the image format is not supported for saving metainfo.
     """
-    mimetype, _ = mimetypes.guess_type(dst_file)
+    mimetype, _ = mimetypes.guess_type(str(dst_file))
     if add_lsb_meta == 'auto':
         if mimetype in _LSB_ALLOWED_TYPES:
             add_lsb_meta = True
