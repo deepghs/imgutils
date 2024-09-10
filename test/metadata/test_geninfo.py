@@ -1,4 +1,5 @@
 import pytest
+from PIL import Image
 from hbutils.testing import tmatrix, isolated_directory
 
 from imgutils.metadata import read_geninfo_parameters, read_geninfo_exif, read_geninfo_gif, write_geninfo_parameters, \
@@ -24,6 +25,11 @@ def gif_file():
 @pytest.fixture()
 def png_rgb_clean():
     return get_testfile('nai3_clear.png')
+
+
+@pytest.fixture()
+def png_comment_str():
+    return get_testfile('nai3_clear_comment_str.png')
 
 
 @pytest.mark.unittest
@@ -165,3 +171,9 @@ class TestMetadataGeninfo:
         with isolated_directory():
             write_geninfo_gif(png_rgb_clean, f'image{ext}', geninfo=text)
             assert read_geninfo_gif(f'image{ext}') == (text if text else None)
+
+    def test_read_geninfo_gif_comment_str(self, png_comment_str):
+        image = Image.open(png_comment_str)
+        assert isinstance(image.info.get('comment'), str)
+        assert read_geninfo_gif(png_comment_str) is None
+        assert read_geninfo_gif(image) is None
