@@ -77,8 +77,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.sd</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metadata.html">imgutils.sd.metadata</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.sd.model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#read-metadata">read_metadata</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#save-with-metadata">save_with_metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-metadata">read_metadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.model.read_metadata"><code class="docutils literal notranslate"><span class="pre">read_metadata()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#save-with-metadata">save_with_metadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.model.save_with_metadata"><code class="docutils literal notranslate"><span class="pre">save_with_metadata()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="nai.html">imgutils.sd.nai</a></li>
@@ -118,13 +124,58 @@
              
     
     
-  <section id="imgutils-sd-model">
-<h1>imgutils.sd.model<a class="headerlink" href="#imgutils-sd-model" title="Permalink to this heading"></a></h1>
+  <section id="module-imgutils.sd.model">
+<span id="imgutils-sd-model"></span><h1>imgutils.sd.model<a class="headerlink" href="#module-imgutils.sd.model" title="Permalink to this heading"></a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>A utility for reading and writing metadata from/to model files in the A41 WebUI format.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">torch</span></code> and <code class="docutils literal notranslate"><span class="pre">safetensors</span></code> are required by this model.
+Please install them with the following command before start using this module.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>dghs-imgutils<span class="o">[</span>model<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+</dd>
+</dl>
 <section id="read-metadata">
 <h2>read_metadata<a class="headerlink" href="#read-metadata" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.sd.model.read_metadata">
+<span class="sig-prename descclassname"><span class="pre">imgutils.sd.model.</span></span><span class="sig-name descname"><span class="pre">read_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/sd/model.html#read_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.model.read_metadata" title="Permalink to this definition"></a></dt>
+<dd><p>Reads metadata from a model file and returns it as a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_file</strong> (<em>str</em>) – The path to the model file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The metadata extracted from the model file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="save-with-metadata">
 <h2>save_with_metadata<a class="headerlink" href="#save-with-metadata" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.sd.model.save_with_metadata">
+<span class="sig-prename descclassname"><span class="pre">imgutils.sd.model.</span></span><span class="sig-name descname"><span class="pre">save_with_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">src_model_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_model_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/sd/model.html#save_with_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.model.save_with_metadata" title="Permalink to this definition"></a></dt>
+<dd><p>Saves a model file with metadata. Optionally, existing metadata can be cleared before adding new metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src_model_file</strong> (<em>str</em>) – The path to the source model file.</p></li>
+<li><p><strong>dst_model_file</strong> (<em>str</em>) – The path to save the new model file.</p></li>
+<li><p><strong>metadata</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – The metadata to add to the model file.</p></li>
+<li><p><strong>clear</strong> (<em>bool</em>) – Whether to clear existing metadata before adding new metadata. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 

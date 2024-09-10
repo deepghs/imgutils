@@ -78,10 +78,22 @@
 <li class="toctree-l2"><a class="reference internal" href="metadata.html">imgutils.sd.metadata</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model.html">imgutils.sd.model</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.sd.nai</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#naimetadata">NAIMetadata</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#get-naimeta-from-image">get_naimeta_from_image</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#add-naimeta-to-image">add_naimeta_to_image</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#save-image-with-naimeta">save_image_with_naimeta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#naimetadata">NAIMetadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.NAIMetadata"><code class="docutils literal notranslate"><span class="pre">NAIMetadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-naimeta-from-image">get_naimeta_from_image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.get_naimeta_from_image"><code class="docutils literal notranslate"><span class="pre">get_naimeta_from_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#add-naimeta-to-image">add_naimeta_to_image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.add_naimeta_to_image"><code class="docutils literal notranslate"><span class="pre">add_naimeta_to_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#save-image-with-naimeta">save_image_with_naimeta</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.sd.nai.save_image_with_naimeta"><code class="docutils literal notranslate"><span class="pre">save_image_with_naimeta()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -120,19 +132,140 @@
              
     
     
-  <section id="imgutils-sd-nai">
-<h1>imgutils.sd.nai<a class="headerlink" href="#imgutils-sd-nai" title="Permalink to this heading"></a></h1>
+  <section id="module-imgutils.sd.nai">
+<span id="imgutils-sd-nai"></span><h1>imgutils.sd.nai<a class="headerlink" href="#module-imgutils.sd.nai" title="Permalink to this heading"></a></h1>
+<p>This module provides functionality for handling metadata in images, specifically for the Novel AI (NAI) format.
+It includes classes and functions for extracting, creating, and saving NAI metadata in images.</p>
+<p>The module offers the following main features:</p>
+<ol class="arabic simple">
+<li><p>Extraction of NAI metadata from images</p></li>
+<li><p>Creation of NAI metadata objects</p></li>
+<li><p>Adding NAI metadata to images</p></li>
+<li><p>Saving images with NAI metadata</p></li>
+</ol>
+<p>This module is particularly useful for working with AI-generated images and their associated metadata.</p>
 <section id="naimetadata">
 <h2>NAIMetadata<a class="headerlink" href="#naimetadata" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.sd.nai.NAIMetadata">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">NAIMetadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">software</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generation_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/sd/nai.html#NAIMetadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.NAIMetadata" title="Permalink to this definition"></a></dt>
+<dd><p>A dataclass representing Novel AI (NAI) metadata.</p>
+<p>This class encapsulates various metadata fields associated with NAI-generated images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>software</strong> (<em>str</em>) – The software used to generate the image.</p></li>
+<li><p><strong>source</strong> (<em>str</em>) – The source of the image.</p></li>
+<li><p><strong>parameters</strong> (<em>dict</em>) – A dictionary containing generation parameters.</p></li>
+<li><p><strong>title</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The title of the image (optional).</p></li>
+<li><p><strong>generation_time</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – The time taken to generate the image (optional).</p></li>
+<li><p><strong>description</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A description of the image (optional).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.sd.nai.NAIMetadata.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">software</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generation_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#imgutils.sd.nai.NAIMetadata.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="imgutils.sd.nai.NAIMetadata.pnginfo">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pnginfo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">PngInfo</span></em><a class="headerlink" href="#imgutils.sd.nai.NAIMetadata.pnginfo" title="Permalink to this definition"></a></dt>
+<dd><p>Convert the NAIMetadata to a PngInfo object.</p>
+<p>This property creates a PngInfo object with the metadata information,
+which can be used when saving PNG images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A PngInfo object containing the metadata.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>PngInfo</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="get-naimeta-from-image">
 <h2>get_naimeta_from_image<a class="headerlink" href="#get-naimeta-from-image" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.sd.nai.get_naimeta_from_image">
+<span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">get_naimeta_from_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.NAIMetadata"><span class="pre">NAIMetadata</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/imgutils/sd/nai.html#get_naimeta_from_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.get_naimeta_from_image" title="Permalink to this definition"></a></dt>
+<dd><p>Extract and create a NAIMetadata object from an image.</p>
+<p>This function attempts to extract NAI metadata from the given image and create a NAIMetadata object.
+If the required metadata fields are not present, it returns None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A NAIMetadata object if successful, None otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[<a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.NAIMetadata">NAIMetadata</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="add-naimeta-to-image">
 <h2>add_naimeta_to_image<a class="headerlink" href="#add-naimeta-to-image" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.sd.nai.add_naimeta_to_image">
+<span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">add_naimeta_to_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.NAIMetadata"><span class="pre">NAIMetadata</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/sd/nai.html#add_naimeta_to_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.add_naimeta_to_image" title="Permalink to this definition"></a></dt>
+<dd><p>Add NAI metadata to an image using LSB (Least Significant Bit) encoding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>metadata</strong> (<a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.NAIMetadata"><em>NAIMetadata</em></a>) – The NAIMetadata object to add to the image.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The image with added metadata.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="save-image-with-naimeta">
 <h2>save_image_with_naimeta<a class="headerlink" href="#save-image-with-naimeta" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.sd.nai.save_image_with_naimeta">
+<span class="sig-prename descclassname"><span class="pre">imgutils.sd.nai.</span></span><span class="sig-name descname"><span class="pre">save_image_with_naimeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.NAIMetadata"><span class="pre">NAIMetadata</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_lsb_meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_metainfo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/sd/nai.html#save_image_with_naimeta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.sd.nai.save_image_with_naimeta" title="Permalink to this definition"></a></dt>
+<dd><p>Save an image with NAI metadata.</p>
+<p>This function saves the given image with the provided NAI metadata. It can add LSB metadata
+and save metainfo based on the image format and user preferences.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>dst_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>os.PathLike</em><em>]</em>) – The destination file path.</p></li>
+<li><p><strong>metadata</strong> (<a class="reference internal" href="#imgutils.sd.nai.NAIMetadata" title="imgutils.sd.nai.NAIMetadata"><em>NAIMetadata</em></a>) – The NAIMetadata object to include in the image.</p></li>
+<li><p><strong>add_lsb_meta</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>bool</em><em>]</em>) – Whether to add LSB metadata. Can be ‘auto’, True, or False.</p></li>
+<li><p><strong>save_metainfo</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>bool</em><em>]</em>) – Whether to save metainfo. Can be ‘auto’, True, or False.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for image saving.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The saved image.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If LSB metadata cannot be saved to the specified image format.</p></li>
+<li><p><strong>SystemError</strong> – If the image format is not supported for saving metainfo.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
