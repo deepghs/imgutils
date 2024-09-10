@@ -215,17 +215,85 @@
 
 <span class="k">def</span> <span class="nf">_naimeta_validate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Validate the NAI metadata.</span>
+<span class="sd">    Validate the Novel AI (NAI) metadata.</span>
+
+<span class="sd">    This function checks if the provided metadata is in the correct format and contains</span>
+<span class="sd">    the required fields for NAI metadata. It also performs additional validation on specific fields.</span>
 
 <span class="sd">    :param data: The metadata to validate.</span>
 <span class="sd">    :type data: dict</span>
-<span class="sd">    :return: The validated metadata.</span>
+
+<span class="sd">    :return: The validated metadata if it passes all checks.</span>
 <span class="sd">    :rtype: dict</span>
-<span class="sd">    :raises _InvalidNAIMetaError: If the metadata is invalid.</span>
+
+<span class="sd">    :raises _InvalidNAIMetaError: If the metadata is invalid or missing required fields.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; metadata = {</span>
+<span class="sd">    ...     &#39;Software&#39;: &#39;Novel AI&#39;,</span>
+<span class="sd">    ...     &#39;Source&#39;: &#39;User&#39;,</span>
+<span class="sd">    ...     &#39;Comment&#39;: &#39;{&quot;prompt&quot;: &quot;A beautiful landscape&quot;}&#39;,</span>
+<span class="sd">    ...     &#39;Generation time&#39;: &#39;1.5&#39;</span>
+<span class="sd">    ... }</span>
+<span class="sd">    &gt;&gt;&gt; validated_data = _naimeta_validate(metadata)</span>
+<span class="sd">    &gt;&gt;&gt; print(validated_data == metadata)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    Note:</span>
+
+<span class="sd">        - The function checks for the presence of &#39;Software&#39;, &#39;Source&#39;, and &#39;Comment&#39; fields.</span>
+<span class="sd">        - The &#39;Comment&#39; field must be a valid JSON string.</span>
+<span class="sd">        - If present, the &#39;Generation time&#39; field must be convertible to a float.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Software&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Source&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Comment&#39;</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Comment&#39;</span><span class="p">])</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">_InvalidNAIMetaError</span>
+
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Generation time&#39;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Generation time&#39;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">_InvalidNAIMetaError</span>
+
         <span class="k">return</span> <span class="n">data</span>
+
     <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">_InvalidNAIMetaError</span>
+
+
+<span class="k">def</span> <span class="nf">_naimeta_text_validate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate the Novel AI (NAI) metadata provided as a JSON string.</span>
+
+<span class="sd">    This function first attempts to parse the input string as JSON, then validates</span>
+<span class="sd">    the resulting dictionary using the _naimeta_validate function.</span>
+
+<span class="sd">    :param data: The metadata to validate, provided as a JSON string.</span>
+<span class="sd">    :type data: str</span>
+
+<span class="sd">    :return: The validated metadata as a dictionary.</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    :raises _InvalidNAIMetaError: If the input is not a valid JSON string or if the</span>
+<span class="sd">                                  parsed metadata is invalid.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; json_metadata = &#39;{&quot;Software&quot;: &quot;Novel AI&quot;, &quot;Source&quot;: &quot;User&quot;, &quot;Comment&quot;: &quot;{}&quot;, &quot;Generation time&quot;: &quot;2.0&quot;}&#39;</span>
+<span class="sd">    &gt;&gt;&gt; validated_data = _naimeta_text_validate(json_metadata)</span>
+<span class="sd">    &gt;&gt;&gt; print(isinstance(validated_data, dict))</span>
+<span class="sd">    True</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">    - This function is useful when dealing with NAI metadata stored as JSON strings.</span>
+<span class="sd">    - It combines JSON parsing and metadata validation in one step.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_naimeta_validate</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">_InvalidNAIMetaError</span>
 
 
@@ -254,18 +322,18 @@
         <span class="k">pass</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">_naimeta_validate</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">read_geninfo_parameters</span><span class="p">(</span><span class="n">image</span><span class="p">)))</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="n">_InvalidNAIMetaError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_naimeta_text_validate</span><span class="p">(</span><span class="n">read_geninfo_parameters</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">_InvalidNAIMetaError</span><span class="p">:</span>
         <span class="k">pass</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">_naimeta_validate</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">read_geninfo_exif</span><span class="p">(</span><span class="n">image</span><span class="p">)))</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="n">_InvalidNAIMetaError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_naimeta_text_validate</span><span class="p">(</span><span class="n">read_geninfo_exif</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">_InvalidNAIMetaError</span><span class="p">:</span>
         <span class="k">pass</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">_naimeta_validate</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">read_geninfo_gif</span><span class="p">(</span><span class="n">image</span><span class="p">)))</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="n">_InvalidNAIMetaError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_naimeta_text_validate</span><span class="p">(</span><span class="n">read_geninfo_gif</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">_InvalidNAIMetaError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">_InvalidNAIMetaError</span>
 
 

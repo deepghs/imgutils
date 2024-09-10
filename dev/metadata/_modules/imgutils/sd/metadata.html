@@ -377,6 +377,81 @@
     <span class="k">return</span> <span class="n">SDMetaData</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">neg_prompt</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
 
 
+<span class="k">class</span> <span class="nc">_InvalidSDMetaError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom exception raised when SD metadata is invalid or not found.</span>
+
+<span class="sd">    This exception is used internally to signal that the metadata</span>
+<span class="sd">    validation or extraction process has failed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+
+<span class="k">def</span> <span class="nf">_sdtext_validate</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate the given text as SD metadata.</span>
+
+<span class="sd">    This function attempts to validate the input text as SD metadata. It first tries</span>
+<span class="sd">    to validate it as NAI (Novel AI) metadata, and if that fails, it checks if the</span>
+<span class="sd">    text is non-empty. If both checks fail, it raises an _InvalidSDMetaError.</span>
+
+<span class="sd">    :param text: The text to validate as SD metadata.</span>
+<span class="sd">    :type text: str</span>
+
+<span class="sd">    :return: The validated text if it passes the checks.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    :raises _InvalidSDMetaError: If the text is invalid or empty.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.nai</span> <span class="kn">import</span> <span class="n">_naimeta_text_validate</span><span class="p">,</span> <span class="n">_InvalidNAIMetaError</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_naimeta_text_validate</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">_InvalidNAIMetaError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">_InvalidSDMetaError</span>
+
+    <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">text</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">_InvalidSDMetaError</span>
+
+
+<span class="k">def</span> <span class="nf">_get_raw_sdtext</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract raw SD metadata text from the given image.</span>
+
+<span class="sd">    This function attempts to read SD metadata from various sources within the image,</span>
+<span class="sd">    including PNG info, EXIF data, and GIF metadata. It tries each method in turn</span>
+<span class="sd">    and returns the first valid SD metadata text found.</span>
+
+<span class="sd">    :param image: The input image to extract metadata from.</span>
+<span class="sd">    :type image: ImageTyping</span>
+
+<span class="sd">    :return: The raw SD metadata text if found, otherwise None.</span>
+<span class="sd">    :rtype: Optional[str]</span>
+
+<span class="sd">    :raises _InvalidSDMetaError: If no valid SD metadata is found in the image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_sdtext_validate</span><span class="p">(</span><span class="n">read_geninfo_parameters</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">_InvalidSDMetaError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_sdtext_validate</span><span class="p">(</span><span class="n">read_geninfo_exif</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">_InvalidSDMetaError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_sdtext_validate</span><span class="p">(</span><span class="n">read_geninfo_gif</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">_InvalidSDMetaError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">_InvalidSDMetaError</span>
+
+
 <div class="viewcode-block" id="get_sdmeta_from_image"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.get_sdmeta_from_image">[docs]</a><span class="k">def</span> <span class="nf">get_sdmeta_from_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SDMetaData</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract and parse Stable Diffusion metadata from an image.</span>
@@ -403,15 +478,17 @@
 <span class="sd">        ...     print(f&quot;Parameters: {sd_meta.parameters}&quot;)</span>
 <span class="sd">        ... else:</span>
 <span class="sd">        ...     print(&quot;No SD metadata found in the image.&quot;)</span>
+
+<span class="sd">    Note: This function depends on the load_image and parse_sdmeta_from_text functions.</span>
+<span class="sd">    Ensure these are properly imported or defined in the current scope.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">pnginfo_text</span> <span class="o">=</span> <span class="p">(</span><span class="n">read_geninfo_parameters</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="ow">or</span>
-                    <span class="n">read_geninfo_exif</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="ow">or</span>
-                    <span class="n">read_geninfo_gif</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">pnginfo_text</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">parse_sdmeta_from_text</span><span class="p">(</span><span class="n">pnginfo_text</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pnginfo_text</span> <span class="o">=</span> <span class="n">_get_raw_sdtext</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">_InvalidSDMetaError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="n">parse_sdmeta_from_text</span><span class="p">(</span><span class="n">pnginfo_text</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_save_png_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
