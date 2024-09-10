@@ -198,7 +198,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">infos</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">info</span> <span class="ow">or</span> <span class="p">{}</span>
-    <span class="k">if</span> <span class="s2">&quot;comment&quot;</span> <span class="ow">in</span> <span class="n">infos</span><span class="p">:</span>  <span class="c1"># for gif</span>
+    <span class="k">if</span> <span class="s2">&quot;comment&quot;</span> <span class="ow">in</span> <span class="n">infos</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">infos</span><span class="p">[</span><span class="s1">&#39;comment&#39;</span><span class="p">],</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">)):</span>  <span class="c1"># for gif</span>
         <span class="k">return</span> <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span></div>
@@ -304,12 +304,6 @@
         <div class="rst-other-versions">
                 <dl>
                     <dt>Tags</dt>
-                        <dd><a href="../../../../v0.3.0/index.html">v0.3.0</a></dd>
-                        <dd><a href="../../../../v0.3.1/index.html">v0.3.1</a></dd>
-                        <dd><a href="../../../../v0.3.2/index.html">v0.3.2</a></dd>
-                        <dd><a href="../../../../v0.3.3/index.html">v0.3.3</a></dd>
-                        <dd><a href="../../../../v0.3.4/index.html">v0.3.4</a></dd>
-                        <dd><a href="../../../../v0.3.5/index.html">v0.3.5</a></dd>
                         <dd><a href="../../../../v0.4.0/index.html">v0.4.0</a></dd>
                         <dd><a href="../../../../v0.4.1/index.html">v0.4.1</a></dd>
                         <dd><a href="../../../../v0.4.10/index.html">v0.4.10</a></dd>
