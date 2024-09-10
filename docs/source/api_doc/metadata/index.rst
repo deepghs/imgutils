@@ -9,5 +9,6 @@ imgutils.metadata
 .. toctree::
     :maxdepth: 3
 
+    geninfo
     lsb
 
