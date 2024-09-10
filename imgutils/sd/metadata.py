@@ -269,6 +269,45 @@ def parse_sdmeta_from_text(x: str) -> SDMetaData:
     return SDMetaData(prompt, neg_prompt, params)
 
 
+class _InvalidSDMetaError(Exception):
+    pass
+
+
+def _sdtext_validate(text: str):
+    from .nai import _naimeta_text_validate, _InvalidNAIMetaError
+
+    try:
+        _naimeta_text_validate(text)
+    except _InvalidNAIMetaError:
+        pass
+    else:
+        raise _InvalidSDMetaError
+
+    if text:
+        return text
+    else:
+        raise _InvalidSDMetaError
+
+
+def _get_raw_sdtext(image: ImageTyping) -> Optional[str]:
+    image = load_image(image, force_background=None, mode=None)
+
+    try:
+        return _sdtext_validate(read_geninfo_parameters(image))
+    except _InvalidSDMetaError:
+        pass
+
+    try:
+        return _sdtext_validate(read_geninfo_exif(image))
+    except _InvalidSDMetaError:
+        pass
+
+    try:
+        return _sdtext_validate(read_geninfo_gif(image))
+    except _InvalidSDMetaError:
+        raise _InvalidSDMetaError
+
+
 def get_sdmeta_from_image(image: ImageTyping) -> Optional[SDMetaData]:
     """
     Extract and parse Stable Diffusion metadata from an image.
@@ -297,13 +336,12 @@ def get_sdmeta_from_image(image: ImageTyping) -> Optional[SDMetaData]:
         ...     print("No SD metadata found in the image.")
     """
     image = load_image(image, mode=None, force_background=None)
-    pnginfo_text = (read_geninfo_parameters(image) or
-                    read_geninfo_exif(image) or
-                    read_geninfo_gif(image))
-    if pnginfo_text:
-        return parse_sdmeta_from_text(pnginfo_text)
-    else:
+    try:
+        pnginfo_text = _get_raw_sdtext(image)
+    except _InvalidSDMetaError:
         return None
+    else:
+        return parse_sdmeta_from_text(pnginfo_text)
 
 
 def _save_png_with_sdmeta(image: Image.Image, dst_file: Union[str, os.PathLike], metadata: SDMetaData, **kwargs):

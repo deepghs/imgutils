@@ -12,6 +12,11 @@ from test.testings import get_testfile
 
 
 @pytest.fixture()
+def nai3_file():
+    return get_testfile('nai3.png')
+
+
+@pytest.fixture()
 def clean_image():
     return get_testfile('nai3_clear.png')
 
@@ -424,3 +429,11 @@ Steps: 20, Sampler: DPM++ 2M SDE Karras, CFG scale: 7, Seed: 2647703743, Size: 7
             else:
                 save_image_with_sdmeta(clean_image, f'image{ext}', metadata=sdimg_4_std)
                 assert get_sdmeta_from_image(f'image{ext}') == sdimg_4_std
+
+    @pytest.mark.parametrize(['file'], [
+        ('nai3.png',),
+        ('nai3_clear.png',),
+        ('nai3_info_rgb.png',),
+    ])
+    def test_clean_image(self, file):
+        assert get_sdmeta_from_image(get_testfile(file)) is None

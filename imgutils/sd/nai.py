@@ -116,8 +116,27 @@ def _naimeta_validate(data):
     :raises _InvalidNAIMetaError: If the metadata is invalid.
     """
     if isinstance(data, dict) and data.get('Software') and data.get('Source') and data.get('Comment'):
+        try:
+            json.loads(data['Comment'])
+        except (TypeError, json.JSONDecodeError):
+            raise _InvalidNAIMetaError
+
+        if data.get('Generation time'):
+            try:
+                _ = float(data['Generation time'])
+            except (TypeError, ValueError):
+                raise _InvalidNAIMetaError
+
         return data
+
     else:
+        raise _InvalidNAIMetaError
+
+
+def _naimeta_text_validate(data):
+    try:
+        return _naimeta_validate(json.loads(data))
+    except (TypeError, json.JSONDecodeError):
         raise _InvalidNAIMetaError
 
 
@@ -146,18 +165,18 @@ def _get_naimeta_raw(image: ImageTyping) -> dict:
         pass
 
     try:
-        return _naimeta_validate(json.loads(read_geninfo_parameters(image)))
-    except (TypeError, json.JSONDecodeError, _InvalidNAIMetaError):
+        return _naimeta_text_validate(read_geninfo_parameters(image))
+    except _InvalidNAIMetaError:
         pass
 
     try:
-        return _naimeta_validate(json.loads(read_geninfo_exif(image)))
-    except (TypeError, json.JSONDecodeError, _InvalidNAIMetaError):
+        return _naimeta_text_validate(read_geninfo_exif(image))
+    except _InvalidNAIMetaError:
         pass
 
     try:
-        return _naimeta_validate(json.loads(read_geninfo_gif(image)))
-    except (TypeError, json.JSONDecodeError, _InvalidNAIMetaError):
+        return _naimeta_text_validate(read_geninfo_gif(image))
+    except _InvalidNAIMetaError:
         raise _InvalidNAIMetaError
 
 
