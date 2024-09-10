@@ -115,10 +115,23 @@
     
   <section id="module-imgutils.sd">
 <span id="imgutils-sd"></span><h1>imgutils.sd<a class="headerlink" href="#module-imgutils.sd" title="Permalink to this heading"></a></h1>
-<dl class="simple">
-<dt>Overview:</dt><dd><p>Utilities for dealing with data from <a class="reference external" href="https://github.com/AUTOMATIC1111/stable-diffusion-webui">AUTOMATIC1111/stable-diffusion-webui</a>.</p>
-</dd>
-</dl>
+<p>Overview:</p>
+<blockquote>
+<div><p>Utilities for dealing with data from AUTOMATIC1111/stable-diffusion-webui and NovelAI generated images.</p>
+<p>This module provides a collection of utilities for handling metadata and image processing
+related to Stable Diffusion WebUI (SDWUI) and NovelAI generated images. It includes
+functions for parsing and extracting metadata, reading and writing model metadata,
+and manipulating NovelAI image metadata.</p>
+</div></blockquote>
+<p>Submodules:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>metadata: Functions for parsing and extracting Stable Diffusion metadata.</p></li>
+<li><p>model: Utilities for reading and writing metadata from/to model files.</p></li>
+<li><p>nai: Functions for handling NovelAI image metadata.</p></li>
+</ul>
+</div></blockquote>
+<p>For detailed usage of each function and class, please refer to their individual docstrings.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="metadata.html">imgutils.sd.metadata</a><ul>
@@ -132,6 +145,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metadata.html#get-sdmeta-from-image">get_sdmeta_from_image</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="metadata.html#imgutils.sd.metadata.get_sdmeta_from_image"><code class="docutils literal notranslate"><span class="pre">get_sdmeta_from_image()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html#save-image-with-sdmeta">save_image_with_sdmeta</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="metadata.html#imgutils.sd.metadata.save_image_with_sdmeta"><code class="docutils literal notranslate"><span class="pre">save_image_with_sdmeta()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -148,7 +165,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nai.html">imgutils.sd.nai</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="nai.html#naimetadata">NAIMetadata</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nai.html#naimetadata">NAIMetaData</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="nai.html#imgutils.sd.nai.NAIMetaData"><code class="docutils literal notranslate"><span class="pre">NAIMetaData</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nai.html#id1">NAIMetadata</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="nai.html#imgutils.sd.nai.NAIMetadata"><code class="docutils literal notranslate"><span class="pre">NAIMetadata</span></code></a></li>
 </ul>
 </li>

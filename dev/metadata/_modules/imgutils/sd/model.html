@@ -107,16 +107,30 @@
     
   <h1>Source code for imgutils.sd.model</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Overview:</span>
-<span class="sd">    A utility for reading and writing metadata from/to model files in the A41 WebUI format.</span>
+<span class="sd">A utility module for reading and writing metadata from/to model files in the A41 WebUI format.</span>
 
-<span class="sd">    .. note::</span>
-<span class="sd">        ``torch`` and ``safetensors`` are required by this model.</span>
-<span class="sd">        Please install them with the following command before start using this module.</span>
+<span class="sd">This module provides functions to read metadata from model files and save model files with custom metadata.</span>
+<span class="sd">It supports operations on SafeTensors files, which are a safe and efficient way to store tensors.</span>
 
-<span class="sd">        .. code:: shell</span>
+<span class="sd">.. note::</span>
 
-<span class="sd">            pip install dghs-imgutils[model]</span>
+<span class="sd">    ``torch`` and ``safetensors`` are required by this module.</span>
+<span class="sd">    Please install them with the following command before using this module:</span>
+
+<span class="sd">    .. code:: shell</span>
+
+<span class="sd">        pip install dghs-imgutils[model]</span>
+
+<span class="sd">Functions:</span>
+
+<span class="sd">    - read_metadata: Reads metadata from a model file.</span>
+<span class="sd">    - save_with_metadata: Saves a model file with custom metadata.</span>
+<span class="sd">    - _check_env: Internal function to check if required dependencies are installed.</span>
+
+<span class="sd">Dependencies:</span>
+
+<span class="sd">    - torch</span>
+<span class="sd">    - safetensors</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
@@ -134,8 +148,13 @@
 
 <span class="k">def</span> <span class="nf">_check_env</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Checks if the required dependencies (Safetensors and Torch) are installed.</span>
-<span class="sd">    Raises EnvironmentError if they are not installed.</span>
+<span class="sd">    Check if the required dependencies (Safetensors and Torch) are installed.</span>
+
+<span class="sd">    This function verifies that both Safetensors and Torch are available in the current</span>
+<span class="sd">    environment. If either is missing, it raises an EnvironmentError with instructions</span>
+<span class="sd">    on how to install the missing dependency.</span>
+
+<span class="sd">    :raises EnvironmentError: If Safetensors or Torch is not installed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">safetensors</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span>
@@ -147,12 +166,22 @@
 
 <div class="viewcode-block" id="read_metadata"><a class="viewcode-back" href="../../../api_doc/sd/model.html#imgutils.sd.model.read_metadata">[docs]</a><span class="k">def</span> <span class="nf">read_metadata</span><span class="p">(</span><span class="n">model_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reads metadata from a model file and returns it as a dictionary.</span>
+<span class="sd">    Read metadata from a model file and return it as a dictionary.</span>
 
-<span class="sd">    :param model_file: The path to the model file.</span>
+<span class="sd">    This function opens the specified model file using SafeTensors and extracts</span>
+<span class="sd">    its metadata. The metadata is returned as a dictionary where both keys and</span>
+<span class="sd">    values are strings.</span>
+
+<span class="sd">    :param model_file: The path to the model file to read metadata from.</span>
 <span class="sd">    :type model_file: str</span>
-<span class="sd">    :return: The metadata extracted from the model file.</span>
+<span class="sd">    :return: A dictionary containing the metadata of the model file.</span>
 <span class="sd">    :rtype: Dict[str, str]</span>
+<span class="sd">    :raises EnvironmentError: If required dependencies are not installed.</span>
+
+<span class="sd">    Usage:</span>
+<span class="sd">        &gt;&gt;&gt; metadata = read_metadata(&quot;path/to/model.safetensors&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(metadata)</span>
+<span class="sd">        {&#39;key1&#39;: &#39;value1&#39;, &#39;key2&#39;: &#39;value2&#39;, ...}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_check_env</span><span class="p">()</span>
     <span class="k">with</span> <span class="n">safetensors</span><span class="o">.</span><span class="n">safe_open</span><span class="p">(</span><span class="n">model_file</span><span class="p">,</span> <span class="s1">&#39;pt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -161,16 +190,29 @@
 
 <div class="viewcode-block" id="save_with_metadata"><a class="viewcode-back" href="../../../api_doc/sd/model.html#imgutils.sd.model.save_with_metadata">[docs]</a><span class="k">def</span> <span class="nf">save_with_metadata</span><span class="p">(</span><span class="n">src_model_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dst_model_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">clear</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Saves a model file with metadata. Optionally, existing metadata can be cleared before adding new metadata.</span>
+<span class="sd">    Save a model file with custom metadata.</span>
+
+<span class="sd">    This function reads the source model file, adds or updates its metadata,</span>
+<span class="sd">    and saves it to a new destination file. It can optionally clear existing</span>
+<span class="sd">    metadata before adding new metadata.</span>
 
 <span class="sd">    :param src_model_file: The path to the source model file.</span>
 <span class="sd">    :type src_model_file: str</span>
-<span class="sd">    :param dst_model_file: The path to save the new model file.</span>
+<span class="sd">    :param dst_model_file: The path where the new model file will be saved.</span>
 <span class="sd">    :type dst_model_file: str</span>
-<span class="sd">    :param metadata: The metadata to add to the model file.</span>
+<span class="sd">    :param metadata: A dictionary of metadata to add or update in the model file.</span>
 <span class="sd">    :type metadata: Dict[str, str]</span>
-<span class="sd">    :param clear: Whether to clear existing metadata before adding new metadata. Default is False.</span>
+<span class="sd">    :param clear: If True, clear existing metadata before adding new metadata. Default is False.</span>
 <span class="sd">    :type clear: bool</span>
+<span class="sd">    :raises EnvironmentError: If required dependencies are not installed.</span>
+
+<span class="sd">    Usage:</span>
+<span class="sd">        &gt;&gt;&gt; new_metadata = {&quot;author&quot;: &quot;John Doe&quot;, &quot;version&quot;: &quot;1.0&quot;}</span>
+<span class="sd">        &gt;&gt;&gt; save_with_metadata(&quot;input_model.safetensors&quot;, &quot;output_model.safetensors&quot;, new_metadata)</span>
+<span class="sd">        # This will add or update the &quot;author&quot; and &quot;version&quot; metadata in the new file</span>
+
+<span class="sd">        &gt;&gt;&gt; save_with_metadata(&quot;input_model.safetensors&quot;, &quot;output_model.safetensors&quot;, new_metadata, clear=True)</span>
+<span class="sd">        # This will clear all existing metadata and only include the new metadata in the output file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_check_env</span><span class="p">()</span>
     <span class="k">with</span> <span class="n">safetensors</span><span class="o">.</span><span class="n">safe_open</span><span class="p">(</span><span class="n">src_model_file</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>

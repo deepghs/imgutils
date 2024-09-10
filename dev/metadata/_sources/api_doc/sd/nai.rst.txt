@@ -6,11 +6,20 @@ imgutils.sd.nai
 .. automodule:: imgutils.sd.nai
 
 
+NAIMetaData
+------------------------------------------------
+
+.. autoclass:: NAIMetaData
+    :members: __init__, pnginfo
+
+
+
 NAIMetadata
 ------------------------------------------------
 
-.. autoclass:: NAIMetadata
-    :members: __init__, pnginfo
+.. class:: NAIMetadata
+
+    Alias of :class:`NAIMetaData`
 
 
 

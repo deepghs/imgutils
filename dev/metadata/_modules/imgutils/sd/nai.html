@@ -137,8 +137,8 @@
 <span class="n">mimetypes</span><span class="o">.</span><span class="n">add_type</span><span class="p">(</span><span class="s1">&#39;image/webp&#39;</span><span class="p">,</span> <span class="s1">&#39;.webp&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="NAIMetadata"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.NAIMetadata">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">NAIMetadata</span><span class="p">:</span>
+<div class="viewcode-block" id="NAIMetaData"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.NAIMetaData">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">NAIMetaData</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A dataclass representing Novel AI (NAI) metadata.</span>
 
@@ -201,6 +201,9 @@
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">info</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">info</span></div>
+
+
+<span class="n">NAIMetadata</span> <span class="o">=</span> <span class="n">NAIMetaData</span>
 
 
 <span class="k">class</span> <span class="nc">_InvalidNAIMetaError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -266,7 +269,7 @@
         <span class="k">raise</span> <span class="n">_InvalidNAIMetaError</span>
 
 
-<div class="viewcode-block" id="get_naimeta_from_image"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.get_naimeta_from_image">[docs]</a><span class="k">def</span> <span class="nf">get_naimeta_from_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NAIMetadata</span><span class="p">]:</span>
+<div class="viewcode-block" id="get_naimeta_from_image"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.get_naimeta_from_image">[docs]</a><span class="k">def</span> <span class="nf">get_naimeta_from_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NAIMetaData</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract and create a NAIMetadata object from an image.</span>
 
@@ -276,14 +279,14 @@
 <span class="sd">    :param image: The input image.</span>
 <span class="sd">    :type image: ImageTyping</span>
 <span class="sd">    :return: A NAIMetadata object if successful, None otherwise.</span>
-<span class="sd">    :rtype: Optional[NAIMetadata]</span>
+<span class="sd">    :rtype: Optional[NAIMetaData]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_get_naimeta_raw</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">_InvalidNAIMetaError</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">NAIMetadata</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">NAIMetaData</span><span class="p">(</span>
             <span class="n">software</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Software&#39;</span><span class="p">],</span>
             <span class="n">source</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Source&#39;</span><span class="p">],</span>
             <span class="n">parameters</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Comment&#39;</span><span class="p">]),</span>
@@ -293,14 +296,14 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="add_naimeta_to_image"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.add_naimeta_to_image">[docs]</a><span class="k">def</span> <span class="nf">add_naimeta_to_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetadata</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<div class="viewcode-block" id="add_naimeta_to_image"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.add_naimeta_to_image">[docs]</a><span class="k">def</span> <span class="nf">add_naimeta_to_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add NAI metadata to an image using LSB (Least Significant Bit) encoding.</span>
 
 <span class="sd">    :param image: The input image.</span>
 <span class="sd">    :type image: ImageTyping</span>
 <span class="sd">    :param metadata: The NAIMetadata object to add to the image.</span>
-<span class="sd">    :type metadata: NAIMetadata</span>
+<span class="sd">    :type metadata: NAIMetaData</span>
 <span class="sd">    :return: The image with added metadata.</span>
 <span class="sd">    :rtype: Image.Image</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -308,7 +311,7 @@
     <span class="k">return</span> <span class="n">write_lsb_metadata</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">metadata</span><span class="o">.</span><span class="n">pnginfo</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_save_png_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetadata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_save_png_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save a PNG image with NAI metadata.</span>
 
@@ -317,13 +320,13 @@
 <span class="sd">    :param dst_file: The destination file path.</span>
 <span class="sd">    :type dst_file: Union[str, os.PathLike]</span>
 <span class="sd">    :param metadata: The NAIMetadata object to include in the image.</span>
-<span class="sd">    :type metadata: NAIMetadata</span>
+<span class="sd">    :type metadata: NAIMetaData</span>
 <span class="sd">    :param kwargs: Additional keyword arguments for image saving.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">dst_file</span><span class="p">,</span> <span class="n">pnginfo</span><span class="o">=</span><span class="n">metadata</span><span class="o">.</span><span class="n">pnginfo</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_save_exif_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetadata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_save_exif_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save an image with NAI metadata in EXIF format.</span>
 
@@ -332,13 +335,13 @@
 <span class="sd">    :param dst_file: The destination file path.</span>
 <span class="sd">    :type dst_file: Union[str, os.PathLike]</span>
 <span class="sd">    :param metadata: The NAIMetadata object to include in the image.</span>
-<span class="sd">    :type metadata: NAIMetadata</span>
+<span class="sd">    :type metadata: NAIMetaData</span>
 <span class="sd">    :param kwargs: Additional keyword arguments for image saving.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">write_geninfo_exif</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">json</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_save_gif_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetadata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_save_gif_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save a GIF image with NAI metadata.</span>
 
@@ -347,7 +350,7 @@
 <span class="sd">    :param dst_file: The destination file path.</span>
 <span class="sd">    :type dst_file: Union[str, os.PathLike]</span>
 <span class="sd">    :param metadata: The NAIMetadata object to include in the image.</span>
-<span class="sd">    :type metadata: NAIMetadata</span>
+<span class="sd">    :type metadata: NAIMetaData</span>
 <span class="sd">    :param kwargs: Additional keyword arguments for image saving.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">write_geninfo_gif</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">json</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -363,7 +366,7 @@
 
 
 <div class="viewcode-block" id="save_image_with_naimeta"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.save_image_with_naimeta">[docs]</a><span class="k">def</span> <span class="nf">save_image_with_naimeta</span><span class="p">(</span>
-        <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetadata</span><span class="p">,</span>
+        <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">,</span>
         <span class="n">add_lsb_meta</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">save_metainfo</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save an image with NAI metadata.</span>
@@ -376,7 +379,7 @@
 <span class="sd">    :param dst_file: The destination file path.</span>
 <span class="sd">    :type dst_file: Union[str, os.PathLike]</span>
 <span class="sd">    :param metadata: The NAIMetadata object to include in the image.</span>
-<span class="sd">    :type metadata: NAIMetadata</span>
+<span class="sd">    :type metadata: NAIMetaData</span>
 <span class="sd">    :param add_lsb_meta: Whether to add LSB metadata. Can be &#39;auto&#39;, True, or False.</span>
 <span class="sd">    :type add_lsb_meta: Union[str, bool]</span>
 <span class="sd">    :param save_metainfo: Whether to save metainfo. Can be &#39;auto&#39;, True, or False.</span>
@@ -387,7 +390,7 @@
 <span class="sd">    :raises ValueError: If LSB metadata cannot be saved to the specified image format.</span>
 <span class="sd">    :raises SystemError: If the image format is not supported for saving metainfo.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">mimetype</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">dst_file</span><span class="p">)</span>
+    <span class="n">mimetype</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dst_file</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">add_lsb_meta</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">mimetype</span> <span class="ow">in</span> <span class="n">_LSB_ALLOWED_TYPES</span><span class="p">:</span>
             <span class="n">add_lsb_meta</span> <span class="o">=</span> <span class="kc">True</span>
