@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.metadata.lsb.read &mdash; imgutils 0.4.11 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=3f79252f"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+              <div class="version">
+                0.4.11
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.metadata.lsb.read</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.metadata.lsb.read</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functionality for extracting hidden metadata from images using</span>
+<span class="sd">LSB (Least Significant Bit) steganography.</span>
+
+<span class="sd">It includes two main classes:</span>
+
+<span class="sd">1. LSBExtractor: Extracts bits and bytes from image data.</span>
+<span class="sd">2. ImageLsbDataExtractor: Uses LSBExtractor to extract and decode hidden JSON data from images.</span>
+
+<span class="sd">The module is based on the implementation from the NovelAI project (https://github.com/NovelAI/novelai-image-metadata).</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Load an image</span>
+<span class="sd">    &gt;&gt;&gt; image = Image.open(&#39;path_to_image.png&#39;)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Create an extractor</span>
+<span class="sd">    &gt;&gt;&gt; extractor = ImageLsbDataExtractor()</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Extract metadata</span>
+<span class="sd">    &gt;&gt;&gt; metadata = extractor.extract_data(image)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Process the extracted metadata</span>
+<span class="sd">    &gt;&gt;&gt; print(metadata)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">gzip</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span> <span class="nn">imgutils.data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">...data</span> <span class="kn">import</span> <span class="n">load_image</span>
+
+
+<div class="viewcode-block" id="LSBExtractor"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.LSBExtractor">[docs]</a><span class="k">class</span> <span class="nc">LSBExtractor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for extracting data hidden in the least significant bits of image pixels.</span>
+
+<span class="sd">    This class provides methods to extract individual bits, bytes, and multi-byte values</span>
+<span class="sd">    from image data using LSB steganography techniques.</span>
+
+<span class="sd">    :param data: The image data as a numpy array.</span>
+<span class="sd">    :type data: np.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LSBExtractor.__init__"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.LSBExtractor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the LSBExtractor with image data.</span>
+
+<span class="sd">        :param data: The image data as a numpy array.</span>
+<span class="sd">        :type data: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bits</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">byte</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">row</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+    <span class="k">def</span> <span class="nf">_extract_next_bit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract the next bit from the image data.</span>
+
+<span class="sd">        This method updates the internal state of the extractor,</span>
+<span class="sd">        moving to the next pixel as necessary.</span>
+
+<span class="sd">        :raises IOError: If there are no more bits to extract.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">row</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="p">:</span>
+            <span class="n">bit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bits</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">byte</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">byte</span> <span class="o">|=</span> <span class="n">bit</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">row</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">row</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;Cannot read more bits.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LSBExtractor.get_one_byte"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.LSBExtractor.get_one_byte">[docs]</a>    <span class="k">def</span> <span class="nf">get_one_byte</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract and return one byte of data.</span>
+
+<span class="sd">        This method extracts 8 bits from the image data to form a single byte.</span>
+
+<span class="sd">        :return: A single byte of extracted data.</span>
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">bits</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_extract_next_bit</span><span class="p">()</span>
+        <span class="n">byte</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">byte</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bits</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">byte</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">byte</span></div>
+
+<div class="viewcode-block" id="LSBExtractor.get_next_n_bytes"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.LSBExtractor.get_next_n_bytes">[docs]</a>    <span class="k">def</span> <span class="nf">get_next_n_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract and return the next n bytes of data.</span>
+
+<span class="sd">        This method extracts multiple bytes from the image data.</span>
+
+<span class="sd">        :param n: The number of bytes to extract.</span>
+<span class="sd">        :type n: int</span>
+<span class="sd">        :return: The extracted bytes.</span>
+<span class="sd">        :rtype: bytearray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bytes_list</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">byte</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_one_byte</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">byte</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">bytes_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">byte</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bytes_list</span></div>
+
+<div class="viewcode-block" id="LSBExtractor.read_32bit_integer"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.LSBExtractor.read_32bit_integer">[docs]</a>    <span class="k">def</span> <span class="nf">read_32bit_integer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract and return a 32-bit integer from the image data.</span>
+
+<span class="sd">        This method reads 4 bytes and interprets them as a big-endian 32-bit integer.</span>
+
+<span class="sd">        :return: The extracted 32-bit integer, or None if not enough data is available.</span>
+<span class="sd">        :rtype: int or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bytes_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_next_n_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bytes_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">integer_value</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">bytes_list</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">integer_value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div></div>
+
+
+<div class="viewcode-block" id="ImageLsbDataExtractor"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.ImageLsbDataExtractor">[docs]</a><span class="k">class</span> <span class="nc">ImageLsbDataExtractor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for extracting hidden JSON data from images using LSB steganography.</span>
+
+<span class="sd">    This class uses the LSBExtractor to read hidden data from an image,</span>
+<span class="sd">    expecting a specific magic number and format for the hidden data.</span>
+
+<span class="sd">    :param magic: The magic string used to identify the start of the hidden data.</span>
+<span class="sd">    :type magic: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ImageLsbDataExtractor.__init__"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.ImageLsbDataExtractor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">magic</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;stealth_pngcomp&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the ImageLsbDataExtractor with a magic string.</span>
+
+<span class="sd">        :param magic: The magic string used to identify the start of the hidden data.</span>
+<span class="sd">        :type magic: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_magic_bytes</span> <span class="o">=</span> <span class="n">magic</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageLsbDataExtractor.extract_data"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.ImageLsbDataExtractor.extract_data">[docs]</a>    <span class="k">def</span> <span class="nf">extract_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract hidden data from the given image.</span>
+
+<span class="sd">        This method checks for the magic number, reads the length of the hidden data,</span>
+<span class="sd">        and then extracts the data.</span>
+
+<span class="sd">        :param image: The image to extract data from.</span>
+<span class="sd">        :type image: Image.Image</span>
+<span class="sd">        :return: The extracted raw data.</span>
+<span class="sd">        :rtype: bytes</span>
+<span class="sd">        :raises ValueError: If the image is not in RGBA mode or if the magic number doesn&#39;t match.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="s1">&#39;RGBA&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Image should be in RGBA mode, but </span><span class="si">{</span><span class="n">image</span><span class="o">.</span><span class="n">mode</span><span class="si">!r}</span><span class="s1"> found.&#39;</span><span class="p">)</span>
+        <span class="c1"># noinspection PyTypeChecker</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">LSBExtractor</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+        <span class="n">read_magic</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_next_n_bytes</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_magic_bytes</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_magic_bytes</span> <span class="o">==</span> <span class="n">read_magic</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Image magic number mismatch, &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_magic_bytes</span><span class="si">!r}</span><span class="s1"> expected but </span><span class="si">{</span><span class="n">read_magic</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+        <span class="n">next_int</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read_32bit_integer</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">next_int</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No next int32 to read.&#39;</span><span class="p">)</span>
+        <span class="n">read_len</span> <span class="o">=</span> <span class="n">next_int</span> <span class="o">//</span> <span class="mi">8</span>
+        <span class="n">raw_data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_next_n_bytes</span><span class="p">(</span><span class="n">read_len</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">raw_data</span></div></div>
+
+
+<div class="viewcode-block" id="LSBReadError"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.LSBReadError">[docs]</a><span class="k">class</span> <span class="nc">LSBReadError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom exception class for LSB reading errors.</span>
+
+<span class="sd">    This exception is raised when there&#39;s an error during the LSB data extraction process.</span>
+
+<span class="sd">    :param err: The original exception that caused the LSB read error.</span>
+<span class="sd">    :type err: Exception</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the LSBReadError with the original exception.</span>
+
+<span class="sd">        :param err: The original exception that caused the LSB read error.</span>
+<span class="sd">        :type err: Exception</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;LSB Read Error - </span><span class="si">{</span><span class="n">err</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">err</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">err</span></div>
+
+
+<div class="viewcode-block" id="read_lsb_raw_bytes"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.read_lsb_raw_bytes">[docs]</a><span class="k">def</span> <span class="nf">read_lsb_raw_bytes</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read raw bytes of LSB-encoded data from an image.</span>
+
+<span class="sd">    This function loads the image and uses ImageLsbDataExtractor to extract the hidden data.</span>
+
+<span class="sd">    :param image: The image to extract data from. Can be a file path, URL, or Image object.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :return: The extracted raw data.</span>
+<span class="sd">    :rtype: bytes</span>
+<span class="sd">    :raises LSBReadError: If there&#39;s an error during the extraction process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ImageLsbDataExtractor</span><span class="p">()</span><span class="o">.</span><span class="n">extract_data</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">,</span> <span class="ne">EOFError</span><span class="p">)</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="c1"># ValueError: binary data with wrong format</span>
+        <span class="c1"># IOError, EOFError: unable to read more from images</span>
+        <span class="c1"># UnicodeDecodeError: cannot decode as utf-8 text</span>
+        <span class="k">raise</span> <span class="n">LSBReadError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="read_lsb_metadata"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.read_lsb_metadata">[docs]</a><span class="k">def</span> <span class="nf">read_lsb_metadata</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read and decode LSB-encoded metadata from an image.</span>
+
+<span class="sd">    This function extracts the raw bytes, decompresses them using gzip,</span>
+<span class="sd">    and then decodes the result as a JSON object.</span>
+
+<span class="sd">    :param image: The image to extract metadata from. Can be a file path, URL, or Image object.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :return: The decoded metadata as a Python object.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises LSBReadError: If there&#39;s an error during the extraction or decoding process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">raw_data</span> <span class="o">=</span> <span class="n">read_lsb_raw_bytes</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">gzip</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">,</span> <span class="n">zlib</span><span class="o">.</span><span class="n">error</span><span class="p">,</span> <span class="n">gzip</span><span class="o">.</span><span class="n">BadGzipFile</span><span class="p">,</span> <span class="ne">EOFError</span><span class="p">,</span> <span class="ne">UnicodeDecodeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="c1"># zlib.error, gzip.BadGzipFile: unable to decompress via zlib method</span>
+        <span class="c1"># json.JSONDecodeError, EOFError: not a json-formatted data</span>
+        <span class="c1"># UnicodeDecodeError: cannot decode as utf-8 text</span>
+        <span class="k">raise</span> <span class="n">LSBReadError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.4.11
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.3.0/index.html">v0.3.0</a></dd>
+                        <dd><a href="../../../../../v0.3.1/index.html">v0.3.1</a></dd>
+                        <dd><a href="../../../../../v0.3.2/index.html">v0.3.2</a></dd>
+                        <dd><a href="../../../../../v0.3.3/index.html">v0.3.3</a></dd>
+                        <dd><a href="../../../../../v0.3.4/index.html">v0.3.4</a></dd>
+                        <dd><a href="../../../../../v0.3.5/index.html">v0.3.5</a></dd>
+                        <dd><a href="../../../../../v0.4.0/index.html">v0.4.0</a></dd>
+                        <dd><a href="../../../../../v0.4.1/index.html">v0.4.1</a></dd>
+                        <dd><a href="../../../../../v0.4.10/index.html">v0.4.10</a></dd>
+                        <dd><a href="read.html">v0.4.11</a></dd>
+                        <dd><a href="../../../../../v0.4.2/index.html">v0.4.2</a></dd>
+                        <dd><a href="../../../../../v0.4.3/index.html">v0.4.3</a></dd>
+                        <dd><a href="../../../../../v0.4.4/index.html">v0.4.4</a></dd>
+                        <dd><a href="../../../../../v0.4.5/index.html">v0.4.5</a></dd>
+                        <dd><a href="../../../../../v0.4.6/index.html">v0.4.6</a></dd>
+                        <dd><a href="../../../../../v0.4.7/index.html">v0.4.7</a></dd>
+                        <dd><a href="../../../../../v0.4.8/index.html">v0.4.8</a></dd>
+                        <dd><a href="../../../../../v0.4.9/index.html">v0.4.9</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
