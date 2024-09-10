@@ -278,6 +278,26 @@ class TestSDNai:
                     save_image_with_naimeta(nai3_clear_file, f'image{ext}',
                                             add_lsb_meta=True, metadata=nai3_meta_without_title)
 
+    @pytest.mark.parametrize(['ext', 'okay'], [
+        ('.png', True),
+        ('.webp', True),
+        ('.jpg', True),
+        ('.jpeg', True),
+        ('.tiff', False),
+        ('.gif', True),
+    ])
+    def test_save_image_with_naimeta_metainfo_true(self, nai3_clear_file, nai3_meta_without_title,
+                                                   ext, okay):
+        with isolated_directory():
+            if okay:
+                save_image_with_naimeta(nai3_clear_file, f'image{ext}',
+                                        save_metainfo=True, metadata=nai3_meta_without_title)
+                assert get_naimeta_from_image(f'image{ext}') == pytest.approx(nai3_meta_without_title)
+            else:
+                with pytest.raises(SystemError):
+                    save_image_with_naimeta(nai3_clear_file, f'image{ext}',
+                                            save_metainfo=True, metadata=nai3_meta_without_title)
+
     @pytest.mark.parametrize(['ext', 'warns', 'okay'], [
         ('.png', False, True),
         ('.webp', False, True),
