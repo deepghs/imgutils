@@ -107,13 +107,36 @@ class _InvalidNAIMetaError(Exception):
 
 def _naimeta_validate(data):
     """
-    Validate the NAI metadata.
+    Validate the Novel AI (NAI) metadata.
+
+    This function checks if the provided metadata is in the correct format and contains
+    the required fields for NAI metadata. It also performs additional validation on specific fields.
 
     :param data: The metadata to validate.
     :type data: dict
-    :return: The validated metadata.
+
+    :return: The validated metadata if it passes all checks.
     :rtype: dict
-    :raises _InvalidNAIMetaError: If the metadata is invalid.
+
+    :raises _InvalidNAIMetaError: If the metadata is invalid or missing required fields.
+
+    :Example:
+
+    >>> metadata = {
+    ...     'Software': 'Novel AI',
+    ...     'Source': 'User',
+    ...     'Comment': '{"prompt": "A beautiful landscape"}',
+    ...     'Generation time': '1.5'
+    ... }
+    >>> validated_data = _naimeta_validate(metadata)
+    >>> print(validated_data == metadata)
+    True
+
+    Note:
+
+        - The function checks for the presence of 'Software', 'Source', and 'Comment' fields.
+        - The 'Comment' field must be a valid JSON string.
+        - If present, the 'Generation time' field must be convertible to a float.
     """
     if isinstance(data, dict) and data.get('Software') and data.get('Source') and data.get('Comment'):
         try:
@@ -134,6 +157,32 @@ def _naimeta_validate(data):
 
 
 def _naimeta_text_validate(data):
+    """
+    Validate the Novel AI (NAI) metadata provided as a JSON string.
+
+    This function first attempts to parse the input string as JSON, then validates
+    the resulting dictionary using the _naimeta_validate function.
+
+    :param data: The metadata to validate, provided as a JSON string.
+    :type data: str
+
+    :return: The validated metadata as a dictionary.
+    :rtype: dict
+
+    :raises _InvalidNAIMetaError: If the input is not a valid JSON string or if the
+                                  parsed metadata is invalid.
+
+    :Example:
+
+    >>> json_metadata = '{"Software": "Novel AI", "Source": "User", "Comment": "{}", "Generation time": "2.0"}'
+    >>> validated_data = _naimeta_text_validate(json_metadata)
+    >>> print(isinstance(validated_data, dict))
+    True
+
+    Note:
+    - This function is useful when dealing with NAI metadata stored as JSON strings.
+    - It combines JSON parsing and metadata validation in one step.
+    """
     try:
         return _naimeta_validate(json.loads(data))
     except (TypeError, json.JSONDecodeError):

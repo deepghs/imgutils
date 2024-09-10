@@ -270,10 +270,31 @@ def parse_sdmeta_from_text(x: str) -> SDMetaData:
 
 
 class _InvalidSDMetaError(Exception):
+    """
+    Custom exception raised when SD metadata is invalid or not found.
+
+    This exception is used internally to signal that the metadata
+    validation or extraction process has failed.
+    """
     pass
 
 
-def _sdtext_validate(text: str):
+def _sdtext_validate(text: str) -> str:
+    """
+    Validate the given text as SD metadata.
+
+    This function attempts to validate the input text as SD metadata. It first tries
+    to validate it as NAI (Novel AI) metadata, and if that fails, it checks if the
+    text is non-empty. If both checks fail, it raises an _InvalidSDMetaError.
+
+    :param text: The text to validate as SD metadata.
+    :type text: str
+
+    :return: The validated text if it passes the checks.
+    :rtype: str
+
+    :raises _InvalidSDMetaError: If the text is invalid or empty.
+    """
     from .nai import _naimeta_text_validate, _InvalidNAIMetaError
 
     try:
@@ -290,6 +311,21 @@ def _sdtext_validate(text: str):
 
 
 def _get_raw_sdtext(image: ImageTyping) -> Optional[str]:
+    """
+    Extract raw SD metadata text from the given image.
+
+    This function attempts to read SD metadata from various sources within the image,
+    including PNG info, EXIF data, and GIF metadata. It tries each method in turn
+    and returns the first valid SD metadata text found.
+
+    :param image: The input image to extract metadata from.
+    :type image: ImageTyping
+
+    :return: The raw SD metadata text if found, otherwise None.
+    :rtype: Optional[str]
+
+    :raises _InvalidSDMetaError: If no valid SD metadata is found in the image.
+    """
     image = load_image(image, force_background=None, mode=None)
 
     try:
@@ -334,6 +370,9 @@ def get_sdmeta_from_image(image: ImageTyping) -> Optional[SDMetaData]:
         ...     print(f"Parameters: {sd_meta.parameters}")
         ... else:
         ...     print("No SD metadata found in the image.")
+
+    Note: This function depends on the load_image and parse_sdmeta_from_text functions.
+    Ensure these are properly imported or defined in the current scope.
     """
     image = load_image(image, mode=None, force_background=None)
     try:
