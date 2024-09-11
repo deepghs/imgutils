@@ -14,6 +14,7 @@ from .face import detect_faces
 from .halfbody import detect_halfbody
 from .hand import detect_hands
 from .head import detect_heads
+from .nudenet import detect_with_nudenet
 from .person import detect_person
 from .text import detect_text
 from .visual import detection_visualize
