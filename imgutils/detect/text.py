@@ -118,7 +118,7 @@ def _get_bounding_box_of_text(image: ImageTyping, model: str, threshold: float) 
     return bboxes
 
 
-@deprecated(deprecated_in="0.2.10", removed_in="0.5", current_version=__VERSION__,
+@deprecated(deprecated_in="0.2.10", current_version=__VERSION__,
             details="Use the new function :func:`imgutils.ocr.detect_text_with_ocr` instead")
 def detect_text(image: ImageTyping, model: str = _DEFAULT_MODEL, threshold: float = 0.05,
                 max_area_size: Optional[int] = 640):
