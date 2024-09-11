@@ -107,6 +107,12 @@
     
   <h1>Source code for imgutils.detect.booru_yolo</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    This module provides functionality for object detection using the Booru YOLO model.</span>
+
+<span class="sd">    The Booru YOLO model is sourced from `aperveyev/booru_yolo &lt;https://github.com/aperveyev/booru_yolo&gt;`_ and</span>
+<span class="sd">    model files are hosted on `deepghs/booru_yolo &lt;https://huggingface.co/deepghs/booru_yolo&gt;`_.</span>
+
 <span class="sd">    .. collapse:: Overview of Booru YOLO Detect (NSFW Warning!!!)</span>
 
 <span class="sd">        .. image:: booru_yolo_detect_demo.plot.py.svg</span>
@@ -116,6 +122,161 @@
 
 <span class="sd">    .. image:: booru_yolo_detect_benchmark.plot.py.svg</span>
 <span class="sd">        :align: center</span>
+
+<span class="sd">    Here is the explanations of each label:</span>
+
+<span class="sd">    .. list-table:: Model Labels and Descriptions</span>
+<span class="sd">       :widths: 10 20 70</span>
+<span class="sd">       :header-rows: 1</span>
+
+<span class="sd">       * - No.</span>
+<span class="sd">         - Label</span>
+<span class="sd">         - Description</span>
+<span class="sd">       * - 0</span>
+<span class="sd">         - head</span>
+<span class="sd">         - Anime pretty girl and not only</span>
+<span class="sd">       * - 1</span>
+<span class="sd">         - bust</span>
+<span class="sd">         - Torso part from collarbone center to pair of covered breasts</span>
+<span class="sd">       * - 2</span>
+<span class="sd">         - boob</span>
+<span class="sd">         - Bust with no bra, nipples mostly visible, generally NSFW</span>
+<span class="sd">       * - 3</span>
+<span class="sd">         - shld</span>
+<span class="sd">         - Shoulder and maybe one breast viewed mostly in profile, exactly rear view excluded</span>
+<span class="sd">       * - 4</span>
+<span class="sd">         - sideb</span>
+<span class="sd">         - Uncovered version of shld, with nipples or other NSFW visual marks</span>
+<span class="sd">       * - 5</span>
+<span class="sd">         - belly</span>
+<span class="sd">         - From belly button to hips half (stocking line), knees below belly, mostly covered</span>
+<span class="sd">       * - 6</span>
+<span class="sd">         - nopan</span>
+<span class="sd">         - No panty-like clothes on bikini area (regardless of censoring), evidently NSFW belly</span>
+<span class="sd">       * - 7</span>
+<span class="sd">         - butt</span>
+<span class="sd">         - Buttock area visible at least partially from behind, more or less covered, standing or sitting</span>
+<span class="sd">       * - 8</span>
+<span class="sd">         - ass</span>
+<span class="sd">         - Uncovered NSFW version of butt</span>
+<span class="sd">       * - 9</span>
+<span class="sd">         - split</span>
+<span class="sd">         - Sitting with legs open wide (90+ degrees), typically with at least one knee above belly</span>
+<span class="sd">       * - 10</span>
+<span class="sd">         - sprd</span>
+<span class="sd">         - Strongly NSFW version of split</span>
+<span class="sd">       * - 11</span>
+<span class="sd">         - vsplt</span>
+<span class="sd">         - Stand split or visually similar pose</span>
+<span class="sd">       * - 12</span>
+<span class="sd">         - vsprd</span>
+<span class="sd">         - Strongly NSFW version of vsplit</span>
+<span class="sd">       * - 13</span>
+<span class="sd">         - hip</span>
+<span class="sd">         - Full or almost full hip(-s) side view with knee(-s) above belly, usually when sitting or lying</span>
+<span class="sd">       * - 14</span>
+<span class="sd">         - wing</span>
+<span class="sd">         - Mostly dragon or pony related</span>
+<span class="sd">       * - 15</span>
+<span class="sd">         - feral</span>
+<span class="sd">         - All-four non-human torso</span>
+<span class="sd">       * - 16</span>
+<span class="sd">         - hdrago</span>
+<span class="sd">         - Dragon style head</span>
+<span class="sd">       * - 17</span>
+<span class="sd">         - hpony</span>
+<span class="sd">         - Pony style head</span>
+<span class="sd">       * - 18</span>
+<span class="sd">         - hfox</span>
+<span class="sd">         - Cartoon fox / dog head - Zootopia Nick Wilde</span>
+<span class="sd">       * - 19</span>
+<span class="sd">         - hrabb</span>
+<span class="sd">         - Cartoon rabbit head - Zootopia Judy Hopps or bunnygirl</span>
+<span class="sd">       * - 20</span>
+<span class="sd">         - hcat</span>
+<span class="sd">         - Cartoon cat or anime catgirl head (less sharp muzzle compared to hfox)</span>
+<span class="sd">       * - 21</span>
+<span class="sd">         - hbear</span>
+<span class="sd">         - Cartoon bear head</span>
+<span class="sd">       * - 22</span>
+<span class="sd">         - jacko</span>
+<span class="sd">         - Memetic &quot;Jack&#39;O contest pose&quot; with a head toward viewer</span>
+<span class="sd">       * - 23</span>
+<span class="sd">         - jackx</span>
+<span class="sd">         - Jacko viewed from behind, sometimes strongly NSFW</span>
+<span class="sd">       * - 24</span>
+<span class="sd">         - hhorse</span>
+<span class="sd">         - Horse head first implemented in aa09</span>
+<span class="sd">       * - 25</span>
+<span class="sd">         - hbird</span>
+<span class="sd">         - Bird head first implemented in aa09</span>
+
+<span class="sd">    Here are the list of available models.</span>
+
+<span class="sd">    .. list-table:: Available Models (PP Series)</span>
+<span class="sd">       :widths: 20 20 60</span>
+<span class="sd">       :header-rows: 1</span>
+
+<span class="sd">       * - Model Name</span>
+<span class="sd">         - Release Time</span>
+<span class="sd">         - Description</span>
+<span class="sd">       * - yolov8s_pp09</span>
+<span class="sd">         - 2023.11</span>
+<span class="sd">         - PP model focusing on NSFW content with 9 specialized classes, providing advanced detection capabilities</span>
+<span class="sd">           for specific NSFW scenarios.</span>
+<span class="sd">       * - yolov8s_pp12</span>
+<span class="sd">         - 2024.2</span>
+<span class="sd">         - Final patch for PP models, continuing the focus on specialized NSFW content detection with enhanced</span>
+<span class="sd">           capabilities and improvements from previous versions.</span>
+<span class="sd">       * - yolov8m_pp13</span>
+<span class="sd">         - 2024.2</span>
+<span class="sd">         - PP model final patch, focusing on specific NSFW content with 9 specialized classes, offering advanced</span>
+<span class="sd">           NSFW detection capabilities.</span>
+
+<span class="sd">    .. list-table:: Available Models (AS Series)</span>
+<span class="sd">       :widths: 20 20 60</span>
+<span class="sd">       :header-rows: 1</span>
+
+<span class="sd">       * - Model Name</span>
+<span class="sd">         - Release Time</span>
+<span class="sd">         - Description</span>
+<span class="sd">       * - yolov8n_as01</span>
+<span class="sd">         - 2023.12</span>
+<span class="sd">         - Spinoff model with 26 classes trained for 80 epochs on an SFW subset. This model was eventually</span>
+<span class="sd">           abandoned due to ineffective results.</span>
+<span class="sd">       * - yolov8m_as02</span>
+<span class="sd">         - 2023.12</span>
+<span class="sd">         - Spinoff model started using an SFW training subset. It includes 26 classes and was trained for</span>
+<span class="sd">           30 epochs, offering a more public-friendly model with reduced NSFW content.</span>
+<span class="sd">       * - yolov8m_as03</span>
+<span class="sd">         - 2024.1</span>
+<span class="sd">         - Advanced spinoff model from as02 with 26 classes, trained for 60 epochs. This SFW subset model</span>
+<span class="sd">           aims to reduce bottlenecks and improve reproducibility of results.</span>
+
+<span class="sd">    .. list-table:: Available Models (AA Series)</span>
+<span class="sd">       :widths: 20 20 60</span>
+<span class="sd">       :header-rows: 1</span>
+
+<span class="sd">       * - Model Name</span>
+<span class="sd">         - Release Time</span>
+<span class="sd">         - Description</span>
+<span class="sd">       * - yolov8s_aa06</span>
+<span class="sd">         - 2023.8</span>
+<span class="sd">         - Initial version for current reincarnation with 24 classes trained for 90 epochs. Focuses on general</span>
+<span class="sd">           torso components and includes some NSFW content.</span>
+<span class="sd">       * - yolov8s_aa09</span>
+<span class="sd">         - 2023.10</span>
+<span class="sd">         - Added HHORSE and HBIRD classes, updating the dataset with more head closeups and adjusting for</span>
+<span class="sd">           large hats, trained from aa06.</span>
+<span class="sd">       * - yolov8s_aa10</span>
+<span class="sd">         - 2023.12</span>
+<span class="sd">         - Major training dataset update from aa09, focusing on improving detection of HHORSE and HBIRD and</span>
+<span class="sd">           fixing issues with heads wearing large hats.</span>
+<span class="sd">       * - yolov8s_aa11</span>
+<span class="sd">         - 2024.1</span>
+<span class="sd">         - Latest mainstream general torso components model with 26 classes. It includes an update from aa10</span>
+<span class="sd">           with outstanding mAP scores, though noted to be not completely fair due to training set biases.</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
@@ -130,6 +291,17 @@
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_open_booru_yolo_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Open and cache the Booru YOLO model.</span>
+
+<span class="sd">    :param model_name: Name of the model to open.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :return: Opened ONNX model.</span>
+<span class="sd">    :rtype: onnxruntime.InferenceSession</span>
+
+<span class="sd">    This function downloads the specified model from the Hugging Face Hub and opens it as an ONNX model.</span>
+<span class="sd">    The result is cached to avoid repeated downloads and openings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;deepghs/booru_yolo&#39;</span><span class="p">,</span>
         <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
@@ -139,6 +311,17 @@
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_get_booru_yolo_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve and cache the labels for the Booru YOLO model.</span>
+
+<span class="sd">    :param model_name: Name of the model to get labels for.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :return: List of label names.</span>
+<span class="sd">    :rtype: List[str]</span>
+
+<span class="sd">    This function opens the specified model, extracts the label information from its metadata,</span>
+<span class="sd">    and returns a list of label names. The result is cached for efficiency.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">_open_booru_yolo_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
     <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_modelmeta</span><span class="p">()</span>
     <span class="n">names_map</span> <span class="o">=</span> <span class="n">_safe_eval_names_str</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">])</span>
@@ -149,8 +332,21 @@
 
 
 <span class="k">def</span> <span class="nf">_safe_eval_names_str</span><span class="p">(</span><span class="n">names_str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Safely evaluate the names string from model metadata.</span>
+
+<span class="sd">    :param names_str: String representation of names dictionary.</span>
+<span class="sd">    :type names_str: str</span>
+<span class="sd">    :return: Dictionary of name mappings.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises RuntimeError: If an invalid key or value type is encountered.</span>
+
+<span class="sd">    This function parses the names string from the model metadata, ensuring that</span>
+<span class="sd">    only string and number literals are evaluated for safety.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">node</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">names_str</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;eval&#39;</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># noinspection PyUnresolvedReferences</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">Str</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Num</span><span class="p">)):</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -175,6 +371,29 @@
 <div class="viewcode-block" id="detect_with_booru_yolo"><a class="viewcode-back" href="../../../api_doc/detect/booru_yolo.html#imgutils.detect.booru_yolo.detect_with_booru_yolo">[docs]</a><span class="k">def</span> <span class="nf">detect_with_booru_yolo</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL</span><span class="p">,</span>
                            <span class="n">max_infer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">640</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform object detection on an image using the Booru YOLO model.</span>
+
+<span class="sd">    :param image: Input image to perform detection on.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param model_name: Name of the Booru YOLO model to use, defaults to &#39;yolov8s_aa11&#39;.</span>
+<span class="sd">    :type model_name: str, optional</span>
+<span class="sd">    :param max_infer_size: Maximum inference size for image preprocessing, defaults to 640.</span>
+<span class="sd">    :type max_infer_size: int, optional</span>
+<span class="sd">    :param conf_threshold: Confidence threshold for detection, defaults to 0.25.</span>
+<span class="sd">    :type conf_threshold: float, optional</span>
+<span class="sd">    :param iou_threshold: IOU threshold for non-maximum suppression, defaults to 0.7.</span>
+<span class="sd">    :type iou_threshold: float, optional</span>
+<span class="sd">    :return: List of detected objects, each represented as (bounding_box as `(x1, y1, x2, y2)`, label, confidence).</span>
+<span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    :example:</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.detect import detect_with_booru_yolo</span>
+<span class="sd">        ...</span>
+<span class="sd">        &gt;&gt;&gt; detections = detect_with_booru_yolo(&quot;path/to/image.jpg&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; for box, label, confidence in detections:</span>
+<span class="sd">        ...     print(f&quot;Detected {label} with confidence {confidence:.2f} at {box}&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">_open_booru_yolo_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="n">_get_booru_yolo_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
