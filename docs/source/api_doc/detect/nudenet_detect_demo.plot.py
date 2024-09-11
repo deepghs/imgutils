@@ -9,11 +9,11 @@ def _detect(img, **kwargs):
 
 if __name__ == '__main__':
     image_plot(
-        (_detect('nudenet/nude_girl.png'), 'simple nude'),
-        (_detect('nudenet/simple_sex.jpg'), 'simple sex'),
-        (_detect('nudenet/complex_pose.jpg'), 'complex pose'),
-        (_detect('nudenet/complex_sex.jpg'), 'complex sex'),
+        (_detect('censor/nude_girl.png'), 'simple nude'),
+        (_detect('censor/simple_sex.jpg'), 'simple sex'),
+        (_detect('censor/complex_pose.jpg'), 'complex pose'),
+        (_detect('censor/complex_sex.jpg'), 'complex sex'),
         columns=2,
         figsize=(9, 9),
-        autonudenet=False,
+        autocensor=False,
     )
