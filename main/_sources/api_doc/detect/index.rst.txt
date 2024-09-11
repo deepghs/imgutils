@@ -15,6 +15,7 @@ imgutils.detect
     halfbody
     hand
     head
+    nudenet
     person
     text
     visual
