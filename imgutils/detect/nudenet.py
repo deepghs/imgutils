@@ -20,7 +20,55 @@ Overview:
 
     .. image:: nudenet_detect_benchmark.plot.py.svg
         :align: center
-    
+
+    .. note::
+
+        Here is a detailed list of labels from the NudeNet detection model and their respective meanings:
+
+        .. list-table::
+           :widths: 25 75
+           :header-rows: 1
+
+           * - Label
+             - Description
+           * - FEMALE_GENITALIA_COVERED
+             - Detects covered female genitalia in the image.
+           * - FACE_FEMALE
+             - Detects the face of a female in the image.
+           * - BUTTOCKS_EXPOSED
+             - Detects exposed buttocks in the image.
+           * - FEMALE_BREAST_EXPOSED
+             - Detects exposed female breasts in the image.
+           * - FEMALE_GENITALIA_EXPOSED
+             - Detects exposed female genitalia in the image.
+           * - MALE_BREAST_EXPOSED
+             - Detects exposed male breasts in the image.
+           * - ANUS_EXPOSED
+             - Detects exposed anus in the image.
+           * - FEET_EXPOSED
+             - Detects exposed feet in the image.
+           * - BELLY_COVERED
+             - Detects a covered belly in the image.
+           * - FEET_COVERED
+             - Detects covered feet in the image.
+           * - ARMPITS_COVERED
+             - Detects covered armpits in the image.
+           * - ARMPITS_EXPOSED
+             - Detects exposed armpits in the image.
+           * - FACE_MALE
+             - Detects the face of a male in the image.
+           * - BELLY_EXPOSED
+             - Detects an exposed belly in the image.
+           * - MALE_GENITALIA_EXPOSED
+             - Detects exposed male genitalia in the image.
+           * - ANUS_COVERED
+             - Detects a covered anus in the image.
+           * - FEMALE_BREAST_COVERED
+             - Detects covered female breasts in the image.
+           * - BUTTOCKS_COVERED
+             - Detects covered buttocks in the image.
+
+
     .. note::
     
         This module requires onnxruntime version 1.18 or higher.
