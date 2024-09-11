@@ -1,5 +1,31 @@
-# NudeNet Model, from https://github.com/notAI-tech/NudeNet
-# The ONNX models are hosted on https://huggingface.co/deepghs/nudenet_onnx
+"""
+Overview:
+    This module provides functionality for detecting nudity in images using the NudeNet model.
+    
+    The module includes functions for preprocessing images, running the NudeNet YOLO model,
+    applying non-maximum suppression (NMS), and postprocessing the results. It utilizes
+    ONNX models hosted on `deepghs/nudenet_onnx <https://huggingface.co/deepghs/nudenet_onnx>`_
+    for efficient inference. The original project is
+    `notAI-tech/NudeNet <https://github.com/notAI-tech/NudeNet>`_.
+    
+    .. collapse:: Overview of NudeNet Detect (NSFW Warning!!!)
+
+        .. image:: nudenet_detect_demo.plot.py.svg
+            :align: center
+    
+    The main function :func:`detect_with_nudenet` can be used to perform nudity detection on
+    given images, returning a list of bounding boxes, labels, and confidence scores.
+    
+    This is an overall benchmark of all the nudenet models:
+
+    .. image:: nudenet_detect_benchmark.plot.py.svg
+        :align: center
+    
+    .. note::
+    
+        This module requires onnxruntime version 1.18 or higher.
+"""
+
 from functools import lru_cache
 from typing import Tuple, List
 
@@ -14,6 +40,11 @@ from ..data import load_image
 
 
 def _check_compatibility() -> bool:
+    """
+    Check if the installed onnxruntime version is compatible with NudeNet.
+
+    :raises EnvironmentError: If the onnxruntime version is less than 1.18.
+    """
     import onnxruntime
     if VersionInfo(onnxruntime.__version__) < '1.18':
         raise EnvironmentError(f'Nudenet not supported on onnxruntime {onnxruntime.__version__}, '
@@ -27,6 +58,11 @@ _REPO_ID = 'deepghs/nudenet_onnx'
 
 @lru_cache()
 def _open_nudenet_yolo():
+    """
+    Open and cache the NudeNet YOLO ONNX model.
+
+    :return: The loaded ONNX model for YOLO.
+    """
     return open_onnx_model(hf_hub_download(
         repo_id=_REPO_ID,
         repo_type='model',
@@ -36,6 +72,11 @@ def _open_nudenet_yolo():
 
 @lru_cache()
 def _open_nudenet_nms():
+    """
+    Open and cache the NudeNet NMS ONNX model.
+
+    :return: The loaded ONNX model for NMS.
+    """
     return open_onnx_model(hf_hub_download(
         repo_id=_REPO_ID,
         repo_type='model',
@@ -43,8 +84,14 @@ def _open_nudenet_nms():
     ))
 
 
-def _nn_preprocessing(image: ImageTyping, model_size: int = 320) \
-        -> Tuple[np.ndarray, float]:
+def _nn_preprocessing(image: ImageTyping, model_size: int = 320) -> Tuple[np.ndarray, float]:
+    """
+    Preprocess the input image for the NudeNet model.
+
+    :param image: The input image.
+    :param model_size: The size to which the image should be resized (default: 320).
+    :return: A tuple containing the preprocessed image array and the scaling ratio.
+    """
     image = load_image(image, mode='RGB', force_background='white')
     assert image.mode == 'RGB'
     mat = np.array(image)
@@ -61,10 +108,25 @@ def _nn_preprocessing(image: ImageTyping, model_size: int = 320) \
 
 
 def _make_np_config(topk: int = 100, iou_threshold: float = 0.45, score_threshold: float = 0.25) -> np.ndarray:
+    """
+    Create a configuration array for the NMS model.
+
+    :param topk: The maximum number of detections to keep (default: 100).
+    :param iou_threshold: The IoU threshold for NMS (default: 0.45).
+    :param score_threshold: The score threshold for detections (default: 0.25).
+    :return: A numpy array containing the configuration parameters.
+    """
     return np.array([topk, iou_threshold, score_threshold]).astype(np.float32)
 
 
 def _nn_postprocess(selected, global_ratio: float):
+    """
+    Postprocess the model output to generate bounding boxes and labels.
+
+    :param selected: The output from the NMS model.
+    :param global_ratio: The scaling ratio to apply to the bounding boxes.
+    :return: A list of tuples, each containing a bounding box, label, and confidence score.
+    """
     bboxes = []
     num_boxes = selected.shape[0]
     for idx in range(num_boxes):
@@ -110,6 +172,18 @@ _LABELS = [
 def detect_with_nudenet(image: ImageTyping, topk: int = 100,
                         iou_threshold: float = 0.45, score_threshold: float = 0.25) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
+    """
+    Detect nudity in the given image using the NudeNet model.
+
+    :param image: The input image to analyze.
+    :param topk: The maximum number of detections to keep (default: 100).
+    :param iou_threshold: The IoU threshold for NMS (default: 0.45).
+    :param score_threshold: The score threshold for detections (default: 0.25).
+    :return: A list of tuples, each containing:
+             - A bounding box as (x1, y1, x2, y2)
+             - A label string
+             - A confidence score
+    """
     _check_compatibility()
     input_, global_ratio = _nn_preprocessing(image, model_size=320)
     config = _make_np_config(topk, iou_threshold, score_threshold)
