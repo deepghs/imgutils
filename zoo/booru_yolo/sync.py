@@ -85,7 +85,7 @@ def sync(repository: str):
                     'labels': labels,
                 }, f, indent=4, sort_keys=True, ensure_ascii=False)
 
-            yolo.export(format='onnx', dynamic=False, simplify=True, opset=14)
+            yolo.export(format='onnx', dynamic=True, simplify=True, opset=14)
 
             models.append({
                 'name': model_name,
