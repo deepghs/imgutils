@@ -142,6 +142,77 @@ given images, returning a list of bounding boxes, labels, and confidence scores.
 <p>This is an overall benchmark of all the nudenet models:</p>
 <img alt="../../_images/nudenet_detect_benchmark.plot.py.svg" class="align-center" src="../../_images/nudenet_detect_benchmark.plot.py.svg" /><div class="admonition note">
 <p class="admonition-title">Note</p>
+<p>Here is a detailed list of labels from the NudeNet detection model and their respective meanings:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Label</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FEMALE_GENITALIA_COVERED</p></td>
+<td><p>Detects covered female genitalia in the image.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FACE_FEMALE</p></td>
+<td><p>Detects the face of a female in the image.</p></td>
+</tr>
+<tr class="row-even"><td><p>BUTTOCKS_EXPOSED</p></td>
+<td><p>Detects exposed buttocks in the image.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FEMALE_BREAST_EXPOSED</p></td>
+<td><p>Detects exposed female breasts in the image.</p></td>
+</tr>
+<tr class="row-even"><td><p>FEMALE_GENITALIA_EXPOSED</p></td>
+<td><p>Detects exposed female genitalia in the image.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MALE_BREAST_EXPOSED</p></td>
+<td><p>Detects exposed male breasts in the image.</p></td>
+</tr>
+<tr class="row-even"><td><p>ANUS_EXPOSED</p></td>
+<td><p>Detects exposed anus in the image.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FEET_EXPOSED</p></td>
+<td><p>Detects exposed feet in the image.</p></td>
+</tr>
+<tr class="row-even"><td><p>BELLY_COVERED</p></td>
+<td><p>Detects a covered belly in the image.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FEET_COVERED</p></td>
+<td><p>Detects covered feet in the image.</p></td>
+</tr>
+<tr class="row-even"><td><p>ARMPITS_COVERED</p></td>
+<td><p>Detects covered armpits in the image.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ARMPITS_EXPOSED</p></td>
+<td><p>Detects exposed armpits in the image.</p></td>
+</tr>
+<tr class="row-even"><td><p>FACE_MALE</p></td>
+<td><p>Detects the face of a male in the image.</p></td>
+</tr>
+<tr class="row-odd"><td><p>BELLY_EXPOSED</p></td>
+<td><p>Detects an exposed belly in the image.</p></td>
+</tr>
+<tr class="row-even"><td><p>MALE_GENITALIA_EXPOSED</p></td>
+<td><p>Detects exposed male genitalia in the image.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ANUS_COVERED</p></td>
+<td><p>Detects a covered anus in the image.</p></td>
+</tr>
+<tr class="row-even"><td><p>FEMALE_BREAST_COVERED</p></td>
+<td><p>Detects covered female breasts in the image.</p></td>
+</tr>
+<tr class="row-odd"><td><p>BUTTOCKS_COVERED</p></td>
+<td><p>Detects covered buttocks in the image.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>This module requires onnxruntime version 1.18 or higher.</p>
 </div>
 </dd>
@@ -162,10 +233,13 @@ given images, returning a list of bounding boxes, labels, and confidence scores.
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of tuples, each containing:
-- A bounding box as (x1, y1, x2, y2)
-- A label string
-- A confidence score</p>
+<dd class="field-even"><p><p>A list of tuples, each containing:</p>
+<ul class="simple">
+<li><p>A bounding box as (x1, y1, x2, y2)</p></li>
+<li><p>A label string</p></li>
+<li><p>A confidence score</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>

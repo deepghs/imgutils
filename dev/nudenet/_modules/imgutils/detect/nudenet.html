@@ -128,7 +128,55 @@
 
 <span class="sd">    .. image:: nudenet_detect_benchmark.plot.py.svg</span>
 <span class="sd">        :align: center</span>
-<span class="sd">    </span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Here is a detailed list of labels from the NudeNet detection model and their respective meanings:</span>
+
+<span class="sd">        .. list-table::</span>
+<span class="sd">           :widths: 25 75</span>
+<span class="sd">           :header-rows: 1</span>
+
+<span class="sd">           * - Label</span>
+<span class="sd">             - Description</span>
+<span class="sd">           * - FEMALE_GENITALIA_COVERED</span>
+<span class="sd">             - Detects covered female genitalia in the image.</span>
+<span class="sd">           * - FACE_FEMALE</span>
+<span class="sd">             - Detects the face of a female in the image.</span>
+<span class="sd">           * - BUTTOCKS_EXPOSED</span>
+<span class="sd">             - Detects exposed buttocks in the image.</span>
+<span class="sd">           * - FEMALE_BREAST_EXPOSED</span>
+<span class="sd">             - Detects exposed female breasts in the image.</span>
+<span class="sd">           * - FEMALE_GENITALIA_EXPOSED</span>
+<span class="sd">             - Detects exposed female genitalia in the image.</span>
+<span class="sd">           * - MALE_BREAST_EXPOSED</span>
+<span class="sd">             - Detects exposed male breasts in the image.</span>
+<span class="sd">           * - ANUS_EXPOSED</span>
+<span class="sd">             - Detects exposed anus in the image.</span>
+<span class="sd">           * - FEET_EXPOSED</span>
+<span class="sd">             - Detects exposed feet in the image.</span>
+<span class="sd">           * - BELLY_COVERED</span>
+<span class="sd">             - Detects a covered belly in the image.</span>
+<span class="sd">           * - FEET_COVERED</span>
+<span class="sd">             - Detects covered feet in the image.</span>
+<span class="sd">           * - ARMPITS_COVERED</span>
+<span class="sd">             - Detects covered armpits in the image.</span>
+<span class="sd">           * - ARMPITS_EXPOSED</span>
+<span class="sd">             - Detects exposed armpits in the image.</span>
+<span class="sd">           * - FACE_MALE</span>
+<span class="sd">             - Detects the face of a male in the image.</span>
+<span class="sd">           * - BELLY_EXPOSED</span>
+<span class="sd">             - Detects an exposed belly in the image.</span>
+<span class="sd">           * - MALE_GENITALIA_EXPOSED</span>
+<span class="sd">             - Detects exposed male genitalia in the image.</span>
+<span class="sd">           * - ANUS_COVERED</span>
+<span class="sd">             - Detects a covered anus in the image.</span>
+<span class="sd">           * - FEMALE_BREAST_COVERED</span>
+<span class="sd">             - Detects covered female breasts in the image.</span>
+<span class="sd">           * - BUTTOCKS_COVERED</span>
+<span class="sd">             - Detects covered buttocks in the image.</span>
+
+
 <span class="sd">    .. note::</span>
 <span class="sd">    </span>
 <span class="sd">        This module requires onnxruntime version 1.18 or higher.</span>
@@ -288,6 +336,7 @@
 <span class="sd">    :param iou_threshold: The IoU threshold for NMS (default: 0.45).</span>
 <span class="sd">    :param score_threshold: The score threshold for detections (default: 0.25).</span>
 <span class="sd">    :return: A list of tuples, each containing:</span>
+
 <span class="sd">             - A bounding box as (x1, y1, x2, y2)</span>
 <span class="sd">             - A label string</span>
 <span class="sd">             - A confidence score</span>
