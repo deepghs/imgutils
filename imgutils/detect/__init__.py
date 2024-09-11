@@ -8,6 +8,7 @@ Overview:
     .. image:: head_detect_demo.plot.py.svg
         :align: center
 """
+from .booru_yolo import detect_with_booru_yolo
 from .censor import detect_censors
 from .eye import detect_eyes
 from .face import detect_faces
