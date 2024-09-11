@@ -9,6 +9,7 @@ imgutils.detect
 .. toctree::
     :maxdepth: 3
 
+    booru_yolo
     censor
     eye
     face
