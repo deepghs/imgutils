@@ -228,6 +228,7 @@ def detect_with_nudenet(image: ImageTyping, topk: int = 100,
     :param iou_threshold: The IoU threshold for NMS (default: 0.45).
     :param score_threshold: The score threshold for detections (default: 0.25).
     :return: A list of tuples, each containing:
+
              - A bounding box as (x1, y1, x2, y2)
              - A label string
              - A confidence score
