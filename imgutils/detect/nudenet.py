@@ -1,8 +1,8 @@
+# NudeNet Model, from https://github.com/notAI-tech/NudeNet
+# The ONNX models are hosted on https://huggingface.co/deepghs/nudenet_onnx
 from functools import lru_cache
-from pprint import pprint
 from typing import Tuple, List
 
-import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 from hbutils.testing.requires.version import VersionInfo
@@ -10,7 +10,6 @@ from huggingface_hub import hf_hub_download
 
 from imgutils.data import ImageTyping
 from imgutils.utils import open_onnx_model
-from test.testings import get_testfile
 from ..data import load_image
 
 
@@ -117,5 +116,3 @@ def detect_with_nudenet(image: ImageTyping, topk: int = 100,
     output0, = _open_nudenet_yolo().run(['output0'], {'images': input_})
     selected, = _open_nudenet_nms().run(['selected'], {'detection': output0, 'config': config})
     return _nn_postprocess(selected[0], global_ratio=global_ratio)
-
-
