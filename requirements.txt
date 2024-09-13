@@ -15,5 +15,5 @@ pyclipper
 deprecation>=2.0.0
 hfutils>=0.2.3
 filelock
-bchlib
+bchlib>=2.1.3
 piexif
