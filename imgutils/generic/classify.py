@@ -9,6 +9,7 @@ from typing import Tuple, Optional, List, Dict
 
 import numpy as np
 from PIL import Image
+from hfutils.utils import hf_fs_path
 from huggingface_hub import hf_hub_download, HfFileSystem
 
 from ..data import rgb_encode, ImageTyping, load_image
@@ -63,7 +64,7 @@ class ClassifyModel:
         None
     """
 
-    def __init__(self, repo_id: str):
+    def __init__(self, repo_id: str, hf_token: Optional[str] = None):
         """
         Initialize the ClassifyModel instance.
 
@@ -74,16 +75,16 @@ class ClassifyModel:
         self._model_names = None
         self._models = {}
         self._labels = {}
+        self._hf_token = hf_token
 
-    @classmethod
-    def _get_hf_token(cls):
+    def _get_hf_token(self):
         """
         Get the Hugging Face token from the environment variable.
 
         :return: The Hugging Face token.
         :rtype: str
         """
-        return os.environ.get('HF_TOKEN')
+        return self._hf_token or os.environ.get('HF_TOKEN')
 
     @property
     def model_names(self) -> List[str]:
@@ -96,8 +97,12 @@ class ClassifyModel:
         if self._model_names is None:
             hf_fs = HfFileSystem(token=self._get_hf_token())
             self._model_names = [
-                os.path.dirname(os.path.relpath(item, self.repo_id)) for item in
-                hf_fs.glob(f'{self.repo_id}/*/model.onnx')
+                os.path.dirname(os.path.relpath(item, self.repo_id))
+                for item in hf_fs.glob(hf_fs_path(
+                    repo_id=self.repo_id,
+                    repo_type='model',
+                    filename='*/model.onnx',
+                ))
             ]
 
         return self._model_names
