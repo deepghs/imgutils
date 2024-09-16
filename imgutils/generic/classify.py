@@ -23,7 +23,7 @@ from typing import Tuple, Optional, List, Dict
 
 import numpy as np
 from PIL import Image
-from hfutils.utils import hf_fs_path
+from hfutils.utils import hf_fs_path, hf_normpath
 from huggingface_hub import hf_hub_download, HfFileSystem
 
 from ..data import rgb_encode, ImageTyping, load_image
@@ -135,7 +135,7 @@ class ClassifyModel:
         if self._model_names is None:
             hf_fs = HfFileSystem(token=self._get_hf_token())
             self._model_names = [
-                os.path.dirname(os.path.relpath(item, self.repo_id))
+                hf_normpath(os.path.dirname(os.path.relpath(item, self.repo_id)))
                 for item in hf_fs.glob(hf_fs_path(
                     repo_id=self.repo_id,
                     repo_type='model',
