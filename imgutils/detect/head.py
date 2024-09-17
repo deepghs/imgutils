@@ -1,6 +1,5 @@
 """
 Overview:
-
     This module provides functionality for detecting human heads in anime images using YOLOv8 models.
 
     .. image:: head_detect_demo.plot.py.svg
