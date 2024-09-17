@@ -123,47 +123,55 @@
 <span class="sd">        :align: center</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">..generic</span> <span class="kn">import</span> <span class="n">yolo_predict</span>
 
-<span class="kn">from</span> <span class="nn">._yolo</span> <span class="kn">import</span> <span class="n">_image_preprocess</span><span class="p">,</span> <span class="n">_data_postprocess</span>
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">rgb_encode</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
+<span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/anime_censor_detection&#39;</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_censor_detect_model</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v1.0&#39;</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;deepghs/anime_censor_detection&#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;censor_detect_</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span>
-    <span class="p">))</span>
-
-
-<span class="n">_LABELS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;nipple_f&quot;</span><span class="p">,</span> <span class="s2">&quot;penis&quot;</span><span class="p">,</span> <span class="s2">&quot;pussy&quot;</span><span class="p">]</span>
-
-
-<div class="viewcode-block" id="detect_censors"><a class="viewcode-back" href="../../../api_doc/detect/censor.html#imgutils.detect.censor.detect_censors">[docs]</a><span class="k">def</span> <span class="nf">detect_censors</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v1.0&#39;</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="o">=</span><span class="mi">640</span><span class="p">,</span>
+<div class="viewcode-block" id="detect_censors"><a class="viewcode-back" href="../../../api_doc/detect/censor.html#imgutils.detect.censor.detect_censors">[docs]</a><span class="k">def</span> <span class="nf">detect_censors</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v1.0&#39;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                    <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Overview:</span>
-<span class="sd">        Detect human censor points in anime images.</span>
+<span class="sd">    Detect human censor points in anime images.</span>
 
-<span class="sd">    :param image: Image to detect.</span>
-<span class="sd">    :param level: The model level being used can be either `s` or `n`.</span>
-<span class="sd">        The `n` model runs faster with smaller system overhead, while the `s` model achieves higher accuracy.</span>
-<span class="sd">        The default value is `s`.</span>
-<span class="sd">    :param version: Version of model, default is ``v1.0``.</span>
-<span class="sd">    :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,</span>
-<span class="sd">        the image will be resized and used for inference. The default value is `640` pixels.</span>
-<span class="sd">    :param conf_threshold: The confidence threshold, only detection results with confidence scores above</span>
-<span class="sd">        this threshold will be returned. The default value is `0.3`.</span>
-<span class="sd">    :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold</span>
-<span class="sd">        will be discarded. The default value is `0.7`.</span>
-<span class="sd">    :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,</span>
-<span class="sd">        the target type (one of `nipple_f`, `penis` and `pussy`) and the target confidence score.</span>
+<span class="sd">    This function uses pre-trained YOLOv8 models to identify and locate specific</span>
+<span class="sd">    anatomical features that are typically censored in anime images. It can detect</span>
+<span class="sd">    female nipples, male genitals, and female genitals.</span>
+
+<span class="sd">    :param image: The input image to be analyzed. Can be a file path, URL, or image data.</span>
+<span class="sd">    :type image: ImageTyping</span>
+
+<span class="sd">    :param level: The model level to use, either &#39;s&#39; (standard) or &#39;n&#39; (nano).</span>
+<span class="sd">                  The &#39;n&#39; model is faster but less accurate, while &#39;s&#39; is more accurate but slower.</span>
+<span class="sd">    :type level: str</span>
+
+<span class="sd">    :param version: The version of the model to use. Default is &#39;v1.0&#39;.</span>
+<span class="sd">    :type version: str</span>
+
+<span class="sd">    :param model_name: Optional custom model name. If not provided, it will be constructed</span>
+<span class="sd">                       from the version and level.</span>
+<span class="sd">    :type model_name: Optional[str]</span>
+
+<span class="sd">    :param conf_threshold: The confidence threshold for detections. Only detections with</span>
+<span class="sd">                           confidence above this value will be returned. Default is 0.3.</span>
+<span class="sd">    :type conf_threshold: float</span>
+
+<span class="sd">    :param iou_threshold: The Intersection over Union (IoU) threshold for non-maximum</span>
+<span class="sd">                          suppression. Detections with IoU above this value will be merged.</span>
+<span class="sd">                          Default is 0.7.</span>
+<span class="sd">    :type iou_threshold: float</span>
+
+<span class="sd">    :return: A list of tuples, each containing:</span>
+<span class="sd">             - A tuple of four integers (x0, y0, x1, y1) representing the bounding box</span>
+<span class="sd">             - A string indicating the type of detection (&#39;nipple_f&#39;, &#39;penis&#39;, or &#39;pussy&#39;)</span>
+<span class="sd">             - A float representing the confidence score of the detection</span>
+<span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    :raises ValueError: If an invalid level is provided.</span>
+<span class="sd">    :raises RuntimeError: If the model fails to load or process the image.</span>
 
 <span class="sd">    Examples::</span>
 <span class="sd">        &gt;&gt;&gt; from imgutils.detect import detect_censors, detection_visualize</span>
@@ -182,12 +190,13 @@
 <span class="sd">        &gt;&gt;&gt; plt.imshow(detection_visualize(image, result))</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
-    <span class="n">new_image</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span> <span class="o">=</span> <span class="n">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">)</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">new_image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-    <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_censor_detect_model</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output0&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;images&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
-    <span class="k">return</span> <span class="n">_data_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">conf_threshold</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">,</span> <span class="n">_LABELS</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">yolo_predict</span><span class="p">(</span>
+        <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">_REPO_ID</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">&#39;censor_detect_</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+        <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+    <span class="p">)</span></div>
 </pre></div>
 
 
@@ -237,9 +246,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/yolo/index.html">dev/yolo</a></dd>
-                        <dd><a href="../../../../dev/bchlib/index.html">dev/bchlib</a></dd>
                         <dd><a href="censor.html">main</a></dd>
+                        <dd><a href="../../../../dev/bchlib/index.html">dev/bchlib</a></dd>
                 </dl>
         </div>
     </div><script>

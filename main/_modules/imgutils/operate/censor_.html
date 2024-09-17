@@ -111,7 +111,7 @@
 <span class="sd">    A tool for obscuring specified regions on an image.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageFilter</span>
 
@@ -425,7 +425,7 @@
 
 
 <div class="viewcode-block" id="censor_nsfw"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.censor_nsfw">[docs]</a><span class="k">def</span> <span class="nf">censor_nsfw</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nipple_f</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">penis</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">pussy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v1.0&#39;</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="o">=</span><span class="mi">640</span><span class="p">,</span>
+                <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v1.0&#39;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Applies censoring to sensitive areas in NSFW images based on object detection.</span>
@@ -454,8 +454,9 @@
 <span class="sd">    :param version: The version of the NSFW object detection model. Default is ``v1.0``.</span>
 <span class="sd">    :type version: str</span>
 
-<span class="sd">    :param max_infer_size: The maximum size for inference. Default is ``640``.</span>
-<span class="sd">    :type max_infer_size: int</span>
+<span class="sd">    :param model_name: Optional custom model name. If not provided, it will be constructed</span>
+<span class="sd">                       from the version and level.</span>
+<span class="sd">    :type model_name: Optional[str]</span>
 
 <span class="sd">    :param conf_threshold: The confidence threshold for object detection. Default is ``0.3``.</span>
 <span class="sd">    :type conf_threshold: float</span>
@@ -490,7 +491,14 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
-    <span class="n">areas</span> <span class="o">=</span> <span class="n">detect_censors</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">)</span>
+    <span class="n">areas</span> <span class="o">=</span> <span class="n">detect_censors</span><span class="p">(</span>
+        <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+        <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+        <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="n">c_areas</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">area</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">areas</span><span class="p">:</span>
@@ -547,9 +555,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/yolo/index.html">dev/yolo</a></dd>
-                        <dd><a href="../../../../dev/bchlib/index.html">dev/bchlib</a></dd>
                         <dd><a href="censor_.html">main</a></dd>
+                        <dd><a href="../../../../dev/bchlib/index.html">dev/bchlib</a></dd>
                 </dl>
         </div>
     </div><script>

@@ -107,9 +107,23 @@
     
   <h1>Source code for imgutils.generic.classify</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Overview:</span>
-<span class="sd">    Generic tools for classification models.</span>
+<span class="sd">Generic tools for classification models.</span>
+
+<span class="sd">This module provides utilities and classes for working with classification models,</span>
+<span class="sd">particularly those stored in Hugging Face repositories. It includes functions for</span>
+<span class="sd">image encoding, model loading, and prediction, as well as a main `ClassifyModel` class</span>
+<span class="sd">that manages the interaction with classification models.</span>
+
+<span class="sd">Key components:</span>
+
+<span class="sd">- Image encoding and preprocessing</span>
+<span class="sd">- ClassifyModel: A class for managing and using classification models</span>
+<span class="sd">- Utility functions for making predictions with classification models</span>
+
+<span class="sd">The module is designed to work with ONNX models and supports various image input formats.</span>
+<span class="sd">It also handles token-based authentication for accessing private Hugging Face repositories.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
@@ -117,6 +131,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">hfutils.utils</span> <span class="kn">import</span> <span class="n">hf_fs_path</span><span class="p">,</span> <span class="n">hf_normpath</span>
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span><span class="p">,</span> <span class="n">HfFileSystem</span>
 
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">rgb_encode</span><span class="p">,</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
@@ -132,18 +147,25 @@
 <span class="k">def</span> <span class="nf">_img_encode</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">384</span><span class="p">,</span> <span class="mi">384</span><span class="p">),</span>
                 <span class="n">normalize</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Encode an image into a numpy array.</span>
+<span class="sd">    Encode an image into a numpy array for model input.</span>
 
-<span class="sd">    :param image: The input image.</span>
+<span class="sd">    This function resizes the input image, converts it to RGB format, and optionally</span>
+<span class="sd">    normalizes the pixel values.</span>
+
+<span class="sd">    :param image: The input image to be encoded.</span>
 <span class="sd">    :type image: Image.Image</span>
-<span class="sd">    :param size: The size to resize the image to, defaults to (384, 384).</span>
+<span class="sd">    :param size: The target size (width, height) to resize the image to, defaults to (384, 384).</span>
 <span class="sd">    :type size: Tuple[int, int], optional</span>
 <span class="sd">    :param normalize: The mean and standard deviation for normalization, defaults to (0.5, 0.5).</span>
+<span class="sd">                      If None, no normalization is applied.</span>
 <span class="sd">    :type normalize: Optional[Tuple[float, float]], optional</span>
 
-<span class="sd">    :return: The encoded image as a numpy array.</span>
+<span class="sd">    :return: The encoded image as a numpy array in CHW format.</span>
 <span class="sd">    :rtype: np.ndarray</span>
+
+<span class="sd">    :raises TypeError: If the input image is not a PIL Image object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># noinspection PyUnresolvedReferences</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">order_</span><span class="o">=</span><span class="s1">&#39;CHW&#39;</span><span class="p">)</span>
 
@@ -158,66 +180,88 @@
 
 <div class="viewcode-block" id="ClassifyModel"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel">[docs]</a><span class="k">class</span> <span class="nc">ClassifyModel</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class for managing classification models.</span>
+<span class="sd">    A class for managing and using classification models.</span>
 
-<span class="sd">    This class provides methods for loading classification models, predicting scores, and predictions.</span>
+<span class="sd">    This class provides methods for loading classification models from a Hugging Face</span>
+<span class="sd">    repository, making predictions, and managing model resources. It supports multiple</span>
+<span class="sd">    models within a single repository and handles token-based authentication.</span>
 
-<span class="sd">    Methods:</span>
-<span class="sd">        predict_score: Predicts the scores for each class.</span>
-<span class="sd">        predict: Predicts the class with the highest score.</span>
-<span class="sd">        clear: Clears the loaded models and labels.</span>
+<span class="sd">    :param repo_id: The Hugging Face repository ID containing the classification models.</span>
+<span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param hf_token: The Hugging Face API token for accessing private repositories, defaults to None.</span>
+<span class="sd">    :type hf_token: Optional[str], optional</span>
 
-<span class="sd">    Attributes:</span>
-<span class="sd">        None</span>
+<span class="sd">    :ivar repo_id: The Hugging Face repository ID.</span>
+<span class="sd">    :ivar _model_names: Cached list of available model names in the repository.</span>
+<span class="sd">    :ivar _models: Dictionary of loaded ONNX models.</span>
+<span class="sd">    :ivar _labels: Dictionary of labels for each model.</span>
+<span class="sd">    :ivar _hf_token: The Hugging Face API token.</span>
+
+<span class="sd">    Usage:</span>
+<span class="sd">        &gt;&gt;&gt; model = ClassifyModel(&quot;username/repo_name&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; image = Image.open(&quot;path/to/image.jpg&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; prediction, score = model.predict(image, &quot;model_name&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;Predicted class: {prediction}, Score: {score}&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ClassifyModel.__init__"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="ClassifyModel.__init__"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the ClassifyModel instance.</span>
 
 <span class="sd">        :param repo_id: The repository ID containing the models.</span>
 <span class="sd">        :type repo_id: str</span>
+<span class="sd">        :param hf_token: The Hugging Face API token, defaults to None.</span>
+<span class="sd">        :type hf_token: Optional[str], optional</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span> <span class="o">=</span> <span class="n">repo_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_models</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="p">{}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="o">=</span> <span class="n">hf_token</span></div>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_hf_token</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_hf_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the Hugging Face token from the environment variable.</span>
+<span class="sd">        Get the Hugging Face token from the instance variable or environment variable.</span>
 
 <span class="sd">        :return: The Hugging Face token.</span>
-<span class="sd">        :rtype: str</span>
+<span class="sd">        :rtype: Optional[str]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HF_TOKEN&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HF_TOKEN&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">model_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the model names available in the repository.</span>
+<span class="sd">        Get the list of available model names in the repository.</span>
 
-<span class="sd">        :return: The list of model names.</span>
+<span class="sd">        This property lazily loads the model names from the Hugging Face repository</span>
+<span class="sd">        and caches them for future use.</span>
+
+<span class="sd">        :return: The list of model names available in the repository.</span>
 <span class="sd">        :rtype: List[str]</span>
+
+<span class="sd">        :raises RuntimeError: If there&#39;s an error accessing the Hugging Face repository.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">HfFileSystem</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">))</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span>
-                <span class="n">hf_fs</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">}</span><span class="s1">/*/model.onnx&#39;</span><span class="p">)</span>
+                <span class="n">hf_normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">)))</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">hf_fs_path</span><span class="p">(</span>
+                    <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                    <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;*/model.onnx&#39;</span><span class="p">,</span>
+                <span class="p">))</span>
             <span class="p">]</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span>
 
     <span class="k">def</span> <span class="nf">_check_model_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Check if the model name is valid.</span>
+<span class="sd">        Check if the given model name is valid and available in the repository.</span>
 
-<span class="sd">        :param model_name: The name of the model.</span>
+<span class="sd">        :param model_name: The name of the model to check.</span>
 <span class="sd">        :type model_name: str</span>
 
-<span class="sd">        :raises ValueError: If the model name is invalid.</span>
+<span class="sd">        :raises ValueError: If the model name is not found in the list of available models.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_names</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown model </span><span class="si">{</span><span class="n">model_name</span><span class="si">!r}</span><span class="s1"> in model repository </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">!r}</span><span class="s1">, &#39;</span>
@@ -225,13 +269,17 @@
 
     <span class="k">def</span> <span class="nf">_open_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Open the specified model.</span>
+<span class="sd">        Open and cache the specified ONNX model.</span>
 
-<span class="sd">        :param model_name: The name of the model.</span>
+<span class="sd">        This method downloads the model if it&#39;s not already cached and opens it using ONNX runtime.</span>
+
+<span class="sd">        :param model_name: The name of the model to open.</span>
 <span class="sd">        :type model_name: str</span>
 
-<span class="sd">        :return: The opened model.</span>
+<span class="sd">        :return: The opened ONNX model.</span>
 <span class="sd">        :rtype: Any</span>
+
+<span class="sd">        :raises RuntimeError: If there&#39;s an error downloading or opening the model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_check_model_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
@@ -244,13 +292,17 @@
 
     <span class="k">def</span> <span class="nf">_open_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Open the labels file for the specified model.</span>
+<span class="sd">        Open and cache the labels file for the specified model.</span>
 
-<span class="sd">        :param model_name: The name of the model.</span>
+<span class="sd">        This method downloads the meta.json file containing the labels if it&#39;s not already cached.</span>
+
+<span class="sd">        :param model_name: The name of the model whose labels to open.</span>
 <span class="sd">        :type model_name: str</span>
 
-<span class="sd">        :return: The list of labels.</span>
+<span class="sd">        :return: The list of labels for the specified model.</span>
 <span class="sd">        :rtype: List[str]</span>
+
+<span class="sd">        :raises RuntimeError: If there&#39;s an error downloading or parsing the labels file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_check_model_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
@@ -266,13 +318,17 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make a raw prediction on the specified image using the specified model.</span>
 
-<span class="sd">        :param image: The input image.</span>
+<span class="sd">        This method preprocesses the image, runs it through the model, and returns the raw output.</span>
+
+<span class="sd">        :param image: The input image to classify.</span>
 <span class="sd">        :type image: ImageTyping</span>
-<span class="sd">        :param model_name: The name of the model.</span>
+<span class="sd">        :param model_name: The name of the model to use for prediction.</span>
 <span class="sd">        :type model_name: str</span>
 
-<span class="sd">        :return: The raw prediction.</span>
+<span class="sd">        :return: The raw prediction output from the model.</span>
 <span class="sd">        :rtype: np.ndarray</span>
+
+<span class="sd">        :raises RuntimeError: If the model&#39;s input shape is incompatible with the image.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
         <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
@@ -290,15 +346,20 @@
 
 <div class="viewcode-block" id="ClassifyModel.predict_score"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.predict_score">[docs]</a>    <span class="k">def</span> <span class="nf">predict_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Predict the scores for each class.</span>
+<span class="sd">        Predict the scores for each class using the specified model.</span>
 
-<span class="sd">        :param image: The input image.</span>
+<span class="sd">        This method runs the image through the model and returns a dictionary of class scores.</span>
+
+<span class="sd">        :param image: The input image to classify.</span>
 <span class="sd">        :type image: ImageTyping</span>
-<span class="sd">        :param model_name: The name of the model.</span>
+<span class="sd">        :param model_name: The name of the model to use for prediction.</span>
 <span class="sd">        :type model_name: str</span>
 
-<span class="sd">        :return: The dictionary containing class scores.</span>
+<span class="sd">        :return: A dictionary mapping class labels to their predicted scores.</span>
 <span class="sd">        :rtype: Dict[str, float]</span>
+
+<span class="sd">        :raises ValueError: If the model name is invalid.</span>
+<span class="sd">        :raises RuntimeError: If there&#39;s an error during prediction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
         <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_open_label</span><span class="p">(</span><span class="n">model_name</span><span class="p">),</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
@@ -306,15 +367,20 @@
 
 <div class="viewcode-block" id="ClassifyModel.predict"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Predict the class with the highest score.</span>
+<span class="sd">        Predict the class with the highest score for the given image.</span>
 
-<span class="sd">        :param image: The input image.</span>
+<span class="sd">        This method runs the image through the model and returns the predicted class and its score.</span>
+
+<span class="sd">        :param image: The input image to classify.</span>
 <span class="sd">        :type image: ImageTyping</span>
-<span class="sd">        :param model_name: The name of the model.</span>
+<span class="sd">        :param model_name: The name of the model to use for prediction.</span>
 <span class="sd">        :type model_name: str</span>
 
-<span class="sd">        :return: The predicted class and its score.</span>
+<span class="sd">        :return: A tuple containing the predicted class label and its score.</span>
 <span class="sd">        :rtype: Tuple[str, float]</span>
+
+<span class="sd">        :raises ValueError: If the model name is invalid.</span>
+<span class="sd">        :raises RuntimeError: If there&#39;s an error during prediction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">max_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
@@ -322,58 +388,81 @@
 
 <div class="viewcode-block" id="ClassifyModel.clear"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Clear the loaded models and labels.</span>
+<span class="sd">        Clear the cached models and labels.</span>
+
+<span class="sd">        This method frees up memory by removing all loaded models and labels from the cache.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div></div>
 
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ClassifyModel</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ClassifyModel</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Open classification models for the specified repository ID.</span>
+<span class="sd">    Open and cache a ClassifyModel instance for the specified repository ID.</span>
+
+<span class="sd">    This function uses LRU caching to avoid creating multiple ClassifyModel instances</span>
+<span class="sd">    for the same repository.</span>
 
 <span class="sd">    :param repo_id: The repository ID containing the models.</span>
 <span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
 
-<span class="sd">    :return: The ClassifyModel instance for the repository.</span>
+<span class="sd">    :return: A ClassifyModel instance for the specified repository.</span>
 <span class="sd">    :rtype: ClassifyModel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ClassifyModel</span><span class="p">(</span><span class="n">repo_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ClassifyModel</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="classify_predict_score"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.classify_predict_score">[docs]</a><span class="k">def</span> <span class="nf">classify_predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<div class="viewcode-block" id="classify_predict_score"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.classify_predict_score">[docs]</a><span class="k">def</span> <span class="nf">classify_predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                           <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Predict the scores for each class using the specified model.</span>
+<span class="sd">    Predict the scores for each class using the specified model and repository.</span>
 
-<span class="sd">    :param image: The input image.</span>
+<span class="sd">    This function is a convenience wrapper around ClassifyModel&#39;s predict_score method.</span>
+
+<span class="sd">    :param image: The input image to classify.</span>
 <span class="sd">    :type image: ImageTyping</span>
 <span class="sd">    :param repo_id: The repository ID containing the models.</span>
 <span class="sd">    :type repo_id: str</span>
-<span class="sd">    :param model_name: The name of the model.</span>
+<span class="sd">    :param model_name: The name of the model to use for prediction.</span>
 <span class="sd">    :type model_name: str</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
 
-<span class="sd">    :return: The dictionary containing class scores.</span>
+<span class="sd">    :return: A dictionary mapping class labels to their predicted scores.</span>
 <span class="sd">    :rtype: Dict[str, float]</span>
+
+<span class="sd">    :raises ValueError: If the model name or repository ID is invalid.</span>
+<span class="sd">    :raises RuntimeError: If there&#39;s an error during prediction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">)</span><span class="o">.</span><span class="n">predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span><span class="o">.</span><span class="n">predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="classify_predict"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.classify_predict">[docs]</a><span class="k">def</span> <span class="nf">classify_predict</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<div class="viewcode-block" id="classify_predict"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.classify_predict">[docs]</a><span class="k">def</span> <span class="nf">classify_predict</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                     <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Predict the class with the highest score using the specified model.</span>
+<span class="sd">    Predict the class with the highest score using the specified model and repository.</span>
 
-<span class="sd">    :param image: The input image.</span>
+<span class="sd">    This function is a convenience wrapper around ClassifyModel&#39;s predict method.</span>
+
+<span class="sd">    :param image: The input image to classify.</span>
 <span class="sd">    :type image: ImageTyping</span>
 <span class="sd">    :param repo_id: The repository ID containing the models.</span>
 <span class="sd">    :type repo_id: str</span>
-<span class="sd">    :param model_name: The name of the model.</span>
+<span class="sd">    :param model_name: The name of the model to use for prediction.</span>
 <span class="sd">    :type model_name: str</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
 
-<span class="sd">    :return: The predicted class and its score.</span>
+<span class="sd">    :return: A tuple containing the predicted class label and its score.</span>
 <span class="sd">    :rtype: Tuple[str, float]</span>
+
+<span class="sd">    :raises ValueError: If the model name or repository ID is invalid.</span>
+<span class="sd">    :raises RuntimeError: If there&#39;s an error during prediction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
 </pre></div>
 
 
@@ -423,9 +512,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/yolo/index.html">dev/yolo</a></dd>
-                        <dd><a href="../../../../dev/bchlib/index.html">dev/bchlib</a></dd>
                         <dd><a href="classify.html">main</a></dd>
+                        <dd><a href="../../../../dev/bchlib/index.html">dev/bchlib</a></dd>
                 </dl>
         </div>
     </div><script>
