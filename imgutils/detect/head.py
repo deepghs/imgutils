@@ -13,25 +13,15 @@ Overview:
         :align: center
 
 """
-from functools import lru_cache
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
-from huggingface_hub import hf_hub_download
+from ..data import ImageTyping
+from ..generic import yolo_predict
 
-from ._yolo import _image_preprocess, _data_postprocess
-from ..data import ImageTyping, load_image, rgb_encode
-from ..utils import open_onnx_model
+_REPO_ID = 'deepghs/anime_head_detection'
 
 
-@lru_cache()
-def _open_head_detect_model(level: str = 's'):
-    return open_onnx_model(hf_hub_download(
-        'deepghs/imgutils-models',
-        f'head_detect/head_detect_best_{level}.onnx'
-    ))
-
-
-def detect_heads(image: ImageTyping, level: str = 's', max_infer_size=640,
+def detect_heads(image: ImageTyping, level: str = 's', model_name: Optional[str] = None,
                  conf_threshold: float = 0.3, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
@@ -42,8 +32,8 @@ def detect_heads(image: ImageTyping, level: str = 's', max_infer_size=640,
     :param level: The model level being used can be either `s` or `n`.
         The `n` model runs faster with smaller system overhead, while the `s` model achieves higher accuracy.
         The default value is `s`.
-    :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
-        the image will be resized and used for inference. The default value is `640` pixels.
+    :param model_name: Name of the YOLO model to use, use v0 models with optional `level` when not assigned.
+    :type model_name: str, optional
     :param conf_threshold: The confidence threshold, only detection results with confidence scores above
         this threshold will be returned. The default value is `0.3`.
     :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold
@@ -68,9 +58,10 @@ def detect_heads(image: ImageTyping, level: str = 's', max_infer_size=640,
         >>> plt.imshow(detection_visualize(image, result))
         >>> plt.show()
     """
-    image = load_image(image, mode='RGB')
-    new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
-
-    data = rgb_encode(new_image)[None, ...]
-    output, = _open_head_detect_model(level).run(['output0'], {'images': data})
-    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, ['head'])
+    return yolo_predict(
+        image=image,
+        repo_id=_REPO_ID,
+        model_name=model_name or f'head_detect_v0_{level}',
+        conf_threshold=conf_threshold,
+        iou_threshold=iou_threshold,
+    )

@@ -1,17 +1,14 @@
-import os
 import random
 
 from hfutils.operate import get_hf_fs
 
 from benchmark import BaseBenchmark, create_plot_cli
 from imgutils.detect.booru_yolo import detect_with_booru_yolo, _REPO_ID
+from imgutils.generic.yolo import _open_models_for_repo_id
 
 repository = 'deepghs/booru_yolo'
 hf_fs = get_hf_fs()
-_MODELS = [
-    os.path.basename(os.path.dirname(file))
-    for file in hf_fs.glob(f'{repository}/*/model.onnx')
-]
+_MODELS = _open_models_for_repo_id(_REPO_ID).model_names
 
 
 class BooruYOLODetectBenchmark(BaseBenchmark):
