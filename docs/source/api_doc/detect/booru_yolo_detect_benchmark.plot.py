@@ -4,7 +4,7 @@ import random
 from hfutils.operate import get_hf_fs
 
 from benchmark import BaseBenchmark, create_plot_cli
-from imgutils.detect import detect_with_booru_yolo
+from imgutils.detect.booru_yolo import detect_with_booru_yolo, _REPO_ID
 
 repository = 'deepghs/booru_yolo'
 hf_fs = get_hf_fs()
@@ -20,14 +20,12 @@ class BooruYOLODetectBenchmark(BaseBenchmark):
         self.model_name = model_name
 
     def load(self):
-        from imgutils.detect.booru_yolo import _open_booru_yolo_model, _get_booru_yolo_labels
-        _ = _open_booru_yolo_model(self.model_name)
-        _ = _get_booru_yolo_labels(self.model_name)
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _open_models_for_repo_id(_REPO_ID)._open_model(self.model_name)
 
     def unload(self):
-        from imgutils.detect.booru_yolo import _open_booru_yolo_model, _get_booru_yolo_labels
-        _open_booru_yolo_model.cache_clear()
-        _get_booru_yolo_labels.cache_clear()
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _open_models_for_repo_id.cache_clear()
 
     def run(self):
         image_file = random.choice(self.all_images)
