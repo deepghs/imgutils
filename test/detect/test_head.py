@@ -33,3 +33,7 @@ class TestDetectHead:
 
     def test_detect_heads_none(self):
         assert detect_heads(get_testfile('png_full.png')) == []
+
+    def test_detect_heads_not_found(self):
+        with pytest.raises(ValueError):
+            _ = detect_heads(get_testfile('genshin_post.png'), model_name='not_found')
