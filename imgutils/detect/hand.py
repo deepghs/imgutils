@@ -13,28 +13,15 @@ Overview:
         :align: center
 
 """
-from functools import lru_cache
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
-from huggingface_hub import hf_hub_download
+from ..data import ImageTyping
+from ..generic import yolo_predict
 
-from ._yolo import _image_preprocess, _data_postprocess
-from ..data import ImageTyping, load_image, rgb_encode
-from ..utils import open_onnx_model
+_REPO_ID = 'deepghs/anime_hand_detection'
 
 
-@lru_cache()
-def _open_hand_detect_model(level: str = 's', version: str = 'v1.0'):
-    return open_onnx_model(hf_hub_download(
-        f'deepghs/anime_hand_detection',
-        f'hand_detect_{version}_{level}/model.onnx'
-    ))
-
-
-_LABELS = ["hand"]
-
-
-def detect_hands(image: ImageTyping, level: str = 's', version: str = 'v1.0', max_infer_size=640,
+def detect_hands(image: ImageTyping, level: str = 's', version: str = 'v1.0', model_name: Optional[str] = None,
                  conf_threshold: float = 0.35, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
@@ -55,9 +42,10 @@ def detect_hands(image: ImageTyping, level: str = 's', version: str = 'v1.0', ma
     :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
         the target type (always `hand`) and the target confidence score.
     """
-    image = load_image(image, mode='RGB')
-    new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
-
-    data = rgb_encode(new_image)[None, ...]
-    output, = _open_hand_detect_model(level).run(['output0'], {'images': data})
-    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, _LABELS)
+    return yolo_predict(
+        image=image,
+        repo_id=_REPO_ID,
+        model_name=model_name or f'hand_detect_{version}_{level}',
+        conf_threshold=conf_threshold,
+        iou_threshold=iou_threshold,
+    )
