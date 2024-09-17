@@ -14,30 +14,15 @@ Overview:
         :align: center
 
 """
-from functools import lru_cache
+from typing import Optional
 
-from huggingface_hub import hf_hub_download
+from ..data import ImageTyping
+from ..generic import yolo_predict
 
-from ._yolo import _image_preprocess, _data_postprocess
-from ..data import ImageTyping, load_image, rgb_encode
-from ..utils import open_onnx_model
-
-_VERSIONS = {
-    'v0': '',
-    'v1': 'plus_',
-    'v1.1': 'plus_v1.1_',
-}
+_REPO_ID = 'deepghs/anime_person_detection'
 
 
-@lru_cache()
-def _open_person_detect_model(level: str, version: str):
-    return open_onnx_model(hf_hub_download(
-        'deepghs/imgutils-models',
-        f'person_detect/person_detect_{_VERSIONS[version]}best_{level}.onnx'
-    ))
-
-
-def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1.1', max_infer_size=640,
+def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1.1', model_name: Optional[str] = None,
                   conf_threshold: float = 0.3, iou_threshold: float = 0.5):
     """
     Overview:
@@ -81,9 +66,10 @@ def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1.1', m
         the versions and models included.
 
     """
-    image = load_image(image, mode='RGB')
-    new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
-
-    data = rgb_encode(new_image)[None, ...]
-    output, = _open_person_detect_model(level, version).run(['output0'], {'images': data})
-    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, ['person'])
+    return yolo_predict(
+        image=image,
+        repo_id=_REPO_ID,
+        model_name=model_name or f'person_detect_{version}_{level}',
+        conf_threshold=conf_threshold,
+        iou_threshold=iou_threshold,
+    )
