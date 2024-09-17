@@ -1,38 +1,35 @@
 import random
 
 from benchmark import BaseBenchmark, create_plot_cli
-from imgutils.detect import detect_person
+from imgutils.detect.person import detect_person, _REPO_ID
+from imgutils.generic.yolo import _open_models_for_repo_id
+
+_MODELS = _open_models_for_repo_id(_REPO_ID).model_names
 
 
 class PersonDetectBenchmark(BaseBenchmark):
-    def __init__(self, level, version):
+    def __init__(self, model_name: str):
         BaseBenchmark.__init__(self)
-        self.level = level
-        self.version = version
+        self.model_name = model_name
 
     def load(self):
-        from imgutils.detect.person import _open_person_detect_model
-        _ = _open_person_detect_model(level=self.level, version=self.version)
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _ = _open_models_for_repo_id(_REPO_ID)._open_model(self.model_name)
 
     def unload(self):
-        from imgutils.detect.person import _open_person_detect_model
-        _open_person_detect_model.cache_clear()
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _open_models_for_repo_id.cache_clear()
 
     def run(self):
         image_file = random.choice(self.all_images)
-        _ = detect_person(image_file, level=self.level, version=self.version)
+        _ = detect_person(image_file, model_name=self.model_name)
 
 
 if __name__ == '__main__':
     create_plot_cli(
         [
-            ('person v1.1 (yolov8m)', PersonDetectBenchmark('m', 'v1.1')),
-            ('person v1.1 (yolov8s)', PersonDetectBenchmark('s', 'v1.1')),
-            ('person v1.1 (yolov8n)', PersonDetectBenchmark('n', 'v1.1')),
-            ('person v1 (yolov8m)', PersonDetectBenchmark('m', 'v1')),
-            ('person v0 (yolov8s)', PersonDetectBenchmark('s', 'v0')),
-            ('person v0 (yolov8m)', PersonDetectBenchmark('m', 'v0')),
-            ('person v0 (yolov8x)', PersonDetectBenchmark('x', 'v0')),
+            (model_name, PersonDetectBenchmark(model_name))
+            for model_name in _MODELS
         ],
         title='Benchmark for Anime Person Detections',
         run_times=10,
