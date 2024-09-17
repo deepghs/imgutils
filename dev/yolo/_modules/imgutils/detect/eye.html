@@ -121,47 +121,52 @@
 <span class="sd">        :align: center</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">..generic</span> <span class="kn">import</span> <span class="n">yolo_predict</span>
 
-<span class="kn">from</span> <span class="nn">._yolo</span> <span class="kn">import</span> <span class="n">_image_preprocess</span><span class="p">,</span> <span class="n">_data_postprocess</span>
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">rgb_encode</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
+<span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/anime_eye_detection&#39;</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_eye_detect_model</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v1.0&#39;</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;deepghs/anime_eye_detection&#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;eye_detect_</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span>
-    <span class="p">))</span>
-
-
-<span class="n">_LABELS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;eye&quot;</span><span class="p">]</span>
-
-
-<div class="viewcode-block" id="detect_eyes"><a class="viewcode-back" href="../../../api_doc/detect/eye.html#imgutils.detect.eye.detect_eyes">[docs]</a><span class="k">def</span> <span class="nf">detect_eyes</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v1.0&#39;</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="o">=</span><span class="mi">640</span><span class="p">,</span>
+<div class="viewcode-block" id="detect_eyes"><a class="viewcode-back" href="../../../api_doc/detect/eye.html#imgutils.detect.eye.detect_eyes">[docs]</a><span class="k">def</span> <span class="nf">detect_eyes</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v1.0&#39;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Overview:</span>
-<span class="sd">        Detect human eyes in anime images.</span>
+<span class="sd">    Detect human eyes in anime images.</span>
 
-<span class="sd">    :param image: Image to detect.</span>
-<span class="sd">    :param level: The model level being used can be either `s` or `n`.</span>
-<span class="sd">        The `n` model runs faster with smaller system overhead, while the `s` model achieves higher accuracy.</span>
-<span class="sd">        The default value is `s`.</span>
-<span class="sd">    :param version: Version of model, default is ``v1.0``.</span>
-<span class="sd">    :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,</span>
-<span class="sd">        the image will be resized and used for inference. The default value is `640` pixels.</span>
-<span class="sd">    :param conf_threshold: The confidence threshold, only detection results with confidence scores above</span>
-<span class="sd">        this threshold will be returned. The default value is `0.3`.</span>
-<span class="sd">    :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold</span>
-<span class="sd">        will be discarded. The default value is `0.3`.</span>
-<span class="sd">    :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,</span>
-<span class="sd">        the target type (always `eye`) and the target confidence score.</span>
+<span class="sd">    This function uses a YOLOv8 model to detect eyes in the given anime image. It supports</span>
+<span class="sd">    different model levels and versions, allowing for a trade-off between speed and accuracy.</span>
+
+<span class="sd">    :param image: The input image for eye detection. Can be various image types supported by ImageTyping.</span>
+<span class="sd">    :type image: ImageTyping</span>
+
+<span class="sd">    :param level: The model level to use. Can be either &#39;s&#39; (for higher accuracy) or &#39;n&#39; (for faster processing).</span>
+<span class="sd">                  Default is &#39;s&#39;.</span>
+<span class="sd">    :type level: str</span>
+
+<span class="sd">    :param version: Version of the model to use. Default is &#39;v1.0&#39;.</span>
+<span class="sd">    :type version: str</span>
+
+<span class="sd">    :param model_name: Optional custom model name. If not provided, it&#39;s constructed using version and level.</span>
+<span class="sd">    :type model_name: Optional[str]</span>
+
+<span class="sd">    :param conf_threshold: Confidence threshold for detections. Only detections with confidence above this</span>
+<span class="sd">                           threshold are returned. Default is 0.3.</span>
+<span class="sd">    :type conf_threshold: float</span>
+
+<span class="sd">    :param iou_threshold: Intersection over Union (IoU) threshold for non-maximum suppression.</span>
+<span class="sd">                          Detections with IoU above this threshold are considered overlapping and merged.</span>
+<span class="sd">                          Default is 0.3.</span>
+<span class="sd">    :type iou_threshold: float</span>
+
+<span class="sd">    :return: A list of detected eyes. Each detection is represented by a tuple containing:</span>
+<span class="sd">             - Bounding box coordinates as (x0, y0, x1, y1)</span>
+<span class="sd">             - Detection class (always &#39;eye&#39; for this function)</span>
+<span class="sd">             - Confidence score of the detection</span>
+<span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    :raises: May raise exceptions related to image loading or model prediction (from yolo_predict function).</span>
 
 <span class="sd">    Examples::</span>
 <span class="sd">        &gt;&gt;&gt; from imgutils.detect import detect_eyes, detection_visualize</span>
@@ -176,12 +181,13 @@
 <span class="sd">        &gt;&gt;&gt; plt.imshow(detection_visualize(image, result))</span>
 <span class="sd">        &gt;&gt;&gt; plt.show()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
-    <span class="n">new_image</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span> <span class="o">=</span> <span class="n">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">)</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">new_image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-    <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_eye_detect_model</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output0&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;images&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
-    <span class="k">return</span> <span class="n">_data_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">conf_threshold</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">,</span> <span class="n">_LABELS</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">yolo_predict</span><span class="p">(</span>
+        <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">_REPO_ID</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">&#39;eye_detect_</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+        <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+    <span class="p">)</span></div>
 </pre></div>
 
 
