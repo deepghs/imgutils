@@ -278,98 +278,17 @@
 <span class="sd">           with outstanding mAP scores, though noted to be not completely fair due to training set biases.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">ast</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
-
-<span class="kn">from</span> <span class="nn">._yolo</span> <span class="kn">import</span> <span class="n">_data_postprocess</span><span class="p">,</span> <span class="n">_image_preprocess</span>
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">rgb_encode</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
-
-
-<span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_booru_yolo_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Open and cache the Booru YOLO model.</span>
-
-<span class="sd">    :param model_name: Name of the model to open.</span>
-<span class="sd">    :type model_name: str</span>
-<span class="sd">    :return: Opened ONNX model.</span>
-<span class="sd">    :rtype: onnxruntime.InferenceSession</span>
-
-<span class="sd">    This function downloads the specified model from the Hugging Face Hub and opens it as an ONNX model.</span>
-<span class="sd">    The result is cached to avoid repeated downloads and openings.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
-        <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;deepghs/booru_yolo&#39;</span><span class="p">,</span>
-        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
-        <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span>
-    <span class="p">))</span>
-
-
-<span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_get_booru_yolo_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Retrieve and cache the labels for the Booru YOLO model.</span>
-
-<span class="sd">    :param model_name: Name of the model to get labels for.</span>
-<span class="sd">    :type model_name: str</span>
-<span class="sd">    :return: List of label names.</span>
-<span class="sd">    :rtype: List[str]</span>
-
-<span class="sd">    This function opens the specified model, extracts the label information from its metadata,</span>
-<span class="sd">    and returns a list of label names. The result is cached for efficiency.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">_open_booru_yolo_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-    <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_modelmeta</span><span class="p">()</span>
-    <span class="n">names_map</span> <span class="o">=</span> <span class="n">_safe_eval_names_str</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">])</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&lt;Unknown&gt;&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">names_map</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">id_</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">labels</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
-    <span class="k">return</span> <span class="n">labels</span>
-
-
-<span class="k">def</span> <span class="nf">_safe_eval_names_str</span><span class="p">(</span><span class="n">names_str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Safely evaluate the names string from model metadata.</span>
-
-<span class="sd">    :param names_str: String representation of names dictionary.</span>
-<span class="sd">    :type names_str: str</span>
-<span class="sd">    :return: Dictionary of name mappings.</span>
-<span class="sd">    :rtype: dict</span>
-<span class="sd">    :raises RuntimeError: If an invalid key or value type is encountered.</span>
-
-<span class="sd">    This function parses the names string from the model metadata, ensuring that</span>
-<span class="sd">    only string and number literals are evaluated for safety.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">node</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">names_str</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;eval&#39;</span><span class="p">)</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="c1"># noinspection PyUnresolvedReferences</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">Str</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Num</span><span class="p">)):</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid key type: </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">, this should be a bug, &quot;</span>
-                               <span class="sa">f</span><span class="s2">&quot;please open an issue to dghs-imgutils.&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">Str</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Num</span><span class="p">)):</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value type: </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">, this should be a bug, &quot;</span>
-                               <span class="sa">f</span><span class="s2">&quot;please open an issue to dghs-imgutils.&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
-
-        <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="k">return</span> <span class="n">result</span>
-
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span> <span class="nn">..generic</span> <span class="kn">import</span> <span class="n">yolo_predict</span>
 
 <span class="n">_DEFAULT_MODEL</span> <span class="o">=</span> <span class="s1">&#39;yolov8s_aa11&#39;</span>
+<span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/booru_yolo&#39;</span>
 
 
 <div class="viewcode-block" id="detect_with_booru_yolo"><a class="viewcode-back" href="../../../api_doc/detect/booru_yolo.html#imgutils.detect.booru_yolo.detect_with_booru_yolo">[docs]</a><span class="k">def</span> <span class="nf">detect_with_booru_yolo</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL</span><span class="p">,</span>
-                           <span class="n">max_infer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">640</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
+                           <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform object detection on an image using the Booru YOLO model.</span>
@@ -378,8 +297,6 @@
 <span class="sd">    :type image: ImageTyping</span>
 <span class="sd">    :param model_name: Name of the Booru YOLO model to use, defaults to &#39;yolov8s_aa11&#39;.</span>
 <span class="sd">    :type model_name: str, optional</span>
-<span class="sd">    :param max_infer_size: Maximum inference size for image preprocessing, defaults to 640.</span>
-<span class="sd">    :type max_infer_size: int, optional</span>
 <span class="sd">    :param conf_threshold: Confidence threshold for detection, defaults to 0.25.</span>
 <span class="sd">    :type conf_threshold: float, optional</span>
 <span class="sd">    :param iou_threshold: IOU threshold for non-maximum suppression, defaults to 0.7.</span>
@@ -394,13 +311,13 @@
 <span class="sd">        &gt;&gt;&gt; for box, label, confidence in detections:</span>
 <span class="sd">        ...     print(f&quot;Detected {label} with confidence {confidence:.2f} at {box}&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">_open_booru_yolo_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">_get_booru_yolo_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-    <span class="n">new_image</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span> <span class="o">=</span> <span class="n">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">new_image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-    <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output0&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;images&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
-    <span class="k">return</span> <span class="n">_data_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">conf_threshold</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">yolo_predict</span><span class="p">(</span>
+        <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">_REPO_ID</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+        <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+        <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+    <span class="p">)</span></div>
 </pre></div>
 
 

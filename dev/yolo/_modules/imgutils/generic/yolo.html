@@ -406,7 +406,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_models</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="o">=</span> <span class="n">hf_token</span></div>
 
-    <span class="k">def</span> <span class="nf">_get_hf_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_hf_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the Hugging Face token, either from the instance or environment variable.</span>
 
@@ -516,7 +516,7 @@
 
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">YOLOModel</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">YOLOModel</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load and cache a YOLO model from a Hugging Face repository.</span>
 
@@ -525,6 +525,8 @@
 
 <span class="sd">    :param repo_id: The Hugging Face repository ID for the YOLO model.</span>
 <span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
 
 <span class="sd">    :return: The loaded YOLO model.</span>
 <span class="sd">    :rtype: YOLOModel</span>
@@ -536,11 +538,12 @@
 <span class="sd">        &gt;&gt;&gt; # Subsequent calls with the same repo_id will return the cached model</span>
 <span class="sd">        &gt;&gt;&gt; same_model = _open_models_for_repo_id(&quot;yolov5/yolov5s&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">YOLOModel</span><span class="p">(</span><span class="n">repo_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">YOLOModel</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="yolo_predict"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.yolo_predict">[docs]</a><span class="k">def</span> <span class="nf">yolo_predict</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                 <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
+                 <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                 <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform object detection on an image using a YOLO model from a Hugging Face repository.</span>
@@ -572,7 +575,7 @@
 <span class="sd">    &gt;&gt;&gt; print(detections[0])  # First detection</span>
 <span class="sd">    ((100, 200, 300, 400), &#39;person&#39;, 0.95)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
         <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
         <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
         <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>

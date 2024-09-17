@@ -165,6 +165,7 @@
 
 <span class="sd">    :raises TypeError: If the input image is not a PIL Image object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># noinspection PyUnresolvedReferences</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">order_</span><span class="o">=</span><span class="s1">&#39;CHW&#39;</span><span class="p">)</span>
 
@@ -218,12 +219,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="o">=</span> <span class="n">hf_token</span></div>
 
-    <span class="k">def</span> <span class="nf">_get_hf_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_hf_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the Hugging Face token from the instance variable or environment variable.</span>
 
 <span class="sd">        :return: The Hugging Face token.</span>
-<span class="sd">        :rtype: str</span>
+<span class="sd">        :rtype: Optional[str]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HF_TOKEN&#39;</span><span class="p">)</span>
 
@@ -396,7 +397,7 @@
 
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ClassifyModel</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ClassifyModel</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Open and cache a ClassifyModel instance for the specified repository ID.</span>
 
@@ -405,14 +406,17 @@
 
 <span class="sd">    :param repo_id: The repository ID containing the models.</span>
 <span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
 
 <span class="sd">    :return: A ClassifyModel instance for the specified repository.</span>
 <span class="sd">    :rtype: ClassifyModel</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ClassifyModel</span><span class="p">(</span><span class="n">repo_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ClassifyModel</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="classify_predict_score"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.classify_predict_score">[docs]</a><span class="k">def</span> <span class="nf">classify_predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<div class="viewcode-block" id="classify_predict_score"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.classify_predict_score">[docs]</a><span class="k">def</span> <span class="nf">classify_predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                           <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Predict the scores for each class using the specified model and repository.</span>
 
@@ -424,6 +428,8 @@
 <span class="sd">    :type repo_id: str</span>
 <span class="sd">    :param model_name: The name of the model to use for prediction.</span>
 <span class="sd">    :type model_name: str</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
 
 <span class="sd">    :return: A dictionary mapping class labels to their predicted scores.</span>
 <span class="sd">    :rtype: Dict[str, float]</span>
@@ -431,10 +437,11 @@
 <span class="sd">    :raises ValueError: If the model name or repository ID is invalid.</span>
 <span class="sd">    :raises RuntimeError: If there&#39;s an error during prediction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">)</span><span class="o">.</span><span class="n">predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span><span class="o">.</span><span class="n">predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="classify_predict"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.classify_predict">[docs]</a><span class="k">def</span> <span class="nf">classify_predict</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<div class="viewcode-block" id="classify_predict"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.classify_predict">[docs]</a><span class="k">def</span> <span class="nf">classify_predict</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                     <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Predict the class with the highest score using the specified model and repository.</span>
 
@@ -446,6 +453,8 @@
 <span class="sd">    :type repo_id: str</span>
 <span class="sd">    :param model_name: The name of the model to use for prediction.</span>
 <span class="sd">    :type model_name: str</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
 
 <span class="sd">    :return: A tuple containing the predicted class label and its score.</span>
 <span class="sd">    :rtype: Tuple[str, float]</span>
@@ -453,7 +462,7 @@
 <span class="sd">    :raises ValueError: If the model name or repository ID is invalid.</span>
 <span class="sd">    :raises RuntimeError: If there&#39;s an error during prediction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
 </pre></div>
 
 
