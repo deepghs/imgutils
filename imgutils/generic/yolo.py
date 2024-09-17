@@ -298,7 +298,7 @@ class YOLOModel:
         self._models = {}
         self._hf_token = hf_token
 
-    def _get_hf_token(self):
+    def _get_hf_token(self) -> Optional[str]:
         """
         Get the Hugging Face token, either from the instance or environment variable.
 
@@ -408,7 +408,7 @@ class YOLOModel:
 
 
 @lru_cache()
-def _open_models_for_repo_id(repo_id: str) -> YOLOModel:
+def _open_models_for_repo_id(repo_id: str, hf_token: Optional[str] = None) -> YOLOModel:
     """
     Load and cache a YOLO model from a Hugging Face repository.
 
@@ -417,6 +417,8 @@ def _open_models_for_repo_id(repo_id: str) -> YOLOModel:
 
     :param repo_id: The Hugging Face repository ID for the YOLO model.
     :type repo_id: str
+    :param hf_token: Optional Hugging Face authentication token.
+    :type hf_token: Optional[str]
 
     :return: The loaded YOLO model.
     :rtype: YOLOModel
@@ -428,11 +430,12 @@ def _open_models_for_repo_id(repo_id: str) -> YOLOModel:
         >>> # Subsequent calls with the same repo_id will return the cached model
         >>> same_model = _open_models_for_repo_id("yolov5/yolov5s")
     """
-    return YOLOModel(repo_id)
+    return YOLOModel(repo_id, hf_token=hf_token)
 
 
 def yolo_predict(image: ImageTyping, repo_id: str, model_name: str,
-                 conf_threshold: float = 0.25, iou_threshold: float = 0.7) \
+                 conf_threshold: float = 0.25, iou_threshold: float = 0.7,
+                 hf_token: Optional[str] = None) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Perform object detection on an image using a YOLO model from a Hugging Face repository.
@@ -464,7 +467,7 @@ def yolo_predict(image: ImageTyping, repo_id: str, model_name: str,
     >>> print(detections[0])  # First detection
     ((100, 200, 300, 400), 'person', 0.95)
     """
-    return _open_models_for_repo_id(repo_id).predict(
+    return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict(
         image=image,
         model_name=model_name,
         conf_threshold=conf_threshold,
