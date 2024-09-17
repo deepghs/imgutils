@@ -1,6 +1,7 @@
 import pytest
 
-from imgutils.detect.censor import _open_censor_detect_model, detect_censors
+from imgutils.detect.censor import detect_censors
+from imgutils.generic.yolo import _open_models_for_repo_id
 from test.testings import get_testfile
 
 
@@ -9,7 +10,7 @@ def _release_model_after_run():
     try:
         yield
     finally:
-        _open_censor_detect_model.cache_clear()
+        _open_models_for_repo_id.cache_clear()
 
 
 @pytest.mark.unittest

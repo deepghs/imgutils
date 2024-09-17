@@ -1,37 +1,35 @@
 import random
 
 from benchmark import BaseBenchmark, create_plot_cli
-from imgutils.detect import detect_censors
+from imgutils.detect.censor import detect_censors, _REPO_ID
+from imgutils.generic.yolo import _open_models_for_repo_id
+
+_MODELS = _open_models_for_repo_id(_REPO_ID).model_names
 
 
 class CensorDetectBenchmark(BaseBenchmark):
-    def __init__(self, level, version):
+    def __init__(self, model_name: str):
         BaseBenchmark.__init__(self)
-        self.level = level
-        self.version = version
+        self.model_name = model_name
 
     def load(self):
-        from imgutils.detect.censor import _open_censor_detect_model
-        _ = _open_censor_detect_model(level=self.level, version=self.version)
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _ = _open_models_for_repo_id(_REPO_ID)._open_model(self.model_name)
 
     def unload(self):
-        from imgutils.detect.censor import _open_censor_detect_model
-        _open_censor_detect_model.cache_clear()
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _open_models_for_repo_id.cache_clear()
 
     def run(self):
         image_file = random.choice(self.all_images)
-        _ = detect_censors(image_file, level=self.level, version=self.version)
+        _ = detect_censors(image_file, model_name=self.model_name)
 
 
 if __name__ == '__main__':
     create_plot_cli(
         [
-            ('censor v1.0 (yolov8s)', CensorDetectBenchmark('s', 'v1.0')),
-            ('censor v1.0 (yolov8n)', CensorDetectBenchmark('n', 'v1.0')),
-            ('censor v0.10 (yolov8s)', CensorDetectBenchmark('s', 'v0.10')),
-            ('censor v0.9 (yolov8s)', CensorDetectBenchmark('s', 'v0.9')),
-            # ('censor v0.8 (yolov8s)', CensorDetectBenchmark('s', 'v0.8')),
-            # ('censor v0.7 (yolov8s)', CensorDetectBenchmark('s', 'v0.7')),
+            (model_name, CensorDetectBenchmark(model_name))
+            for model_name in _MODELS
         ],
         title='Benchmark for Anime Censor Detections',
         run_times=10,
