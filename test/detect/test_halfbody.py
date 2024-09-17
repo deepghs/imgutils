@@ -1,6 +1,7 @@
 import pytest
 
-from imgutils.detect.halfbody import _open_halfbody_detect_model, detect_halfbody
+from imgutils.detect.halfbody import detect_halfbody
+from imgutils.generic.yolo import _open_models_for_repo_id
 from test.testings import get_testfile
 
 
@@ -9,7 +10,7 @@ def _release_model_after_run():
     try:
         yield
     finally:
-        _open_halfbody_detect_model.cache_clear()
+        _open_models_for_repo_id.cache_clear()
 
 
 @pytest.mark.unittest

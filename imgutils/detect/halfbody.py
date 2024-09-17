@@ -21,47 +21,52 @@ Overview:
         and then use this tool to obtain upper-body images.
 
 """
-from functools import lru_cache
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
-from huggingface_hub import hf_hub_download
+from ..data import ImageTyping
+from ..generic import yolo_predict
 
-from ._yolo import _image_preprocess, _data_postprocess
-from ..data import ImageTyping, load_image, rgb_encode
-from ..utils import open_onnx_model
+_REPO_ID = 'deepghs/anime_halfbody_detection'
 
 
-@lru_cache()
-def _open_halfbody_detect_model(level: str = 's', version: str = 'v1.0'):
-    return open_onnx_model(hf_hub_download(
-        f'deepghs/anime_halfbody_detection',
-        f'halfbody_detect_{version}_{level}/model.onnx'
-    ))
-
-
-_LABELS = ["halfbody"]
-
-
-def detect_halfbody(image: ImageTyping, level: str = 's', version: str = 'v1.0', max_infer_size=640,
+def detect_halfbody(image: ImageTyping, level: str = 's', version: str = 'v1.0', model_name: Optional[str] = None,
                     conf_threshold: float = 0.5, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
-    Overview:
-        Detect human upper-half body in anime images.
+    Detect human upper-half body in anime images.
 
-    :param image: Image to detect.
-    :param level: The model level being used can be either `s` or `n`.
-        The `n` model runs faster with smaller system overhead, while the `s` model achieves higher accuracy.
-        The default value is `s`.
-    :param version: Version of model, default is ``v1.0``.
-    :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
-        the image will be resized and used for inference. The default value is `640` pixels.
-    :param conf_threshold: The confidence threshold, only detection results with confidence scores above
-        this threshold will be returned. The default value is `0.5`.
-    :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold
-        will be discarded. The default value is `0.7`.
-    :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
-        the target type (always `halfbody`) and the target confidence score.
+    This function uses a YOLOv8 model to detect and localize upper-half bodies in anime-style images.
+    It supports different model levels and versions for flexibility in speed and accuracy trade-offs.
+
+    :param image: The input image to perform detection on. Can be a file path, URL, or image data.
+    :type image: ImageTyping
+
+    :param level: The model level to use. Can be either 's' (standard) or 'n' (nano).
+                  The 'n' model is faster with lower system overhead, while 's' offers higher accuracy.
+                  Default is 's'.
+    :type level: str
+
+    :param version: Version of the model to use. Default is 'v1.0'.
+    :type version: str
+
+    :param model_name: Optional custom model name. If not provided, it's constructed from version and level.
+    :type model_name: Optional[str]
+
+    :param conf_threshold: Confidence threshold for detections. Only detections with confidence above
+                           this threshold are returned. Default is 0.5.
+    :type conf_threshold: float
+
+    :param iou_threshold: Intersection over Union (IoU) threshold for non-maximum suppression.
+                          Overlapping detections above this threshold are merged. Default is 0.7.
+    :type iou_threshold: float
+
+    :return: A list of detections. Each detection is a tuple containing:
+             - Bounding box coordinates as (x0, y0, x1, y1)
+             - The string 'halfbody' (always)
+             - The confidence score of the detection
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    :raises ValueError: If an invalid level or version is provided.
 
     Examples::
         >>> from imgutils.detect import detect_halfbody, detection_visualize
@@ -76,9 +81,10 @@ def detect_halfbody(image: ImageTyping, level: str = 's', version: str = 'v1.0',
         >>> plt.imshow(detection_visualize(image, result))
         >>> plt.show()
     """
-    image = load_image(image, mode='RGB')
-    new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
-
-    data = rgb_encode(new_image)[None, ...]
-    output, = _open_halfbody_detect_model(level, version).run(['output0'], {'images': data})
-    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, _LABELS)
+    return yolo_predict(
+        image=image,
+        repo_id=_REPO_ID,
+        model_name=model_name or f'halfbody_detect_{version}_{level}',
+        conf_threshold=conf_threshold,
+        iou_threshold=iou_threshold,
+    )

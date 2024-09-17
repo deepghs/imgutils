@@ -17,45 +17,52 @@ Overview:
     `huggingface - deepghs/anime_face_detection <https://huggingface.co/deepghs/anime_face_detection>`_.
 
 """
-from functools import lru_cache
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
-from huggingface_hub import hf_hub_download
+from ..data import ImageTyping
+from ..generic import yolo_predict
 
-from ._yolo import _image_preprocess, _data_postprocess
-from ..data import ImageTyping, load_image, rgb_encode
-from ..utils import open_onnx_model
+_REPO_ID = 'deepghs/anime_face_detection'
 
 
-@lru_cache()
-def _open_face_detect_model(level: str = 's', version: str = 'v1.4'):
-    return open_onnx_model(hf_hub_download(
-        f'deepghs/anime_face_detection',
-        f'face_detect_{version}_{level}/model.onnx'
-    ))
-
-
-def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1.4', max_infer_size=640,
+def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1.4', model_name: Optional[str] = None,
                  conf_threshold: float = 0.25, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
-    Overview:
-        Detect human faces in anime images.
+    Detect human faces in anime images using YOLOv8 models.
 
-    :param image: Image to detect.
-    :param level: The model level being used can be either `s` or `n`.
-        The `n` model runs faster with smaller system overface, while the `s` model achieves higher accuracy.
-        The default value is `s`.
-    :param version: Version of model, default is ``v1.4``.
-        Available versions are ``v0``, ``v1``, ``v1.3`` and ``v1.4``.
-    :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
-        the image will be resized and used for inference. The default value is `640` pixels.
-    :param conf_threshold: The confidence threshold, only detection results with confidence scores above
-        this threshold will be returned. The default value is `0.25`.
-    :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold
-        will be discarded. The default value is `0.7`.
-    :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
-        the target type (always `face`) and the target confidence score.
+    This function applies a pre-trained YOLOv8 model to detect faces in the given anime image.
+    It supports different model levels and versions, allowing users to balance between
+    detection speed and accuracy.
+
+    :param image: The input image for face detection. Can be various image types supported by ImageTyping.
+    :type image: ImageTyping
+
+    :param level: The model level to use. Can be either 's' (standard) or 'n' (nano).
+                  The 'n' model is faster with less system overhead, while 's' offers higher accuracy.
+                  Default is 's'.
+    :type level: str
+
+    :param version: The version of the model to use. Available versions are 'v0', 'v1', 'v1.3', and 'v1.4'.
+                    Default is 'v1.4'.
+    :type version: str
+
+    :param model_name: Optional custom model name. If provided, it overrides the auto-generated model name.
+    :type model_name: Optional[str]
+
+    :param conf_threshold: The confidence threshold for detections. Only detections with confidence
+                           scores above this threshold will be returned. Default is 0.25.
+    :type conf_threshold: float
+
+    :param iou_threshold: The Intersection over Union (IoU) threshold for non-maximum suppression.
+                          Detections with IoU above this threshold will be merged. Default is 0.7.
+    :type iou_threshold: float
+
+    :return: A list of detected faces. Each face is represented by a tuple containing:
+             - Bounding box coordinates as (x0, y0, x1, y1)
+             - The string 'face' (as this function only detects faces)
+             - The confidence score of the detection
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
 
     Examples::
         >>> from imgutils.detect import detect_faces, detection_visualize
@@ -74,9 +81,10 @@ def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1.4', ma
         >>> plt.imshow(detection_visualize(image, result))
         >>> plt.show()
     """
-    image = load_image(image, mode='RGB')
-    new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
-
-    data = rgb_encode(new_image)[None, ...]
-    output, = _open_face_detect_model(level, version).run(['output0'], {'images': data})
-    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, ['face'])
+    return yolo_predict(
+        image=image,
+        repo_id=_REPO_ID,
+        model_name=model_name or f'face_detect_{version}_{level}',
+        conf_threshold=conf_threshold,
+        iou_threshold=iou_threshold,
+    )

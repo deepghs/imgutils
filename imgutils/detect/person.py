@@ -1,12 +1,17 @@
 """
 Overview:
-    Detect human bodies (including the entire body) in anime images.
-
-    Trained on dataset `AniDet3 <https://universe.roboflow.com/university-of-michigan-ann-arbor/anidet3-ai42v>`_ \
-        with YOLOv8.
+    This module provides functionality for detecting human bodies (including the entire body) in anime images.
+    It uses YOLOv8 models trained on the `AniDet3 <https://universe.roboflow.com/university-of-michigan-ann-arbor/anidet3-ai42v>`_
+    dataset from Roboflow.
 
     .. image:: person_detect_demo.plot.py.svg
         :align: center
+
+    The module includes a main function :func:`detect_person` for performing the detection task,
+    and utilizes the `yolo_predict` function from the generic module for the actual prediction.
+
+    The module supports different model levels and versions, allowing users to choose
+    between speed and accuracy based on their requirements.
 
     This is an overall benchmark of all the person detect models:
 
@@ -14,76 +19,68 @@ Overview:
         :align: center
 
 """
-from functools import lru_cache
+from typing import Optional
 
-from huggingface_hub import hf_hub_download
+from ..data import ImageTyping
+from ..generic import yolo_predict
 
-from ._yolo import _image_preprocess, _data_postprocess
-from ..data import ImageTyping, load_image, rgb_encode
-from ..utils import open_onnx_model
-
-_VERSIONS = {
-    'v0': '',
-    'v1': 'plus_',
-    'v1.1': 'plus_v1.1_',
-}
+_REPO_ID = 'deepghs/anime_person_detection'
 
 
-@lru_cache()
-def _open_person_detect_model(level: str, version: str):
-    return open_onnx_model(hf_hub_download(
-        'deepghs/imgutils-models',
-        f'person_detect/person_detect_{_VERSIONS[version]}best_{level}.onnx'
-    ))
-
-
-def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1.1', max_infer_size=640,
+def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1.1', model_name: Optional[str] = None,
                   conf_threshold: float = 0.3, iou_threshold: float = 0.5):
     """
-    Overview:
-        Detect human bodies (including the entire body) in anime images.
+    Detect human bodies (including the entire body) in anime images.
 
-    :param image: Image to detect.
-    :param level: The model level being used can be either ``n``, ``s``, ``m`` or ``x``.
-        The ``n`` model runs faster with smaller system overhead, while the ``m`` model achieves higher accuracy.
-        The default value is ``m``.
-    :param version: Version of model, default is ``v1.1``. Available versions are ``v0``, ``v1`` and ``v1.1``.
-    :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
-        the image will be resized and used for inference. The default value is ``640`` pixels.
-    :param conf_threshold: The confidence threshold, only detection results with confidence scores above
-        this threshold will be returned. The default value is `0.3`.
-    :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold
-        will be discarded. The default value is `0.5`.
-    :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
-        the target type (always `person`) and the target confidence score.
+    This function uses YOLOv8 models to detect human bodies in anime-style images.
+    It supports different model levels and versions, allowing users to balance between
+    detection speed and accuracy.
 
-    Examples::
+    :param image: The input image for detection. Can be various types as defined by ImageTyping.
+    :type image: ImageTyping
+
+    :param level: The model level to use. Options are 'n', 's', 'm', or 'x'.
+                  'n' is fastest but less accurate, 'x' is most accurate but slower.
+    :type level: str
+
+    :param version: The version of the model to use. Available versions are 'v0', 'v1', and 'v1.1'.
+    :type version: str
+
+    :param model_name: Optional custom model name. If provided, overrides the auto-generated model name.
+    :type model_name: Optional[str]
+
+    :param conf_threshold: Confidence threshold for detections. Only detections with
+                           confidence above this value are returned.
+    :type conf_threshold: float
+
+    :param iou_threshold: Intersection over Union (IoU) threshold for non-maximum suppression.
+    :type iou_threshold: float
+
+    :return: A list of detection results. Each result is a tuple containing:
+             ((x0, y0, x1, y1), 'person', confidence_score)
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    :raises ValueError: If an invalid level or version is provided.
+
+    Example:
         >>> from imgutils.detect import detect_person, detection_visualize
-        >>>
         >>> image = 'genshin_post.jpg'
         >>> result = detect_person(image)
-        >>> result
+        >>> print(result)
         [
             ((371, 232, 564, 690), 'person', 0.7533698678016663),
             ((30, 135, 451, 716), 'person', 0.6788613796234131),
             ((614, 393, 830, 686), 'person', 0.5612757205963135),
             ((614, 3, 1275, 654), 'person', 0.4047100841999054)
         ]
-        >>>
-        >>> # visualize it
-        >>> from matplotlib import pyplot as plt
-        >>> plt.imshow(detection_visualize(image, result))
-        >>> plt.show()
 
     .. note::
-        Please note that certain combinations of versions and levels may not have corresponding models.
-        When using them, please refer to the performance chart at the top of that page, which lists
-        the versions and models included.
-
+        For visualization of results, you can use the :func:`imgutils.detect.visual.detection_visualize` function.
     """
-    image = load_image(image, mode='RGB')
-    new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
-
-    data = rgb_encode(new_image)[None, ...]
-    output, = _open_person_detect_model(level, version).run(['output0'], {'images': data})
-    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, ['person'])
+    return yolo_predict(
+        image=image,
+        repo_id=_REPO_ID,
+        model_name=model_name or f'person_detect_{version}_{level}',
+        conf_threshold=conf_threshold,
+        iou_threshold=iou_threshold,
+    )

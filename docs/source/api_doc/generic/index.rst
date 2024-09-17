@@ -11,3 +11,4 @@ imgutils.generic
 
     classify
     enhance
+    yolo

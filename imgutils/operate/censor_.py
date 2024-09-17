@@ -3,7 +3,7 @@ Overview:
     A tool for obscuring specified regions on an image.
 """
 from functools import lru_cache
-from typing import Tuple, Type, List
+from typing import Tuple, Type, List, Optional
 
 from PIL import Image, ImageFilter
 
@@ -317,7 +317,7 @@ def censor_areas(image: ImageTyping, method: str,
 
 
 def censor_nsfw(image: ImageTyping, method: str, nipple_f: bool = False, penis: bool = True, pussy: bool = True,
-                level: str = 's', version: str = 'v1.0', max_infer_size=640,
+                level: str = 's', version: str = 'v1.0', model_name: Optional[str] = None,
                 conf_threshold: float = 0.3, iou_threshold: float = 0.7, **kwargs):
     """
     Applies censoring to sensitive areas in NSFW images based on object detection.
@@ -346,8 +346,9 @@ def censor_nsfw(image: ImageTyping, method: str, nipple_f: bool = False, penis: 
     :param version: The version of the NSFW object detection model. Default is ``v1.0``.
     :type version: str
 
-    :param max_infer_size: The maximum size for inference. Default is ``640``.
-    :type max_infer_size: int
+    :param model_name: Optional custom model name. If not provided, it will be constructed
+                       from the version and level.
+    :type model_name: Optional[str]
 
     :param conf_threshold: The confidence threshold for object detection. Default is ``0.3``.
     :type conf_threshold: float
@@ -382,7 +383,14 @@ def censor_nsfw(image: ImageTyping, method: str, nipple_f: bool = False, penis: 
 
     """
     image = load_image(image, mode='RGB')
-    areas = detect_censors(image, level, version, max_infer_size, conf_threshold, iou_threshold)
+    areas = detect_censors(
+        image=image,
+        level=level,
+        version=version,
+        model_name=model_name,
+        conf_threshold=conf_threshold,
+        iou_threshold=iou_threshold,
+    )
 
     c_areas = []
     for area, label, score in areas:

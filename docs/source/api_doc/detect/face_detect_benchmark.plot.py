@@ -1,39 +1,35 @@
 import random
 
 from benchmark import BaseBenchmark, create_plot_cli
-from imgutils.detect import detect_faces
+from imgutils.detect.face import detect_faces, _REPO_ID
+from imgutils.generic.yolo import _open_models_for_repo_id
+
+_MODELS = _open_models_for_repo_id(_REPO_ID).model_names
 
 
 class FaceDetectBenchmark(BaseBenchmark):
-    def __init__(self, level, version):
+    def __init__(self, model_name: str):
         BaseBenchmark.__init__(self)
-        self.level = level
-        self.version = version
+        self.model_name = model_name
 
     def load(self):
-        from imgutils.detect.face import _open_face_detect_model
-        _ = _open_face_detect_model(level=self.level, version=self.version)
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _ = _open_models_for_repo_id(_REPO_ID)._open_model(self.model_name)
 
     def unload(self):
-        from imgutils.detect.face import _open_face_detect_model
-        _open_face_detect_model.cache_clear()
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _open_models_for_repo_id.cache_clear()
 
     def run(self):
         image_file = random.choice(self.all_images)
-        _ = detect_faces(image_file, level=self.level, version=self.version)
+        _ = detect_faces(image_file, model_name=self.model_name)
 
 
 if __name__ == '__main__':
     create_plot_cli(
         [
-            ('face v1.4 (yolov8s)', FaceDetectBenchmark('s', 'v1.4')),
-            ('face v1.4 (yolov8n)', FaceDetectBenchmark('n', 'v1.4')),
-            ('face v1.3 (yolov8s)', FaceDetectBenchmark('s', 'v1.3')),
-            ('face v1.3 (yolov8n)', FaceDetectBenchmark('n', 'v1.3')),
-            ('face v1 (yolov8s)', FaceDetectBenchmark('s', 'v1')),
-            ('face v1 (yolov8n)', FaceDetectBenchmark('n', 'v1')),
-            ('face v0 (yolov8s)', FaceDetectBenchmark('s', 'v0')),
-            ('face v0 (yolov8n)', FaceDetectBenchmark('n', 'v0')),
+            (model_name, FaceDetectBenchmark(model_name))
+            for model_name in _MODELS
         ],
         title='Benchmark for Anime Face Detections',
         run_times=10,

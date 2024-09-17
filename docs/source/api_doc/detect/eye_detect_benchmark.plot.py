@@ -1,35 +1,35 @@
 import random
 
 from benchmark import BaseBenchmark, create_plot_cli
-from imgutils.detect import detect_eyes
+from imgutils.detect.eye import detect_eyes, _REPO_ID
+from imgutils.generic.yolo import _open_models_for_repo_id
+
+_MODELS = _open_models_for_repo_id(_REPO_ID).model_names
 
 
 class EyeDetectBenchmark(BaseBenchmark):
-    def __init__(self, level, version):
+    def __init__(self, model_name: str):
         BaseBenchmark.__init__(self)
-        self.level = level
-        self.version = version
+        self.model_name = model_name
 
     def load(self):
-        from imgutils.detect.eye import _open_eye_detect_model
-        _ = _open_eye_detect_model(level=self.level, version=self.version)
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _ = _open_models_for_repo_id(_REPO_ID)._open_model(self.model_name)
 
     def unload(self):
-        from imgutils.detect.eye import _open_eye_detect_model
-        _open_eye_detect_model.cache_clear()
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _open_models_for_repo_id.cache_clear()
 
     def run(self):
         image_file = random.choice(self.all_images)
-        _ = detect_eyes(image_file, level=self.level, version=self.version)
+        _ = detect_eyes(image_file, model_name=self.model_name)
 
 
 if __name__ == '__main__':
     create_plot_cli(
         [
-            ('eye v1.0 (yolov8s)', EyeDetectBenchmark('s', 'v1.0')),
-            ('eye v1.0 (yolov8n)', EyeDetectBenchmark('n', 'v1.0')),
-            ('eye v0.8 (yolov8s)', EyeDetectBenchmark('s', 'v0.8')),
-            ('eye v0.7 (yolov8s)', EyeDetectBenchmark('s', 'v0.7')),
+            (model_name, EyeDetectBenchmark(model_name))
+            for model_name in _MODELS
         ],
         title='Benchmark for Anime Eyes Detections',
         run_times=10,

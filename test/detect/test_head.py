@@ -1,6 +1,7 @@
 import pytest
 
-from imgutils.detect.head import _open_head_detect_model, detect_heads
+from imgutils.detect.head import detect_heads
+from imgutils.generic.yolo import _open_models_for_repo_id
 from test.testings import get_testfile
 
 
@@ -9,7 +10,7 @@ def _release_model_after_run():
     try:
         yield
     finally:
-        _open_head_detect_model.cache_clear()
+        _open_models_for_repo_id.cache_clear()
 
 
 @pytest.mark.unittest
@@ -32,3 +33,7 @@ class TestDetectHead:
 
     def test_detect_heads_none(self):
         assert detect_heads(get_testfile('png_full.png')) == []
+
+    def test_detect_heads_not_found(self):
+        with pytest.raises(ValueError):
+            _ = detect_heads(get_testfile('genshin_post.png'), model_name='not_found')

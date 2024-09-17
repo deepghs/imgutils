@@ -1,34 +1,35 @@
 import random
 
 from benchmark import BaseBenchmark, create_plot_cli
-from imgutils.detect import detect_hands
+from imgutils.detect.hand import detect_hands, _REPO_ID
+from imgutils.generic.yolo import _open_models_for_repo_id
+
+_MODELS = _open_models_for_repo_id(_REPO_ID).model_names
 
 
 class HandDetectBenchmark(BaseBenchmark):
-    def __init__(self, version, level):
+    def __init__(self, model_name: str):
         BaseBenchmark.__init__(self)
-        self.version = version
-        self.level = level
+        self.model_name = model_name
 
     def load(self):
-        from imgutils.detect.hand import _open_hand_detect_model
-        _ = _open_hand_detect_model(version=self.version, level=self.level)
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _ = _open_models_for_repo_id(_REPO_ID)._open_model(self.model_name)
 
     def unload(self):
-        from imgutils.detect.hand import _open_hand_detect_model
-        _open_hand_detect_model.cache_clear()
+        from imgutils.generic.yolo import _open_models_for_repo_id
+        _open_models_for_repo_id.cache_clear()
 
     def run(self):
         image_file = random.choice(self.all_images)
-        _ = detect_hands(image_file, version=self.version, level=self.level)
+        _ = detect_hands(image_file, model_name=self.model_name)
 
 
 if __name__ == '__main__':
     create_plot_cli(
         [
-            ('hand v0.8 (yolov8s)', HandDetectBenchmark('v0.8', 's')),
-            ('hand v1.0 (yolov8s)', HandDetectBenchmark('v1.0', 's')),
-            ('hand v1.0 (yolov8n)', HandDetectBenchmark('v1.0', 'n')),
+            (model_name, HandDetectBenchmark(model_name))
+            for model_name in _MODELS
         ],
         title='Benchmark for Anime Hand Detections',
         run_times=10,

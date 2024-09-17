@@ -1,11 +1,21 @@
 """
 Overview:
-    Detect human heads (including the entire head) in anime images.
-
-    Trained on dataset `ani_face_detection <https://universe.roboflow.com/linog/ani_face_detection>`_ with YOLOv8.
+    This module provides functionality for detecting human heads in anime images using YOLOv8 models.
 
     .. image:: head_detect_demo.plot.py.svg
         :align: center
+
+    Key Features:
+
+    - Head detection in anime images
+    - Support for different model levels ('s' for accuracy, 'n' for speed)
+    - Customizable confidence and IoU thresholds
+    - Integration with Hugging Face model repository
+
+    The module is based on the `ani_face_detection <https://universe.roboflow.com/linog/ani_face_detection>`_ dataset
+    from Roboflow and uses YOLOv8 architecture for object detection.
+
+    Example usage and benchmarks are provided in the module overview.
 
     This is an overall benchmark of all the head detect models:
 
@@ -13,64 +23,63 @@ Overview:
         :align: center
 
 """
-from functools import lru_cache
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
-from huggingface_hub import hf_hub_download
+from ..data import ImageTyping
+from ..generic import yolo_predict
 
-from ._yolo import _image_preprocess, _data_postprocess
-from ..data import ImageTyping, load_image, rgb_encode
-from ..utils import open_onnx_model
+_REPO_ID = 'deepghs/anime_head_detection'
 
 
-@lru_cache()
-def _open_head_detect_model(level: str = 's'):
-    return open_onnx_model(hf_hub_download(
-        'deepghs/imgutils-models',
-        f'head_detect/head_detect_best_{level}.onnx'
-    ))
-
-
-def detect_heads(image: ImageTyping, level: str = 's', max_infer_size=640,
+def detect_heads(image: ImageTyping, level: str = 's', model_name: Optional[str] = None,
                  conf_threshold: float = 0.3, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
-    Overview:
-        Detect human heads in anime images.
+    Detect human heads in anime images using YOLOv8 models.
 
-    :param image: Image to detect.
-    :param level: The model level being used can be either `s` or `n`.
-        The `n` model runs faster with smaller system overhead, while the `s` model achieves higher accuracy.
-        The default value is `s`.
-    :param max_infer_size: The maximum image size used for model inference, if the image size exceeds this limit,
-        the image will be resized and used for inference. The default value is `640` pixels.
-    :param conf_threshold: The confidence threshold, only detection results with confidence scores above
-        this threshold will be returned. The default value is `0.3`.
-    :param iou_threshold: The detection area coverage overlap threshold, areas with overlaps above this threshold
-        will be discarded. The default value is `0.7`.
-    :return: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
-        the target type (always `head`) and the target confidence score.
+    This function applies a pre-trained YOLOv8 model to detect human heads in the given anime image.
+    It supports different model levels and allows customization of detection parameters.
 
-    Examples::
+    :param image: The input image for head detection. Can be a file path, URL, or image data.
+    :type image: ImageTyping
+
+    :param level: The model level to use. 's' for higher accuracy, 'n' for faster speed. Default is 's'.
+    :type level: str
+
+    :param model_name: Name of the specific YOLO model to use. If not provided, uses default models based on the level.
+    :type model_name: Optional[str]
+
+    :param conf_threshold: Confidence threshold for detection results. Only detections with confidence above this value are returned. Default is 0.3.
+    :type conf_threshold: float
+
+    :param iou_threshold: IoU (Intersection over Union) threshold for non-maximum suppression. Helps in removing overlapping detections. Default is 0.7.
+    :type iou_threshold: float
+
+    :return: A list of detected heads. Each item is a tuple containing:
+             - Bounding box coordinates as (x0, y0, x1, y1)
+             - Class label (always 'head' for this function)
+             - Confidence score of the detection
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    :raises ValueError: If an invalid level is provided or if there's an issue with the model loading or prediction.
+
+    Example:
         >>> from imgutils.detect import detect_heads, detection_visualize
-        >>>
         >>> image = 'mostima_post.jpg'
-        >>> result = detect_heads(image)  # detect it
-        >>> result
-        [
-            ((29, 441, 204, 584), 'head', 0.7874319553375244),
-            ((346, 59, 529, 275), 'head', 0.7510495185852051),
-            ((606, 51, 895, 336), 'head', 0.6986488103866577)
-        ]
-        >>>
-        >>> # visualize it
-        >>> from matplotlib import pyplot as plt
-        >>> plt.imshow(detection_visualize(image, result))
-        >>> plt.show()
-    """
-    image = load_image(image, mode='RGB')
-    new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
+        >>> result = detect_heads(image)
+        >>> print(result)
+        [((29, 441, 204, 584), 'head', 0.7874319553375244),
+         ((346, 59, 529, 275), 'head', 0.7510495185852051),
+         ((606, 51, 895, 336), 'head', 0.6986488103866577)]
 
-    data = rgb_encode(new_image)[None, ...]
-    output, = _open_head_detect_model(level).run(['output0'], {'images': data})
-    return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, ['head'])
+    .. note::
+
+        For visualization of results, you can use the :func:`imgutils.detect.visual.detection_visualize` function.
+    """
+    return yolo_predict(
+        image=image,
+        repo_id=_REPO_ID,
+        model_name=model_name or f'head_detect_v0_{level}',
+        conf_threshold=conf_threshold,
+        iou_threshold=iou_threshold,
+    )

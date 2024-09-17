@@ -2,7 +2,7 @@ import pytest
 from PIL import Image
 
 from imgutils.detect import detect_with_booru_yolo
-from imgutils.detect.booru_yolo import _open_booru_yolo_model, _get_booru_yolo_labels
+from imgutils.generic.yolo import _open_models_for_repo_id
 from ..testings import get_testfile
 
 
@@ -11,8 +11,7 @@ def _release_model_after_run():
     try:
         yield
     finally:
-        _open_booru_yolo_model.cache_clear()
-        _get_booru_yolo_labels.cache_clear()
+        _open_models_for_repo_id.cache_clear()
 
 
 @pytest.fixture()
