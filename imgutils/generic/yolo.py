@@ -41,16 +41,37 @@ __all__ = [
 
 
 def _check_gradio_env():
+    """
+    Check if the Gradio library is installed and available.
+
+    :raises EnvironmentError: If Gradio is not installed.
+    """
     if gr is None:
         raise EnvironmentError(f'Gradio required for launching webui-based demo.\n'
                                f'Please install it with `pip install dghs-imgutils[demo]`.')
 
 
 def _v_fix(v):
+    """
+    Round and convert a float value to an integer.
+
+    :param v: The float value to be rounded and converted.
+    :type v: float
+    :return: The rounded integer value.
+    :rtype: int
+    """
     return int(round(v))
 
 
 def _bbox_fix(bbox):
+    """
+    Fix the bounding box coordinates by rounding them to integers.
+
+    :param bbox: The bounding box coordinates.
+    :type bbox: tuple
+    :return: A tuple of fixed (rounded to integer) bounding box coordinates.
+    :rtype: tuple
+    """
     return tuple(map(_v_fix, bbox))
 
 
@@ -425,11 +446,36 @@ class YOLOModel:
     def clear(self):
         """
         Clear cached model and metadata.
+
+        This method removes all cached models and their associated metadata from memory.
+        It's useful for freeing up memory or ensuring that the latest versions of models are loaded.
         """
         self._models.clear()
 
     def make_ui(self, default_model_name: Optional[str] = None,
                 default_conf_threshold: float = 0.25, default_iou_threshold: float = 0.7):
+        """
+        Create a Gradio-based user interface for object detection.
+
+        This method sets up an interactive UI that allows users to upload images,
+        select models, and adjust detection parameters. It uses the Gradio library
+        to create the interface.
+
+        :param default_model_name: The name of the default model to use.
+                                   If None, the most recently updated model is selected.
+        :type default_model_name: Optional[str]
+        :param default_conf_threshold: Default confidence threshold for the UI. Default is 0.25.
+        :type default_conf_threshold: float
+        :param default_iou_threshold: Default IoU threshold for the UI. Default is 0.7.
+        :type default_iou_threshold: float
+
+        :raises ImportError: If Gradio is not installed in the environment.
+
+        :Example:
+
+        >>> model = YOLOModel("username/repo_name")
+        >>> model.make_ui(default_model_name="yolov5s")
+        """
         _check_gradio_env()
         model_list = self.model_names
         if not default_model_name:
@@ -493,6 +539,31 @@ class YOLOModel:
     def launch_demo(self, default_model_name: Optional[str] = None,
                     default_conf_threshold: float = 0.25, default_iou_threshold: float = 0.7,
                     server_name: Optional[str] = None, server_port: Optional[int] = None, **kwargs):
+        """
+        Launch a Gradio demo for object detection.
+
+        This method creates and launches a Gradio demo that allows users to interactively
+        perform object detection on uploaded images using the YOLO model.
+
+        :param default_model_name: The name of the default model to use.
+                                   If None, the most recently updated model is selected.
+        :type default_model_name: Optional[str]
+        :param default_conf_threshold: Default confidence threshold for the demo. Default is 0.25.
+        :type default_conf_threshold: float
+        :param default_iou_threshold: Default IoU threshold for the demo. Default is 0.7.
+        :type default_iou_threshold: float
+        :param server_name: The name of the server to run the demo on. Default is None.
+        :type server_name: Optional[str]
+        :param server_port: The port to run the demo on. Default is None.
+        :type server_port: Optional[int]
+        :param kwargs: Additional keyword arguments to pass to gr.Blocks.launch().
+
+        :raises EnvironmentError: If Gradio is not installed in the environment.
+
+        Example:
+            >>> model = YOLOModel("username/repo_name")
+            >>> model.launch_demo(default_model_name="yolov5s", server_name="0.0.0.0", server_port=7860)
+        """
         _check_gradio_env()
         with gr.Blocks() as demo:
             with gr.Row():
