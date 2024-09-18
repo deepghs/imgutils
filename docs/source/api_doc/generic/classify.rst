@@ -11,7 +11,7 @@ ClassifyModel
 -----------------------------------------
 
 .. autoclass:: ClassifyModel
-    :members: __init__, predict_score, predict, clear
+    :members: __init__, predict_score, predict, clear, make_ui, launch_demo
 
 
 
