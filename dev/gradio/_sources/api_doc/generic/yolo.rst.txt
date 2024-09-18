@@ -11,7 +11,7 @@ YOLOModel
 -----------------------------------------
 
 .. autoclass:: YOLOModel
-    :members: __init__, predict, clear
+    :members: __init__, predict, clear, make_ui, launch_demo
 
 
 

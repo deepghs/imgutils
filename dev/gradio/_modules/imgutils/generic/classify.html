@@ -131,17 +131,35 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">hfutils.operate</span> <span class="kn">import</span> <span class="n">get_hf_client</span>
+<span class="kn">from</span> <span class="nn">hfutils.repository</span> <span class="kn">import</span> <span class="n">hf_hub_repo_url</span>
 <span class="kn">from</span> <span class="nn">hfutils.utils</span> <span class="kn">import</span> <span class="n">hf_fs_path</span><span class="p">,</span> <span class="n">hf_normpath</span>
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span><span class="p">,</span> <span class="n">HfFileSystem</span>
 
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">rgb_encode</span><span class="p">,</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">gradio</span> <span class="k">as</span> <span class="nn">gr</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
+    <span class="n">gr</span> <span class="o">=</span> <span class="kc">None</span>
+
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;ClassifyModel&#39;</span><span class="p">,</span>
     <span class="s1">&#39;classify_predict_score&#39;</span><span class="p">,</span>
     <span class="s1">&#39;classify_predict&#39;</span><span class="p">,</span>
 <span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_check_gradio_env</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if the Gradio library is installed and available.</span>
+
+<span class="sd">    :raises EnvironmentError: If Gradio is not installed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">gr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gradio required for launching webui-based demo.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                               <span class="sa">f</span><span class="s1">&#39;Please install it with `pip install dghs-imgutils[demo]`.&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_img_encode</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">384</span><span class="p">,</span> <span class="mi">384</span><span class="p">),</span>
@@ -393,7 +411,101 @@
 <span class="sd">        This method frees up memory by removing all loaded models and labels from the cache.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ClassifyModel.make_ui"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.make_ui">[docs]</a>    <span class="k">def</span> <span class="nf">make_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create the user interface components for the classifier model demo.</span>
+
+<span class="sd">        This method sets up the Gradio UI components including an image input, model selection dropdown,</span>
+<span class="sd">        submit button, and output label. It also configures the interaction between these components.</span>
+
+<span class="sd">        :param default_model_name: The name of the default model to be selected in the dropdown.</span>
+<span class="sd">                                   If None, the most recently updated model will be selected.</span>
+<span class="sd">        :type default_model_name: Optional[str]</span>
+
+<span class="sd">        :raises ImportError: If Gradio is not installed or properly configured.</span>
+
+<span class="sd">        :Example:</span>
+<span class="sd">        &gt;&gt;&gt; model = ClassifyModel(&quot;username/repo_name&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; model.make_ui(default_model_name=&quot;model_v1&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># demo for classifier model</span>
+        <span class="n">_check_gradio_env</span><span class="p">()</span>
+        <span class="n">model_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_names</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">default_model_name</span><span class="p">:</span>
+            <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
+            <span class="n">selected_model_name</span><span class="p">,</span> <span class="n">selected_time</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">fileitem</span> <span class="ow">in</span> <span class="n">hf_client</span><span class="o">.</span><span class="n">get_paths_info</span><span class="p">(</span>
+                    <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                    <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                    <span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span> <span class="k">for</span> <span class="n">model_name</span> <span class="ow">in</span> <span class="n">model_list</span><span class="p">],</span>
+                    <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">selected_time</span> <span class="ow">or</span> <span class="n">fileitem</span><span class="o">.</span><span class="n">last_commit</span><span class="o">.</span><span class="n">date</span> <span class="o">&gt;</span> <span class="n">selected_time</span><span class="p">:</span>
+                    <span class="n">selected_model_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fileitem</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                    <span class="n">selected_time</span> <span class="o">=</span> <span class="n">fileitem</span><span class="o">.</span><span class="n">last_commit</span><span class="o">.</span><span class="n">date</span>
+            <span class="n">default_model_name</span> <span class="o">=</span> <span class="n">selected_model_name</span>
+
+        <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
+                <span class="n">gr_input_image</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;pil&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Image&#39;</span><span class="p">)</span>
+                <span class="n">gr_model</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">model_list</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+                <span class="n">gr_submit</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;Submit&#39;</span><span class="p">,</span> <span class="n">variant</span><span class="o">=</span><span class="s1">&#39;primary&#39;</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
+                <span class="n">gr_output</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Prediction&#39;</span><span class="p">)</span>
+
+            <span class="n">gr_submit</span><span class="o">.</span><span class="n">click</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">predict_score</span><span class="p">,</span>
+                <span class="n">inputs</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">gr_input_image</span><span class="p">,</span>
+                    <span class="n">gr_model</span><span class="p">,</span>
+                <span class="p">],</span>
+                <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">gr_output</span><span class="p">],</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ClassifyModel.launch_demo"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.launch_demo">[docs]</a>    <span class="k">def</span> <span class="nf">launch_demo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">server_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">server_port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Launch the Gradio demo for the classifier model.</span>
+
+<span class="sd">        This method creates a Gradio Blocks interface, sets up the UI components using make_ui(),</span>
+<span class="sd">        and launches the demo server.</span>
+
+<span class="sd">        :param default_model_name: The name of the default model to be selected in the dropdown.</span>
+<span class="sd">        :type default_model_name: Optional[str]</span>
+<span class="sd">        :param server_name: The name of the server to run the demo on. Defaults to None.</span>
+<span class="sd">        :type server_name: Optional[str]</span>
+<span class="sd">        :param server_port: The port number to run the demo on. Defaults to None.</span>
+<span class="sd">        :type server_port: Optional[int]</span>
+<span class="sd">        :param kwargs: Additional keyword arguments to pass to the Gradio launch method.</span>
+
+<span class="sd">        :raises ImportError: If Gradio is not installed or properly configured.</span>
+
+<span class="sd">        :Example:</span>
+<span class="sd">        &gt;&gt;&gt; model = ClassifyModel(&quot;username/repo_name&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; model.launch_demo(default_model_name=&quot;model_v1&quot;, server_name=&quot;0.0.0.0&quot;, server_port=7860)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_check_gradio_env</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Blocks</span><span class="p">()</span> <span class="k">as</span> <span class="n">demo</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
+                    <span class="n">repo_url</span> <span class="o">=</span> <span class="n">hf_hub_repo_url</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">HTML</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;h2 style=&quot;text-align: center;&quot;&gt;Classifier Demo For </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">}</span><span class="s1">&lt;/h2&gt;&#39;</span><span class="p">)</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;This is the quick demo for classifier model [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">}</span><span class="s1">](</span><span class="si">{</span><span class="n">repo_url</span><span class="si">}</span><span class="s1">). &#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;Powered by `dghs-imgutils`</span><span class="se">\&#39;</span><span class="s1">s quick demo module.&#39;</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">make_ui</span><span class="p">(</span><span class="n">default_model_name</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">)</span>
+
+        <span class="n">demo</span><span class="o">.</span><span class="n">launch</span><span class="p">(</span>
+            <span class="n">server_name</span><span class="o">=</span><span class="n">server_name</span><span class="p">,</span>
+            <span class="n">server_port</span><span class="o">=</span><span class="n">server_port</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
 
 
 <span class="nd">@lru_cache</span><span class="p">()</span>

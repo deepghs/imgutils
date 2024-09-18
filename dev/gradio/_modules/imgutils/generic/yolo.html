@@ -149,16 +149,37 @@
 
 
 <span class="k">def</span> <span class="nf">_check_gradio_env</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if the Gradio library is installed and available.</span>
+
+<span class="sd">    :raises EnvironmentError: If Gradio is not installed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">gr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gradio required for launching webui-based demo.</span><span class="se">\n</span><span class="s1">&#39;</span>
                                <span class="sa">f</span><span class="s1">&#39;Please install it with `pip install dghs-imgutils[demo]`.&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_v_fix</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Round and convert a float value to an integer.</span>
+
+<span class="sd">    :param v: The float value to be rounded and converted.</span>
+<span class="sd">    :type v: float</span>
+<span class="sd">    :return: The rounded integer value.</span>
+<span class="sd">    :rtype: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">_bbox_fix</span><span class="p">(</span><span class="n">bbox</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fix the bounding box coordinates by rounding them to integers.</span>
+
+<span class="sd">    :param bbox: The bounding box coordinates.</span>
+<span class="sd">    :type bbox: tuple</span>
+<span class="sd">    :return: A tuple of fixed (rounded to integer) bounding box coordinates.</span>
+<span class="sd">    :rtype: tuple</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">_v_fix</span><span class="p">,</span> <span class="n">bbox</span><span class="p">))</span>
 
 
@@ -533,11 +554,36 @@
 <div class="viewcode-block" id="YOLOModel.clear"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Clear cached model and metadata.</span>
+
+<span class="sd">        This method removes all cached models and their associated metadata from memory.</span>
+<span class="sd">        It&#39;s useful for freeing up memory or ensuring that the latest versions of models are loaded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">make_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="YOLOModel.make_ui"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.make_ui">[docs]</a>    <span class="k">def</span> <span class="nf">make_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">default_conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">default_iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a Gradio-based user interface for object detection.</span>
+
+<span class="sd">        This method sets up an interactive UI that allows users to upload images,</span>
+<span class="sd">        select models, and adjust detection parameters. It uses the Gradio library</span>
+<span class="sd">        to create the interface.</span>
+
+<span class="sd">        :param default_model_name: The name of the default model to use.</span>
+<span class="sd">                                   If None, the most recently updated model is selected.</span>
+<span class="sd">        :type default_model_name: Optional[str]</span>
+<span class="sd">        :param default_conf_threshold: Default confidence threshold for the UI. Default is 0.25.</span>
+<span class="sd">        :type default_conf_threshold: float</span>
+<span class="sd">        :param default_iou_threshold: Default IoU threshold for the UI. Default is 0.7.</span>
+<span class="sd">        :type default_iou_threshold: float</span>
+
+<span class="sd">        :raises ImportError: If Gradio is not installed in the environment.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; model = YOLOModel(&quot;username/repo_name&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; model.make_ui(default_model_name=&quot;yolov5s&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_check_gradio_env</span><span class="p">()</span>
         <span class="n">model_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_names</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">default_model_name</span><span class="p">:</span>
@@ -596,11 +642,36 @@
                     <span class="n">gr_score_threshold</span><span class="p">,</span>
                 <span class="p">],</span>
                 <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">gr_output_image</span><span class="p">],</span>
-            <span class="p">)</span>
+            <span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">launch_demo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="YOLOModel.launch_demo"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.launch_demo">[docs]</a>    <span class="k">def</span> <span class="nf">launch_demo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                     <span class="n">default_conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">default_iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
                     <span class="n">server_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">server_port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Launch a Gradio demo for object detection.</span>
+
+<span class="sd">        This method creates and launches a Gradio demo that allows users to interactively</span>
+<span class="sd">        perform object detection on uploaded images using the YOLO model.</span>
+
+<span class="sd">        :param default_model_name: The name of the default model to use.</span>
+<span class="sd">                                   If None, the most recently updated model is selected.</span>
+<span class="sd">        :type default_model_name: Optional[str]</span>
+<span class="sd">        :param default_conf_threshold: Default confidence threshold for the demo. Default is 0.25.</span>
+<span class="sd">        :type default_conf_threshold: float</span>
+<span class="sd">        :param default_iou_threshold: Default IoU threshold for the demo. Default is 0.7.</span>
+<span class="sd">        :type default_iou_threshold: float</span>
+<span class="sd">        :param server_name: The name of the server to run the demo on. Default is None.</span>
+<span class="sd">        :type server_name: Optional[str]</span>
+<span class="sd">        :param server_port: The port to run the demo on. Default is None.</span>
+<span class="sd">        :type server_port: Optional[int]</span>
+<span class="sd">        :param kwargs: Additional keyword arguments to pass to gr.Blocks.launch().</span>
+
+<span class="sd">        :raises EnvironmentError: If Gradio is not installed in the environment.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; model = YOLOModel(&quot;username/repo_name&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; model.launch_demo(default_model_name=&quot;yolov5s&quot;, server_name=&quot;0.0.0.0&quot;, server_port=7860)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_check_gradio_env</span><span class="p">()</span>
         <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Blocks</span><span class="p">()</span> <span class="k">as</span> <span class="n">demo</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
@@ -621,7 +692,7 @@
             <span class="n">server_name</span><span class="o">=</span><span class="n">server_name</span><span class="p">,</span>
             <span class="n">server_port</span><span class="o">=</span><span class="n">server_port</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span></div></div>
 
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
