@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>imgutils.generic.classify &mdash; imgutils 0.5.0 documentation</title>
+  <title>imgutils.generic.classify &mdash; imgutils 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -17,7 +17,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=3fadbb4a"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=add265a1"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -40,7 +40,7 @@
             imgutils
           </a>
               <div class="version">
-                0.5.0
+                0.6.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -197,6 +197,56 @@ models within a single repository and handles token-based authentication.</p>
 <span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify.html#ClassifyModel.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify.ClassifyModel.clear" title="Permalink to this definition"></a></dt>
 <dd><p>Clear the cached models and labels.</p>
 <p>This method frees up memory by removing all loaded models and labels from the cache.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.generic.classify.ClassifyModel.launch_demo">
+<span class="sig-name descname"><span class="pre">launch_demo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify.html#ClassifyModel.launch_demo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify.ClassifyModel.launch_demo" title="Permalink to this definition"></a></dt>
+<dd><p>Launch the Gradio demo for the classifier model.</p>
+<p>This method creates a Gradio Blocks interface, sets up the UI components using make_ui(),
+and launches the demo server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>default_model_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The name of the default model to be selected in the dropdown.</p></li>
+<li><p><strong>server_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The name of the server to run the demo on. Defaults to None.</p></li>
+<li><p><strong>server_port</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – The port number to run the demo on. Defaults to None.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to pass to the Gradio launch method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ImportError</strong> – If Gradio is not installed or properly configured.</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ClassifyModel</span><span class="p">(</span><span class="s2">&quot;username/repo_name&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">launch_demo</span><span class="p">(</span><span class="n">default_model_name</span><span class="o">=</span><span class="s2">&quot;model_v1&quot;</span><span class="p">,</span> <span class="n">server_name</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">server_port</span><span class="o">=</span><span class="mi">7860</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.generic.classify.ClassifyModel.make_ui">
+<span class="sig-name descname"><span class="pre">make_ui</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify.html#ClassifyModel.make_ui"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify.ClassifyModel.make_ui" title="Permalink to this definition"></a></dt>
+<dd><p>Create the user interface components for the classifier model demo.</p>
+<p>This method sets up the Gradio UI components including an image input, model selection dropdown,
+submit button, and output label. It also configures the interaction between these components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>default_model_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The name of the default model to be selected in the dropdown.
+If None, the most recently updated model will be selected.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ImportError</strong> – If Gradio is not installed or properly configured.</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ClassifyModel</span><span class="p">(</span><span class="s2">&quot;username/repo_name&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">make_ui</span><span class="p">(</span><span class="n">default_model_name</span><span class="o">=</span><span class="s2">&quot;model_v1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -373,9 +423,8 @@ models within a single repository and handles token-based authentication.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/gradio/api_doc/generic/classify.html">dev/gradio</a></dd>
-                        <dd><a href="../../../dev/bchlib/api_doc/generic/classify.html">dev/bchlib</a></dd>
                         <dd><a href="classify.html">main</a></dd>
+                        <dd><a href="../../../dev/bchlib/api_doc/generic/classify.html">dev/bchlib</a></dd>
                 </dl>
         </div>
     </div><script>
