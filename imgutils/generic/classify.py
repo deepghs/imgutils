@@ -306,6 +306,24 @@ class ClassifyModel:
         self._labels.clear()
 
     def make_ui(self, default_model_name: Optional[str] = None):
+        """
+        Create the user interface components for the classifier model demo.
+
+        This method sets up the Gradio UI components including an image input, model selection dropdown,
+        submit button, and output label. It also configures the interaction between these components.
+
+        :param default_model_name: The name of the default model to be selected in the dropdown.
+                                   If None, the most recently updated model will be selected.
+        :type default_model_name: Optional[str]
+
+        :raises ImportError: If Gradio is not installed or properly configured.
+
+        :Example:
+        >>> model = ClassifyModel("username/repo_name")
+        >>> model.make_ui(default_model_name="model_v1")
+        """
+
+        # demo for classifier model
         _check_gradio_env()
         model_list = self.model_names
         if not default_model_name:
@@ -342,6 +360,27 @@ class ClassifyModel:
 
     def launch_demo(self, default_model_name: Optional[str] = None,
                     server_name: Optional[str] = None, server_port: Optional[int] = None, **kwargs):
+        """
+        Launch the Gradio demo for the classifier model.
+
+        This method creates a Gradio Blocks interface, sets up the UI components using make_ui(),
+        and launches the demo server.
+
+        :param default_model_name: The name of the default model to be selected in the dropdown.
+        :type default_model_name: Optional[str]
+        :param server_name: The name of the server to run the demo on. Defaults to None.
+        :type server_name: Optional[str]
+        :param server_port: The port number to run the demo on. Defaults to None.
+        :type server_port: Optional[int]
+        :param kwargs: Additional keyword arguments to pass to the Gradio launch method.
+
+        :raises ImportError: If Gradio is not installed or properly configured.
+
+        :Example:
+        >>> model = ClassifyModel("username/repo_name")
+        >>> model.launch_demo(default_model_name="model_v1", server_name="0.0.0.0", server_port=7860)
+        """
+
         _check_gradio_env()
         with gr.Blocks() as demo:
             with gr.Row():
