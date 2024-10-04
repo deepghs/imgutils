@@ -178,30 +178,6 @@ For more details, please refer to
 the [official documentation](https://deepghs.github.io/imgutils/main/api_doc/validate/monochrome.html#module-imgutils.validate.monochrome)
 .
 
-### Image Rating
-
-We can use `imgutils` to perform a rough and quick determination of the rating (`safe`, `r15`, or `r18`) of anime
-images, as shown below.
-
-![rating](https://github.com/deepghs/imgutils/blob/gh-pages/main/_images/rating.plot.py.svg)
-
-```python
-from imgutils.validate import anime_rating
-
-print(anime_rating('rating/safe/1.jpg'))  # ('safe', 0.9999998807907104)
-print(anime_rating('rating/safe/2.jpg'))  # ('safe', 0.9924363493919373)
-print(anime_rating('rating/safe/3.jpg'))  # ('safe', 0.996969997882843)
-print(anime_rating('rating/safe/4.jpg'))  # ('safe', 0.9966891407966614)
-print(anime_rating('rating/r15/5.jpg'))  # ('r15', 0.9996721744537354)
-print(anime_rating('rating/r15/6.jpg'))  # ('r15', 0.9998563528060913)
-print(anime_rating('rating/r15/7.jpg'))  # ('r15', 0.9827859997749329)
-print(anime_rating('rating/r15/8.jpg'))  # ('r15', 0.8339558839797974)
-print(anime_rating('rating/r18/9.jpg'))  # ('r18', 0.9997004270553589)
-print(anime_rating('rating/r18/10.jpg'))  # ('r18', 0.9997699856758118)
-print(anime_rating('rating/r18/11.jpg'))  # ('r18', 0.9999485015869141)
-print(anime_rating('rating/r18/12.jpg'))  # ('r18', 0.9994290471076965)
-```
-
 ### Truncated Image Check
 
 The following code can be used to detect incomplete image files (such as images interrupted during the download
