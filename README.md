@@ -47,7 +47,6 @@ to [Installation](https://deepghs.github.io/imgutils/main/tutorials/installation
 * [Object Detection](https://github.com/deepghs/imgutils#object-detection)
 * [Edge Detection / Lineart Generation](https://github.com/deepghs/imgutils#edge-detection--lineart-generation)
 * [Monochrome Image Detection](https://github.com/deepghs/imgutils#monochrome-image-detection)
-* [Image Rating](https://github.com/deepghs/imgutils#image-rating)
 * [Truncated Image Check](https://github.com/deepghs/imgutils#truncated-image-check)
 * [Image Tagging](https://github.com/deepghs/imgutils#image-tagging)
 * [Character Extraction](https://github.com/deepghs/imgutils#character-extraction)
