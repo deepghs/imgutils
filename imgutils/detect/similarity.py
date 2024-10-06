@@ -97,7 +97,6 @@ def bboxes_similarity(bboxes1: List[BBoxTyping], bboxes2: List[BBoxTyping],
     # import here for faster launching speed
     from scipy.optimize import linear_sum_assignment
     row_ind, col_ind = linear_sum_assignment(-iou_matrix)
-    print(iou_matrix)
     similarities = iou_matrix[row_ind, col_ind]
     if mode == 'max':
         return float(similarities.max())
