@@ -211,7 +211,7 @@
     <span class="k">return</span> <span class="n">y</span>
 
 
-<span class="k">def</span> <span class="nf">_yolo_nms</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">_yolo_nms</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform Non-Maximum Suppression (NMS) on bounding boxes.</span>
 
@@ -221,8 +221,8 @@
 <span class="sd">    :type boxes: np.ndarray</span>
 <span class="sd">    :param scores: Array of confidence scores for each bounding box.</span>
 <span class="sd">    :type scores: np.ndarray</span>
-<span class="sd">    :param thresh: IoU threshold for considering boxes as overlapping. Default is 0.7.</span>
-<span class="sd">    :type thresh: float</span>
+<span class="sd">    :param iou_threshold: IoU threshold for considering boxes as overlapping. Default is 0.7.</span>
+<span class="sd">    :type iou_threshold: float</span>
 
 <span class="sd">    :return: List of indices of the boxes to keep after NMS.</span>
 <span class="sd">    :rtype: List[int]</span>
@@ -257,7 +257,7 @@
         <span class="n">inter</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">h</span>
         <span class="n">iou</span> <span class="o">=</span> <span class="n">inter</span> <span class="o">/</span> <span class="p">(</span><span class="n">areas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">areas</span><span class="p">[</span><span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span> <span class="o">-</span> <span class="n">inter</span><span class="p">)</span>
 
-        <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">iou</span> <span class="o">&lt;=</span> <span class="n">thresh</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">iou</span> <span class="o">&lt;=</span> <span class="n">iou_threshold</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">order</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="n">inds</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">keep</span>
@@ -360,27 +360,39 @@
 <span class="sd">    &gt;&gt;&gt; _data_postprocess(output, 0.5, 0.5, (100, 100), (128, 128), [&#39;cat&#39;, &#39;dog&#39;])</span>
 <span class="sd">    [((7, 7, 15, 15), &#39;cat&#39;, 0.9)]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">max_scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">4</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="n">max_scores</span> <span class="o">&gt;</span> <span class="n">conf_threshold</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">boxes</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span>
-    <span class="n">scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span>
-    <span class="n">filtered_max_scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>  <span class="c1"># for end-to-end models like yolov10</span>
+        <span class="n">detections</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">conf_threshold</span><span class="p">]</span>
+        <span class="n">selected_idx</span> <span class="o">=</span> <span class="n">_yolo_nms</span><span class="p">(</span><span class="n">output</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">output</span><span class="p">[</span><span class="n">selected_idx</span><span class="p">]:</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+            <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+            <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">labels</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">item</span><span class="p">())],</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)))</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">boxes</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">detections</span>
 
-    <span class="n">boxes</span> <span class="o">=</span> <span class="n">_yolo_xywh2xyxy</span><span class="p">(</span><span class="n">boxes</span><span class="p">)</span>
-    <span class="n">idx</span> <span class="o">=</span> <span class="n">_yolo_nms</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">filtered_max_scores</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">)</span>
-    <span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span> <span class="o">=</span> <span class="n">boxes</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># for nms-based models like yolov8</span>
+        <span class="n">max_scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">4</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="n">max_scores</span> <span class="o">&gt;</span> <span class="n">conf_threshold</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">boxes</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span>
+        <span class="n">filtered_max_scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">detections</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span><span class="p">):</span>
-        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
-        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
-        <span class="n">max_score_id</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
-        <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">labels</span><span class="p">[</span><span class="n">max_score_id</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">[</span><span class="n">max_score_id</span><span class="p">])))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">boxes</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
 
-    <span class="k">return</span> <span class="n">detections</span>
+        <span class="n">boxes</span> <span class="o">=</span> <span class="n">_yolo_xywh2xyxy</span><span class="p">(</span><span class="n">boxes</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">_yolo_nms</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">filtered_max_scores</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">)</span>
+        <span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span> <span class="o">=</span> <span class="n">boxes</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="n">detections</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span><span class="p">):</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+            <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+            <span class="n">max_score_id</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+            <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">labels</span><span class="p">[</span><span class="n">max_score_id</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">[</span><span class="n">max_score_id</span><span class="p">])))</span>
+
+        <span class="k">return</span> <span class="n">detections</span>
 
 
 <span class="k">def</span> <span class="nf">_safe_eval_names_str</span><span class="p">(</span><span class="n">names_str</span><span class="p">):</span>
@@ -799,9 +811,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/yolov10/index.html">dev/yolov10</a></dd>
-                        <dd><a href="../../../../dev/bchlib/index.html">dev/bchlib</a></dd>
                         <dd><a href="yolo.html">main</a></dd>
+                        <dd><a href="../../../../dev/bchlib/index.html">dev/bchlib</a></dd>
                 </dl>
         </div>
     </div><script>
