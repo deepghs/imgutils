@@ -37,12 +37,12 @@ def calculate_iou(box1: BBoxTyping, box2: BBoxTyping) -> float:
     This function computes the IoU, which is a measure of the overlap between two bounding boxes.
     The IoU is calculated as the area of intersection divided by the area of union of the two boxes.
 
-    Example usage:
-    >>> box1 = (0, 0, 2, 2)
-    >>> box2 = (1, 1, 3, 3)
-    >>> iou = calculate_iou(box1, box2)
-    >>> print(f"IoU: {iou:.4f}")
-    IoU: 0.1429
+    Example::
+        >>> box1 = (0, 0, 2, 2)
+        >>> box2 = (1, 1, 3, 3)
+        >>> iou = calculate_iou(box1, box2)
+        >>> print(f"IoU: {iou:.4f}")
+        IoU: 0.1429
     """
     x1 = max(box1[0], box2[0])
     y1 = max(box1[1], box2[1])
@@ -74,16 +74,17 @@ def bboxes_similarity(bboxes1: List[BBoxTyping], bboxes2: List[BBoxTyping],
 
     This function computes the similarity between two lists of bounding boxes using the Hungarian algorithm
     to find the optimal assignment. It then returns the similarity based on the specified mode:
-    - 'max': Returns the maximum IoU among all matched pairs.
-    - 'mean': Returns the average IoU of all matched pairs.
-    - 'raw': Returns a list of IoU values for all matched pairs.
 
-    Example usage:
-    >>> bboxes1 = [(0, 0, 2, 2), (3, 3, 5, 5)]
-    >>> bboxes2 = [(1, 1, 3, 3), (4, 4, 6, 6)]
-    >>> similarity = bboxes_similarity(bboxes1, bboxes2, mode='mean')
-    >>> print(f"Mean similarity: {similarity:.4f}")
-    Mean similarity: 0.1429
+    - ``max``: Returns the maximum IoU among all matched pairs.
+    - ``mean``: Returns the average IoU of all matched pairs.
+    - ``raw``: Returns a list of IoU values for all matched pairs.
+
+    Example::
+        >>> bboxes1 = [(0, 0, 2, 2), (3, 3, 5, 5)]
+        >>> bboxes2 = [(1, 1, 3, 3), (4, 4, 6, 6)]
+        >>> similarity = bboxes_similarity(bboxes1, bboxes2, mode='mean')
+        >>> print(f"Mean similarity: {similarity:.4f}")
+        Mean similarity: 0.1429
     """
     if len(bboxes1) != len(bboxes2):
         raise ValueError(f'Length of bboxes lists not match - {len(bboxes1)} vs {len(bboxes2)}.')
@@ -125,18 +126,19 @@ def detection_similarity(detect1: List[BBoxWithScoreAndLabel], detect2: List[BBo
                         or if an unknown mode is specified.
 
     This function compares two lists of detections by:
+
     1. Grouping detections by their labels.
     2. For each label, calculating the similarity between the corresponding bounding boxes.
     3. Aggregating the similarities based on the specified mode.
 
     The function ensures that for each label, the number of bounding boxes matches between detect1 and detect2.
 
-    Example usage:
-    >>> detect1 = [((0, 0, 2, 2), 'car', 0.9), ((3, 3, 5, 5), 'person', 0.8)]
-    >>> detect2 = [((1, 1, 3, 3), 'car', 0.85), ((4, 4, 6, 6), 'person', 0.75)]
-    >>> similarity = detection_similarity(detect1, detect2, mode='mean')
-    >>> print(f"Mean detection similarity: {similarity:.4f}")
-    Mean detection similarity: 0.1429
+    Example::
+        >>> detect1 = [((0, 0, 2, 2), 'car', 0.9), ((3, 3, 5, 5), 'person', 0.8)]
+        >>> detect2 = [((1, 1, 3, 3), 'car', 0.85), ((4, 4, 6, 6), 'person', 0.75)]
+        >>> similarity = detection_similarity(detect1, detect2, mode='mean')
+        >>> print(f"Mean detection similarity: {similarity:.4f}")
+        Mean detection similarity: 0.1429
     """
     labels = sorted({*(l for _, l, _ in detect1), *(l for _, l, _ in detect2)})
     sims = []
