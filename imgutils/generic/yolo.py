@@ -103,7 +103,7 @@ def _yolo_xywh2xyxy(x: np.ndarray) -> np.ndarray:
     return y
 
 
-def _yolo_nms(boxes, scores, thresh: float = 0.7) -> List[int]:
+def _yolo_nms(boxes, scores, iou_threshold: float = 0.7) -> List[int]:
     """
     Perform Non-Maximum Suppression (NMS) on bounding boxes.
 
@@ -113,8 +113,8 @@ def _yolo_nms(boxes, scores, thresh: float = 0.7) -> List[int]:
     :type boxes: np.ndarray
     :param scores: Array of confidence scores for each bounding box.
     :type scores: np.ndarray
-    :param thresh: IoU threshold for considering boxes as overlapping. Default is 0.7.
-    :type thresh: float
+    :param iou_threshold: IoU threshold for considering boxes as overlapping. Default is 0.7.
+    :type iou_threshold: float
 
     :return: List of indices of the boxes to keep after NMS.
     :rtype: List[int]
@@ -149,7 +149,7 @@ def _yolo_nms(boxes, scores, thresh: float = 0.7) -> List[int]:
         inter = w * h
         iou = inter / (areas[i] + areas[order[1:]] - inter)
 
-        inds = np.where(iou <= thresh)[0]
+        inds = np.where(iou <= iou_threshold)[0]
         order = order[inds + 1]
 
     return keep
@@ -252,27 +252,39 @@ def _data_postprocess(output, conf_threshold, iou_threshold, old_size, new_size,
     >>> _data_postprocess(output, 0.5, 0.5, (100, 100), (128, 128), ['cat', 'dog'])
     [((7, 7, 15, 15), 'cat', 0.9)]
     """
-    max_scores = output[4:, :].max(axis=0)
-    output = output[:, max_scores > conf_threshold].transpose(1, 0)
-    boxes = output[:, :4]
-    scores = output[:, 4:]
-    filtered_max_scores = scores.max(axis=1)
+    if output.shape[-1] == 6:  # for end-to-end models like yolov10
+        detections = []
+        output = output[output[:, 4] > conf_threshold]
+        selected_idx = _yolo_nms(output[:, :4], output[:, 4])
+        for x0, y0, x1, y1, score, cls in output[selected_idx]:
+            x0, y0 = _xy_postprocess(x0, y0, old_size, new_size)
+            x1, y1 = _xy_postprocess(x1, y1, old_size, new_size)
+            detections.append(((x0, y0, x1, y1), labels[int(cls.item())], float(score)))
 
-    if not boxes.size:
-        return []
+        return detections
 
-    boxes = _yolo_xywh2xyxy(boxes)
-    idx = _yolo_nms(boxes, filtered_max_scores, thresh=iou_threshold)
-    boxes, scores = boxes[idx], scores[idx]
+    else:  # for nms-based models like yolov8
+        max_scores = output[4:, :].max(axis=0)
+        output = output[:, max_scores > conf_threshold].transpose(1, 0)
+        boxes = output[:, :4]
+        scores = output[:, 4:]
+        filtered_max_scores = scores.max(axis=1)
 
-    detections = []
-    for box, score in zip(boxes, scores):
-        x0, y0 = _xy_postprocess(box[0], box[1], old_size, new_size)
-        x1, y1 = _xy_postprocess(box[2], box[3], old_size, new_size)
-        max_score_id = score.argmax()
-        detections.append(((x0, y0, x1, y1), labels[max_score_id], float(score[max_score_id])))
+        if not boxes.size:
+            return []
 
-    return detections
+        boxes = _yolo_xywh2xyxy(boxes)
+        idx = _yolo_nms(boxes, filtered_max_scores, iou_threshold=iou_threshold)
+        boxes, scores = boxes[idx], scores[idx]
+
+        detections = []
+        for box, score in zip(boxes, scores):
+            x0, y0 = _xy_postprocess(box[0], box[1], old_size, new_size)
+            x1, y1 = _xy_postprocess(box[2], box[3], old_size, new_size)
+            max_score_id = score.argmax()
+            detections.append(((x0, y0, x1, y1), labels[max_score_id], float(score[max_score_id])))
+
+        return detections
 
 
 def _safe_eval_names_str(names_str):
