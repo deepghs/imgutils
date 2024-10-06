@@ -18,6 +18,7 @@ imgutils.detect
     head
     nudenet
     person
+    similarity
     text
     visual
 
