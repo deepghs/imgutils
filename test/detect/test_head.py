@@ -1,5 +1,3 @@
-from pprint import pprint
-
 import pytest
 
 from imgutils.detect import detection_similarity

@@ -226,6 +226,30 @@ def _xy_postprocess(x, y, old_size: Tuple[float, float], new_size: Tuple[float, 
 def _end2end_postprocess(output, conf_threshold: float, iou_threshold: float,
                          old_size: Tuple[float, float], new_size: Tuple[float, float], labels: List[str]) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
+    """
+    Post-process the output of an end-to-end object detection model.
+
+    This function filters detections based on confidence, applies non-maximum suppression,
+    and transforms coordinates back to the original image size.
+
+    :param output: Raw output from the end-to-end object detection model.
+    :type output: np.ndarray
+    :param conf_threshold: Confidence threshold for filtering detections.
+    :type conf_threshold: float
+    :param iou_threshold: IoU threshold for non-maximum suppression (not used in this function).
+    :type iou_threshold: float
+    :param old_size: Original image dimensions (width, height).
+    :type old_size: Tuple[float, float]
+    :param new_size: Preprocessed image dimensions (width, height).
+    :type new_size: Tuple[float, float]
+    :param labels: List of class labels.
+    :type labels: List[str]
+
+    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    :raises AssertionError: If the output shape is not as expected.
+    """
     assert output.shape[-1] == 6
     _ = iou_threshold  # actually the iou_threshold has not been supplied to end2end post-processing
     detections = []
@@ -242,6 +266,30 @@ def _end2end_postprocess(output, conf_threshold: float, iou_threshold: float,
 def _nms_postprocess(output, conf_threshold: float, iou_threshold: float,
                      old_size: Tuple[float, float], new_size: Tuple[float, float], labels: List[str]) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
+    """
+    Post-process the output of an NMS-based object detection model.
+
+    This function applies confidence thresholding, non-maximum suppression,
+    and transforms coordinates back to the original image size.
+
+    :param output: Raw output from the NMS-based object detection model.
+    :type output: np.ndarray
+    :param conf_threshold: Confidence threshold for filtering detections.
+    :type conf_threshold: float
+    :param iou_threshold: IoU threshold for non-maximum suppression.
+    :type iou_threshold: float
+    :param old_size: Original image dimensions (width, height).
+    :type old_size: Tuple[float, float]
+    :param new_size: Preprocessed image dimensions (width, height).
+    :type new_size: Tuple[float, float]
+    :param labels: List of class labels.
+    :type labels: List[str]
+
+    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    :raises AssertionError: If the output shape is not as expected.
+    """
     assert output.shape[0] == 4 + len(labels)
     # the output should be like [4+cls, box_cnt]
     # cls means count of classes
@@ -323,6 +371,30 @@ def _yolo_postprocess(output, conf_threshold: float, iou_threshold: float,
 def _rtdetr_postprocess(output, conf_threshold: float, iou_threshold: float,
                         old_size: Tuple[int, int], new_size: Tuple[int, int], labels: List[str]) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
+    """
+    Post-process the output from an RT-DETR (Real-Time DEtection TRansformer) model.
+
+    This function handles the specific output format of RT-DETR models and applies
+    the necessary post-processing steps.
+
+    :param output: Raw output from the RT-DETR model.
+    :type output: np.ndarray
+    :param conf_threshold: Confidence threshold for filtering detections.
+    :type conf_threshold: float
+    :param iou_threshold: IoU threshold for non-maximum suppression.
+    :type iou_threshold: float
+    :param old_size: Original image dimensions (width, height).
+    :type old_size: Tuple[int, int]
+    :param new_size: Preprocessed image dimensions (width, height) (not used in this function).
+    :type new_size: Tuple[int, int]
+    :param labels: List of class labels.
+    :type labels: List[str]
+
+    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    :raises AssertionError: If the output shape is not as expected.
+    """
     assert output.shape[-1] == 4 + len(labels)
     # the size rtdetr using is [0.0, 1.0]
     _ = new_size
