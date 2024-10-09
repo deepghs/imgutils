@@ -21,7 +21,7 @@ from typing import List, Optional, Tuple
 import numpy as np
 from PIL import Image
 from hbutils.color import rnd_colors
-from hfutils.operate import get_hf_client
+from hfutils.operate import get_hf_client, get_hf_fs
 from hfutils.repository import hf_hub_repo_url
 from hfutils.utils import hf_fs_path, hf_normpath
 from huggingface_hub import HfFileSystem, hf_hub_download
@@ -173,7 +173,7 @@ def _image_preprocess(image: Image.Image, max_infer_size: int = 1216, align: int
         - The preprocessed image
         - Original image dimensions (width, height)
         - New image dimensions (width, height)
-    :rtype: tuple(Image.Image, tuple(int, int), tuple(int, int))
+    :rtype: tuple(Image.Image, Tuple[int, int], Tuple[int, int])
 
     :Example:
 
@@ -194,7 +194,7 @@ def _image_preprocess(image: Image.Image, max_infer_size: int = 1216, align: int
     return image, (old_width, old_height), (new_width, new_height)
 
 
-def _xy_postprocess(x, y, old_size, new_size):
+def _xy_postprocess(x, y, old_size: Tuple[float, float], new_size: Tuple[float, float]):
     """
     Convert coordinates from the preprocessed image size back to the original image size.
 
@@ -203,12 +203,12 @@ def _xy_postprocess(x, y, old_size, new_size):
     :param y: Y-coordinate in the preprocessed image.
     :type y: float
     :param old_size: Original image dimensions (width, height).
-    :type old_size: tuple(int, int)
+    :type old_size: Tuple[float, float]
     :param new_size: Preprocessed image dimensions (width, height).
-    :type new_size: tuple(int, int)
+    :type new_size: Tuple[float, float]
 
     :return: Adjusted (x, y) coordinates for the original image size.
-    :rtype: tuple(int, int)
+    :rtype: Tuple[int, int]
 
     :Example:
 
@@ -223,7 +223,103 @@ def _xy_postprocess(x, y, old_size, new_size):
     return x, y
 
 
-def _data_postprocess(output, conf_threshold, iou_threshold, old_size, new_size, labels: List[str]):
+def _end2end_postprocess(output, conf_threshold: float, iou_threshold: float,
+                         old_size: Tuple[float, float], new_size: Tuple[float, float], labels: List[str]) \
+        -> List[Tuple[Tuple[int, int, int, int], str, float]]:
+    """
+    Post-process the output of an end-to-end object detection model.
+
+    This function filters detections based on confidence, applies non-maximum suppression,
+    and transforms coordinates back to the original image size.
+
+    :param output: Raw output from the end-to-end object detection model.
+    :type output: np.ndarray
+    :param conf_threshold: Confidence threshold for filtering detections.
+    :type conf_threshold: float
+    :param iou_threshold: IoU threshold for non-maximum suppression (not used in this function).
+    :type iou_threshold: float
+    :param old_size: Original image dimensions (width, height).
+    :type old_size: Tuple[float, float]
+    :param new_size: Preprocessed image dimensions (width, height).
+    :type new_size: Tuple[float, float]
+    :param labels: List of class labels.
+    :type labels: List[str]
+
+    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    :raises AssertionError: If the output shape is not as expected.
+    """
+    assert output.shape[-1] == 6
+    _ = iou_threshold  # actually the iou_threshold has not been supplied to end2end post-processing
+    detections = []
+    output = output[output[:, 4] > conf_threshold]
+    selected_idx = _yolo_nms(output[:, :4], output[:, 4])
+    for x0, y0, x1, y1, score, cls in output[selected_idx]:
+        x0, y0 = _xy_postprocess(x0, y0, old_size, new_size)
+        x1, y1 = _xy_postprocess(x1, y1, old_size, new_size)
+        detections.append(((x0, y0, x1, y1), labels[int(cls.item())], float(score)))
+
+    return detections
+
+
+def _nms_postprocess(output, conf_threshold: float, iou_threshold: float,
+                     old_size: Tuple[float, float], new_size: Tuple[float, float], labels: List[str]) \
+        -> List[Tuple[Tuple[int, int, int, int], str, float]]:
+    """
+    Post-process the output of an NMS-based object detection model.
+
+    This function applies confidence thresholding, non-maximum suppression,
+    and transforms coordinates back to the original image size.
+
+    :param output: Raw output from the NMS-based object detection model.
+    :type output: np.ndarray
+    :param conf_threshold: Confidence threshold for filtering detections.
+    :type conf_threshold: float
+    :param iou_threshold: IoU threshold for non-maximum suppression.
+    :type iou_threshold: float
+    :param old_size: Original image dimensions (width, height).
+    :type old_size: Tuple[float, float]
+    :param new_size: Preprocessed image dimensions (width, height).
+    :type new_size: Tuple[float, float]
+    :param labels: List of class labels.
+    :type labels: List[str]
+
+    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    :raises AssertionError: If the output shape is not as expected.
+    """
+    assert output.shape[0] == 4 + len(labels)
+    # the output should be like [4+cls, box_cnt]
+    # cls means count of classes
+    # box_cnt means count of bboxes
+    max_scores = output[4:, :].max(axis=0)
+    output = output[:, max_scores > conf_threshold].transpose(1, 0)
+    boxes = output[:, :4]
+    scores = output[:, 4:]
+    filtered_max_scores = scores.max(axis=1)
+
+    if not boxes.size:
+        return []
+
+    boxes = _yolo_xywh2xyxy(boxes)
+    idx = _yolo_nms(boxes, filtered_max_scores, iou_threshold=iou_threshold)
+    boxes, scores = boxes[idx], scores[idx]
+
+    detections = []
+    for box, score in zip(boxes, scores):
+        x0, y0 = _xy_postprocess(box[0], box[1], old_size, new_size)
+        x1, y1 = _xy_postprocess(box[2], box[3], old_size, new_size)
+        max_score_id = score.argmax()
+        detections.append(((x0, y0, x1, y1), labels[max_score_id], float(score[max_score_id])))
+
+    return detections
+
+
+def _yolo_postprocess(output, conf_threshold: float, iou_threshold: float,
+                      old_size: Tuple[float, float], new_size: Tuple[float, float], labels: List[str]) \
+        -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Post-process the raw output from the object detection model.
 
@@ -237,9 +333,9 @@ def _data_postprocess(output, conf_threshold, iou_threshold, old_size, new_size,
     :param iou_threshold: IoU threshold for non-maximum suppression.
     :type iou_threshold: float
     :param old_size: Original image dimensions (width, height).
-    :type old_size: tuple(int, int)
+    :type old_size: Tuple[float, float]
     :param new_size: Preprocessed image dimensions (width, height).
-    :type new_size: tuple(int, int)
+    :type new_size: Tuple[float, float]
     :param labels: List of class labels.
     :type labels: List[str]
 
@@ -249,42 +345,67 @@ def _data_postprocess(output, conf_threshold, iou_threshold, old_size, new_size,
     :Example:
 
     >>> output = np.array([[10, 10, 20, 20, 0.9, 0.1]])
-    >>> _data_postprocess(output, 0.5, 0.5, (100, 100), (128, 128), ['cat', 'dog'])
+    >>> _yolo_postprocess(output, 0.5, 0.5, (100, 100), (128, 128), ['cat', 'dog'])
     [((7, 7, 15, 15), 'cat', 0.9)]
     """
     if output.shape[-1] == 6:  # for end-to-end models like yolov10
-        detections = []
-        output = output[output[:, 4] > conf_threshold]
-        selected_idx = _yolo_nms(output[:, :4], output[:, 4])
-        for x0, y0, x1, y1, score, cls in output[selected_idx]:
-            x0, y0 = _xy_postprocess(x0, y0, old_size, new_size)
-            x1, y1 = _xy_postprocess(x1, y1, old_size, new_size)
-            detections.append(((x0, y0, x1, y1), labels[int(cls.item())], float(score)))
-
-        return detections
-
+        return _end2end_postprocess(
+            output=output,
+            conf_threshold=conf_threshold,
+            iou_threshold=iou_threshold,
+            old_size=old_size,
+            new_size=new_size,
+            labels=labels,
+        )
     else:  # for nms-based models like yolov8
-        max_scores = output[4:, :].max(axis=0)
-        output = output[:, max_scores > conf_threshold].transpose(1, 0)
-        boxes = output[:, :4]
-        scores = output[:, 4:]
-        filtered_max_scores = scores.max(axis=1)
+        return _nms_postprocess(
+            output=output,
+            conf_threshold=conf_threshold,
+            iou_threshold=iou_threshold,
+            old_size=old_size,
+            new_size=new_size,
+            labels=labels,
+        )
 
-        if not boxes.size:
-            return []
 
-        boxes = _yolo_xywh2xyxy(boxes)
-        idx = _yolo_nms(boxes, filtered_max_scores, iou_threshold=iou_threshold)
-        boxes, scores = boxes[idx], scores[idx]
+def _rtdetr_postprocess(output, conf_threshold: float, iou_threshold: float,
+                        old_size: Tuple[int, int], new_size: Tuple[int, int], labels: List[str]) \
+        -> List[Tuple[Tuple[int, int, int, int], str, float]]:
+    """
+    Post-process the output from an RT-DETR (Real-Time DEtection TRansformer) model.
 
-        detections = []
-        for box, score in zip(boxes, scores):
-            x0, y0 = _xy_postprocess(box[0], box[1], old_size, new_size)
-            x1, y1 = _xy_postprocess(box[2], box[3], old_size, new_size)
-            max_score_id = score.argmax()
-            detections.append(((x0, y0, x1, y1), labels[max_score_id], float(score[max_score_id])))
+    This function handles the specific output format of RT-DETR models and applies
+    the necessary post-processing steps.
 
-        return detections
+    :param output: Raw output from the RT-DETR model.
+    :type output: np.ndarray
+    :param conf_threshold: Confidence threshold for filtering detections.
+    :type conf_threshold: float
+    :param iou_threshold: IoU threshold for non-maximum suppression.
+    :type iou_threshold: float
+    :param old_size: Original image dimensions (width, height).
+    :type old_size: Tuple[int, int]
+    :param new_size: Preprocessed image dimensions (width, height) (not used in this function).
+    :type new_size: Tuple[int, int]
+    :param labels: List of class labels.
+    :type labels: List[str]
+
+    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]
+
+    :raises AssertionError: If the output shape is not as expected.
+    """
+    assert output.shape[-1] == 4 + len(labels)
+    # the size rtdetr using is [0.0, 1.0]
+    _ = new_size
+    return _nms_postprocess(
+        output=output.transpose(1, 0),
+        conf_threshold=conf_threshold,
+        iou_threshold=iou_threshold,
+        old_size=old_size,
+        new_size=(1.0, 1.0),
+        labels=labels,
+    )
 
 
 def _safe_eval_names_str(names_str):
@@ -351,6 +472,7 @@ class YOLOModel:
         self.repo_id = repo_id
         self._model_names = None
         self._models = {}
+        self._model_types = {}
         self._hf_token = hf_token
 
     def _get_hf_token(self) -> Optional[str]:
@@ -422,6 +544,23 @@ class YOLOModel:
 
         return self._models[model_name]
 
+    def _get_model_type(self, model_name: str):
+        if model_name not in self._model_types:
+            hf_fs = get_hf_fs(hf_token=self._get_hf_token())
+            fs_path = hf_fs_path(
+                repo_id=self.repo_id,
+                repo_type='model',
+                filename=f'{model_name}/model_type.json',
+                revision='main',
+            )
+            if hf_fs.exists(fs_path):
+                model_type = json.loads(hf_fs.read_text(fs_path))['model_type']
+            else:
+                model_type = 'yolo'
+            self._model_types[model_name] = model_type
+
+        return self._model_types[model_name]
+
     def predict(self, image: ImageTyping, model_name: str,
                 conf_threshold: float = 0.25, iou_threshold: float = 0.7) \
             -> List[Tuple[Tuple[int, int, int, int], str, float]]:
@@ -453,7 +592,27 @@ class YOLOModel:
         new_image, old_size, new_size = _image_preprocess(image, max_infer_size)
         data = rgb_encode(new_image)[None, ...]
         output, = model.run(['output0'], {'images': data})
-        return _data_postprocess(output[0], conf_threshold, iou_threshold, old_size, new_size, labels)
+        model_type = self._get_model_type(model_name=model_name)
+        if model_type == 'yolo':
+            return _yolo_postprocess(
+                output=output[0],
+                conf_threshold=conf_threshold,
+                iou_threshold=iou_threshold,
+                old_size=old_size,
+                new_size=new_size,
+                labels=labels
+            )
+        elif model_type == 'rtdetr':
+            return _rtdetr_postprocess(
+                output=output[0],
+                conf_threshold=conf_threshold,
+                iou_threshold=iou_threshold,
+                old_size=old_size,
+                new_size=new_size,
+                labels=labels
+            )
+        else:
+            raise ValueError(f'Unknown object detection model type - {model_type!r}.')  # pragma: no cover
 
     def clear(self):
         """
