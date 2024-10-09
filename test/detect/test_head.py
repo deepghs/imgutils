@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import pytest
 
 from imgutils.detect import detection_similarity
@@ -49,5 +51,18 @@ class TestDetectHead:
             ((936, 86, 1134, 267), 'head', 0.834),
             ((650, 444, 720, 518), 'head', 0.778),
             ((461, 247, 536, 330), 'head', 0.434),
+        ])
+        assert similarity >= 0.85
+
+    @pytest.mark.parametrize(['model_name'], [
+        ('head_detect_v1.6_l_rtdetr',),
+    ])
+    def test_detect_with_rtdetr(self, model_name: str):
+        # ATTENTION: results of rtdetr models are really shitty and unstable
+        #            so this expected result is 100% bullshit
+        #            just make sure the rtdetr models can be properly inferred
+        detections = detect_heads(get_testfile('genshin_post.jpg'), model_name=model_name)
+        similarity = detection_similarity(detections, [
+            ((780, 9, 1125, 208), 'head', 0.3077814280986786)
         ])
         assert similarity >= 0.85
