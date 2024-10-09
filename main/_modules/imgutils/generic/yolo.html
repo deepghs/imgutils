@@ -124,7 +124,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">hbutils.color</span> <span class="kn">import</span> <span class="n">rnd_colors</span>
-<span class="kn">from</span> <span class="nn">hfutils.operate</span> <span class="kn">import</span> <span class="n">get_hf_client</span>
+<span class="kn">from</span> <span class="nn">hfutils.operate</span> <span class="kn">import</span> <span class="n">get_hf_client</span><span class="p">,</span> <span class="n">get_hf_fs</span>
 <span class="kn">from</span> <span class="nn">hfutils.repository</span> <span class="kn">import</span> <span class="n">hf_hub_repo_url</span>
 <span class="kn">from</span> <span class="nn">hfutils.utils</span> <span class="kn">import</span> <span class="n">hf_fs_path</span><span class="p">,</span> <span class="n">hf_normpath</span>
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">HfFileSystem</span><span class="p">,</span> <span class="n">hf_hub_download</span>
@@ -276,7 +276,7 @@
 <span class="sd">        - The preprocessed image</span>
 <span class="sd">        - Original image dimensions (width, height)</span>
 <span class="sd">        - New image dimensions (width, height)</span>
-<span class="sd">    :rtype: tuple(Image.Image, tuple(int, int), tuple(int, int))</span>
+<span class="sd">    :rtype: tuple(Image.Image, Tuple[int, int], Tuple[int, int])</span>
 
 <span class="sd">    :Example:</span>
 
@@ -297,7 +297,7 @@
     <span class="k">return</span> <span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">old_width</span><span class="p">,</span> <span class="n">old_height</span><span class="p">),</span> <span class="p">(</span><span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_xy_postprocess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_xy_postprocess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">old_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert coordinates from the preprocessed image size back to the original image size.</span>
 
@@ -306,12 +306,12 @@
 <span class="sd">    :param y: Y-coordinate in the preprocessed image.</span>
 <span class="sd">    :type y: float</span>
 <span class="sd">    :param old_size: Original image dimensions (width, height).</span>
-<span class="sd">    :type old_size: tuple(int, int)</span>
+<span class="sd">    :type old_size: Tuple[float, float]</span>
 <span class="sd">    :param new_size: Preprocessed image dimensions (width, height).</span>
-<span class="sd">    :type new_size: tuple(int, int)</span>
+<span class="sd">    :type new_size: Tuple[float, float]</span>
 
 <span class="sd">    :return: Adjusted (x, y) coordinates for the original image size.</span>
-<span class="sd">    :rtype: tuple(int, int)</span>
+<span class="sd">    :rtype: Tuple[int, int]</span>
 
 <span class="sd">    :Example:</span>
 
@@ -326,7 +326,103 @@
     <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
 
 
-<span class="k">def</span> <span class="nf">_data_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+<span class="k">def</span> <span class="nf">_end2end_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                         <span class="n">old_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> \
+        <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-process the output of an end-to-end object detection model.</span>
+
+<span class="sd">    This function filters detections based on confidence, applies non-maximum suppression,</span>
+<span class="sd">    and transforms coordinates back to the original image size.</span>
+
+<span class="sd">    :param output: Raw output from the end-to-end object detection model.</span>
+<span class="sd">    :type output: np.ndarray</span>
+<span class="sd">    :param conf_threshold: Confidence threshold for filtering detections.</span>
+<span class="sd">    :type conf_threshold: float</span>
+<span class="sd">    :param iou_threshold: IoU threshold for non-maximum suppression (not used in this function).</span>
+<span class="sd">    :type iou_threshold: float</span>
+<span class="sd">    :param old_size: Original image dimensions (width, height).</span>
+<span class="sd">    :type old_size: Tuple[float, float]</span>
+<span class="sd">    :param new_size: Preprocessed image dimensions (width, height).</span>
+<span class="sd">    :type new_size: Tuple[float, float]</span>
+<span class="sd">    :param labels: List of class labels.</span>
+<span class="sd">    :type labels: List[str]</span>
+
+<span class="sd">    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).</span>
+<span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    :raises AssertionError: If the output shape is not as expected.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">iou_threshold</span>  <span class="c1"># actually the iou_threshold has not been supplied to end2end post-processing</span>
+    <span class="n">detections</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">conf_threshold</span><span class="p">]</span>
+    <span class="n">selected_idx</span> <span class="o">=</span> <span class="n">_yolo_nms</span><span class="p">(</span><span class="n">output</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">output</span><span class="p">[</span><span class="n">selected_idx</span><span class="p">]:</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+        <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">labels</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">item</span><span class="p">())],</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">detections</span>
+
+
+<span class="k">def</span> <span class="nf">_nms_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                     <span class="n">old_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> \
+        <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-process the output of an NMS-based object detection model.</span>
+
+<span class="sd">    This function applies confidence thresholding, non-maximum suppression,</span>
+<span class="sd">    and transforms coordinates back to the original image size.</span>
+
+<span class="sd">    :param output: Raw output from the NMS-based object detection model.</span>
+<span class="sd">    :type output: np.ndarray</span>
+<span class="sd">    :param conf_threshold: Confidence threshold for filtering detections.</span>
+<span class="sd">    :type conf_threshold: float</span>
+<span class="sd">    :param iou_threshold: IoU threshold for non-maximum suppression.</span>
+<span class="sd">    :type iou_threshold: float</span>
+<span class="sd">    :param old_size: Original image dimensions (width, height).</span>
+<span class="sd">    :type old_size: Tuple[float, float]</span>
+<span class="sd">    :param new_size: Preprocessed image dimensions (width, height).</span>
+<span class="sd">    :type new_size: Tuple[float, float]</span>
+<span class="sd">    :param labels: List of class labels.</span>
+<span class="sd">    :type labels: List[str]</span>
+
+<span class="sd">    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).</span>
+<span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    :raises AssertionError: If the output shape is not as expected.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="c1"># the output should be like [4+cls, box_cnt]</span>
+    <span class="c1"># cls means count of classes</span>
+    <span class="c1"># box_cnt means count of bboxes</span>
+    <span class="n">max_scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">4</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="n">max_scores</span> <span class="o">&gt;</span> <span class="n">conf_threshold</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">boxes</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span>
+    <span class="n">filtered_max_scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">boxes</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="n">boxes</span> <span class="o">=</span> <span class="n">_yolo_xywh2xyxy</span><span class="p">(</span><span class="n">boxes</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">_yolo_nms</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">filtered_max_scores</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">)</span>
+    <span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span> <span class="o">=</span> <span class="n">boxes</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="n">detections</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span><span class="p">):</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+        <span class="n">max_score_id</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+        <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">labels</span><span class="p">[</span><span class="n">max_score_id</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">[</span><span class="n">max_score_id</span><span class="p">])))</span>
+
+    <span class="k">return</span> <span class="n">detections</span>
+
+
+<span class="k">def</span> <span class="nf">_yolo_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                      <span class="n">old_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> \
+        <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Post-process the raw output from the object detection model.</span>
 
@@ -340,9 +436,9 @@
 <span class="sd">    :param iou_threshold: IoU threshold for non-maximum suppression.</span>
 <span class="sd">    :type iou_threshold: float</span>
 <span class="sd">    :param old_size: Original image dimensions (width, height).</span>
-<span class="sd">    :type old_size: tuple(int, int)</span>
+<span class="sd">    :type old_size: Tuple[float, float]</span>
 <span class="sd">    :param new_size: Preprocessed image dimensions (width, height).</span>
-<span class="sd">    :type new_size: tuple(int, int)</span>
+<span class="sd">    :type new_size: Tuple[float, float]</span>
 <span class="sd">    :param labels: List of class labels.</span>
 <span class="sd">    :type labels: List[str]</span>
 
@@ -352,42 +448,67 @@
 <span class="sd">    :Example:</span>
 
 <span class="sd">    &gt;&gt;&gt; output = np.array([[10, 10, 20, 20, 0.9, 0.1]])</span>
-<span class="sd">    &gt;&gt;&gt; _data_postprocess(output, 0.5, 0.5, (100, 100), (128, 128), [&#39;cat&#39;, &#39;dog&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; _yolo_postprocess(output, 0.5, 0.5, (100, 100), (128, 128), [&#39;cat&#39;, &#39;dog&#39;])</span>
 <span class="sd">    [((7, 7, 15, 15), &#39;cat&#39;, 0.9)]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>  <span class="c1"># for end-to-end models like yolov10</span>
-        <span class="n">detections</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">conf_threshold</span><span class="p">]</span>
-        <span class="n">selected_idx</span> <span class="o">=</span> <span class="n">_yolo_nms</span><span class="p">(</span><span class="n">output</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">])</span>
-        <span class="k">for</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">output</span><span class="p">[</span><span class="n">selected_idx</span><span class="p">]:</span>
-            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
-            <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
-            <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">labels</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">item</span><span class="p">())],</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)))</span>
-
-        <span class="k">return</span> <span class="n">detections</span>
-
+        <span class="k">return</span> <span class="n">_end2end_postprocess</span><span class="p">(</span>
+            <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
+            <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+            <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+            <span class="n">old_size</span><span class="o">=</span><span class="n">old_size</span><span class="p">,</span>
+            <span class="n">new_size</span><span class="o">=</span><span class="n">new_size</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># for nms-based models like yolov8</span>
-        <span class="n">max_scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">4</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="n">max_scores</span> <span class="o">&gt;</span> <span class="n">conf_threshold</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">boxes</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span>
-        <span class="n">scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span>
-        <span class="n">filtered_max_scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_nms_postprocess</span><span class="p">(</span>
+            <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
+            <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+            <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+            <span class="n">old_size</span><span class="o">=</span><span class="n">old_size</span><span class="p">,</span>
+            <span class="n">new_size</span><span class="o">=</span><span class="n">new_size</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">boxes</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[]</span>
 
-        <span class="n">boxes</span> <span class="o">=</span> <span class="n">_yolo_xywh2xyxy</span><span class="p">(</span><span class="n">boxes</span><span class="p">)</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">_yolo_nms</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">filtered_max_scores</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">)</span>
-        <span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span> <span class="o">=</span> <span class="n">boxes</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">_rtdetr_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                        <span class="n">old_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> \
+        <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-process the output from an RT-DETR (Real-Time DEtection TRansformer) model.</span>
 
-        <span class="n">detections</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span><span class="p">):</span>
-            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
-            <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
-            <span class="n">max_score_id</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
-            <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">labels</span><span class="p">[</span><span class="n">max_score_id</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">[</span><span class="n">max_score_id</span><span class="p">])))</span>
+<span class="sd">    This function handles the specific output format of RT-DETR models and applies</span>
+<span class="sd">    the necessary post-processing steps.</span>
 
-        <span class="k">return</span> <span class="n">detections</span>
+<span class="sd">    :param output: Raw output from the RT-DETR model.</span>
+<span class="sd">    :type output: np.ndarray</span>
+<span class="sd">    :param conf_threshold: Confidence threshold for filtering detections.</span>
+<span class="sd">    :type conf_threshold: float</span>
+<span class="sd">    :param iou_threshold: IoU threshold for non-maximum suppression.</span>
+<span class="sd">    :type iou_threshold: float</span>
+<span class="sd">    :param old_size: Original image dimensions (width, height).</span>
+<span class="sd">    :type old_size: Tuple[int, int]</span>
+<span class="sd">    :param new_size: Preprocessed image dimensions (width, height) (not used in this function).</span>
+<span class="sd">    :type new_size: Tuple[int, int]</span>
+<span class="sd">    :param labels: List of class labels.</span>
+<span class="sd">    :type labels: List[str]</span>
+
+<span class="sd">    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).</span>
+<span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    :raises AssertionError: If the output shape is not as expected.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="c1"># the size rtdetr using is [0.0, 1.0]</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">new_size</span>
+    <span class="k">return</span> <span class="n">_nms_postprocess</span><span class="p">(</span>
+        <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+        <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+        <span class="n">old_size</span><span class="o">=</span><span class="n">old_size</span><span class="p">,</span>
+        <span class="n">new_size</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+        <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+    <span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_safe_eval_names_str</span><span class="p">(</span><span class="n">names_str</span><span class="p">):</span>
@@ -454,6 +575,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span> <span class="o">=</span> <span class="n">repo_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_models</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="o">=</span> <span class="n">hf_token</span></div>
 
     <span class="k">def</span> <span class="nf">_get_hf_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -525,6 +647,23 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
 
+    <span class="k">def</span> <span class="nf">_get_model_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">:</span>
+            <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">get_hf_fs</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
+            <span class="n">fs_path</span> <span class="o">=</span> <span class="n">hf_fs_path</span><span class="p">(</span>
+                <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model_type.json&#39;</span><span class="p">,</span>
+                <span class="n">revision</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fs_path</span><span class="p">):</span>
+                <span class="n">model_type</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">hf_fs</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">fs_path</span><span class="p">))[</span><span class="s1">&#39;model_type&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">model_type</span> <span class="o">=</span> <span class="s1">&#39;yolo&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_type</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
+
 <div class="viewcode-block" id="YOLOModel.predict"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                 <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
             <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
@@ -556,7 +695,27 @@
         <span class="n">new_image</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span> <span class="o">=</span> <span class="n">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">new_image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
         <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output0&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;images&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
-        <span class="k">return</span> <span class="n">_data_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">conf_threshold</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></div>
+        <span class="n">model_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_type</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s1">&#39;yolo&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_yolo_postprocess</span><span class="p">(</span>
+                <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+                <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+                <span class="n">old_size</span><span class="o">=</span><span class="n">old_size</span><span class="p">,</span>
+                <span class="n">new_size</span><span class="o">=</span><span class="n">new_size</span><span class="p">,</span>
+                <span class="n">labels</span><span class="o">=</span><span class="n">labels</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s1">&#39;rtdetr&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_rtdetr_postprocess</span><span class="p">(</span>
+                <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+                <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+                <span class="n">old_size</span><span class="o">=</span><span class="n">old_size</span><span class="p">,</span>
+                <span class="n">new_size</span><span class="o">=</span><span class="n">new_size</span><span class="p">,</span>
+                <span class="n">labels</span><span class="o">=</span><span class="n">labels</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown object detection model type - </span><span class="si">{</span><span class="n">model_type</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
 
 <div class="viewcode-block" id="YOLOModel.clear"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -806,8 +965,6 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/rtdetr/index.html">dev/rtdetr</a></dd>
-                        <dd><a href="../../../../dev/bchlib/index.html">dev/bchlib</a></dd>
                         <dd><a href="yolo.html">main</a></dd>
                 </dl>
         </div>
