@@ -114,15 +114,22 @@ def _mcut_threshold(probs) -> float:
     return thresh
 
 
+def _has_alpha_channel(image: Image.Image) -> bool:
+    return any(band in {'A', 'a', 'P'} for band in image.getbands())
+
+
 def _prepare_image_for_tagging(image: ImageTyping, target_size: int):
-    image = load_image(image, force_background='white', mode='RGB')
+    image = load_image(image, force_background=None, mode=None)
     image_shape = image.size
     max_dim = max(image_shape)
     pad_left = (max_dim - image_shape[0]) // 2
     pad_top = (max_dim - image_shape[1]) // 2
 
     padded_image = Image.new("RGB", (max_dim, max_dim), (255, 255, 255))
-    padded_image.paste(image, (pad_left, pad_top))
+    if _has_alpha_channel(image):
+        padded_image.paste(image, (pad_left, pad_top), mask=image)
+    else:
+        padded_image.paste(image, (pad_left, pad_top))
 
     if max_dim != target_size:
         padded_image = padded_image.resize((target_size, target_size), Image.BICUBIC)
