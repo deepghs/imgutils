@@ -217,15 +217,22 @@
     <span class="k">return</span> <span class="n">thresh</span>
 
 
+<span class="k">def</span> <span class="nf">_has_alpha_channel</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">band</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">}</span> <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">image</span><span class="o">.</span><span class="n">getbands</span><span class="p">())</span>
+
+
 <span class="k">def</span> <span class="nf">_prepare_image_for_tagging</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">target_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">image_shape</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span>
     <span class="n">max_dim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">image_shape</span><span class="p">)</span>
     <span class="n">pad_left</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_dim</span> <span class="o">-</span> <span class="n">image_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">//</span> <span class="mi">2</span>
     <span class="n">pad_top</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_dim</span> <span class="o">-</span> <span class="n">image_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">//</span> <span class="mi">2</span>
 
     <span class="n">padded_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">max_dim</span><span class="p">,</span> <span class="n">max_dim</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
-    <span class="n">padded_image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">pad_left</span><span class="p">,</span> <span class="n">pad_top</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">_has_alpha_channel</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">padded_image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">pad_left</span><span class="p">,</span> <span class="n">pad_top</span><span class="p">),</span> <span class="n">mask</span><span class="o">=</span><span class="n">image</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">padded_image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">pad_left</span><span class="p">,</span> <span class="n">pad_top</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">max_dim</span> <span class="o">!=</span> <span class="n">target_size</span><span class="p">:</span>
         <span class="n">padded_image</span> <span class="o">=</span> <span class="n">padded_image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">target_size</span><span class="p">,</span> <span class="n">target_size</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">)</span>
@@ -388,7 +395,6 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/tagging/index.html">dev/tagging</a></dd>
                         <dd><a href="wd14.html">main</a></dd>
                 </dl>
         </div>
