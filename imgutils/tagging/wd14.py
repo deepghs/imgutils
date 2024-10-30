@@ -15,7 +15,7 @@ from huggingface_hub import hf_hub_download
 
 from .format import remove_underline
 from .overlap import drop_overlap_tags
-from ..data import load_image, ImageTyping
+from ..data import load_image, ImageTyping, has_alpha_channel
 from ..utils import open_onnx_model, vreplace
 
 SWIN_MODEL_REPO = "SmilingWolf/wd-v1-4-swinv2-tagger-v2"
@@ -114,10 +114,6 @@ def _mcut_threshold(probs) -> float:
     return thresh
 
 
-def _has_alpha_channel(image: Image.Image) -> bool:
-    return any(band in {'A', 'a', 'P'} for band in image.getbands())
-
-
 def _prepare_image_for_tagging(image: ImageTyping, target_size: int):
     image = load_image(image, force_background=None, mode=None)
     image_shape = image.size
@@ -126,9 +122,9 @@ def _prepare_image_for_tagging(image: ImageTyping, target_size: int):
     pad_top = (max_dim - image_shape[1]) // 2
 
     padded_image = Image.new("RGB", (max_dim, max_dim), (255, 255, 255))
-    if _has_alpha_channel(image):
+    try:
         padded_image.paste(image, (pad_left, pad_top), mask=image)
-    else:
+    except ValueError:
         padded_image.paste(image, (pad_left, pad_top))
 
     if max_dim != target_size:
