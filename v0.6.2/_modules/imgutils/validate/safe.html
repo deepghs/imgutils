@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.validate.safe &mdash; imgutils 0.6.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=3e526bd2"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.validate.safe</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.validate.safe</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    Check if the images are polluted or safe.</span>
+
+<span class="sd">    This is an overall benchmark of all the safe check models:</span>
+
+<span class="sd">    .. image:: safe_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    Inspired from `mf666/shit-checker &lt;https://huggingface.co/spaces/mf666/shit-checker&gt;`_.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+
+<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;safe_check_score&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;safe_check&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">DEFAULT_MODEL</span> <span class="o">=</span> <span class="s1">&#39;mobilenet.xs.v2&#39;</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_open_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Open the ONNX model specified by the model name.</span>
+
+<span class="sd">    :param model_name: The name of the model.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :return: The opened ONNX model.</span>
+<span class="sd">    :rtype: onnx.ModelProto</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;mf666/shit-checker&#39;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">.onnx&#39;</span>
+    <span class="p">))</span>
+
+
+<span class="n">_DEFAULT_ORDER</span> <span class="o">=</span> <span class="s1">&#39;HWC&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">_get_hwc_map</span><span class="p">(</span><span class="n">order_</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_DEFAULT_ORDER</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">order_</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">_encode_channels</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">channels_order</span><span class="o">=</span><span class="s1">&#39;CHW&#39;</span><span class="p">):</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">))</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">_get_hwc_map</span><span class="p">(</span><span class="n">channels_order</span><span class="p">))</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="p">(</span><span class="n">array</span> <span class="o">/</span> <span class="mf">255.0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">array</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+    <span class="k">return</span> <span class="n">array</span>
+
+
+<span class="k">def</span> <span class="nf">_img_encode</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">384</span><span class="p">,</span> <span class="mi">384</span><span class="p">),</span> <span class="n">normalize</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_encode_channels</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">channels_order</span><span class="o">=</span><span class="s1">&#39;CHW&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">normalize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mean_</span><span class="p">,</span> <span class="n">std_</span> <span class="o">=</span> <span class="n">normalize</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">mean_</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">std_</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_raw_predict</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">DEFAULT_MODEL</span><span class="p">):</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_img_encode</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)))</span>
+    <span class="n">input_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+    <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">input_</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">output</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="n">_LABELS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;polluted&#39;</span><span class="p">,</span> <span class="s1">&#39;safe&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_pred</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">DEFAULT_MODEL</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">image</span><span class="o">.</span><span class="n">height</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">area</span> <span class="o">/</span> <span class="p">(</span><span class="mi">384</span> <span class="o">*</span> <span class="mi">384</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">):</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">384</span><span class="p">))</span>
+        <span class="n">y0</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="mi">384</span><span class="p">))</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="mi">384</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y0</span> <span class="o">+</span> <span class="mi">384</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+        <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)))</span>
+
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">_raw_predict</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">scores</span>
+
+
+<div class="viewcode-block" id="safe_check_score"><a class="viewcode-back" href="../../../api_doc/validate/safe.html#imgutils.validate.safe.safe_check_score">[docs]</a><span class="k">def</span> <span class="nf">safe_check_score</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_MODEL</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span> \
+        <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check the safety score of an image.</span>
+
+<span class="sd">    :param image: The image to check.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param model_name: The name of the safety model.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :param max_batch_size: The maximum batch size for prediction.</span>
+<span class="sd">    :type max_batch_size: int</span>
+<span class="sd">    :return: A mapping of safety labels and their corresponding scores.</span>
+<span class="sd">    :rtype: Mapping[str, float]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">_pred_result</span> <span class="o">=</span> <span class="n">_pred</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="s1">&#39;polluted&#39;</span><span class="p">,</span> <span class="s1">&#39;safe&#39;</span><span class="p">],</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">_pred_result</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="safe_check"><a class="viewcode-back" href="../../../api_doc/validate/safe.html#imgutils.validate.safe.safe_check">[docs]</a><span class="k">def</span> <span class="nf">safe_check</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_MODEL</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span> \
+        <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check the safety label and score of an image.</span>
+
+<span class="sd">    :param image: The image to check.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param model_name: The name of the safety model.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :param max_batch_size: The maximum batch size for prediction.</span>
+<span class="sd">    :type max_batch_size: int</span>
+<span class="sd">    :return: A tuple containing the safety label and score.</span>
+<span class="sd">    :rtype: Tuple[str, float]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">_pred_result</span> <span class="o">=</span> <span class="n">_pred</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="p">)</span>
+    <span class="n">id_</span> <span class="o">=</span> <span class="n">_pred_result</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">_LABELS</span><span class="p">[</span><span class="n">id_</span><span class="p">],</span> <span class="n">_pred_result</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.6.2
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.5.0/index.html">v0.5.0</a></dd>
+                        <dd><a href="../../../../v0.6.0/index.html">v0.6.0</a></dd>
+                        <dd><a href="../../../../v0.6.1/index.html">v0.6.1</a></dd>
+                        <dd><a href="safe.html">v0.6.2</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
