@@ -225,9 +225,9 @@
     <span class="n">pad_top</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_dim</span> <span class="o">-</span> <span class="n">image_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">//</span> <span class="mi">2</span>
 
     <span class="n">padded_image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">max_dim</span><span class="p">,</span> <span class="n">max_dim</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">has_alpha_channel</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
         <span class="n">padded_image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">pad_left</span><span class="p">,</span> <span class="n">pad_top</span><span class="p">),</span> <span class="n">mask</span><span class="o">=</span><span class="n">image</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="n">padded_image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">pad_left</span><span class="p">,</span> <span class="n">pad_top</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">max_dim</span> <span class="o">!=</span> <span class="n">target_size</span><span class="p">:</span>
