@@ -12,8 +12,8 @@ Overview:
     - Customizable confidence and IoU thresholds
     - Integration with Hugging Face model repository
 
-    The module is based on the `ani_face_detection <https://universe.roboflow.com/linog/ani_face_detection>`_ dataset
-    from Roboflow and uses YOLOv8 architecture for object detection.
+    The module is based on the `deepghs/anime_head_detection <https://huggingface.co/datasets/deepghs/anime_head_detection>`_
+    dataset contributed by our developers and uses YOLOv8/YOLO11 architecture for object detection.
 
     Example usage and benchmarks are provided in the module overview.
 
@@ -23,6 +23,7 @@ Overview:
         :align: center
 
 """
+import warnings
 from typing import List, Tuple, Optional
 
 from ..data import ImageTyping
@@ -31,8 +32,9 @@ from ..generic import yolo_predict
 _REPO_ID = 'deepghs/anime_head_detection'
 
 
-def detect_heads(image: ImageTyping, level: str = 's', model_name: Optional[str] = None,
-                 conf_threshold: float = 0.3, iou_threshold: float = 0.7) \
+def detect_heads(image: ImageTyping, level: Optional[str] = None,
+                 model_name: Optional[str] = 'head_detect_v2.0_s',
+                 conf_threshold: float = 0.4, iou_threshold: float = 0.7) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Detect human heads in anime images using YOLOv8 models.
@@ -76,6 +78,12 @@ def detect_heads(image: ImageTyping, level: str = 's', model_name: Optional[str]
 
         For visualization of results, you can use the :func:`imgutils.detect.visual.detection_visualize` function.
     """
+    if level:
+        warnings.warn(DeprecationWarning(
+            'Argument level in function detect_heads is deprecated and will be removed in the future, '
+            'please migrate to model_name as soon as possible.'
+        ))
+
     return yolo_predict(
         image=image,
         repo_id=_REPO_ID,
