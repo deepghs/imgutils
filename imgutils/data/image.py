@@ -180,5 +180,12 @@ def add_background_for_rgba(image: ImageTyping, background: str = 'white'):
     >>> rgb_image.mode
     'RGB'
     """
-    from .layer import istack
-    return istack(background, image).convert('RGB')
+    image = load_image(image, force_background=None, mode=None)
+    if has_alpha_channel(image):
+        ret_image = Image.new('RGBA', image.size, background)
+        ret_image.paste(image, (0, 0), mask=image)
+    else:
+        ret_image = image
+    if ret_image.mode != 'RGB':
+        ret_image = ret_image.convert('RGB')
+    return ret_image

@@ -1,7 +1,7 @@
 import pytest
 from PIL import Image
 
-from imgutils.data import load_image, has_alpha_channel
+from imgutils.data import load_image, has_alpha_channel, add_background_for_rgba
 from test.testings import get_testfile
 
 _FILENAME = get_testfile('6125785.png')
@@ -23,6 +23,56 @@ class TestDataImage:
             assert load_image(image_, force_background=None) is image_
         else:
             assert image_diff(load_image(image_), result, throw_exception=False) < 1e-2
+
+    @pytest.mark.parametrize(['color'], [
+        ('white',),
+        ('green',),
+        ('red',),
+        ('blue',),
+        ('black',),
+    ])
+    def test_load_image_bg_rgba(self, image_diff, color):
+        image = load_image(get_testfile('nian.png'), force_background=color, mode='RGB')
+        expected = Image.open(get_testfile(f'nian_bg_{color}.png'))
+        assert image_diff(image, expected, throw_exception=False) < 1e-2
+
+    @pytest.mark.parametrize(['color'], [
+        ('white',),
+        ('green',),
+        ('red',),
+        ('blue',),
+        ('black',),
+    ])
+    def test_add_background_for_rgba_rgba(self, image_diff, color):
+        image = add_background_for_rgba(get_testfile('nian.png'), background=color)
+        assert image.mode == 'RGB'
+        expected = Image.open(get_testfile(f'nian_bg_{color}.png'))
+        assert image_diff(image, expected, throw_exception=False) < 1e-2
+
+    @pytest.mark.parametrize(['color'], [
+        ('white',),
+        ('green',),
+        ('red',),
+        ('blue',),
+        ('black',),
+    ])
+    def test_load_image_bg_rgb(self, image_diff, color):
+        image = load_image(get_testfile('mostima_post.jpg'), force_background=color, mode='RGB')
+        expected = Image.open(get_testfile(f'mostima_post_bg_{color}.png'))
+        assert image_diff(image, expected, throw_exception=False) < 1e-2
+
+    @pytest.mark.parametrize(['color'], [
+        ('white',),
+        ('green',),
+        ('red',),
+        ('blue',),
+        ('black',),
+    ])
+    def test_add_backround_for_rgba_rgb(self, image_diff, color):
+        image = add_background_for_rgba(get_testfile('mostima_post.jpg'), background=color)
+        assert image.mode == 'RGB'
+        expected = Image.open(get_testfile(f'mostima_post_bg_{color}.png'))
+        assert image_diff(image, expected, throw_exception=False) < 1e-2
 
 
 @pytest.fixture
