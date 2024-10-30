@@ -4,9 +4,12 @@ from typing import Union, BinaryIO, List, Tuple, Optional
 from PIL import Image
 
 __all__ = [
-    'ImageTyping', 'load_image',
-    'MultiImagesTyping', 'load_images',
+    'ImageTyping',
+    'load_image',
+    'MultiImagesTyping',
+    'load_images',
     'add_background_for_rgba',
+    'has_alpha_channel',
 ]
 
 
@@ -18,8 +21,30 @@ ImageTyping = Union[str, PathLike, bytes, bytearray, BinaryIO, Image.Image]
 MultiImagesTyping = Union[ImageTyping, List[ImageTyping], Tuple[ImageTyping, ...]]
 
 
-def _has_alpha_channel(image: Image.Image) -> bool:
-    return any(band in {'A', 'a', 'P'} for band in image.getbands())
+def has_alpha_channel(image: Image.Image) -> bool:
+    """
+    Determine if the given Pillow image object has an alpha channel (transparency)
+
+    :param image: Pillow image object
+    :return: Boolean, True if it has an alpha channel, False otherwise
+    """
+    # Get the image mode
+    mode = image.mode
+
+    # Modes that directly include an alpha channel
+    if mode in ('RGBA', 'LA', 'PA'):
+        return True
+
+    if getattr(image, 'palette'):
+        # Check if there's a transparent palette
+        try:
+            image.palette.getcolor((0, 0, 0, 0))
+            return True  # cannot find a line to trigger this
+        except ValueError:
+            pass
+
+    # For other modes, check if 'transparency' key exists in image info
+    return 'transparency' in image.info
 
 
 def load_image(image: ImageTyping, mode=None, force_background: Optional[str] = 'white'):
@@ -51,7 +76,7 @@ def load_image(image: ImageTyping, mode=None, force_background: Optional[str] = 
     else:
         raise TypeError(f'Unknown image type - {image!r}.')
 
-    if _has_alpha_channel(image) and force_background is not None:
+    if has_alpha_channel(image) and force_background is not None:
         image = add_background_for_rgba(image, force_background)
 
     if mode is not None and image.mode != mode:

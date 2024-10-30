@@ -5,24 +5,11 @@ Overview:
 import numpy as np
 from PIL import Image
 
-from ..data import ImageTyping, load_image
+from ..data import ImageTyping, load_image, has_alpha_channel
 
 __all__ = [
     'ImageEnhancer',
 ]
-
-
-def _has_alpha_channel(image: Image.Image) -> bool:
-    """
-    Check if the image has an alpha channel.
-
-    :param image: The image to check.
-    :type image: Image.Image
-
-    :return: True if the image has an alpha channel, False otherwise.
-    :rtype: bool
-    """
-    return any(band in {'A', 'a', 'P'} for band in image.getbands())
 
 
 class ImageEnhancer:
@@ -103,10 +90,10 @@ class ImageEnhancer:
         :rtype: Image.Image
         """
         image = load_image(image, mode=None, force_background=None)
-        mode = 'RGBA' if _has_alpha_channel(image) else 'RGB'
+        mode = 'RGBA' if has_alpha_channel(image) else 'RGB'
         image = load_image(image, mode=mode, force_background=None)
         input_array = (np.array(image).astype(np.float32) / 255.0).transpose((2, 0, 1))
-        if _has_alpha_channel(image):
+        if has_alpha_channel(image):
             output_array = self._process_rgba(input_array)
         else:
             output_array = self._process_rgb(input_array)
