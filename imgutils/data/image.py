@@ -181,10 +181,10 @@ def add_background_for_rgba(image: ImageTyping, background: str = 'white'):
     'RGB'
     """
     image = load_image(image, force_background=None, mode=None)
-    if has_alpha_channel(image):
+    try:
         ret_image = Image.new('RGBA', image.size, background)
         ret_image.paste(image, (0, 0), mask=image)
-    else:
+    except ValueError:
         ret_image = image
     if ret_image.mode != 'RGB':
         ret_image = ret_image.convert('RGB')

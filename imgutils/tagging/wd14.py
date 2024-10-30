@@ -122,9 +122,9 @@ def _prepare_image_for_tagging(image: ImageTyping, target_size: int):
     pad_top = (max_dim - image_shape[1]) // 2
 
     padded_image = Image.new("RGB", (max_dim, max_dim), (255, 255, 255))
-    if has_alpha_channel(image):
+    try:
         padded_image.paste(image, (pad_left, pad_top), mask=image)
-    else:
+    except ValueError:
         padded_image.paste(image, (pad_left, pad_top))
 
     if max_dim != target_size:
