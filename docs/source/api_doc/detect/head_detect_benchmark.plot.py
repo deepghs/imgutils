@@ -4,7 +4,10 @@ from benchmark import BaseBenchmark, create_plot_cli
 from imgutils.detect.head import detect_heads, _REPO_ID
 from imgutils.generic.yolo import _open_models_for_repo_id
 
-_MODELS = _open_models_for_repo_id(_REPO_ID).model_names
+_MODELS = [
+    name for name in _open_models_for_repo_id(_REPO_ID).model_names
+    if '_v2.0_' in name
+]
 
 
 class HeadDetectBenchmark(BaseBenchmark):

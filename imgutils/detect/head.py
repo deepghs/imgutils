@@ -45,13 +45,15 @@ def detect_heads(image: ImageTyping, level: Optional[str] = None,
     :param image: The input image for head detection. Can be a file path, URL, or image data.
     :type image: ImageTyping
 
-    :param level: The model level to use. 's' for higher accuracy, 'n' for faster speed. Default is 's'.
-    :type level: str
+    :param level: The model level to use. 's' for higher accuracy, 'n' for faster speed.
+                  Default is None (actually equals to 's').
+                  This parameter is deprecated and will be removed in future versions.
+    :type level: Optional[str]
 
-    :param model_name: Name of the specific YOLO model to use. If not provided, uses default models based on the level.
+    :param model_name: Name of the specific YOLO model to use. If not provided, uses 'head_detect_v2.0_s'.
     :type model_name: Optional[str]
 
-    :param conf_threshold: Confidence threshold for detection results. Only detections with confidence above this value are returned. Default is 0.3.
+    :param conf_threshold: Confidence threshold for detection results. Only detections with confidence above this value are returned. Default is 0.4.
     :type conf_threshold: float
 
     :param iou_threshold: IoU (Intersection over Union) threshold for non-maximum suppression. Helps in removing overlapping detections. Default is 0.7.
@@ -77,6 +79,10 @@ def detect_heads(image: ImageTyping, level: Optional[str] = None,
     .. note::
 
         For visualization of results, you can use the :func:`imgutils.detect.visual.detection_visualize` function.
+
+    .. warning::
+
+        The 'level' parameter is deprecated and will be removed in future versions. Use 'model_name' instead.
     """
     if level:
         warnings.warn(DeprecationWarning(
@@ -87,7 +93,7 @@ def detect_heads(image: ImageTyping, level: Optional[str] = None,
     return yolo_predict(
         image=image,
         repo_id=_REPO_ID,
-        model_name=model_name or f'head_detect_v0_{level}',
+        model_name=model_name or f'head_detect_v0_{level or "s"}',
         conf_threshold=conf_threshold,
         iou_threshold=iou_threshold,
     )
