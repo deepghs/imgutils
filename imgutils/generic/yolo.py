@@ -26,6 +26,14 @@ from hfutils.repository import hf_hub_repo_url
 from hfutils.utils import hf_fs_path, hf_normpath
 from huggingface_hub import HfFileSystem, hf_hub_download
 
+"""
+Used to resolve HF_HUB_OFFLINE = 1, modifications that are denied for all HTTP access
+"""
+import requests
+from huggingface_hub import configure_http_backend
+from huggingface_hub.utils import OfflineModeIsEnabled
+from requests.adapters import HTTPAdapter
+
 from ..data import load_image, rgb_encode, ImageTyping
 from ..utils import open_onnx_model
 
@@ -38,6 +46,28 @@ __all__ = [
     'YOLOModel',
     'yolo_predict',
 ]
+
+
+
+class CustomOfflineAdapter(HTTPAdapter):
+    def send(self, request, *args, **kwargs):
+        blocked_domains = ["huggingface.co", "hf.co"]
+        if any(domain in request.url for domain in blocked_domains):
+            raise OfflineModeIsEnabled(f"Cannot reach {request.url}: offline mode is enabled.")
+        return super().send(request, *args, **kwargs)
+
+def backend_factory() -> requests.Session:
+    """
+    Any HTTP calls made by `huggingface_hub` will use a
+    Session object instantiated by this factory
+    """
+    session = requests.Session()
+    session.mount("http://", CustomOfflineAdapter())
+    session.mount("https://", CustomOfflineAdapter())
+    return session
+
+
+configure_http_backend(backend_factory=backend_factory)
 
 
 def _check_gradio_env():
