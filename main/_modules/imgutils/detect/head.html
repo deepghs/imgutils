@@ -115,8 +115,8 @@
 <span class="sd">    - Customizable confidence and IoU thresholds</span>
 <span class="sd">    - Integration with Hugging Face model repository</span>
 
-<span class="sd">    The module is based on the `ani_face_detection &lt;https://universe.roboflow.com/linog/ani_face_detection&gt;`_ dataset</span>
-<span class="sd">    from Roboflow and uses YOLOv8 architecture for object detection.</span>
+<span class="sd">    The module is based on the `deepghs/anime_head_detection &lt;https://huggingface.co/datasets/deepghs/anime_head_detection&gt;`_</span>
+<span class="sd">    dataset contributed by our developers and uses YOLOv8/YOLO11 architecture for object detection.</span>
 
 <span class="sd">    Example usage and benchmarks are provided in the module overview.</span>
 
@@ -126,6 +126,7 @@
 <span class="sd">        :align: center</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
@@ -134,8 +135,9 @@
 <span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/anime_head_detection&#39;</span>
 
 
-<div class="viewcode-block" id="detect_heads"><a class="viewcode-back" href="../../../api_doc/detect/head.html#imgutils.detect.head.detect_heads">[docs]</a><span class="k">def</span> <span class="nf">detect_heads</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
+<div class="viewcode-block" id="detect_heads"><a class="viewcode-back" href="../../../api_doc/detect/head.html#imgutils.detect.head.detect_heads">[docs]</a><span class="k">def</span> <span class="nf">detect_heads</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;head_detect_v2.0_s&#39;</span><span class="p">,</span>
+                 <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Detect human heads in anime images using YOLOv8 models.</span>
@@ -146,13 +148,15 @@
 <span class="sd">    :param image: The input image for head detection. Can be a file path, URL, or image data.</span>
 <span class="sd">    :type image: ImageTyping</span>
 
-<span class="sd">    :param level: The model level to use. &#39;s&#39; for higher accuracy, &#39;n&#39; for faster speed. Default is &#39;s&#39;.</span>
-<span class="sd">    :type level: str</span>
+<span class="sd">    :param level: The model level to use. &#39;s&#39; for higher accuracy, &#39;n&#39; for faster speed.</span>
+<span class="sd">                  Default is None (actually equals to &#39;s&#39;).</span>
+<span class="sd">                  This parameter is deprecated and will be removed in future versions.</span>
+<span class="sd">    :type level: Optional[str]</span>
 
-<span class="sd">    :param model_name: Name of the specific YOLO model to use. If not provided, uses default models based on the level.</span>
+<span class="sd">    :param model_name: Name of the specific YOLO model to use. If not provided, uses &#39;head_detect_v2.0_s&#39;.</span>
 <span class="sd">    :type model_name: Optional[str]</span>
 
-<span class="sd">    :param conf_threshold: Confidence threshold for detection results. Only detections with confidence above this value are returned. Default is 0.3.</span>
+<span class="sd">    :param conf_threshold: Confidence threshold for detection results. Only detections with confidence above this value are returned. Default is 0.4.</span>
 <span class="sd">    :type conf_threshold: float</span>
 
 <span class="sd">    :param iou_threshold: IoU (Intersection over Union) threshold for non-maximum suppression. Helps in removing overlapping detections. Default is 0.7.</span>
@@ -178,11 +182,21 @@
 <span class="sd">    .. note::</span>
 
 <span class="sd">        For visualization of results, you can use the :func:`imgutils.detect.visual.detection_visualize` function.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        The &#39;level&#39; parameter is deprecated and will be removed in future versions. Use &#39;model_name&#39; instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">level</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="ne">DeprecationWarning</span><span class="p">(</span>
+            <span class="s1">&#39;Argument level in function detect_heads is deprecated and will be removed in the future, &#39;</span>
+            <span class="s1">&#39;please migrate to model_name as soon as possible.&#39;</span>
+        <span class="p">))</span>
+
     <span class="k">return</span> <span class="n">yolo_predict</span><span class="p">(</span>
         <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">_REPO_ID</span><span class="p">,</span>
-        <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">&#39;head_detect_v0_</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">&#39;head_detect_v0_</span><span class="si">{</span><span class="n">level</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s2">&quot;s&quot;</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
         <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
         <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
     <span class="p">)</span></div>
@@ -224,6 +238,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/head/index.html">dev/head</a></dd>
                         <dd><a href="head.html">main</a></dd>
                 </dl>
         </div>
