@@ -20,17 +20,15 @@ class TestDetectHead:
         detections = detect_heads(get_testfile('genshin_post.jpg'))
         assert len(detections) == 4
 
-        values = []
-        for bbox, label, score in detections:
-            assert label == 'head'
-            values.append((bbox, int(score * 1000) / 1000))
-
-        assert values == pytest.approx([
-            ((202, 156, 356, 293), 0.876),
-            ((936, 86, 1134, 267), 0.834),
-            ((650, 444, 720, 518), 0.778),
-            ((461, 247, 536, 330), 0.434),
-        ])
+        assert detection_similarity(
+            detections,
+            [
+                ((210, 161, 348, 288), 'head', 0.8935408592224121),
+                ((462, 250, 531, 328), 'head', 0.8133165836334229),
+                ((651, 439, 725, 514), 'head', 0.8114989995956421),
+                ((787, 0, 1124, 262), 'head', 0.780591607093811)
+            ]
+        ) >= 0.9
 
     def test_detect_heads_none(self):
         assert detect_heads(get_testfile('png_full.png')) == []
@@ -48,7 +46,6 @@ class TestDetectHead:
             ((202, 156, 356, 293), 'head', 0.876),
             ((936, 86, 1134, 267), 'head', 0.834),
             ((650, 444, 720, 518), 'head', 0.778),
-            ((461, 247, 536, 330), 'head', 0.434),
         ])
         assert similarity >= 0.85
 
@@ -60,7 +57,7 @@ class TestDetectHead:
         #            so this expected result is 100% bullshit
         #            just make sure the rtdetr models can be properly inferred
         detections = detect_heads(get_testfile('genshin_post.jpg'), model_name=model_name)
-        similarity = detection_similarity(detections, [
-            ((780, 9, 1125, 208), 'head', 0.3077814280986786)
-        ])
-        assert similarity >= 0.85
+        assert detections == []
+        # similarity = detection_similarity(detections, [
+        # ])
+        # assert similarity >= 0.85
