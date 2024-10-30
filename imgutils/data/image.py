@@ -1,3 +1,18 @@
+"""
+This module provides utility functions for image processing and manipulation using the PIL (Python Imaging Library) library.
+
+It includes functions for loading images from various sources, handling multiple images, adding backgrounds to RGBA images,
+and checking for alpha channels. The module is designed to simplify common image-related tasks in Python applications.
+
+Key features:
+- Loading images from different sources (file paths, binary data, file-like objects)
+- Handling multiple images at once
+- Adding backgrounds to RGBA images
+- Checking for alpha channels in images
+
+This module is particularly useful for applications that require image preprocessing or manipulation before further processing or analysis.
+"""
+
 from os import PathLike
 from typing import Union, BinaryIO, List, Tuple, Optional
 
@@ -14,6 +29,15 @@ __all__ = [
 
 
 def _is_readable(obj):
+    """
+    Check if an object is readable (has 'read' and 'seek' methods).
+
+    :param obj: The object to check for readability.
+    :type obj: Any
+
+    :return: True if the object is readable, False otherwise.
+    :rtype: bool
+    """
     return hasattr(obj, 'read') and hasattr(obj, 'seek')
 
 
@@ -26,7 +50,10 @@ def has_alpha_channel(image: Image.Image) -> bool:
     Determine if the given Pillow image object has an alpha channel (transparency)
 
     :param image: Pillow image object
+    :type image: Image.Image
+
     :return: Boolean, True if it has an alpha channel, False otherwise
+    :rtype: bool
     """
     # Get the image mode
     mode = image.mode
@@ -68,6 +95,16 @@ def load_image(image: ImageTyping, mode=None, force_background: Optional[str] = 
 
     :return: The loaded and transformed image.
     :rtype: Image.Image
+
+    :raises TypeError: If the provided image type is not supported.
+
+    :example:
+    >>> from PIL import Image
+    >>> img = load_image('path/to/image.png', mode='RGB', force_background='white')
+    >>> isinstance(img, Image.Image)
+    True
+    >>> img.mode
+    'RGB'
     """
     if isinstance(image, (str, PathLike, bytes, bytearray, BinaryIO)) or _is_readable(image):
         image = Image.open(image)
@@ -104,6 +141,14 @@ def load_images(images: MultiImagesTyping, mode=None, force_background: Optional
 
     :return: A list of loaded and transformed images.
     :rtype: List[Image.Image]
+
+    :example:
+    >>> img_paths = ['path/to/image1.png', 'path/to/image2.jpg']
+    >>> loaded_images = load_images(img_paths, mode='RGB')
+    >>> len(loaded_images)
+    2
+    >>> all(isinstance(img, Image.Image) for img in loaded_images)
+    True
     """
     if not isinstance(images, (list, tuple)):
         images = [images]
@@ -127,6 +172,13 @@ def add_background_for_rgba(image: ImageTyping, background: str = 'white'):
 
     :return: The image with the added background, converted to RGB.
     :rtype: Image.Image
+
+    :example:
+    >>> from PIL import Image
+    >>> rgba_image = Image.new('RGBA', (100, 100), (255, 0, 0, 128))
+    >>> rgb_image = add_background_for_rgba(rgba_image, background='blue')
+    >>> rgb_image.mode
+    'RGB'
     """
     from .layer import istack
     return istack(background, image).convert('RGB')
