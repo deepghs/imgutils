@@ -26,6 +26,9 @@ from hfutils.repository import hf_hub_repo_url
 from hfutils.utils import hf_fs_path, hf_normpath
 from huggingface_hub import HfFileSystem, hf_hub_download
 
+from ..data import load_image, rgb_encode, ImageTyping
+from ..utils import open_onnx_model
+
 try:
     import gradio as gr
 except (ImportError, ModuleNotFoundError):
