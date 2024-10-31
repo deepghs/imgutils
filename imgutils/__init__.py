@@ -3,7 +3,7 @@ Added a bug that occurs when environment variable HF_HUB_OFFLINE = 1
 Fixed offline partial library HTTP request rejection
 Add here to ensure that all calls trigger this code
 """
-import os
+
 import requests
 from huggingface_hub import configure_http_backend
 from huggingface_hub.utils import OfflineModeIsEnabled
