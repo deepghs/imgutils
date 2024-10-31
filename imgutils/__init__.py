@@ -1,7 +1,6 @@
 """
-Added a bug that occurs when environment variable HF_HUB_OFFLINE = 1
-Fixed offline partial library HTTP request rejection
-Add here to ensure that all calls trigger this code
+Fixed an issue where HTTP requests were rejected in offline mode for some libraries
+Add here to make sure all calls fire this code
 """
 
 import requests
