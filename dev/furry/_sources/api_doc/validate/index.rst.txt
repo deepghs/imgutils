@@ -15,6 +15,7 @@ imgutils.validate
     color
     completeness
     dbrating
+    furry
     monochrome
     nsfw
     portrait
