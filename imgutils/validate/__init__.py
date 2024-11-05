@@ -8,6 +8,7 @@ from .classify import *
 from .color import *
 from .completeness import *
 from .dbrating import *
+from .furry import *
 from .monochrome import *
 from .nsfw import *
 from .portrait import *
