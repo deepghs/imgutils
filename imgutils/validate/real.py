@@ -25,7 +25,7 @@ __all__ = [
     'anime_real',
 ]
 
-_DEFAULT_MODEL_NAME = 'mobilenetv3_v1.2_dist'
+_DEFAULT_MODEL_NAME = 'mobilenetv3_v1.4_dist'
 _REPO_ID = 'deepghs/anime_real_cls'
 
 
