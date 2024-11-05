@@ -162,6 +162,30 @@
 <dd class="field-odd"><p>Dict[str, float]</p>
 </dd>
 </dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.validate</span> <span class="kn">import</span> <span class="n">anime_furry_score</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry_score</span><span class="p">(</span><span class="s1">&#39;non_furry/1.jpg&#39;</span><span class="p">)</span>  <span class="c1"># non-furry images</span>
+<span class="go">{&#39;non_furry&#39;: 0.9898804426193237, &#39;furry&#39;: 0.010119626298546791}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry_score</span><span class="p">(</span><span class="s1">&#39;non_furry/2.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;non_furry&#39;: 0.9677742123603821, &#39;furry&#39;: 0.032225821167230606}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry_score</span><span class="p">(</span><span class="s1">&#39;non_furry/3.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;non_furry&#39;: 0.959551215171814, &#39;furry&#39;: 0.040448784828186035}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry_score</span><span class="p">(</span><span class="s1">&#39;non_furry/4.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;non_furry&#39;: 0.9535530209541321, &#39;furry&#39;: 0.04644693806767464}</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry_score</span><span class="p">(</span><span class="s1">&#39;furry/5.jpg&#39;</span><span class="p">)</span>  <span class="c1"># furry images</span>
+<span class="go">{&#39;non_furry&#39;: 0.04358793422579765, &#39;furry&#39;: 0.9564120769500732}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry_score</span><span class="p">(</span><span class="s1">&#39;furry/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;non_furry&#39;: 0.02767963521182537, &#39;furry&#39;: 0.9723203182220459}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry_score</span><span class="p">(</span><span class="s1">&#39;furry/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;non_furry&#39;: 0.028900373727083206, &#39;furry&#39;: 0.9710996150970459}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry_score</span><span class="p">(</span><span class="s1">&#39;furry/8.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;non_furry&#39;: 0.037573859095573425, &#39;furry&#39;: 0.9624261260032654}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -183,6 +207,30 @@
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[str, float]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.validate</span> <span class="kn">import</span> <span class="n">anime_furry</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry</span><span class="p">(</span><span class="s1">&#39;non_furry/1.jpg&#39;</span><span class="p">)</span>  <span class="c1"># non-furry images</span>
+<span class="go">(&#39;non_furry&#39;, 0.9898804426193237)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry</span><span class="p">(</span><span class="s1">&#39;non_furry/2.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;non_furry&#39;, 0.9677742123603821)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry</span><span class="p">(</span><span class="s1">&#39;non_furry/3.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;non_furry&#39;, 0.959551215171814)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry</span><span class="p">(</span><span class="s1">&#39;non_furry/4.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;non_furry&#39;, 0.9535530209541321)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry</span><span class="p">(</span><span class="s1">&#39;furry/5.jpg&#39;</span><span class="p">)</span>  <span class="c1"># furry images</span>
+<span class="go">(&#39;furry&#39;, 0.9564120769500732)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry</span><span class="p">(</span><span class="s1">&#39;furry/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;furry&#39;, 0.9723203182220459)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry</span><span class="p">(</span><span class="s1">&#39;furry/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;furry&#39;, 0.9710996150970459)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_furry</span><span class="p">(</span><span class="s1">&#39;furry/8.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;furry&#39;, 0.9624261260032654)</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>

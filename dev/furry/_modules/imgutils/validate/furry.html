@@ -142,6 +142,27 @@
 <span class="sd">    :type model_name: str</span>
 <span class="sd">    :return: A dictionary with type scores.</span>
 <span class="sd">    :rtype: Dict[str, float]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_furry_score</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry_score(&#39;non_furry/1.jpg&#39;)  # non-furry images</span>
+<span class="sd">        {&#39;non_furry&#39;: 0.9898804426193237, &#39;furry&#39;: 0.010119626298546791}</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry_score(&#39;non_furry/2.jpg&#39;)</span>
+<span class="sd">        {&#39;non_furry&#39;: 0.9677742123603821, &#39;furry&#39;: 0.032225821167230606}</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry_score(&#39;non_furry/3.jpg&#39;)</span>
+<span class="sd">        {&#39;non_furry&#39;: 0.959551215171814, &#39;furry&#39;: 0.040448784828186035}</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry_score(&#39;non_furry/4.jpg&#39;)</span>
+<span class="sd">        {&#39;non_furry&#39;: 0.9535530209541321, &#39;furry&#39;: 0.04644693806767464}</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry_score(&#39;furry/5.jpg&#39;)  # furry images</span>
+<span class="sd">        {&#39;non_furry&#39;: 0.04358793422579765, &#39;furry&#39;: 0.9564120769500732}</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry_score(&#39;furry/6.jpg&#39;)</span>
+<span class="sd">        {&#39;non_furry&#39;: 0.02767963521182537, &#39;furry&#39;: 0.9723203182220459}</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry_score(&#39;furry/7.jpg&#39;)</span>
+<span class="sd">        {&#39;non_furry&#39;: 0.028900373727083206, &#39;furry&#39;: 0.9710996150970459}</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry_score(&#39;furry/8.jpg&#39;)</span>
+<span class="sd">        {&#39;non_furry&#39;: 0.037573859095573425, &#39;furry&#39;: 0.9624261260032654}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">classify_predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_REPO_ID</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
 
@@ -156,6 +177,27 @@
 <span class="sd">    :type model_name: str</span>
 <span class="sd">    :return: A tuple with the primary type and its score.</span>
 <span class="sd">    :rtype: Tuple[str, float]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.validate import anime_furry</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry(&#39;non_furry/1.jpg&#39;)  # non-furry images</span>
+<span class="sd">        (&#39;non_furry&#39;, 0.9898804426193237)</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry(&#39;non_furry/2.jpg&#39;)</span>
+<span class="sd">        (&#39;non_furry&#39;, 0.9677742123603821)</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry(&#39;non_furry/3.jpg&#39;)</span>
+<span class="sd">        (&#39;non_furry&#39;, 0.959551215171814)</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry(&#39;non_furry/4.jpg&#39;)</span>
+<span class="sd">        (&#39;non_furry&#39;, 0.9535530209541321)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry(&#39;furry/5.jpg&#39;)  # furry images</span>
+<span class="sd">        (&#39;furry&#39;, 0.9564120769500732)</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry(&#39;furry/6.jpg&#39;)</span>
+<span class="sd">        (&#39;furry&#39;, 0.9723203182220459)</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry(&#39;furry/7.jpg&#39;)</span>
+<span class="sd">        (&#39;furry&#39;, 0.9710996150970459)</span>
+<span class="sd">        &gt;&gt;&gt; anime_furry(&#39;furry/8.jpg&#39;)</span>
+<span class="sd">        (&#39;furry&#39;, 0.9624261260032654)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">classify_predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_REPO_ID</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span></div>
 </pre></div>
