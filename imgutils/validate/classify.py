@@ -28,7 +28,7 @@ __all__ = [
     'anime_classify',
 ]
 
-_DEFAULT_MODEL_NAME = 'mobilenetv3_v1.3_dist'
+_DEFAULT_MODEL_NAME = 'mobilenetv3_v1.5_dist'
 _REPO_ID = 'deepghs/anime_classification'
 
 
