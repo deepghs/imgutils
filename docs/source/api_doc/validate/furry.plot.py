@@ -9,5 +9,5 @@ if __name__ == '__main__':
     image_plot(
         *natsorted(glob.glob(os.path.join('furry', 'non_furry', '*.jpg'))),
         *natsorted(glob.glob(os.path.join('furry', 'furry', '*.jpg'))),
-        columns=4, figsize=(10, 15),
+        columns=4, figsize=(10, 10),
     )
