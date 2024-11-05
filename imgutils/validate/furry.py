@@ -39,6 +39,27 @@ def anime_furry_score(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME)
     :type model_name: str
     :return: A dictionary with type scores.
     :rtype: Dict[str, float]
+
+    Examples::
+        >>> from imgutils.validate import anime_furry_score
+        >>>
+        >>> anime_furry_score('non_furry/1.jpg')  # non-furry images
+        {'non_furry': 0.9898804426193237, 'furry': 0.010119626298546791}
+        >>> anime_furry_score('non_furry/2.jpg')
+        {'non_furry': 0.9677742123603821, 'furry': 0.032225821167230606}
+        >>> anime_furry_score('non_furry/3.jpg')
+        {'non_furry': 0.959551215171814, 'furry': 0.040448784828186035}
+        >>> anime_furry_score('non_furry/4.jpg')
+        {'non_furry': 0.9535530209541321, 'furry': 0.04644693806767464}
+        >>>
+        >>> anime_furry_score('furry/5.jpg')  # furry images
+        {'non_furry': 0.04358793422579765, 'furry': 0.9564120769500732}
+        >>> anime_furry_score('furry/6.jpg')
+        {'non_furry': 0.02767963521182537, 'furry': 0.9723203182220459}
+        >>> anime_furry_score('furry/7.jpg')
+        {'non_furry': 0.028900373727083206, 'furry': 0.9710996150970459}
+        >>> anime_furry_score('furry/8.jpg')
+        {'non_furry': 0.037573859095573425, 'furry': 0.9624261260032654}
     """
     return classify_predict_score(image, _REPO_ID, model_name)
 
@@ -53,5 +74,26 @@ def anime_furry(image: ImageTyping, model_name: str = _DEFAULT_MODEL_NAME) -> Tu
     :type model_name: str
     :return: A tuple with the primary type and its score.
     :rtype: Tuple[str, float]
+
+    Examples::
+        >>> from imgutils.validate import anime_furry
+        >>>
+        >>> anime_furry('non_furry/1.jpg')  # non-furry images
+        ('non_furry', 0.9898804426193237)
+        >>> anime_furry('non_furry/2.jpg')
+        ('non_furry', 0.9677742123603821)
+        >>> anime_furry('non_furry/3.jpg')
+        ('non_furry', 0.959551215171814)
+        >>> anime_furry('non_furry/4.jpg')
+        ('non_furry', 0.9535530209541321)
+        >>>
+        >>> anime_furry('furry/5.jpg')  # furry images
+        ('furry', 0.9564120769500732)
+        >>> anime_furry('furry/6.jpg')
+        ('furry', 0.9723203182220459)
+        >>> anime_furry('furry/7.jpg')
+        ('furry', 0.9710996150970459)
+        >>> anime_furry('furry/8.jpg')
+        ('furry', 0.9624261260032654)
     """
     return classify_predict(image, _REPO_ID, model_name)
