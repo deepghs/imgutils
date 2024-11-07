@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.metadata.geninfo &mdash; imgutils 0.6.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=9a2aefcb"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.metadata.lsb" href="lsb.html" />
+    <link rel="prev" title="imgutils.metadata" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.metadata</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.metadata.geninfo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#read-geninfo-parameters">read_geninfo_parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.geninfo.read_geninfo_parameters"><code class="docutils literal notranslate"><span class="pre">read_geninfo_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#read-geninfo-exif">read_geninfo_exif</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.geninfo.read_geninfo_exif"><code class="docutils literal notranslate"><span class="pre">read_geninfo_exif()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#read-geninfo-gif">read_geninfo_gif</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.geninfo.read_geninfo_gif"><code class="docutils literal notranslate"><span class="pre">read_geninfo_gif()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#write-geninfo-parameters">write_geninfo_parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.geninfo.write_geninfo_parameters"><code class="docutils literal notranslate"><span class="pre">write_geninfo_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#write-geninfo-exif">write_geninfo_exif</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.geninfo.write_geninfo_exif"><code class="docutils literal notranslate"><span class="pre">write_geninfo_exif()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#write-geninfo-gif">write_geninfo_gif</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.geninfo.write_geninfo_gif"><code class="docutils literal notranslate"><span class="pre">write_geninfo_gif()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lsb.html">imgutils.metadata.lsb</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.metadata</a></li>
+      <li class="breadcrumb-item active">imgutils.metadata.geninfo</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/metadata/geninfo.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.metadata.geninfo">
+<span id="imgutils-metadata-geninfo"></span><h1>imgutils.metadata.geninfo<a class="headerlink" href="#module-imgutils.metadata.geninfo" title="Permalink to this heading"></a></h1>
+<p>This module provides functions for reading and writing generation information (geninfo) to image files.
+It supports different image formats including PNG, EXIF, and GIF.</p>
+<p>The module includes functions for:</p>
+<ol class="arabic simple">
+<li><p>Reading geninfo from image parameters, EXIF data, and GIF comments</p></li>
+<li><p>Writing geninfo to image parameters, EXIF data, and GIF comments</p></li>
+</ol>
+<p>These functions are useful for storing and retrieving metadata about image generation,
+particularly in the context of AI-generated images.</p>
+<section id="read-geninfo-parameters">
+<h2>read_geninfo_parameters<a class="headerlink" href="#read-geninfo-parameters" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.geninfo.read_geninfo_parameters">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.geninfo.</span></span><span class="sig-name descname"><span class="pre">read_geninfo_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/imgutils/metadata/geninfo.html#read_geninfo_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.geninfo.read_geninfo_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Read generation information from image parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The generation information if found, None otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+<p>This function loads the image and attempts to retrieve the ‘parameters’ 
+information from the image metadata. It’s commonly used for PNG images 
+where generation information is stored in the image parameters.</p>
+</dd></dl>
+
+</section>
+<section id="read-geninfo-exif">
+<h2>read_geninfo_exif<a class="headerlink" href="#read-geninfo-exif" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.geninfo.read_geninfo_exif">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.geninfo.</span></span><span class="sig-name descname"><span class="pre">read_geninfo_exif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/imgutils/metadata/geninfo.html#read_geninfo_exif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.geninfo.read_geninfo_exif" title="Permalink to this definition"></a></dt>
+<dd><p>Read generation information from EXIF data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The generation information if found in EXIF data, None otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+<p>This function attempts to read generation information from the EXIF metadata
+of the image. It specifically looks for the UserComment field in the EXIF data.
+If the EXIF data is invalid or not present, it returns None.</p>
+</dd></dl>
+
+</section>
+<section id="read-geninfo-gif">
+<h2>read_geninfo_gif<a class="headerlink" href="#read-geninfo-gif" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.geninfo.read_geninfo_gif">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.geninfo.</span></span><span class="sig-name descname"><span class="pre">read_geninfo_gif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/imgutils/metadata/geninfo.html#read_geninfo_gif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.geninfo.read_geninfo_gif" title="Permalink to this definition"></a></dt>
+<dd><p>Read generation information from GIF comment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The generation information if found in GIF comment, None otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+<p>This function is specifically designed to read generation information from
+GIF images. It looks for the ‘comment’ field in the image metadata, which is
+commonly used in GIF files to store additional information.</p>
+</dd></dl>
+
+</section>
+<section id="write-geninfo-parameters">
+<h2>write_geninfo_parameters<a class="headerlink" href="#write-geninfo-parameters" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.geninfo.write_geninfo_parameters">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.geninfo.</span></span><span class="sig-name descname"><span class="pre">write_geninfo_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geninfo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/geninfo.html#write_geninfo_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.geninfo.write_geninfo_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Write generation information to image parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>dst_filename</strong> (<em>str</em>) – The destination filename to save the image with geninfo.</p></li>
+<li><p><strong>geninfo</strong> (<em>str</em>) – The generation information to write.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to pass to the image save function.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This function writes the provided generation information to the image parameters.
+It’s commonly used for PNG images where generation information can be stored in
+the image metadata. The function creates a PngInfo object, adds the geninfo as
+‘parameters’, and saves the image with this metadata.</p>
+</dd></dl>
+
+</section>
+<section id="write-geninfo-exif">
+<h2>write_geninfo_exif<a class="headerlink" href="#write-geninfo-exif" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.geninfo.write_geninfo_exif">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.geninfo.</span></span><span class="sig-name descname"><span class="pre">write_geninfo_exif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geninfo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/geninfo.html#write_geninfo_exif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.geninfo.write_geninfo_exif" title="Permalink to this definition"></a></dt>
+<dd><p>Write generation information to EXIF data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>dst_filename</strong> (<em>str</em>) – The destination filename to save the image with geninfo.</p></li>
+<li><p><strong>geninfo</strong> (<em>str</em>) – The generation information to write.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to pass to the image save function.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This function writes the provided generation information to the EXIF metadata
+of the image. It creates an EXIF dictionary with the geninfo stored in the
+UserComment field, converts it to bytes, and saves the image with this EXIF data.</p>
+</dd></dl>
+
+</section>
+<section id="write-geninfo-gif">
+<h2>write_geninfo_gif<a class="headerlink" href="#write-geninfo-gif" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.geninfo.write_geninfo_gif">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.geninfo.</span></span><span class="sig-name descname"><span class="pre">write_geninfo_gif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geninfo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/geninfo.html#write_geninfo_gif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.geninfo.write_geninfo_gif" title="Permalink to this definition"></a></dt>
+<dd><p>Write generation information to GIF comment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>dst_filename</strong> (<em>str</em>) – The destination filename to save the image with geninfo.</p></li>
+<li><p><strong>geninfo</strong> (<em>str</em>) – The generation information to write.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to pass to the image save function.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This function is specifically designed to write generation information to
+GIF images. It adds the geninfo to the image’s ‘comment’ field, which is
+a standard way of including metadata in GIF files.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="imgutils.metadata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lsb.html" class="btn btn-neutral float-right" title="imgutils.metadata.lsb" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/cache
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.5.0/api_doc/metadata/geninfo.html">v0.5.0</a></dd>
+                        <dd><a href="../../../../v0.6.0/api_doc/metadata/geninfo.html">v0.6.0</a></dd>
+                        <dd><a href="../../../../v0.6.1/api_doc/metadata/geninfo.html">v0.6.1</a></dd>
+                        <dd><a href="../../../../v0.6.2/api_doc/metadata/geninfo.html">v0.6.2</a></dd>
+                        <dd><a href="../../../../v0.6.3/api_doc/metadata/geninfo.html">v0.6.3</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="geninfo.html">dev/cache</a></dd>
+                        <dd><a href="../../../../main/api_doc/metadata/geninfo.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
