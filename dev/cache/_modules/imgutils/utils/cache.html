@@ -118,7 +118,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span><span class="p">,</span> <span class="n">wraps</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ts_lru_cache&#39;</span><span class="p">]</span>
 
@@ -150,15 +150,51 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inner decorator function that wraps the original function.</span>
+
+<span class="sd">        :param func: The function to be decorated.</span>
+<span class="sd">        :type func: function</span>
+
+<span class="sd">        :return: The wrapped function with thread-safe caching.</span>
+<span class="sd">        :rtype: function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nd">@lru_cache</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">_cached_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Cached version of the original function.</span>
+
+<span class="sd">            :param args: Positional arguments to be passed to the original function.</span>
+<span class="sd">            :param kwargs: Keyword arguments to be passed to the original function.</span>
+
+<span class="sd">            :return: The result of the original function call.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">_cached_func</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">_new_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Thread-safe wrapper around the cached function.</span>
+
+<span class="sd">            This function acquires a lock before calling the cached function,</span>
+<span class="sd">            ensuring thread-safety.</span>
+
+<span class="sd">            :param args: Positional arguments to be passed to the cached function.</span>
+<span class="sd">            :param kwargs: Keyword arguments to be passed to the cached function.</span>
+
+<span class="sd">            :return: The result of the cached function call.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">_cached_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Preserve cache_info and cache_clear methods if they exist</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_cached_func</span><span class="p">,</span> <span class="s1">&#39;cache_info&#39;</span><span class="p">):</span>
+            <span class="n">_new_func</span><span class="o">.</span><span class="n">cache_info</span> <span class="o">=</span> <span class="n">_cached_func</span><span class="o">.</span><span class="n">cache_info</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_cached_func</span><span class="p">,</span> <span class="s1">&#39;cache_clear&#39;</span><span class="p">):</span>
+            <span class="n">_new_func</span><span class="o">.</span><span class="n">cache_clear</span> <span class="o">=</span> <span class="n">_cached_func</span><span class="o">.</span><span class="n">cache_clear</span>
 
         <span class="k">return</span> <span class="n">_new_func</span>
 
