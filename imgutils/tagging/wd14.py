@@ -3,7 +3,6 @@ Overview:
     Tagging utils based on wd14 v2, inspired by
     `SmilingWolf/wd-v1-4-tags <https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags>`_ .
 """
-from functools import lru_cache
 from typing import List, Tuple, Dict
 
 import numpy as np
@@ -15,8 +14,8 @@ from huggingface_hub import hf_hub_download
 
 from .format import remove_underline
 from .overlap import drop_overlap_tags
-from ..data import load_image, ImageTyping, has_alpha_channel
-from ..utils import open_onnx_model, vreplace
+from ..data import load_image, ImageTyping
+from ..utils import open_onnx_model, vreplace, ts_lru_cache
 
 SWIN_MODEL_REPO = "SmilingWolf/wd-v1-4-swinv2-tagger-v2"
 CONV_MODEL_REPO = "SmilingWolf/wd-v1-4-convnext-tagger-v2"
@@ -58,7 +57,7 @@ def _version_support_check(model_name):
                                f'If you are running on GPU, use "pip install -U onnxruntime-gpu" .')  # pragma: no cover
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_wd14_model(model_name):
     """
     Load an ONNX model from the Hugging Face Hub.
@@ -75,7 +74,7 @@ def _get_wd14_model(model_name):
     ))
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_wd14_labels(model_name, no_underline: bool = False) -> Tuple[List[str], List[int], List[int], List[int]]:
     """
     Get labels for the WD14 model.
