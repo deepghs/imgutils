@@ -106,7 +106,6 @@
 <span class="sd">    Tagging utils based on ML-danbooru which is provided by 7eu7d7. The code is here:</span>
 <span class="sd">    `7eu7d7/ML-Danbooru &lt;https://github.com/7eu7d7/ML-Danbooru&gt;`_ .</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -116,10 +115,10 @@
 
 <span class="kn">from</span> <span class="nn">.overlap</span> <span class="kn">import</span> <span class="n">drop_overlap_tags</span>
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_open_mldanbooru_model</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span><span class="s1">&#39;deepghs/ml-danbooru-onnx&#39;</span><span class="p">,</span> <span class="s1">&#39;ml_caformer_m36_dec-5-97527.onnx&#39;</span><span class="p">))</span>
 
@@ -152,7 +151,7 @@
     <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_get_mldanbooru_labels</span><span class="p">(</span><span class="n">use_real_name</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span><span class="s1">&#39;deepghs/imgutils-models&#39;</span><span class="p">,</span> <span class="s1">&#39;mldanbooru/mldanbooru_tags.csv&#39;</span><span class="p">)</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>

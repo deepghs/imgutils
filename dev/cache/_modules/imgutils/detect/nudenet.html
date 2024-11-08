@@ -177,7 +177,6 @@
 <span class="sd">        This module requires onnxruntime version 1.18 or higher.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -186,7 +185,7 @@
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
 
 <span class="kn">from</span> <span class="nn">imgutils.data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
-<span class="kn">from</span> <span class="nn">imgutils.utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
+<span class="kn">from</span> <span class="nn">imgutils.utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span>
 
 
@@ -207,7 +206,7 @@
 <span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/nudenet_onnx&#39;</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_open_nudenet_yolo</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Open and cache the NudeNet YOLO ONNX model.</span>
@@ -221,7 +220,7 @@
     <span class="p">))</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_open_nudenet_nms</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Open and cache the NudeNet NMS ONNX model.</span>

@@ -118,7 +118,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -130,7 +130,7 @@
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">HfFileSystem</span><span class="p">,</span> <span class="n">hf_hub_download</span>
 
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">rgb_encode</span><span class="p">,</span> <span class="n">ImageTyping</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">gradio</span> <span class="k">as</span> <span class="nn">gr</span>
@@ -576,7 +576,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_models</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="o">=</span> <span class="n">hf_token</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="o">=</span> <span class="n">hf_token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_global_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_get_hf_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -595,16 +597,17 @@
 <span class="sd">        :return: List of model names.</span>
 <span class="sd">        :rtype: List[str]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">HfFileSystem</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">hf_normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">)))</span>
-                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">hf_fs_path</span><span class="p">(</span>
-                    <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
-                    <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
-                    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;*/model.onnx&#39;</span><span class="p">,</span>
-                <span class="p">))</span>
-            <span class="p">]</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_global_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">HfFileSystem</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">hf_normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">)))</span>
+                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">hf_fs_path</span><span class="p">(</span>
+                        <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;*/model.onnx&#39;</span><span class="p">,</span>
+                    <span class="p">))</span>
+                <span class="p">]</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span>
 
@@ -629,38 +632,40 @@
 <span class="sd">        :return: Tuple containing the ONNX model, maximum inference size, and labels.</span>
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_check_model_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
-                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span><span class="p">,</span>
-                <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">(),</span>
-            <span class="p">))</span>
-            <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_modelmeta</span><span class="p">()</span>
-            <span class="k">if</span> <span class="s1">&#39;imgsz&#39;</span> <span class="ow">in</span> <span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">:</span>
-                <span class="n">max_infer_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;imgsz&#39;</span><span class="p">]))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">max_infer_size</span> <span class="o">=</span> <span class="mi">640</span>
-            <span class="n">names_map</span> <span class="o">=</span> <span class="n">_safe_eval_names_str</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">])</span>
-            <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">names_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names_map</span><span class="p">))]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_check_model_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+                <span class="n">model</span> <span class="o">=</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span><span class="p">,</span>
+                    <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">(),</span>
+                <span class="p">))</span>
+                <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_modelmeta</span><span class="p">()</span>
+                <span class="k">if</span> <span class="s1">&#39;imgsz&#39;</span> <span class="ow">in</span> <span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">:</span>
+                    <span class="n">max_infer_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;imgsz&#39;</span><span class="p">]))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">max_infer_size</span> <span class="o">=</span> <span class="mi">640</span>
+                <span class="n">names_map</span> <span class="o">=</span> <span class="n">_safe_eval_names_str</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">])</span>
+                <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">names_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names_map</span><span class="p">))]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_get_model_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">:</span>
-            <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">get_hf_fs</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
-            <span class="n">fs_path</span> <span class="o">=</span> <span class="n">hf_fs_path</span><span class="p">(</span>
-                <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
-                <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
-                <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model_type.json&#39;</span><span class="p">,</span>
-                <span class="n">revision</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fs_path</span><span class="p">):</span>
-                <span class="n">model_type</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">hf_fs</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">fs_path</span><span class="p">))[</span><span class="s1">&#39;model_type&#39;</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">model_type</span> <span class="o">=</span> <span class="s1">&#39;yolo&#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_type</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">:</span>
+                <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">get_hf_fs</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
+                <span class="n">fs_path</span> <span class="o">=</span> <span class="n">hf_fs_path</span><span class="p">(</span>
+                    <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                    <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                    <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model_type.json&#39;</span><span class="p">,</span>
+                    <span class="n">revision</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fs_path</span><span class="p">):</span>
+                    <span class="n">model_type</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">hf_fs</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">fs_path</span><span class="p">))[</span><span class="s1">&#39;model_type&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">model_type</span> <span class="o">=</span> <span class="s1">&#39;yolo&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_type</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
 
@@ -861,7 +866,7 @@
         <span class="p">)</span></div></div>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">YOLOModel</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load and cache a YOLO model from a Hugging Face repository.</span>

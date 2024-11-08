@@ -122,7 +122,6 @@
 <span class="sd">        the time cost is approx 70s/image. So we strongly recommend against running it on CPU.</span>
 <span class="sd">        Please run CDC model on environments with GPU for better experience.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -131,14 +130,14 @@
 
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
 <span class="kn">from</span> <span class="nn">..generic</span> <span class="kn">import</span> <span class="n">ImageEnhancer</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">area_batch_run</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">area_batch_run</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;upscale_with_cdc&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_open_cdc_upscaler_model</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Opens and initializes the CDC upscaler model.</span>
@@ -217,7 +216,7 @@
         <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_get_enhancer</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;HGSR-MHR-anime-aug_X4_320&#39;</span><span class="p">,</span>
                   <span class="n">tile_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">_Enhancer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tile_size</span><span class="p">,</span> <span class="n">tile_overlap</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">silent</span><span class="p">)</span>
