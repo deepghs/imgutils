@@ -298,13 +298,23 @@ def get_wd14_tags(
         - ``embedding``: a 1-dim embedding of image, recommended for index building after L2 normalization
         - ``prediction``: a 1-dim prediction result of image
 
+        You can extract embedding of the given image with the follwing code
+
+        >>> from imgutils.tagging import get_wd14_tags
+        >>>
+        >>> embedding = get_wd14_tags('skadi.jpg', fmt='embdding')
+        >>> embedding.shape
+        (1024, )
+
+        This embedding is valuable for constructing indices that enable rapid querying of images based on
+        visual features within large-scale datasets.
+
     Example:
         Here are some images for example
 
         .. image:: tagging_demo.plot.py.svg
            :align: center
 
-        >>> import os
         >>> from imgutils.tagging import get_wd14_tags
         >>>
         >>> rating, features, chars = get_wd14_tags('skadi.jpg')
