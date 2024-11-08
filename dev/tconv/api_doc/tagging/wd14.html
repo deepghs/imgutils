@@ -172,11 +172,20 @@ project on Hugging Face.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">embedding</span></code>: a 1-dim embedding of image, recommended for index building after L2 normalization</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">prediction</span></code>: a 1-dim prediction result of image</p></li>
 </ul>
+<p>You can extract embedding of the given image with the follwing code</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">get_wd14_tags</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span> <span class="o">=</span> <span class="n">get_wd14_tags</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;embdding&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(1024, )</span>
+</pre></div>
+</div>
+<p>This embedding is valuable for constructing indices that enable rapid querying of images based on
+visual features within large-scale datasets.</p>
 </div>
 <dl>
 <dt>Example:</dt><dd><p>Here are some images for example</p>
-<img alt="../../_images/tagging_demo.plot.py.svg" class="align-center" src="../../_images/tagging_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">get_wd14_tags</span>
+<img alt="../../_images/tagging_demo.plot.py.svg" class="align-center" src="../../_images/tagging_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">get_wd14_tags</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">chars</span> <span class="o">=</span> <span class="n">get_wd14_tags</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span>

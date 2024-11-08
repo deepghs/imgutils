@@ -401,13 +401,23 @@
 <span class="sd">        - ``embedding``: a 1-dim embedding of image, recommended for index building after L2 normalization</span>
 <span class="sd">        - ``prediction``: a 1-dim prediction result of image</span>
 
+<span class="sd">        You can extract embedding of the given image with the follwing code</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging import get_wd14_tags</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; embedding = get_wd14_tags(&#39;skadi.jpg&#39;, fmt=&#39;embdding&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; embedding.shape</span>
+<span class="sd">        (1024, )</span>
+
+<span class="sd">        This embedding is valuable for constructing indices that enable rapid querying of images based on</span>
+<span class="sd">        visual features within large-scale datasets.</span>
+
 <span class="sd">    Example:</span>
 <span class="sd">        Here are some images for example</span>
 
 <span class="sd">        .. image:: tagging_demo.plot.py.svg</span>
 <span class="sd">           :align: center</span>
 
-<span class="sd">        &gt;&gt;&gt; import os</span>
 <span class="sd">        &gt;&gt;&gt; from imgutils.tagging import get_wd14_tags</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; rating, features, chars = get_wd14_tags(&#39;skadi.jpg&#39;)</span>
