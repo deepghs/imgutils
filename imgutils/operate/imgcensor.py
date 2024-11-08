@@ -4,7 +4,6 @@ Overview:
 """
 import math
 import os.path
-from functools import lru_cache
 from typing import Literal, Tuple, Optional
 
 import numpy as np
@@ -17,6 +16,7 @@ from .align import align_maxsize
 from .censor_ import BaseCensor, register_censor_method
 from .squeeze import squeeze_with_transparency, _get_mask_of_transparency
 from ..data import MultiImagesTyping, load_images
+from ..utils import ts_lru_cache
 
 
 def _image_rotate_and_sq(image: Image.Image, degrees: float):
@@ -292,7 +292,7 @@ register_censor_method(
 )
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_emoji_img(emoji: str, style: str = 'twitter') -> Image.Image:
     from pilmoji.source import EmojiCDNSource
 
@@ -321,7 +321,7 @@ class _NativeEmojiBasedCensor(ImageBasedCensor):
         ImageBasedCensor.__init__(self, [_get_emoji_img(emoji, style)], rotate, step)
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_native_emoji_censor(emoji: str = ':smiling_face_with_heart-eyes:', style: _EmojiStyleTyping = 'twitter',
                              rotate: Tuple[int, int] = (-30, 30), step: int = 10):
     return _NativeEmojiBasedCensor(emoji, style, rotate, step)

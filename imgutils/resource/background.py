@@ -19,7 +19,7 @@ from hfutils.index import hf_tar_file_download
 from huggingface_hub import hf_hub_download
 
 from ..data import load_image
-from ..utils import get_storage_dir
+from ..utils import get_storage_dir, ts_lru_cache
 
 __all__ = [
     'BackgroundImageSet',
@@ -33,7 +33,7 @@ __all__ = [
 _BG_REPO = 'deepghs/anime-bg'
 
 
-@lru_cache()
+@ts_lru_cache()
 def _global_df() -> pd.DataFrame:
     """
     Load the global dataframe containing information about background images.
@@ -205,7 +205,7 @@ class BackgroundImageSet:
             return image_file
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_default_set():
     """
     Get the default BackgroundImageSet instance.

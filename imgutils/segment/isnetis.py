@@ -2,17 +2,17 @@
 Overview:
     Anime character segmentation, based on https://huggingface.co/skytnt/anime-seg .
 """
-from functools import lru_cache
 
 import cv2
 import huggingface_hub
 import numpy as np
 
 from ..data import ImageTyping, load_image, istack
+from ..utils import ts_lru_cache
 from ..utils.onnxruntime import open_onnx_model
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_model():
     return open_onnx_model(huggingface_hub.hf_hub_download("skytnt/anime-seg", "isnetis.onnx"))
 

@@ -15,7 +15,7 @@ import ast
 import json
 import math
 import os
-from functools import lru_cache
+from threading import Lock
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -27,7 +27,7 @@ from hfutils.utils import hf_fs_path, hf_normpath
 from huggingface_hub import HfFileSystem, hf_hub_download
 
 from ..data import load_image, rgb_encode, ImageTyping
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 try:
     import gradio as gr
@@ -474,6 +474,8 @@ class YOLOModel:
         self._models = {}
         self._model_types = {}
         self._hf_token = hf_token
+        self._global_lock = Lock()
+        self._model_lock = Lock()
 
     def _get_hf_token(self) -> Optional[str]:
         """
@@ -492,16 +494,17 @@ class YOLOModel:
         :return: List of model names.
         :rtype: List[str]
         """
-        if self._model_names is None:
-            hf_fs = HfFileSystem(token=self._get_hf_token())
-            self._model_names = [
-                hf_normpath(os.path.dirname(os.path.relpath(item, self.repo_id)))
-                for item in hf_fs.glob(hf_fs_path(
-                    repo_id=self.repo_id,
-                    repo_type='model',
-                    filename='*/model.onnx',
-                ))
-            ]
+        with self._global_lock:
+            if self._model_names is None:
+                hf_fs = HfFileSystem(token=self._get_hf_token())
+                self._model_names = [
+                    hf_normpath(os.path.dirname(os.path.relpath(item, self.repo_id)))
+                    for item in hf_fs.glob(hf_fs_path(
+                        repo_id=self.repo_id,
+                        repo_type='model',
+                        filename='*/model.onnx',
+                    ))
+                ]
 
         return self._model_names
 
@@ -526,38 +529,40 @@ class YOLOModel:
         :return: Tuple containing the ONNX model, maximum inference size, and labels.
         :rtype: tuple
         """
-        if model_name not in self._models:
-            self._check_model_name(model_name)
-            model = open_onnx_model(hf_hub_download(
-                self.repo_id,
-                f'{model_name}/model.onnx',
-                token=self._get_hf_token(),
-            ))
-            model_metadata = model.get_modelmeta()
-            if 'imgsz' in model_metadata.custom_metadata_map:
-                max_infer_size = max(json.loads(model_metadata.custom_metadata_map['imgsz']))
-            else:
-                max_infer_size = 640
-            names_map = _safe_eval_names_str(model_metadata.custom_metadata_map['names'])
-            labels = [names_map[i] for i in range(len(names_map))]
-            self._models[model_name] = (model, max_infer_size, labels)
+        with self._model_lock:
+            if model_name not in self._models:
+                self._check_model_name(model_name)
+                model = open_onnx_model(hf_hub_download(
+                    self.repo_id,
+                    f'{model_name}/model.onnx',
+                    token=self._get_hf_token(),
+                ))
+                model_metadata = model.get_modelmeta()
+                if 'imgsz' in model_metadata.custom_metadata_map:
+                    max_infer_size = max(json.loads(model_metadata.custom_metadata_map['imgsz']))
+                else:
+                    max_infer_size = 640
+                names_map = _safe_eval_names_str(model_metadata.custom_metadata_map['names'])
+                labels = [names_map[i] for i in range(len(names_map))]
+                self._models[model_name] = (model, max_infer_size, labels)
 
         return self._models[model_name]
 
     def _get_model_type(self, model_name: str):
-        if model_name not in self._model_types:
-            hf_fs = get_hf_fs(hf_token=self._get_hf_token())
-            fs_path = hf_fs_path(
-                repo_id=self.repo_id,
-                repo_type='model',
-                filename=f'{model_name}/model_type.json',
-                revision='main',
-            )
-            if hf_fs.exists(fs_path):
-                model_type = json.loads(hf_fs.read_text(fs_path))['model_type']
-            else:
-                model_type = 'yolo'
-            self._model_types[model_name] = model_type
+        with self._model_lock:
+            if model_name not in self._model_types:
+                hf_fs = get_hf_fs(hf_token=self._get_hf_token())
+                fs_path = hf_fs_path(
+                    repo_id=self.repo_id,
+                    repo_type='model',
+                    filename=f'{model_name}/model_type.json',
+                    revision='main',
+                )
+                if hf_fs.exists(fs_path):
+                    model_type = json.loads(hf_fs.read_text(fs_path))['model_type']
+                else:
+                    model_type = 'yolo'
+                self._model_types[model_name] = model_type
 
         return self._model_types[model_name]
 
@@ -758,7 +763,7 @@ class YOLOModel:
         )
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_models_for_repo_id(repo_id: str, hf_token: Optional[str] = None) -> YOLOModel:
     """
     Load and cache a YOLO model from a Hugging Face repository.

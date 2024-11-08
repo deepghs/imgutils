@@ -74,7 +74,6 @@ Overview:
         This module requires onnxruntime version 1.18 or higher.
 """
 
-from functools import lru_cache
 from typing import Tuple, List
 
 import numpy as np
@@ -83,7 +82,7 @@ from hbutils.testing.requires.version import VersionInfo
 from huggingface_hub import hf_hub_download
 
 from imgutils.data import ImageTyping
-from imgutils.utils import open_onnx_model
+from imgutils.utils import open_onnx_model, ts_lru_cache
 from ..data import load_image
 
 
@@ -104,7 +103,7 @@ def _check_compatibility() -> bool:
 _REPO_ID = 'deepghs/nudenet_onnx'
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_nudenet_yolo():
     """
     Open and cache the NudeNet YOLO ONNX model.
@@ -118,7 +117,7 @@ def _open_nudenet_yolo():
     ))
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_nudenet_nms():
     """
     Open and cache the NudeNet NMS ONNX model.

@@ -8,7 +8,6 @@ Overview:
         The integration of this model within the present project serves only as a baseline for comparison,
         and it is advisable to avoid using this model extensively in practical applications.
 """
-from functools import lru_cache
 from typing import Tuple, List
 
 import numpy as np
@@ -18,10 +17,10 @@ from huggingface_hub import hf_hub_download
 
 from .overlap import drop_overlap_tags
 from ..data import ImageTyping, load_image
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_deepdanbooru_labels():
     csv_file = hf_hub_download('deepghs/imgutils-models', 'deepdanbooru/deepdanbooru_tags.csv')
     df = pd.read_csv(csv_file)
@@ -35,7 +34,7 @@ def _get_deepdanbooru_labels():
         rating_indexes, general_indexes, character_indexes
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_deepdanbooru_model():
     return open_onnx_model(hf_hub_download(
         'deepghs/imgutils-models',

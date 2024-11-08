@@ -15,7 +15,6 @@ Overview:
         These model is deprecated due to the poor effectiveness.
         Please use `imgutils.metrics.aesthetic.anime_dbaesthetic` for better evaluation.
 """
-from functools import lru_cache
 
 import cv2
 import numpy as np
@@ -25,14 +24,14 @@ from huggingface_hub import hf_hub_download
 
 from ..config.meta import __VERSION__
 from ..data import ImageTyping, load_image
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 __all__ = [
     'get_aesthetic_score',
 ]
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_aesthetic_model():
     return open_onnx_model(hf_hub_download(
         repo_id="skytnt/anime-aesthetic",

@@ -16,7 +16,6 @@ Overview:
         If you use an image with alpha channel (e.g. RGBA images),
         it will return a RGBA image, otherwise return RGG image.
 """
-from functools import lru_cache
 from typing import Literal
 
 import numpy as np
@@ -25,12 +24,12 @@ from huggingface_hub import hf_hub_download
 
 from ..data import ImageTyping
 from ..generic import ImageEnhancer
-from ..utils import open_onnx_model, area_batch_run
+from ..utils import open_onnx_model, area_batch_run, ts_lru_cache
 
 SCUNetModelTyping = Literal['GAN', 'PSNR']
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_scunet_model(model: SCUNetModelTyping):
     """
     Open the SCUNet model for image restoration.
@@ -70,7 +69,7 @@ class _Enhancer(ImageEnhancer):
         return output_[0]
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_enhancer(model: SCUNetModelTyping = 'GAN', tile_size: int = 128, tile_overlap: int = 16,
                   batch_size: int = 4, silent: bool = False) -> _Enhancer:
     return _Enhancer(model, tile_size, tile_overlap, batch_size, silent)

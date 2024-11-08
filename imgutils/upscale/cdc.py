@@ -19,7 +19,6 @@ Overview:
         the time cost is approx 70s/image. So we strongly recommend against running it on CPU.
         Please run CDC model on environments with GPU for better experience.
 """
-from functools import lru_cache
 from typing import Tuple, Any
 
 import numpy as np
@@ -28,14 +27,14 @@ from huggingface_hub import hf_hub_download
 
 from ..data import ImageTyping
 from ..generic import ImageEnhancer
-from ..utils import open_onnx_model, area_batch_run
+from ..utils import open_onnx_model, area_batch_run, ts_lru_cache
 
 __all__ = [
     'upscale_with_cdc',
 ]
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_cdc_upscaler_model(model: str) -> Tuple[Any, int]:
     """
     Opens and initializes the CDC upscaler model.
@@ -114,7 +113,7 @@ class _Enhancer(ImageEnhancer):
         )[0]
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_enhancer(model: str = 'HGSR-MHR-anime-aug_X4_320',
                   tile_size: int = 512, tile_overlap: int = 64, batch_size: int = 1, silent: bool = False):
     return _Enhancer(model, tile_size, tile_overlap, batch_size, silent)
