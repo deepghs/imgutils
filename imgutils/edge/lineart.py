@@ -5,7 +5,7 @@ Overview:
     Having the **best effect**, closest to the drawing lines,
     but consuming a large amount of memory and computing power at runtime.
 """
-from functools import lru_cache, partial
+from functools import partial
 from typing import Optional
 
 import numpy as np
@@ -14,7 +14,7 @@ from huggingface_hub import hf_hub_download
 
 from ._base import resize_image, cv2_resize, _get_image_edge
 from ..data import ImageTyping, load_image
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 
 def _preprocess(input_image: Image.Image, detect_resolution: int = 512):
@@ -23,7 +23,7 @@ def _preprocess(input_image: Image.Image, detect_resolution: int = 512):
     return (input_image / 255.0).transpose(2, 0, 1)[None, ...].astype(np.float32)
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_la_model(coarse: bool):
     return open_onnx_model(hf_hub_download(
         'deepghs/imgutils-models',

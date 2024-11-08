@@ -16,7 +16,6 @@ Overview:
     .. image:: nsfw_benchmark.plot.py.svg
         :align: center
 """
-from functools import lru_cache
 from typing import Mapping, Tuple
 
 import numpy as np
@@ -24,7 +23,7 @@ from PIL import Image
 from huggingface_hub import hf_hub_download
 
 from ..data import load_image, ImageTyping
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 __all__ = [
     'nsfw_pred_score',
@@ -40,7 +39,7 @@ _DEFAULT_MODEL_NAME = 'nsfwjs'
 _MODEL_TO_SIZE = dict(_MODELS)
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_nsfw_model(model: str = _DEFAULT_MODEL_NAME):
     """
     Opens the NSFW model for performing NSFW predictions.

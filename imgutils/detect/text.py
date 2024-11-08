@@ -23,7 +23,6 @@ Overview:
             :align: center
 
 """
-from functools import lru_cache
 from typing import List, Tuple, Optional
 
 import cv2
@@ -33,12 +32,12 @@ from huggingface_hub import hf_hub_download
 
 from ..config.meta import __VERSION__
 from ..data import ImageTyping, load_image
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 _DEFAULT_MODEL = 'dbnetpp_resnet50_fpnc_1200e_icdar2015'
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_text_detect_model(model: str):
     """
     Get an ONNX session for the specified DBNET or DBNET++ model.

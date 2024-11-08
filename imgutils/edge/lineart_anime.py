@@ -2,7 +2,7 @@
 Overview:
     Get edge with lineart anime model.
 """
-from functools import lru_cache, partial
+from functools import partial
 from typing import Optional
 
 import numpy as np
@@ -10,7 +10,7 @@ from huggingface_hub import hf_hub_download
 
 from ._base import resize_image, cv2_resize, _get_image_edge
 from ..data import ImageTyping, load_image
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 
 def _preprocess(input_image, detect_resolution: int = 512):
@@ -20,7 +20,7 @@ def _preprocess(input_image, detect_resolution: int = 512):
     return img
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_la_anime_model():
     return open_onnx_model(hf_hub_download(
         'deepghs/imgutils-models',

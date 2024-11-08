@@ -1,18 +1,16 @@
-import os
-from functools import lru_cache
 from typing import List, Tuple
 
 import numpy as np
 from huggingface_hub import hf_hub_download, HfFileSystem
 
 from ..data import ImageTyping, load_image
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 _HF_CLIENT = HfFileSystem()
 _REPOSITORY = 'deepghs/paddleocr'
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_ocr_recognition_model(model):
     return open_onnx_model(hf_hub_download(
         _REPOSITORY,
@@ -20,7 +18,7 @@ def _open_ocr_recognition_model(model):
     ))
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_ocr_recognition_dictionary(model) -> List[str]:
     with open(hf_hub_download(
             _REPOSITORY,
@@ -79,7 +77,7 @@ def _text_recognize(image: ImageTyping, model: str = 'ch_PP-OCRv4_rec',
     return _text_decode(indices, model, confs, is_remove_duplicate)[0]
 
 
-@lru_cache()
+@ts_lru_cache()
 def _list_rec_models() -> List[str]:
     retval = []
     repo_segment_cnt = len(_REPOSITORY.split('/'))

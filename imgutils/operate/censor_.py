@@ -2,13 +2,13 @@
 Overview:
     A tool for obscuring specified regions on an image.
 """
-from functools import lru_cache
 from typing import Tuple, Type, List, Optional
 
 from PIL import Image, ImageFilter
 
 from ..data import ImageTyping, load_image
 from ..detect import detect_censors
+from ..utils import ts_lru_cache
 
 
 class BaseCensor:
@@ -252,7 +252,7 @@ register_censor_method('blur', BlurCensor)
 register_censor_method('color', ColorCensor)
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_censor_instance(name: str) -> BaseCensor:
     if name in _KNOWN_CENSORS:
         cls, args, kwargs = _KNOWN_CENSORS[name]

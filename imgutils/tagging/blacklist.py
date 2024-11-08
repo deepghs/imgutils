@@ -2,15 +2,15 @@
 Overview:
     Detect and drop some blacklisted tags, which are listed `here <https://huggingface.co/datasets/alea31415/tag_filtering/blob/main/blacklist_tags.txt>`_.
 """
-from functools import lru_cache
 from typing import Union, List, Mapping, Set, Optional, Tuple
 
 from huggingface_hub import hf_hub_download
 
 from .match import _words_to_matcher, _split_to_words
+from ..utils import ts_lru_cache
 
 
-@lru_cache()
+@ts_lru_cache()
 def _load_online_blacklist() -> List[str]:
     """
     Load the online blacklist tags from the specified dataset repository.
@@ -26,7 +26,7 @@ def _load_online_blacklist() -> List[str]:
         return [line.strip() for line in f if line.strip()]
 
 
-@lru_cache()
+@ts_lru_cache()
 def _online_blacklist_set() -> Set[Tuple[str, ...]]:
     """
     Get the online blacklist as a set.

@@ -3,7 +3,6 @@ Overview:
     Tagging utils based on ML-danbooru which is provided by 7eu7d7. The code is here:
     `7eu7d7/ML-Danbooru <https://github.com/7eu7d7/ML-Danbooru>`_ .
 """
-from functools import lru_cache
 from typing import Tuple, List
 
 import numpy as np
@@ -13,10 +12,10 @@ from huggingface_hub import hf_hub_download
 
 from .overlap import drop_overlap_tags
 from ..data import load_image, ImageTyping
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_mldanbooru_model():
     return open_onnx_model(hf_hub_download('deepghs/ml-danbooru-onnx', 'ml_caformer_m36_dec-5-97527.onnx'))
 
@@ -49,7 +48,7 @@ def _to_tensor(image: Image.Image):
     return img.astype(np.float32) / 255
 
 
-@lru_cache()
+@ts_lru_cache()
 def _get_mldanbooru_labels(use_real_name: bool = False) -> Tuple[List[str], List[int], List[int]]:
     path = hf_hub_download('deepghs/imgutils-models', 'mldanbooru/mldanbooru_tags.csv')
     df = pd.read_csv(path)

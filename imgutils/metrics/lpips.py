@@ -21,7 +21,7 @@ from sklearn.cluster import DBSCAN
 from tqdm.auto import tqdm
 
 from imgutils.data import rgb_encode, MultiImagesTyping, load_images, ImageTyping, load_image
-from imgutils.utils import open_onnx_model
+from imgutils.utils import open_onnx_model, ts_lru_cache
 
 __all__ = [
     'lpips_extract_feature',
@@ -38,7 +38,7 @@ def _image_encode(image: Image.Image):
     return rgb_encode(_image_resize(image))
 
 
-@lru_cache()
+@ts_lru_cache()
 def _lpips_feature_model():
     return open_onnx_model(hf_hub_download(
         'deepghs/imgutils-models',
@@ -74,7 +74,7 @@ def lpips_extract_feature(image: MultiImagesTyping) \
     return tuple(features)
 
 
-@lru_cache()
+@ts_lru_cache()
 def _lpips_diff_model():
     return open_onnx_model(hf_hub_download(
         'deepghs/imgutils-models',

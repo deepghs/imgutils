@@ -1,4 +1,3 @@
-from functools import lru_cache
 from typing import List
 
 import cv2
@@ -8,14 +7,14 @@ from huggingface_hub import hf_hub_download, HfFileSystem
 from shapely import Polygon
 
 from ..data import ImageTyping, load_image
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 _MIN_SIZE = 3
 _HF_CLIENT = HfFileSystem()
 _REPOSITORY = 'deepghs/paddleocr'
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_ocr_detection_model(model):
     return open_onnx_model(hf_hub_download(
         _REPOSITORY,
@@ -163,7 +162,7 @@ def _detect_text(image: ImageTyping, model: str = 'ch_PP-OCRv4_det',
     return retval
 
 
-@lru_cache()
+@ts_lru_cache()
 def _list_det_models() -> List[str]:
     retval = []
     repo_segment_cnt = len(_REPOSITORY.split('/'))

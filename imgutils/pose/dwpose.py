@@ -14,7 +14,6 @@ Overview:
 
 """
 import warnings
-from functools import lru_cache
 from typing import Tuple, List
 
 import cv2
@@ -24,7 +23,7 @@ from huggingface_hub import hf_hub_download
 from .format import OP18KeyPointSet
 from ..data import ImageTyping, load_image
 from ..detect import detect_person
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 
 def _dwpose_preprocess(img: np.ndarray, out_bbox=None, input_size: Tuple[int, int] = (288, 384)) \
@@ -383,7 +382,7 @@ def _split_data(keypoints, scores) -> List[OP18KeyPointSet]:
     return [OP18KeyPointSet(info) for info in keypoints_info]
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_dwpose_model():
     return open_onnx_model(hf_hub_download(
         repo_id='yzd-v/DWPose',

@@ -25,7 +25,6 @@ Overview:
         before performing any manual operations.
 """
 import json
-from functools import lru_cache
 from typing import Literal, Union, List, Optional, Tuple
 
 import numpy as np
@@ -35,7 +34,7 @@ from sklearn.cluster import DBSCAN, OPTICS
 from tqdm.auto import tqdm
 
 from ..data import MultiImagesTyping, load_images, ImageTyping
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 __all__ = [
     'ccip_extract_feature',
@@ -68,7 +67,7 @@ def _preprocess_image(image: Image.Image, size: int = 384):
     return data
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_feat_model(model):
     return open_onnx_model(hf_hub_download(
         f'deepghs/ccip_onnx',
@@ -76,7 +75,7 @@ def _open_feat_model(model):
     ))
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_metric_model(model):
     return open_onnx_model(hf_hub_download(
         f'deepghs/ccip_onnx',
@@ -84,13 +83,13 @@ def _open_metric_model(model):
     ))
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_metrics(model):
     with open(hf_hub_download(f'deepghs/ccip_onnx', f'{model}/metrics.json'), 'r') as f:
         return json.load(f)
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_cluster_metrics(model):
     with open(hf_hub_download(f'deepghs/ccip_onnx', f'{model}/cluster.json'), 'r') as f:
         return json.load(f)

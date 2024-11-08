@@ -11,7 +11,6 @@ Overview:
 """
 import math
 import random
-from functools import lru_cache
 from typing import Mapping, Tuple
 
 import numpy as np
@@ -19,7 +18,7 @@ from PIL import Image
 from huggingface_hub import hf_hub_download
 
 from ..data import ImageTyping, load_image
-from ..utils import open_onnx_model
+from ..utils import open_onnx_model, ts_lru_cache
 
 __all__ = [
     'safe_check_score',
@@ -29,7 +28,7 @@ __all__ = [
 DEFAULT_MODEL = 'mobilenet.xs.v2'
 
 
-@lru_cache()
+@ts_lru_cache()
 def _open_model(model_name):
     """
     Open the ONNX model specified by the model name.

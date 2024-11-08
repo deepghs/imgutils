@@ -1,12 +1,13 @@
 import copy
 import json
-from functools import lru_cache
 from typing import Mapping, List, Union
 
 from huggingface_hub import hf_hub_download
 
+from ..utils import ts_lru_cache
 
-@lru_cache()
+
+@ts_lru_cache()
 def _get_overlap_tags() -> Mapping[str, List[str]]:
     """
     Retrieve the overlap tag information from the specified Hugging Face Hub repository.
