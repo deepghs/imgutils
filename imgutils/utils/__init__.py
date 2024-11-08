@@ -4,6 +4,7 @@ Overview:
 """
 from .area import *
 from .format import *
+from .func import *
 from .onnxruntime import *
 from .storage import *
 from .tqdm_ import *
