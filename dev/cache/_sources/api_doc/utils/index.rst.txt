@@ -10,4 +10,5 @@ imgutils.utils
     :maxdepth: 3
 
     cache
+    func
     onnxruntime

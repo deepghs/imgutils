@@ -78,6 +78,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.wd14.get_wd14_tags"><code class="docutils literal notranslate"><span class="pre">get_wd14_tags()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#convert-wd14-emb-to-prediction">convert_wd14_emb_to_prediction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.wd14.convert_wd14_emb_to_prediction"><code class="docutils literal notranslate"><span class="pre">convert_wd14_emb_to_prediction()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="deepdanbooru.html">imgutils.tagging.deepdanbooru</a></li>
@@ -123,9 +127,11 @@
     
   <section id="module-imgutils.tagging.wd14">
 <span id="imgutils-tagging-wd14"></span><h1>imgutils.tagging.wd14<a class="headerlink" href="#module-imgutils.tagging.wd14" title="Permalink to this heading"></a></h1>
-<dl class="simple">
-<dt>Overview:</dt><dd><p>Tagging utils based on wd14 v2, inspired by
-<a class="reference external" href="https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags">SmilingWolf/wd-v1-4-tags</a> .</p>
+<dl>
+<dt>Overview:</dt><dd><p>This module provides utilities for image tagging using WD14 taggers.
+It includes functions for loading models, processing images, and extracting tags.</p>
+<p>The module is inspired by the <a class="reference external" href="https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags">SmilingWolf/wd-v1-4-tags</a>
+project on Hugging Face.</p>
 </dd>
 </dl>
 <section id="get-wd14-tags">
@@ -133,11 +139,9 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="imgutils.tagging.wd14.get_wd14_tags">
 <span class="sig-prename descclassname"><span class="pre">imgutils.tagging.wd14.</span></span><span class="sig-name descname"><span class="pre">get_wd14_tags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'SwinV2_v3'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">general_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.35</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">general_mcut_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_mcut_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_underline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_overlap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('rating',</span> <span class="pre">'general',</span> <span class="pre">'character')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/wd14.html#get_wd14_tags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.tagging.wd14.get_wd14_tags" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Overview:</dt><dd><p>Get tags for an image with wd14 taggers.
-Similar to <a class="reference external" href="https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags">SmilingWolf/wd-v1-4-tags</a> .</p>
-</dd>
-</dl>
+<dd><p>Get tags for an image using WD14 taggers.</p>
+<p>This function is similar to the
+<a class="reference external" href="https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags">SmilingWolf/wd-v1-4-tags</a> project on Hugging Face.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -149,33 +153,39 @@ Similar to <a class="reference external" href="https://huggingface.co/spaces/Smi
 <li><p><strong>character_mcut_enabled</strong> (<em>bool</em>) – If True, applies MCut thresholding to character tags.</p></li>
 <li><p><strong>no_underline</strong> (<em>bool</em>) – If True, replaces underscores in tag names with spaces.</p></li>
 <li><p><strong>drop_overlap</strong> (<em>bool</em>) – If True, drops overlapping tags.</p></li>
-<li><p><strong>fmt</strong> (<em>Any</em>) – Return format, default is <code class="docutils literal notranslate"><span class="pre">('rating',</span> <span class="pre">'general',</span> <span class="pre">'character')</span></code>.
+<li><p><strong>fmt</strong> – Return format, default is <code class="docutils literal notranslate"><span class="pre">('rating',</span> <span class="pre">'general',</span> <span class="pre">'character')</span></code>.
 <code class="docutils literal notranslate"><span class="pre">embedding</span></code> is also supported for feature extraction.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tuple containing dictionaries for rating, general, and character tags with their probabilities.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Tuple[Dict[str, float], Dict[str, float], Dict[str, float]]</p>
+<dd class="field-even"><p>Prediction result based on the provided fmt.</p>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>About <code class="docutils literal notranslate"><span class="pre">fmt</span></code> argument, these are the available names:</p>
+<p>The fmt argument can include the following keys:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">rating</span></code>, a dict containing ratings and their confidences</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">general</span></code>, a dict containing general tags and their confidences</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">character</span></code>, a dict containing character tags and their confidences</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code>, a dict containing all tags (including general and character, not including rating) and their confidences</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">embedding</span></code>, a 1-dim embedding of image, recommended for index building after L2 normalization</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">prediction</span></code>, a 1-dim prediction result of image</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rating</span></code>: a dict containing ratings and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">general</span></code>: a dict containing general tags and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">character</span></code>: a dict containing character tags and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code>: a dict containing all tags (including general and character, not including rating) and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">embedding</span></code>: a 1-dim embedding of image, recommended for index building after L2 normalization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prediction</span></code>: a 1-dim prediction result of image</p></li>
 </ul>
+<p>You can extract embedding of the given image with the follwing code</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">get_wd14_tags</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span> <span class="o">=</span> <span class="n">get_wd14_tags</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;embdding&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(1024, )</span>
+</pre></div>
+</div>
+<p>This embedding is valuable for constructing indices that enable rapid querying of images based on
+visual features within large-scale datasets.</p>
 </div>
 <dl>
 <dt>Example:</dt><dd><p>Here are some images for example</p>
-<img alt="../../_images/tagging_demo.plot.py.svg" class="align-center" src="../../_images/tagging_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">get_wd14_tags</span>
+<img alt="../../_images/tagging_demo.plot.py.svg" class="align-center" src="../../_images/tagging_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">get_wd14_tags</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">chars</span> <span class="o">=</span> <span class="n">get_wd14_tags</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span>
@@ -192,6 +202,51 @@ Similar to <a class="reference external" href="https://huggingface.co/spaces/Smi
 <span class="go">{&#39;1girl&#39;: 0.9798132181167603, &#39;solo&#39;: 0.8046203851699829, &#39;long_hair&#39;: 0.7596215009689331, &#39;looking_at_viewer&#39;: 0.7620116472244263, &#39;blush&#39;: 0.46084529161453247, &#39;smile&#39;: 0.48454540967941284, &#39;bangs&#39;: 0.5152207016944885, &#39;skirt&#39;: 0.8023070096969604, &#39;brown_hair&#39;: 0.8653596639633179, &#39;hair_ornament&#39;: 0.7201820611953735, &#39;red_eyes&#39;: 0.7816740870475769, &#39;long_sleeves&#39;: 0.697688639163971, &#39;twintails&#39;: 0.8974947333335876, &#39;school_uniform&#39;: 0.7491052746772766, &#39;jacket&#39;: 0.5015512704849243, &#39;flower&#39;: 0.6401398181915283, &#39;ahoge&#39;: 0.43420469760894775, &#39;pleated_skirt&#39;: 0.4528769850730896, &#39;outdoors&#39;: 0.5730487704277039, &#39;tongue&#39;: 0.6739872694015503, &#39;hair_flower&#39;: 0.5545973181724548, &#39;tongue_out&#39;: 0.6946243047714233, &#39;bag&#39;: 0.5487751364707947, &#39;symbol-shaped_pupils&#39;: 0.7439308166503906, &#39;blazer&#39;: 0.4186026453971863, &#39;backpack&#39;: 0.47378358244895935, &#39;:p&#39;: 0.4690653085708618, &#39;ghost&#39;: 0.7565015554428101}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">chars</span>
 <span class="go">{&#39;hu_tao_(genshin_impact)&#39;: 0.9262397289276123, &#39;boo_tao_(genshin_impact)&#39;: 0.942080020904541}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="convert-wd14-emb-to-prediction">
+<h2>convert_wd14_emb_to_prediction<a class="headerlink" href="#convert-wd14-emb-to-prediction" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.tagging.wd14.convert_wd14_emb_to_prediction">
+<span class="sig-prename descclassname"><span class="pre">imgutils.tagging.wd14.</span></span><span class="sig-name descname"><span class="pre">convert_wd14_emb_to_prediction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'SwinV2_v3'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">general_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.35</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">general_mcut_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character_mcut_enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_underline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_overlap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('rating',</span> <span class="pre">'general',</span> <span class="pre">'character')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/wd14.html#convert_wd14_emb_to_prediction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.tagging.wd14.convert_wd14_emb_to_prediction" title="Permalink to this definition"></a></dt>
+<dd><p>Convert WD14 embedding to understandable prediction result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>emb</strong> (<em>numpy.ndarray</em>) – The 1-dim extracted embedding.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – The name of the model to use.</p></li>
+<li><p><strong>general_threshold</strong> (<em>float</em>) – The threshold for general tags.</p></li>
+<li><p><strong>general_mcut_enabled</strong> (<em>bool</em>) – If True, applies MCut thresholding to general tags.</p></li>
+<li><p><strong>character_threshold</strong> (<em>float</em>) – The threshold for character tags.</p></li>
+<li><p><strong>character_mcut_enabled</strong> (<em>bool</em>) – If True, applies MCut thresholding to character tags.</p></li>
+<li><p><strong>no_underline</strong> (<em>bool</em>) – If True, replaces underscores in tag names with spaces.</p></li>
+<li><p><strong>drop_overlap</strong> (<em>bool</em>) – If True, drops overlapping tags.</p></li>
+<li><p><strong>fmt</strong> – Return format, default is <code class="docutils literal notranslate"><span class="pre">('rating',</span> <span class="pre">'general',</span> <span class="pre">'character')</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Prediction result based on the provided fmt.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only the embeddings not get normalized can be converted to understandable prediction result.</p>
+</div>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">get_wd14_tags</span><span class="p">,</span> <span class="n">convert_wd14_emb_to_prediction</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># extract the feature embedding</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span> <span class="o">=</span> <span class="n">get_wd14_tags</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;embedding&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># convert to understandable result</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span><span class="p">,</span> <span class="n">general</span><span class="p">,</span> <span class="n">character</span> <span class="o">=</span> <span class="n">convert_wd14_emb_to_prediction</span><span class="p">(</span><span class="n">embedding</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># these 3 dicts will be the same as that returned by `get_wd14_tags(&#39;skadi.jpg&#39;)`</span>
 </pre></div>
 </div>
 </dd>
@@ -244,9 +299,8 @@ Similar to <a class="reference external" href="https://huggingface.co/spaces/Smi
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../tconv/api_doc/tagging/wd14.html">dev/tconv</a></dd>
-                        <dd><a href="wd14.html">dev/cache</a></dd>
                         <dd><a href="../../../../main/api_doc/tagging/wd14.html">main</a></dd>
+                        <dd><a href="wd14.html">dev/cache</a></dd>
                 </dl>
         </div>
     </div><script>

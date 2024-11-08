@@ -12,3 +12,11 @@ get_wd14_tags
 .. autofunction:: get_wd14_tags
 
 
+
+convert_wd14_emb_to_prediction
+----------------------------------------------
+
+.. autofunction:: convert_wd14_emb_to_prediction
+
+
+
