@@ -122,7 +122,7 @@
 <span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
 
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">get_storage_dir</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">get_storage_dir</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;BackgroundImageSet&#39;</span><span class="p">,</span>
@@ -136,7 +136,7 @@
 <span class="n">_BG_REPO</span> <span class="o">=</span> <span class="s1">&#39;deepghs/anime-bg&#39;</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_global_df</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load the global dataframe containing information about background images.</span>
@@ -308,7 +308,7 @@
             <span class="k">return</span> <span class="n">image_file</span></div>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_get_default_set</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the default BackgroundImageSet instance.</span>
@@ -449,7 +449,6 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/cache/index.html">dev/cache</a></dd>
                         <dd><a href="background.html">main</a></dd>
                 </dl>
         </div>

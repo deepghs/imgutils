@@ -110,8 +110,6 @@
 <span class="sd">    project on Hugging Face.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -124,7 +122,7 @@
 <span class="kn">from</span> <span class="nn">.format</span> <span class="kn">import</span> <span class="n">remove_underline</span>
 <span class="kn">from</span> <span class="nn">.overlap</span> <span class="kn">import</span> <span class="n">drop_overlap_tags</span>
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">vreplace</span><span class="p">,</span> <span class="n">sigmoid</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">vreplace</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
 
 <span class="n">SWIN_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-swinv2-tagger-v2&quot;</span>
 <span class="n">CONV_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-convnext-tagger-v2&quot;</span>
@@ -173,7 +171,7 @@
                                <span class="sa">f</span><span class="s1">&#39;If you are running on GPU, use &quot;pip install -U onnxruntime-gpu&quot; .&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_get_wd14_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load an ONNX model from the Hugging Face Hub.</span>
@@ -190,7 +188,7 @@
     <span class="p">))</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_get_wd14_weights</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load the weights for a WD14 model.</span>
@@ -207,7 +205,7 @@
     <span class="p">))</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_get_wd14_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">no_underline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get labels for the WD14 model.</span>
@@ -564,7 +562,6 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/cache/index.html">dev/cache</a></dd>
                         <dd><a href="wd14.html">main</a></dd>
                 </dl>
         </div>

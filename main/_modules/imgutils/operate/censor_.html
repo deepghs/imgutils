@@ -105,13 +105,13 @@
 <span class="sd">Overview:</span>
 <span class="sd">    A tool for obscuring specified regions on an image.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageFilter</span>
 
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
 <span class="kn">from</span> <span class="nn">..detect</span> <span class="kn">import</span> <span class="n">detect_censors</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">ts_lru_cache</span>
 
 
 <div class="viewcode-block" id="BaseCensor"><a class="viewcode-back" href="../../../api_doc/operate/censor.html#imgutils.operate.censor_.BaseCensor">[docs]</a><span class="k">class</span> <span class="nc">BaseCensor</span><span class="p">:</span>
@@ -355,7 +355,7 @@
 <span class="n">register_censor_method</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">ColorCensor</span><span class="p">)</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_get_censor_instance</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseCensor</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_KNOWN_CENSORS</span><span class="p">:</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">_KNOWN_CENSORS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
@@ -542,7 +542,6 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/cache/index.html">dev/cache</a></dd>
                         <dd><a href="censor_.html">main</a></dd>
                 </dl>
         </div>

@@ -107,7 +107,6 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -120,6 +119,7 @@
 <span class="kn">from</span> <span class="nn">.censor_</span> <span class="kn">import</span> <span class="n">BaseCensor</span><span class="p">,</span> <span class="n">register_censor_method</span>
 <span class="kn">from</span> <span class="nn">.squeeze</span> <span class="kn">import</span> <span class="n">squeeze_with_transparency</span><span class="p">,</span> <span class="n">_get_mask_of_transparency</span>
 <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">load_images</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">ts_lru_cache</span>
 
 
 <span class="k">def</span> <span class="nf">_image_rotate_and_sq</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">degrees</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
@@ -395,7 +395,7 @@
 <span class="p">)</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_get_emoji_img</span><span class="p">(</span><span class="n">emoji</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;twitter&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">pilmoji.source</span> <span class="kn">import</span> <span class="n">EmojiCDNSource</span>
 
@@ -424,7 +424,7 @@
         <span class="n">ImageBasedCensor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="n">_get_emoji_img</span><span class="p">(</span><span class="n">emoji</span><span class="p">,</span> <span class="n">style</span><span class="p">)],</span> <span class="n">rotate</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
 
 
-<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">_get_native_emoji_censor</span><span class="p">(</span><span class="n">emoji</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;:smiling_face_with_heart-eyes:&#39;</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">_EmojiStyleTyping</span> <span class="o">=</span> <span class="s1">&#39;twitter&#39;</span><span class="p">,</span>
                              <span class="n">rotate</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">_NativeEmojiBasedCensor</span><span class="p">(</span><span class="n">emoji</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">rotate</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
@@ -546,7 +546,6 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/cache/index.html">dev/cache</a></dd>
                         <dd><a href="imgcensor.html">main</a></dd>
                 </dl>
         </div>
