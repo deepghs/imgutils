@@ -16,4 +16,4 @@ from .match import tag_match_suffix, tag_match_prefix, tag_match_full
 from .mldanbooru import get_mldanbooru_tags
 from .order import sort_tags
 from .overlap import drop_overlap_tags
-from .wd14 import get_wd14_tags, convert_wd14_emb_to_prediction
+from .wd14 import get_wd14_tags, convert_wd14_emb_to_prediction, denormalize_wd14_emb

@@ -214,6 +214,9 @@ def _postprocess_embedding(
     :param fmt: The format of the output.
     :return: The post-processed results.
     """
+    assert len(pred.shape) == len(embedding.shape) == 1, \
+        f'Both pred and embeddings shapes should be 1-dim, ' \
+        f'but pred: {pred.shape!r}, embedding: {embedding.shape!r} actually found.'
     tag_names, rating_indexes, general_indexes, character_indexes = _get_wd14_labels(model_name, no_underline)
     labels = list(zip(tag_names, pred.astype(float)))
 
@@ -356,6 +359,9 @@ def get_wd14_tags(
     )
 
 
+_DEFAULT_DENORMALIZER_NAME = 'mnum2_all'
+
+
 def convert_wd14_emb_to_prediction(
         emb: np.ndarray,
         model_name: str = _DEFAULT_MODEL_NAME,
@@ -366,6 +372,8 @@ def convert_wd14_emb_to_prediction(
         no_underline: bool = False,
         drop_overlap: bool = False,
         fmt=('rating', 'general', 'character'),
+        denormalize: bool = False,
+        denormalizer_name: str = _DEFAULT_DENORMALIZER_NAME,
 ):
     """
     Convert WD14 embedding to understandable prediction result.
@@ -403,18 +411,74 @@ def convert_wd14_emb_to_prediction(
         >>> rating, general, character = convert_wd14_emb_to_prediction(embedding)
         >>> # these 3 dicts will be the same as that returned by `get_wd14_tags('skadi.jpg')`
     """
+    if denormalize:
+        emb = denormalize_wd14_emb(
+            emb=emb,
+            model_name=model_name,
+            denormalizer_name=denormalizer_name,
+        )
+
     z_weights = _get_wd14_weights(model_name)
     weights, bias = z_weights['weights'], z_weights['bias']
     pred = sigmoid(emb @ weights + bias)
-    return _postprocess_embedding(
-        pred=pred,
-        embedding=emb,
+    if len(emb.shape) == 1:
+        return _postprocess_embedding(
+            pred=pred,
+            embedding=emb,
+            model_name=model_name,
+            general_threshold=general_threshold,
+            general_mcut_enabled=general_mcut_enabled,
+            character_threshold=character_threshold,
+            character_mcut_enabled=character_mcut_enabled,
+            no_underline=no_underline,
+            drop_overlap=drop_overlap,
+            fmt=fmt,
+        )
+    else:
+        return [
+            _postprocess_embedding(
+                pred=pred_item,
+                embedding=emb_item,
+                model_name=model_name,
+                general_threshold=general_threshold,
+                general_mcut_enabled=general_mcut_enabled,
+                character_threshold=character_threshold,
+                character_mcut_enabled=character_mcut_enabled,
+                no_underline=no_underline,
+                drop_overlap=drop_overlap,
+                fmt=fmt,
+            )
+            for pred_item, emb_item in zip(pred, emb)
+        ]
+
+
+@ts_lru_cache()
+def _open_denormalize_model(
+        model_name: str = _DEFAULT_MODEL_NAME,
+        denormalizer_name: str = _DEFAULT_DENORMALIZER_NAME,
+):
+    return open_onnx_model(hf_hub_download(
+        repo_id='deepghs/embedding_aligner',
+        repo_type='model',
+        filename=f'{model_name}_{denormalizer_name}/model.onnx',
+    ))
+
+
+def denormalize_wd14_emb(
+        emb: np.ndarray,
+        model_name: str = _DEFAULT_MODEL_NAME,
+        denormalizer_name: str = _DEFAULT_DENORMALIZER_NAME,
+) -> np.ndarray:
+    model = _open_denormalize_model(
         model_name=model_name,
-        general_threshold=general_threshold,
-        general_mcut_enabled=general_mcut_enabled,
-        character_threshold=character_threshold,
-        character_mcut_enabled=character_mcut_enabled,
-        no_underline=no_underline,
-        drop_overlap=drop_overlap,
-        fmt=fmt,
+        denormalizer_name=denormalizer_name,
     )
+    if len(emb.shape) == 1:
+        output, = model.run(output_names=['embedding'], input_feed={'input': emb[None, ...]})
+        return output[0]
+    else:
+        embedding_width = model.get_outputs()[0].shape[-1]
+        origin_shape = emb.shape
+        emb = emb.reshape(-1, embedding_width)
+        output, = model.run(output_names=['embedding'], input_feed={'input': emb})
+        return output.reshape(*origin_shape)
