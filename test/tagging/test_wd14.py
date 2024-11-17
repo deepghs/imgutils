@@ -1,7 +1,8 @@
+import numpy as np
 import pytest
 
 from imgutils.tagging import get_wd14_tags, convert_wd14_emb_to_prediction
-from imgutils.tagging.wd14 import _get_wd14_model
+from imgutils.tagging.wd14 import _get_wd14_model, denormalize_wd14_emb, _open_denormalize_model
 from test.testings import get_testfile
 
 
@@ -11,6 +12,7 @@ def _release_model_after_run():
         yield
     finally:
         _get_wd14_model.cache_clear()
+        _open_denormalize_model.cache_clear()
 
 
 @pytest.mark.unittest
@@ -173,3 +175,57 @@ class TestTaggingWd14:
         assert rating == pytest.approx(expected_rating, abs=2e-3)
         assert general == pytest.approx(expected_general, abs=2e-3)
         assert character == pytest.approx(expected_character, abs=2e-3)
+
+    @pytest.mark.parametrize(['file'], [
+        ('nude_girl.png',),
+    ])
+    def test_convert_wd14_emb_to_prediction_denormalize(self, file):
+        file = get_testfile(file)
+        (expected_rating, expected_general, expected_character), embedding = \
+            get_wd14_tags(file, fmt=(('rating', 'general', 'character'), 'embedding'))
+
+        embedding = embedding / np.linalg.norm(embedding)
+        rating, general, character = convert_wd14_emb_to_prediction(embedding, denormalize=True)
+        assert rating == pytest.approx(expected_rating, abs=1e-2)
+        assert general == pytest.approx(expected_general, abs=1e-2)
+        assert character == pytest.approx(expected_character, abs=1e-2)
+
+    @pytest.mark.parametrize(['file'], [
+        ('nude_girl.png',),
+        # ('nian.png',),  # some low scores not match
+    ])
+    def test_denormalize_wd14_emb(self, file):
+        file = get_testfile(file)
+        (expected_rating, expected_general, expected_character), embedding = \
+            get_wd14_tags(file, fmt=(('rating', 'general', 'character'), 'embedding'))
+
+        embedding = embedding / np.linalg.norm(embedding)
+        output = denormalize_wd14_emb(embedding)
+        rating, general, character = convert_wd14_emb_to_prediction(output)
+        assert rating == pytest.approx(expected_rating, abs=1e-2)
+        assert general == pytest.approx(expected_general, abs=1e-2)
+        assert character == pytest.approx(expected_character, abs=1e-2)
+
+    @pytest.mark.parametrize(['files'], [
+        (['nude_girl.png'],),
+        (['nude_girl.png', 'nude_girl.png'],),
+        # ('nian.png',),  # some low scores not match
+    ])
+    def test_denormalize_wd14_emb_multiple(self, files):
+        files = [get_testfile(file) for file in files]
+        expected = []
+        embeddings = []
+        for file in files:
+            (expected_rating, expected_general, expected_character), embedding = \
+                get_wd14_tags(file, fmt=(('rating', 'general', 'character'), 'embedding'))
+            expected.append((expected_rating, expected_general, expected_character))
+            embeddings.append(embedding / np.linalg.norm(embedding))
+
+        embeddings = np.stack(embeddings)
+        outputs = denormalize_wd14_emb(embeddings)
+        actual = convert_wd14_emb_to_prediction(outputs)
+        for (expected_rating, expected_general, expected_character), \
+                (rating, general, character) in zip(expected, actual):
+            assert rating == pytest.approx(expected_rating, abs=1e-2)
+            assert general == pytest.approx(expected_general, abs=1e-2)
+            assert character == pytest.approx(expected_character, abs=1e-2)

@@ -20,3 +20,9 @@ convert_wd14_emb_to_prediction
 
 
 
+denormalize_wd14_emb
+----------------------------------------------
+
+.. autofunction:: denormalize_wd14_emb
+
+
