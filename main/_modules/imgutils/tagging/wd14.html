@@ -317,6 +317,9 @@
 <span class="sd">    :param fmt: The format of the output.</span>
 <span class="sd">    :return: The post-processed results.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> \
+        <span class="sa">f</span><span class="s1">&#39;Both pred and embeddings shapes should be 1-dim, &#39;</span> \
+        <span class="sa">f</span><span class="s1">&#39;but pred: </span><span class="si">{</span><span class="n">pred</span><span class="o">.</span><span class="n">shape</span><span class="si">!r}</span><span class="s1">, embedding: </span><span class="si">{</span><span class="n">embedding</span><span class="o">.</span><span class="n">shape</span><span class="si">!r}</span><span class="s1"> actually found.&#39;</span>
     <span class="n">tag_names</span><span class="p">,</span> <span class="n">rating_indexes</span><span class="p">,</span> <span class="n">general_indexes</span><span class="p">,</span> <span class="n">character_indexes</span> <span class="o">=</span> <span class="n">_get_wd14_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">no_underline</span><span class="p">)</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tag_names</span><span class="p">,</span> <span class="n">pred</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)))</span>
 
@@ -459,6 +462,9 @@
     <span class="p">)</span></div>
 
 
+<span class="n">_DEFAULT_DENORMALIZER_NAME</span> <span class="o">=</span> <span class="s1">&#39;mnum2_all&#39;</span>
+
+
 <div class="viewcode-block" id="convert_wd14_emb_to_prediction"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.convert_wd14_emb_to_prediction">[docs]</a><span class="k">def</span> <span class="nf">convert_wd14_emb_to_prediction</span><span class="p">(</span>
         <span class="n">emb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
@@ -469,58 +475,177 @@
         <span class="n">no_underline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">drop_overlap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">fmt</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;character&#39;</span><span class="p">),</span>
+        <span class="n">denormalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">denormalizer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_DENORMALIZER_NAME</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert WD14 embedding to understandable prediction result.</span>
+<span class="sd">    Convert WD14 embedding to understandable prediction result. This function can process both</span>
+<span class="sd">    single embeddings (1-dimensional array) and batches of embeddings (2-dimensional array).</span>
 
-<span class="sd">    :param emb: The 1-dim extracted embedding.</span>
+<span class="sd">    :param emb: The extracted embedding(s). Can be either a 1-dim array for single image or</span>
+<span class="sd">                2-dim array for batch processing</span>
 <span class="sd">    :type emb: numpy.ndarray</span>
-<span class="sd">    :param model_name: The name of the model to use.</span>
+<span class="sd">    :param model_name: Name of the WD14 model to use for prediction</span>
 <span class="sd">    :type model_name: str</span>
-<span class="sd">    :param general_threshold: The threshold for general tags.</span>
+<span class="sd">    :param general_threshold: Confidence threshold for general tags (0.0 to 1.0)</span>
 <span class="sd">    :type general_threshold: float</span>
-<span class="sd">    :param general_mcut_enabled: If True, applies MCut thresholding to general tags.</span>
+<span class="sd">    :param general_mcut_enabled: Enable MCut thresholding for general tags to improve prediction quality</span>
 <span class="sd">    :type general_mcut_enabled: bool</span>
-<span class="sd">    :param character_threshold: The threshold for character tags.</span>
+<span class="sd">    :param character_threshold: Confidence threshold for character tags (0.0 to 1.0)</span>
 <span class="sd">    :type character_threshold: float</span>
-<span class="sd">    :param character_mcut_enabled: If True, applies MCut thresholding to character tags.</span>
+<span class="sd">    :param character_mcut_enabled: Enable MCut thresholding for character tags to improve prediction quality</span>
 <span class="sd">    :type character_mcut_enabled: bool</span>
-<span class="sd">    :param no_underline: If True, replaces underscores in tag names with spaces.</span>
+<span class="sd">    :param no_underline: Replace underscores with spaces in tag names for better readability</span>
 <span class="sd">    :type no_underline: bool</span>
-<span class="sd">    :param drop_overlap: If True, drops overlapping tags.</span>
+<span class="sd">    :param drop_overlap: Remove overlapping tags to reduce redundancy</span>
 <span class="sd">    :type drop_overlap: bool</span>
-<span class="sd">    :param fmt: Return format, default is ``(&#39;rating&#39;, &#39;general&#39;, &#39;character&#39;)``.</span>
-<span class="sd">    :return: Prediction result based on the provided fmt.</span>
+<span class="sd">    :param fmt: Specify return format structure for predictions, default is ``(&#39;rating&#39;, &#39;general&#39;, &#39;character&#39;)``.</span>
+<span class="sd">    :type fmt: tuple</span>
+<span class="sd">    :param denormalize: Whether to denormalize the embedding before prediction</span>
+<span class="sd">    :type denormalize: bool</span>
+<span class="sd">    :param denormalizer_name: Name of the denormalizer to use if denormalization is enabled</span>
+<span class="sd">    :type denormalizer_name: str</span>
+<span class="sd">    :return: For single embeddings: prediction result based on fmt. For batches: list of prediction results.</span>
 
 <span class="sd">    .. note::</span>
 <span class="sd">        Only the embeddings not get normalized can be converted to understandable prediction result.</span>
+<span class="sd">        If normalized embeddings are provided, set ``denormalize=True`` to convert them back.</span>
+
+<span class="sd">    For batch processing (2-dim input), returns a list where each element corresponds</span>
+<span class="sd">    to one embedding&#39;s predictions in the same format as single embedding output.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; import os</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">        &gt;&gt;&gt; from imgutils.tagging import get_wd14_tags, convert_wd14_emb_to_prediction</span>
 <span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; # extract the feature embedding</span>
+<span class="sd">        &gt;&gt;&gt; # extract the feature embedding, shape: (W, )</span>
 <span class="sd">        &gt;&gt;&gt; embedding = get_wd14_tags(&#39;skadi.jpg&#39;, fmt=&#39;embedding&#39;)</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; # convert to understandable result</span>
 <span class="sd">        &gt;&gt;&gt; rating, general, character = convert_wd14_emb_to_prediction(embedding)</span>
 <span class="sd">        &gt;&gt;&gt; # these 3 dicts will be the same as that returned by `get_wd14_tags(&#39;skadi.jpg&#39;)`</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Batch processing, shape: (B, W)</span>
+<span class="sd">        &gt;&gt;&gt; embeddings = np.stack([</span>
+<span class="sd">        ...     get_wd14_tags(&#39;img1.jpg&#39;, fmt=&#39;embedding&#39;),</span>
+<span class="sd">        ...     get_wd14_tags(&#39;img2.jpg&#39;, fmt=&#39;embedding&#39;),</span>
+<span class="sd">        ... ])</span>
+<span class="sd">        &gt;&gt;&gt; # results will be a list of (rating, general, character) tuples</span>
+<span class="sd">        &gt;&gt;&gt; results = convert_wd14_emb_to_prediction(embeddings)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">denormalize</span><span class="p">:</span>
+        <span class="n">emb</span> <span class="o">=</span> <span class="n">denormalize_wd14_emb</span><span class="p">(</span>
+            <span class="n">emb</span><span class="o">=</span><span class="n">emb</span><span class="p">,</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+            <span class="n">denormalizer_name</span><span class="o">=</span><span class="n">denormalizer_name</span><span class="p">,</span>
+        <span class="p">)</span>
+
     <span class="n">z_weights</span> <span class="o">=</span> <span class="n">_get_wd14_weights</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
     <span class="n">weights</span><span class="p">,</span> <span class="n">bias</span> <span class="o">=</span> <span class="n">z_weights</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">],</span> <span class="n">z_weights</span><span class="p">[</span><span class="s1">&#39;bias&#39;</span><span class="p">]</span>
     <span class="n">pred</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">emb</span> <span class="o">@</span> <span class="n">weights</span> <span class="o">+</span> <span class="n">bias</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_postprocess_embedding</span><span class="p">(</span>
-        <span class="n">pred</span><span class="o">=</span><span class="n">pred</span><span class="p">,</span>
-        <span class="n">embedding</span><span class="o">=</span><span class="n">emb</span><span class="p">,</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">emb</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_postprocess_embedding</span><span class="p">(</span>
+            <span class="n">pred</span><span class="o">=</span><span class="n">pred</span><span class="p">,</span>
+            <span class="n">embedding</span><span class="o">=</span><span class="n">emb</span><span class="p">,</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+            <span class="n">general_threshold</span><span class="o">=</span><span class="n">general_threshold</span><span class="p">,</span>
+            <span class="n">general_mcut_enabled</span><span class="o">=</span><span class="n">general_mcut_enabled</span><span class="p">,</span>
+            <span class="n">character_threshold</span><span class="o">=</span><span class="n">character_threshold</span><span class="p">,</span>
+            <span class="n">character_mcut_enabled</span><span class="o">=</span><span class="n">character_mcut_enabled</span><span class="p">,</span>
+            <span class="n">no_underline</span><span class="o">=</span><span class="n">no_underline</span><span class="p">,</span>
+            <span class="n">drop_overlap</span><span class="o">=</span><span class="n">drop_overlap</span><span class="p">,</span>
+            <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">_postprocess_embedding</span><span class="p">(</span>
+                <span class="n">pred</span><span class="o">=</span><span class="n">pred_item</span><span class="p">,</span>
+                <span class="n">embedding</span><span class="o">=</span><span class="n">emb_item</span><span class="p">,</span>
+                <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+                <span class="n">general_threshold</span><span class="o">=</span><span class="n">general_threshold</span><span class="p">,</span>
+                <span class="n">general_mcut_enabled</span><span class="o">=</span><span class="n">general_mcut_enabled</span><span class="p">,</span>
+                <span class="n">character_threshold</span><span class="o">=</span><span class="n">character_threshold</span><span class="p">,</span>
+                <span class="n">character_mcut_enabled</span><span class="o">=</span><span class="n">character_mcut_enabled</span><span class="p">,</span>
+                <span class="n">no_underline</span><span class="o">=</span><span class="n">no_underline</span><span class="p">,</span>
+                <span class="n">drop_overlap</span><span class="o">=</span><span class="n">drop_overlap</span><span class="p">,</span>
+                <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">pred_item</span><span class="p">,</span> <span class="n">emb_item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">emb</span><span class="p">)</span>
+        <span class="p">]</span></div>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">_open_denormalize_model</span><span class="p">(</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
+        <span class="n">denormalizer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_DENORMALIZER_NAME</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Open a denormalization model for WD14 embeddings.</span>
+
+<span class="sd">    :param model_name: Name of the model.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :param denormalizer_name: Name of the denormalizer.</span>
+<span class="sd">    :type denormalizer_name: str</span>
+<span class="sd">    :return: The loaded ONNX model.</span>
+<span class="sd">    :rtype: ONNXModel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;deepghs/embedding_aligner&#39;</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">denormalizer_name</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span><span class="p">,</span>
+    <span class="p">))</span>
+
+
+<div class="viewcode-block" id="denormalize_wd14_emb"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.denormalize_wd14_emb">[docs]</a><span class="k">def</span> <span class="nf">denormalize_wd14_emb</span><span class="p">(</span>
+        <span class="n">emb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
+        <span class="n">denormalizer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_DENORMALIZER_NAME</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Denormalize WD14 embeddings.</span>
+
+<span class="sd">    :param emb: The embedding to denormalize.</span>
+<span class="sd">    :type emb: numpy.ndarray</span>
+<span class="sd">    :param model_name: Name of the model.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :param denormalizer_name: Name of the denormalizer.</span>
+<span class="sd">    :type denormalizer_name: str</span>
+<span class="sd">    :return: The denormalized embedding.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging import get_wd14_tags, convert_wd14_emb_to_prediction, denormalize_wd14_emb</span>
+<span class="sd">        ...</span>
+<span class="sd">        &gt;&gt;&gt; embedding, (r, g, c) = get_wd14_tags(</span>
+<span class="sd">        ...     &#39;image.png&#39;,</span>
+<span class="sd">        ...     fmt=(&#39;embedding&#39;, (&#39;rating&#39;, &#39;general&#39;, &#39;character&#39;)),</span>
+<span class="sd">        ... )</span>
+<span class="sd">        ...</span>
+<span class="sd">        &gt;&gt;&gt; # normalize embedding</span>
+<span class="sd">        &gt;&gt;&gt; embedding = embedding / np.linalg.norm(embedding)</span>
+<span class="sd">        ...</span>
+<span class="sd">        &gt;&gt;&gt; # denormalize this embedding</span>
+<span class="sd">        &gt;&gt;&gt; output = denormalize_wd14_emb(embedding)</span>
+<span class="sd">        ...</span>
+<span class="sd">        &gt;&gt;&gt; # should be similar to r, g, c, approx 1e-3 error</span>
+<span class="sd">        &gt;&gt;&gt; rating, general, character = convert_wd14_emb_to_prediction(output)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">_open_denormalize_model</span><span class="p">(</span>
         <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
-        <span class="n">general_threshold</span><span class="o">=</span><span class="n">general_threshold</span><span class="p">,</span>
-        <span class="n">general_mcut_enabled</span><span class="o">=</span><span class="n">general_mcut_enabled</span><span class="p">,</span>
-        <span class="n">character_threshold</span><span class="o">=</span><span class="n">character_threshold</span><span class="p">,</span>
-        <span class="n">character_mcut_enabled</span><span class="o">=</span><span class="n">character_mcut_enabled</span><span class="p">,</span>
-        <span class="n">no_underline</span><span class="o">=</span><span class="n">no_underline</span><span class="p">,</span>
-        <span class="n">drop_overlap</span><span class="o">=</span><span class="n">drop_overlap</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
-    <span class="p">)</span></div>
+        <span class="n">denormalizer_name</span><span class="o">=</span><span class="n">denormalizer_name</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">emb</span> <span class="o">=</span> <span class="n">emb</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">emb</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">emb</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;embedding&#39;</span><span class="p">],</span> <span class="n">input_feed</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">emb</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]})</span>
+        <span class="k">return</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">embedding_width</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_outputs</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">origin_shape</span> <span class="o">=</span> <span class="n">emb</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">emb</span> <span class="o">=</span> <span class="n">emb</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">embedding_width</span><span class="p">)</span>
+        <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;embedding&#39;</span><span class="p">],</span> <span class="n">input_feed</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">emb</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">*</span><span class="n">origin_shape</span><span class="p">)</span></div>
 </pre></div>
 
 
@@ -563,8 +688,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="wd14.html">main</a></dd>
+                        <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                 </dl>
         </div>
     </div><script>
