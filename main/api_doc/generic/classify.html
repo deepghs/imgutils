@@ -128,60 +128,52 @@
 <p>Generic tools for classification models.</p>
 <p>This module provides utilities and classes for working with classification models,
 particularly those stored in Hugging Face repositories. It includes functions for
-image encoding, model loading, and prediction, as well as a main <cite>ClassifyModel</cite> class
+image encoding, model loading, and prediction, as well as a main ClassifyModel class
 that manages the interaction with classification models.</p>
-<p>Key components:</p>
-<ul class="simple">
-<li><p>Image encoding and preprocessing</p></li>
-<li><p>ClassifyModel: A class for managing and using classification models</p></li>
-<li><p>Utility functions for making predictions with classification models</p></li>
-</ul>
 <p>The module is designed to work with ONNX models and supports various image input formats.
 It also handles token-based authentication for accessing private Hugging Face repositories.</p>
 <section id="classifymodel">
 <h2>ClassifyModel<a class="headerlink" href="#classifymodel" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="imgutils.generic.classify.ClassifyModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.generic.classify.</span></span><span class="sig-name descname"><span class="pre">ClassifyModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify.html#ClassifyModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify.ClassifyModel" title="Permalink to this definition"></a></dt>
-<dd><p>A class for managing and using classification models.</p>
-<p>This class provides methods for loading classification models from a Hugging Face
-repository, making predictions, and managing model resources. It supports multiple
-models within a single repository and handles token-based authentication.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.generic.classify.</span></span><span class="sig-name descname"><span class="pre">ClassifyModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_preprocess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Image</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Image</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify.html#ClassifyModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify.ClassifyModel" title="Permalink to this definition"></a></dt>
+<dd><p>A comprehensive manager for classification models from Hugging Face repositories.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>repo_id</strong> (<em>str</em>) – The Hugging Face repository ID containing the classification models.</p></li>
-<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The Hugging Face API token for accessing private repositories, defaults to None.</p></li>
+<li><p><strong>repo_id</strong> (<em>str</em>) – Hugging Face repository identifier</p></li>
+<li><p><strong>fn_preprocess</strong> (<em>Optional</em><em>[</em><em>ImagePreprocessFunc</em><em>]</em>) – Optional custom preprocessing function</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Hugging Face authentication token</p></li>
 </ul>
 </dd>
 <dt class="field-even">Variables<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>repo_id</strong> – The Hugging Face repository ID.</p></li>
-<li><p><strong>_model_names</strong> – Cached list of available model names in the repository.</p></li>
-<li><p><strong>_models</strong> – Dictionary of loaded ONNX models.</p></li>
-<li><p><strong>_labels</strong> – Dictionary of labels for each model.</p></li>
-<li><p><strong>_hf_token</strong> – The Hugging Face API token.</p></li>
+<li><p><strong>repo_id</strong> – Repository identifier</p></li>
+<li><p><strong>_model_names</strong> – Cached list of available models</p></li>
+<li><p><strong>_models</strong> – Dictionary of loaded ONNX models</p></li>
+<li><p><strong>_labels</strong> – Dictionary of model labels</p></li>
+<li><p><strong>_hf_token</strong> – Authentication token</p></li>
 </ul>
 </dd>
 </dl>
 <dl>
-<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">ClassifyModel</span><span class="p">(</span><span class="s2">&quot;username/repo_name&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;path/to/image.jpg&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span><span class="p">,</span> <span class="n">score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s2">&quot;model_name&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted class: </span><span class="si">{</span><span class="n">prediction</span><span class="si">}</span><span class="s2">, Score: </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span> <span class="o">=</span> <span class="n">ClassifyModel</span><span class="p">(</span><span class="s2">&quot;org/model-repo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;image.jpg&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">img</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">label</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s2">&quot;model-name&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="imgutils.generic.classify.ClassifyModel.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify.html#ClassifyModel.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify.ClassifyModel.__init__" title="Permalink to this definition"></a></dt>
-<dd><p>Initialize the ClassifyModel instance.</p>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_preprocess</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Image</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Image</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify.html#ClassifyModel.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify.ClassifyModel.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize a new ClassifyModel instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>repo_id</strong> (<em>str</em>) – The repository ID containing the models.</p></li>
-<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The Hugging Face API token, defaults to None.</p></li>
+<li><p><strong>repo_id</strong> (<em>str</em>) – Hugging Face repository identifier</p></li>
+<li><p><strong>fn_preprocess</strong> (<em>Optional</em><em>[</em><em>ImagePreprocessFunc</em><em>]</em>) – Optional custom preprocessing function</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Authentication token for private repositories</p></li>
 </ul>
 </dd>
 </dl>
@@ -411,9 +403,8 @@ If None, the most recently updated model will be selected.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/preprocess/api_doc/generic/classify.html">dev/preprocess</a></dd>
-                        <dd><a href="../../../dev/denormalize/api_doc/generic/classify.html">dev/denormalize</a></dd>
                         <dd><a href="classify.html">main</a></dd>
+                        <dd><a href="../../../dev/denormalize/api_doc/generic/classify.html">dev/denormalize</a></dd>
                 </dl>
         </div>
     </div><script>
