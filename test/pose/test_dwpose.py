@@ -31,10 +31,10 @@ class TestPoseDwpose:
         assert isinstance(poses[1], OP18KeyPointSet)
         c0 = np.isclose(pose_data_2girls_0, poses[0].all, atol=1)
         assert c0.all(), f'{c0.mean() * 100:.2f}% of the values are the same, ' \
-                         f'max diff is {(pose_data_2girls_0 - poses[0].all).max():.4f}.'
+                         f'max diff is {np.abs(pose_data_2girls_0 - poses[0].all).max():.4f}.'
         c1 = np.isclose(pose_data_2girls_1, poses[1].all, atol=1)
         assert c1.all(), f'{c1.mean() * 100:.2f}% of the values are the same, ' \
-                         f'max diff is {(pose_data_2girls_1 - poses[1].all).max():.4f}.'
+                         f'max diff is {np.abs(pose_data_2girls_1 - poses[1].all).max():.4f}.'
 
     def test_dwpose_estimate_nothing(self, img_file_gun):
         poses = dwpose_estimate(img_file_gun)
