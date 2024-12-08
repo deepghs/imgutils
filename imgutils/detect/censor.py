@@ -24,7 +24,7 @@ _REPO_ID = 'deepghs/anime_censor_detection'
 
 
 def detect_censors(image: ImageTyping, level: str = 's', version: str = 'v1.0', model_name: Optional[str] = None,
-                   conf_threshold: float = 0.3, iou_threshold: float = 0.7) \
+                   conf_threshold: float = 0.3, iou_threshold: float = 0.7, **kwargs) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Detect human censor points in anime images.
@@ -88,4 +88,5 @@ def detect_censors(image: ImageTyping, level: str = 's', version: str = 'v1.0', 
         model_name=model_name or f'censor_detect_{version}_{level}',
         conf_threshold=conf_threshold,
         iou_threshold=iou_threshold,
+        **kwargs,
     )

@@ -613,7 +613,6 @@ class YOLOModel:
         image = load_image(image, mode='RGB')
         new_image, old_size, new_size = _image_preprocess(image, max_infer_size, allow_dynamic=allow_dynamic)
         data = rgb_encode(new_image)[None, ...]
-        print(data.shape)
         output, = model.run(['output0'], {'images': data})
         model_type = self._get_model_type(model_name=model_name)
         if model_type == 'yolo':
@@ -814,7 +813,7 @@ def _open_models_for_repo_id(repo_id: str, hf_token: Optional[str] = None) -> YO
 
 def yolo_predict(image: ImageTyping, repo_id: str, model_name: str,
                  conf_threshold: float = 0.25, iou_threshold: float = 0.7,
-                 hf_token: Optional[str] = None) \
+                 hf_token: Optional[str] = None, **kwargs) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Perform object detection on an image using a YOLO model from a Hugging Face repository.
@@ -851,4 +850,5 @@ def yolo_predict(image: ImageTyping, repo_id: str, model_name: str,
         model_name=model_name,
         conf_threshold=conf_threshold,
         iou_threshold=iou_threshold,
+        **kwargs,
     )

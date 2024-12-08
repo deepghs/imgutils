@@ -180,7 +180,7 @@ _REPO_ID = 'deepghs/booru_yolo'
 
 
 def detect_with_booru_yolo(image: ImageTyping, model_name: str = _DEFAULT_MODEL,
-                           conf_threshold: float = 0.25, iou_threshold: float = 0.7) \
+                           conf_threshold: float = 0.25, iou_threshold: float = 0.7, **kwargs) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Perform object detection on an image using the Booru YOLO model.
@@ -209,4 +209,5 @@ def detect_with_booru_yolo(image: ImageTyping, model_name: str = _DEFAULT_MODEL,
         model_name=model_name,
         conf_threshold=conf_threshold,
         iou_threshold=iou_threshold,
+        **kwargs,
     )
