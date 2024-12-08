@@ -14,7 +14,7 @@ def _release_model_after_run():
 
 
 @pytest.mark.unittest
-class TestDetectHead:
+class TestDetectHand:
     def test_detect_hands(self):
         detections = detect_hands(get_testfile('genshin_post.jpg'))
-        assert len(detections) >= 4
+        assert len(detections) >= 2

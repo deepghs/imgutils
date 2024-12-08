@@ -30,7 +30,7 @@ _REPO_ID = 'deepghs/anime_halfbody_detection'
 
 
 def detect_halfbody(image: ImageTyping, level: str = 's', version: str = 'v1.0', model_name: Optional[str] = None,
-                    conf_threshold: float = 0.5, iou_threshold: float = 0.7) \
+                    conf_threshold: float = 0.5, iou_threshold: float = 0.7, **kwargs) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Detect human upper-half body in anime images.
@@ -87,4 +87,5 @@ def detect_halfbody(image: ImageTyping, level: str = 's', version: str = 'v1.0',
         model_name=model_name or f'halfbody_detect_{version}_{level}',
         conf_threshold=conf_threshold,
         iou_threshold=iou_threshold,
+        **kwargs,
     )

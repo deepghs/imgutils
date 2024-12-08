@@ -26,7 +26,7 @@ _REPO_ID = 'deepghs/anime_face_detection'
 
 
 def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1.4', model_name: Optional[str] = None,
-                 conf_threshold: float = 0.25, iou_threshold: float = 0.7) \
+                 conf_threshold: float = 0.25, iou_threshold: float = 0.7, **kwargs) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Detect human faces in anime images using YOLOv8 models.
@@ -87,4 +87,5 @@ def detect_faces(image: ImageTyping, level: str = 's', version: str = 'v1.4', mo
         model_name=model_name or f'face_detect_{version}_{level}',
         conf_threshold=conf_threshold,
         iou_threshold=iou_threshold,
+        **kwargs,
     )

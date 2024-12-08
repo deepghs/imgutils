@@ -23,10 +23,10 @@ class TestDetectHead:
         assert detection_similarity(
             detections,
             [
-                ((210, 161, 348, 288), 'head', 0.8935408592224121),
-                ((462, 250, 531, 328), 'head', 0.8133165836334229),
-                ((651, 439, 725, 514), 'head', 0.8114989995956421),
-                ((787, 0, 1124, 262), 'head', 0.780591607093811)
+                ((211, 162, 349, 287), 'head', 0.897052526473999),
+                ((938, 88, 1124, 260), 'head', 0.8672211170196533),
+                ((461, 251, 531, 325), 'head', 0.8515472412109375),
+                ((652, 440, 727, 513), 'head', 0.8476731181144714),
             ]
         ) >= 0.9
 
@@ -43,9 +43,10 @@ class TestDetectHead:
     def test_detect_with_yolov10(self, model_name: str):
         detections = detect_heads(get_testfile('genshin_post.jpg'), model_name=model_name)
         similarity = detection_similarity(detections, [
-            ((202, 156, 356, 293), 'head', 0.876),
-            ((936, 86, 1134, 267), 'head', 0.834),
-            ((650, 444, 720, 518), 'head', 0.778),
+            ((211, 161, 350, 288), 'head', 0.9167004823684692),
+            ((938, 87, 1122, 261), 'head', 0.9030089378356934),
+            ((463, 249, 532, 327), 'head', 0.8779274225234985),
+            ((653, 444, 722, 512), 'head', 0.8771967887878418)
         ])
         assert similarity >= 0.85
 
@@ -57,7 +58,10 @@ class TestDetectHead:
         #            so this expected result is 100% bullshit
         #            just make sure the rtdetr models can be properly inferred
         detections = detect_heads(get_testfile('genshin_post.jpg'), model_name=model_name)
-        assert detections == []
-        # similarity = detection_similarity(detections, [
-        # ])
-        # assert similarity >= 0.85
+        similarity = detection_similarity(detections, [
+            ((210, 160, 351, 286), 'head', 0.9095626473426819),
+            ((937, 87, 1123, 260), 'head', 0.8920016288757324),
+            ((461, 248, 536, 326), 'head', 0.8442408442497253),
+            ((651, 439, 728, 514), 'head', 0.841901421546936)
+        ])
+        assert similarity >= 0.85

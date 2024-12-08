@@ -25,7 +25,7 @@ _REPO_ID = 'deepghs/anime_hand_detection'
 
 
 def detect_hands(image: ImageTyping, level: str = 's', version: str = 'v1.0', model_name: Optional[str] = None,
-                 conf_threshold: float = 0.35, iou_threshold: float = 0.7) \
+                 conf_threshold: float = 0.35, iou_threshold: float = 0.7, **kwargs) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Detect human hand points in anime images.
@@ -76,4 +76,5 @@ def detect_hands(image: ImageTyping, level: str = 's', version: str = 'v1.0', mo
         model_name=model_name or f'hand_detect_{version}_{level}',
         conf_threshold=conf_threshold,
         iou_threshold=iou_threshold,
+        **kwargs,
     )

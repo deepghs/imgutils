@@ -28,7 +28,7 @@ _REPO_ID = 'deepghs/anime_person_detection'
 
 
 def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1.1', model_name: Optional[str] = None,
-                  conf_threshold: float = 0.3, iou_threshold: float = 0.5):
+                  conf_threshold: float = 0.3, iou_threshold: float = 0.5, **kwargs):
     """
     Detect human bodies (including the entire body) in anime images.
 
@@ -83,4 +83,5 @@ def detect_person(image: ImageTyping, level: str = 'm', version: str = 'v1.1', m
         model_name=model_name or f'person_detect_{version}_{level}',
         conf_threshold=conf_threshold,
         iou_threshold=iou_threshold,
+        **kwargs,
     )

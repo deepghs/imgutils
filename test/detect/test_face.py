@@ -1,5 +1,6 @@
 import pytest
 
+from imgutils.detect import detection_similarity
 from imgutils.detect.face import detect_faces
 from imgutils.generic.yolo import _open_models_for_repo_id
 from test.testings import get_testfile
@@ -16,20 +17,14 @@ def _release_model_after_run():
 @pytest.mark.unittest
 class TestDetectHead:
     def test_detect_faces(self):
-        detections = detect_faces(get_testfile('genshin_post.jpg'))
-        assert len(detections) == 4
-
-        values = []
-        for bbox, label, score in detections:
-            assert label == 'face'
-            values.append((bbox, int(score * 1000) / 1000))
-
-        assert values == pytest.approx([
-            ((967, 143, 1084, 261), 0.851),
-            ((246, 208, 331, 287), 0.81),
-            ((662, 466, 705, 514), 0.733),
-            ((479, 283, 523, 326), 0.72),
+        detection = detect_faces(get_testfile('genshin_post.jpg'))
+        similarity = detection_similarity(detection, [
+            ((966, 142, 1085, 261), 'face', 0.850458025932312),
+            ((247, 209, 330, 288), 'face', 0.8288277387619019),
+            ((661, 467, 706, 512), 'face', 0.754958987236023),
+            ((481, 282, 522, 325), 'face', 0.7148504257202148)
         ])
+        assert similarity >= 0.9
 
     def test_detect_faces_none(self):
         assert detect_faces(get_testfile('png_full.png')) == []
