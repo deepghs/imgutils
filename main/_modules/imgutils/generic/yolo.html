@@ -119,7 +119,7 @@
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
@@ -258,7 +258,8 @@
     <span class="k">return</span> <span class="n">keep</span>
 
 
-<span class="k">def</span> <span class="nf">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1216</span><span class="p">,</span> <span class="n">align</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1216</span><span class="p">,</span>
+                      <span class="n">allow_dynamic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">align</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Preprocess an input image for inference.</span>
 
@@ -269,6 +270,8 @@
 <span class="sd">    :type image: Image.Image</span>
 <span class="sd">    :param max_infer_size: Maximum size (width or height) of the processed image. Default is 1216.</span>
 <span class="sd">    :type max_infer_size: int</span>
+<span class="sd">    :param allow_dynamic: If True, allows dynamic resizing of the image while maintaining aspect ratio. Default is False.</span>
+<span class="sd">    :type allow_dynamic: bool</span>
 <span class="sd">    :param align: Value to align the image dimensions to. Default is 32.</span>
 <span class="sd">    :type align: int</span>
 
@@ -286,13 +289,22 @@
 <span class="sd">    &gt;&gt;&gt; print(old_size, new_size)</span>
 <span class="sd">    (1000, 800) (1216, 992)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">max_infer_size</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">max_infer_width</span><span class="p">,</span> <span class="n">max_infer_height</span> <span class="o">=</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">max_infer_size</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">max_infer_width</span><span class="p">,</span> <span class="n">max_infer_height</span> <span class="o">=</span> <span class="n">max_infer_size</span>
+
     <span class="n">old_width</span><span class="p">,</span> <span class="n">old_height</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">height</span>
     <span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">=</span> <span class="n">old_width</span><span class="p">,</span> <span class="n">old_height</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">max_infer_size</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">=</span> <span class="n">new_width</span> <span class="o">*</span> <span class="n">r</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">*</span> <span class="n">r</span>
-    <span class="n">new_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">new_width</span> <span class="o">/</span> <span class="n">align</span><span class="p">)</span> <span class="o">*</span> <span class="n">align</span><span class="p">)</span>
-    <span class="n">new_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">new_height</span> <span class="o">/</span> <span class="n">align</span><span class="p">)</span> <span class="o">*</span> <span class="n">align</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">allow_dynamic</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_infer_width</span> <span class="o">/</span> <span class="n">new_width</span><span class="p">,</span> <span class="n">max_infer_height</span> <span class="o">/</span> <span class="n">new_height</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">=</span> <span class="n">new_width</span> <span class="o">*</span> <span class="n">r</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">*</span> <span class="n">r</span>
+        <span class="n">new_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">new_width</span> <span class="o">/</span> <span class="n">align</span><span class="p">)</span> <span class="o">*</span> <span class="n">align</span><span class="p">)</span>
+        <span class="n">new_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">new_height</span> <span class="o">/</span> <span class="n">align</span><span class="p">)</span> <span class="o">*</span> <span class="n">align</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">=</span> <span class="n">max_infer_width</span><span class="p">,</span> <span class="n">max_infer_height</span>
+
     <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">old_width</span><span class="p">,</span> <span class="n">old_height</span><span class="p">),</span> <span class="p">(</span><span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span><span class="p">)</span>
 
@@ -642,7 +654,8 @@
                 <span class="p">))</span>
                 <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_modelmeta</span><span class="p">()</span>
                 <span class="k">if</span> <span class="s1">&#39;imgsz&#39;</span> <span class="ow">in</span> <span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">:</span>
-                    <span class="n">max_infer_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;imgsz&#39;</span><span class="p">]))</span>
+                    <span class="n">max_infer_size</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;imgsz&#39;</span><span class="p">]))</span>
+                    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">max_infer_size</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;imgsz should have 2 dims, but </span><span class="si">{</span><span class="n">max_infer_size</span><span class="si">!r}</span><span class="s1"> found.&#39;</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">max_infer_size</span> <span class="o">=</span> <span class="mi">640</span>
                 <span class="n">names_map</span> <span class="o">=</span> <span class="n">_safe_eval_names_str</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">])</span>
@@ -670,7 +683,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
 
 <div class="viewcode-block" id="YOLOModel.predict"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
+                <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                <span class="n">allow_dynamic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> \
             <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform object detection on an image using the specified YOLO model.</span>
@@ -683,6 +697,9 @@
 <span class="sd">        :type conf_threshold: float</span>
 <span class="sd">        :param iou_threshold: IoU threshold for non-maximum suppression. Default is 0.7.</span>
 <span class="sd">        :type iou_threshold: float</span>
+<span class="sd">        :param allow_dynamic: If True, allows dynamic resizing of the image while maintaining aspect ratio.</span>
+<span class="sd">                              Default is False.</span>
+<span class="sd">        :type allow_dynamic: bool</span>
 
 <span class="sd">        :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).</span>
 <span class="sd">        :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
@@ -697,7 +714,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">model</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
-        <span class="n">new_image</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span> <span class="o">=</span> <span class="n">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">)</span>
+        <span class="n">new_image</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span> <span class="o">=</span> <span class="n">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">allow_dynamic</span><span class="o">=</span><span class="n">allow_dynamic</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">new_image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
         <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output0&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;images&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
         <span class="n">model_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_type</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
@@ -772,7 +789,8 @@
             <span class="n">default_model_name</span> <span class="o">=</span> <span class="n">selected_model_name</span>
 
         <span class="k">def</span> <span class="nf">_gr_detect</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                       <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">score_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">)</span> \
+                       <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">score_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span>
+                       <span class="n">allow_dynamic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> \
                 <span class="o">-&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">AnnotatedImage</span><span class="p">:</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_model</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
             <span class="n">_colors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">rnd_colors</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))))</span>
@@ -785,6 +803,7 @@
                         <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
                         <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
                         <span class="n">conf_threshold</span><span class="o">=</span><span class="n">score_threshold</span><span class="p">,</span>
+                        <span class="n">allow_dynamic</span><span class="o">=</span><span class="n">allow_dynamic</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">]),</span>
                 <span class="n">color_map</span><span class="o">=</span><span class="n">_color_map</span><span class="p">,</span>
@@ -794,7 +813,9 @@
         <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
             <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
                 <span class="n">gr_input_image</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;pil&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Image&#39;</span><span class="p">)</span>
-                <span class="n">gr_model</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">model_list</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+                <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                    <span class="n">gr_model</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">model_list</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+                    <span class="n">gr_allow_dynamic</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Checkbox</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Allow Dynamic Size&#39;</span><span class="p">)</span>
                 <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
                     <span class="n">gr_iou_threshold</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">default_iou_threshold</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;IOU Threshold&#39;</span><span class="p">)</span>
                     <span class="n">gr_score_threshold</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">default_conf_threshold</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Score Threshold&#39;</span><span class="p">)</span>
@@ -811,6 +832,7 @@
                     <span class="n">gr_model</span><span class="p">,</span>
                     <span class="n">gr_iou_threshold</span><span class="p">,</span>
                     <span class="n">gr_score_threshold</span><span class="p">,</span>
+                    <span class="n">gr_allow_dynamic</span><span class="p">,</span>
                 <span class="p">],</span>
                 <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">gr_output_image</span><span class="p">],</span>
             <span class="p">)</span></div>
@@ -894,7 +916,7 @@
 
 <div class="viewcode-block" id="yolo_predict"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.yolo_predict">[docs]</a><span class="k">def</span> <span class="nf">yolo_predict</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
-                 <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
+                 <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform object detection on an image using a YOLO model from a Hugging Face repository.</span>
@@ -931,6 +953,7 @@
         <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
         <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
         <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span></div>
 </pre></div>
 
@@ -975,9 +998,8 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/yolo/index.html">dev/yolo</a></dd>
-                        <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="yolo.html">main</a></dd>
+                        <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                 </dl>
         </div>
     </div><script>
