@@ -34,7 +34,7 @@ _REPO_ID = 'deepghs/anime_head_detection'
 
 def detect_heads(image: ImageTyping, level: Optional[str] = None,
                  model_name: Optional[str] = 'head_detect_v2.0_s',
-                 conf_threshold: float = 0.4, iou_threshold: float = 0.7) \
+                 conf_threshold: float = 0.4, iou_threshold: float = 0.7, **kwargs) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Detect human heads in anime images using YOLOv8 models.
@@ -96,4 +96,5 @@ def detect_heads(image: ImageTyping, level: Optional[str] = None,
         model_name=model_name or f'head_detect_v0_{level or "s"}',
         conf_threshold=conf_threshold,
         iou_threshold=iou_threshold,
+        **kwargs,
     )

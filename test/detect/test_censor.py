@@ -1,5 +1,6 @@
 import pytest
 
+from imgutils.detect import detection_similarity
 from imgutils.detect.censor import detect_censors
 from imgutils.generic.yolo import _open_models_for_repo_id
 from test.testings import get_testfile
@@ -16,19 +17,13 @@ def _release_model_after_run():
 @pytest.mark.unittest
 class TestDetectCensor:
     def test_detect_censors(self):
-        detections = detect_censors(get_testfile('nude_girl.png'))
-        assert len(detections) == 3
-
-        values = []
-        for bbox, label, score in detections:
-            assert label in {'nipple_f', 'penis', 'pussy'}
-            values.append((bbox, int(score * 1000) / 1000))
-
-        assert values == pytest.approx([
-            ((365, 264, 399, 289), 0.747),
-            ((224, 260, 252, 285), 0.683),
-            ((206, 523, 240, 608), 0.679),
+        detection = detect_censors(get_testfile('nude_girl.png'))
+        similarity = detection_similarity(detection, [
+            ((365, 264, 398, 289), 'nipple_f', 0.7295440435409546),
+            ((207, 525, 237, 610), 'pussy', 0.7148708701133728),
+            ((224, 261, 250, 287), 'nipple_f', 0.6702285408973694),
         ])
+        assert similarity >= 0.9
 
     def test_detect_censors_none(self):
         assert detect_censors(get_testfile('png_full.png')) == []

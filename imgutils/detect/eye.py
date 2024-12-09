@@ -22,7 +22,7 @@ _REPO_ID = 'deepghs/anime_eye_detection'
 
 
 def detect_eyes(image: ImageTyping, level: str = 's', version: str = 'v1.0', model_name: Optional[str] = None,
-                conf_threshold: float = 0.3, iou_threshold: float = 0.3) \
+                conf_threshold: float = 0.3, iou_threshold: float = 0.3, **kwargs) \
         -> List[Tuple[Tuple[int, int, int, int], str, float]]:
     """
     Detect human eyes in anime images.
@@ -79,4 +79,5 @@ def detect_eyes(image: ImageTyping, level: str = 's', version: str = 'v1.0', mod
         model_name=model_name or f'eye_detect_{version}_{level}',
         conf_threshold=conf_threshold,
         iou_threshold=iou_threshold,
+        **kwargs,
     )
