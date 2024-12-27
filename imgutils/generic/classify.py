@@ -205,12 +205,24 @@ class ClassifyModel:
         """
         with self._model_lock:
             if model_name not in self._models:
-                self._check_model_name(model_name)
-                self._models[model_name] = open_onnx_model(hf_hub_download(
-                    self.repo_id,
-                    f'{model_name}/model.onnx',
-                    token=self._get_hf_token(),
-                ))
+                # read HF_HUB_OFFLINE in environment variables
+                # when HF_HUB_OFFLINE=1, the model is skipped and the locally cached model is loaded
+                if not os.getenv('HF_HUB_OFFLINE') == "1":
+                    self._check_model_name(model_name)
+                # if there is no local cache model, and HF_HUB_OFFLINE=1, an exception is thrown
+                try:
+                    self._models[model_name] = open_onnx_model(hf_hub_download(
+                        self.repo_id,
+                        f'{model_name}/model.onnx',
+                        token=self._get_hf_token(),
+                    ))
+                except:
+                    if os.getenv('HF_HUB_OFFLINE') == "1":
+                        raise Exception(
+                            "You have turned on environment variables, HF_HUB_OFFLINE=1, but there are no cache files locally, please unset HF_HUB_OFFLINE=1 and enable it after downloading the model")
+                    else:
+                        raise Exception(
+                            "huggingface_hub.errors.LocalEntryNotFoundError: An error happened while trying to locate the file on the Hub and we cannot find the requested files in the local cache. Please check your connection and try again or make sure your Internet connection is on.")
 
         return self._models[model_name]
 
