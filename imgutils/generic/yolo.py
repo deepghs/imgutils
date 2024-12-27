@@ -554,13 +554,12 @@ class YOLOModel:
                         f'{model_name}/model.onnx',
                         token=self._get_hf_token(),
                     ))
-                except:
+                except Exception as e:
                     if os.getenv('HF_HUB_OFFLINE') == "1":
                         raise Exception(
                             "You have turned on environment variables, HF_HUB_OFFLINE=1, but there are no cache files locally, please unset HF_HUB_OFFLINE=1 and enable it after downloading the model")
                     else:
-                        raise Exception(
-                            "huggingface_hub.errors.LocalEntryNotFoundError: An error happened while trying to locate the file on the Hub and we cannot find the requested files in the local cache. Please check your connection and try again or make sure your Internet connection is on.")
+                        raise Exception(e)
                 model_metadata = model.get_modelmeta()
                 if 'imgsz' in model_metadata.custom_metadata_map:
                     max_infer_size = tuple(json.loads(model_metadata.custom_metadata_map['imgsz']))
