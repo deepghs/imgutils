@@ -576,7 +576,6 @@ class YOLOModel:
     def _get_model_type(self, model_name: str):
         with self._model_lock:
             if model_name not in self._model_types:
-
                 hf_fs = get_hf_fs(hf_token=self._get_hf_token())
                 fs_path = hf_fs_path(
                     repo_id=self.repo_id,
