@@ -205,26 +205,32 @@ class ClassifyModel:
         """
         with self._model_lock:
             if model_name not in self._models:
-                # read HF_HUB_OFFLINE in environment variables
-                # when HF_HUB_OFFLINE=1, the model is skipped and the locally cached model is loaded
-                if not os.getenv('HF_HUB_OFFLINE') == "1":
+                # check if HF_HUB_OFFLINE is set to 1
+                hf_hub_offline = os.getenv('HF_HUB_OFFLINE') == "1"
+                # If not in offline mode, check the model name
+                if not hf_hub_offline:
                     self._check_model_name(model_name)
-                # if there is no local cache model, and HF_HUB_OFFLINE=1, an exception is thrown
                 try:
-                    self._models[model_name] = open_onnx_model(hf_hub_download(
+                    # Attempt to load the model from the Hugging Face Hub or local cache
+                    model_path = hf_hub_download(
                         self.repo_id,
                         f'{model_name}/model.onnx',
                         token=self._get_hf_token(),
-                    ))
+                    )
+                    self._models[model_name] = open_onnx_model(model_path)
                 except Exception as e:
-                    if os.getenv('HF_HUB_OFFLINE') == "1":
+                    if hf_hub_offline:
                         raise Exception(
-                            "You have turned on environment variables, HF_HUB_OFFLINE=1, but there are no cache files locally, please unset HF_HUB_OFFLINE=1 and enable it after downloading the model")
+                            "You have set HF_HUB_OFFLINE=1, but the model is not available in the local cache. "
+                            "Please unset HF_HUB_OFFLINE and download the model first."
+                        )
                     else:
-                        raise Exception(e)
+                        raise Exception(f"Failed to load the model: {e}")
 
+                finally:
+                    # Clean up useless variables
+                    del hf_hub_offline
         return self._models[model_name]
-
     def _open_label(self, model_name: str) -> List[str]:
         """
         Load and cache model labels from metadata.
