@@ -26,12 +26,17 @@ _STR_TO_INTERMODE = {
 }
 
 
-def _get_intermode(value: Union[int, str, InterpolationMode]):
+def _get_interpolation_mode(value: Union[int, str, InterpolationMode]):
     if isinstance(value, InterpolationMode):
         return value
     elif isinstance(value, int):
+        if value not in _INT_TO_INTERMODE:
+            raise ValueError(f'Invalid interpolation value - {value!r}.')
         return _INT_TO_INTERMODE[value]
     elif isinstance(value, str):
+        value = value.lower()
+        if value not in _STR_TO_INTERMODE:
+            raise ValueError(f'Invalid interpolation value - {value!r}.')
         return _STR_TO_INTERMODE[value]
     else:
         raise TypeError(f'Unknown type of interpolation mode - {value!r}.')
@@ -52,7 +57,7 @@ def register_torchvision_transform(name: str):
 def _create_resize(size, interpolation=InterpolationMode.BILINEAR, max_size=None, antialias=True):
     return Resize(
         size=size,
-        interpolation=_get_intermode(interpolation),
+        interpolation=_get_interpolation_mode(interpolation),
         max_size=max_size,
         antialias=antialias,
     )
