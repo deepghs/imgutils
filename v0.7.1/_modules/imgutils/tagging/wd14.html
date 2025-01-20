@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.tagging.wd14 &mdash; imgutils 0.7.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -110,19 +110,19 @@
 <span class="sd">    project on Hugging Face.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">onnxruntime</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">from</span> <span class="nn">hbutils.testing.requires.version</span> <span class="kn">import</span> <span class="n">VersionInfo</span>
-<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hbutils.testing.requires.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">VersionInfo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
 
-<span class="kn">from</span> <span class="nn">.format</span> <span class="kn">import</span> <span class="n">remove_underline</span>
-<span class="kn">from</span> <span class="nn">.overlap</span> <span class="kn">import</span> <span class="n">drop_overlap_tags</span>
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">vreplace</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.format</span><span class="w"> </span><span class="kn">import</span> <span class="n">remove_underline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.overlap</span><span class="w"> </span><span class="kn">import</span> <span class="n">drop_overlap_tags</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">vreplace</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
 
 <span class="n">SWIN_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-swinv2-tagger-v2&quot;</span>
 <span class="n">CONV_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-convnext-tagger-v2&quot;</span>
@@ -156,7 +156,7 @@
 <span class="n">_DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;SwinV2_v3&#39;</span>
 
 
-<span class="k">def</span> <span class="nf">_version_support_check</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_version_support_check</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if the current onnxruntime version supports the given model.</span>
 
@@ -172,7 +172,7 @@
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_get_wd14_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_wd14_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load an ONNX model from the Hugging Face Hub.</span>
 
@@ -189,7 +189,7 @@
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_get_wd14_weights</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_wd14_weights</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load the weights for a WD14 model.</span>
 
@@ -206,7 +206,7 @@
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_get_wd14_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">no_underline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_wd14_labels</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">no_underline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get labels for the WD14 model.</span>
 
@@ -230,7 +230,7 @@
     <span class="k">return</span> <span class="n">tag_names</span><span class="p">,</span> <span class="n">rating_indexes</span><span class="p">,</span> <span class="n">general_indexes</span><span class="p">,</span> <span class="n">character_indexes</span>
 
 
-<span class="k">def</span> <span class="nf">_mcut_threshold</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_mcut_threshold</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the Maximum Cut Thresholding (MCut) for multi-label classification.</span>
 
@@ -251,7 +251,7 @@
     <span class="k">return</span> <span class="n">thresh</span>
 
 
-<span class="k">def</span> <span class="nf">_prepare_image_for_tagging</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">target_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_prepare_image_for_tagging</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">target_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Prepare an image for tagging by resizing and padding it.</span>
 
@@ -282,7 +282,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">image_array</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_postprocess_embedding</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_postprocess_embedding</span><span class="p">(</span>
         <span class="n">pred</span><span class="p">,</span> <span class="n">embedding</span><span class="p">,</span>
         <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
         <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span>
@@ -355,7 +355,7 @@
     <span class="p">)</span>
 
 
-<div class="viewcode-block" id="get_wd14_tags"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.get_wd14_tags">[docs]</a><span class="k">def</span> <span class="nf">get_wd14_tags</span><span class="p">(</span>
+<div class="viewcode-block" id="get_wd14_tags"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.get_wd14_tags">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_wd14_tags</span><span class="p">(</span>
         <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span>
         <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
         <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span>
@@ -465,7 +465,7 @@
 <span class="n">_DEFAULT_DENORMALIZER_NAME</span> <span class="o">=</span> <span class="s1">&#39;mnum2_all&#39;</span>
 
 
-<div class="viewcode-block" id="convert_wd14_emb_to_prediction"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.convert_wd14_emb_to_prediction">[docs]</a><span class="k">def</span> <span class="nf">convert_wd14_emb_to_prediction</span><span class="p">(</span>
+<div class="viewcode-block" id="convert_wd14_emb_to_prediction"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.convert_wd14_emb_to_prediction">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">convert_wd14_emb_to_prediction</span><span class="p">(</span>
         <span class="n">emb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
         <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span><span class="p">,</span>
@@ -576,7 +576,7 @@
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_denormalize_model</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_denormalize_model</span><span class="p">(</span>
         <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
         <span class="n">denormalizer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_DENORMALIZER_NAME</span><span class="p">,</span>
 <span class="p">):</span>
@@ -597,7 +597,7 @@
     <span class="p">))</span>
 
 
-<div class="viewcode-block" id="denormalize_wd14_emb"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.denormalize_wd14_emb">[docs]</a><span class="k">def</span> <span class="nf">denormalize_wd14_emb</span><span class="p">(</span>
+<div class="viewcode-block" id="denormalize_wd14_emb"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.denormalize_wd14_emb">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">denormalize_wd14_emb</span><span class="p">(</span>
         <span class="n">emb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
         <span class="n">denormalizer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_DENORMALIZER_NAME</span><span class="p">,</span>
@@ -656,7 +656,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -690,6 +690,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/preprocess/index.html">dev/preprocess</a></dd>
                         <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>

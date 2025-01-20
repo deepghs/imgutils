@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.sd.nai &mdash; imgutils 0.7.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -115,25 +115,25 @@
 <span class="sd">This module is particularly useful for working with AI-generated images and their associated metadata.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">mimetypes</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mimetypes</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">from</span> <span class="nn">PIL.PngImagePlugin</span> <span class="kn">import</span> <span class="n">PngInfo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL.PngImagePlugin</span><span class="w"> </span><span class="kn">import</span> <span class="n">PngInfo</span>
 
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
-<span class="kn">from</span> <span class="nn">..metadata</span> <span class="kn">import</span> <span class="n">read_lsb_metadata</span><span class="p">,</span> <span class="n">write_lsb_metadata</span><span class="p">,</span> <span class="n">LSBReadError</span><span class="p">,</span> <span class="n">read_geninfo_parameters</span><span class="p">,</span> \
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_lsb_metadata</span><span class="p">,</span> <span class="n">write_lsb_metadata</span><span class="p">,</span> <span class="n">LSBReadError</span><span class="p">,</span> <span class="n">read_geninfo_parameters</span><span class="p">,</span> \
     <span class="n">read_geninfo_exif</span><span class="p">,</span> <span class="n">read_geninfo_gif</span><span class="p">,</span> <span class="n">write_geninfo_exif</span><span class="p">,</span> <span class="n">write_geninfo_gif</span>
 
 <span class="n">mimetypes</span><span class="o">.</span><span class="n">add_type</span><span class="p">(</span><span class="s1">&#39;image/webp&#39;</span><span class="p">,</span> <span class="s1">&#39;.webp&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="NAIMetaData"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.NAIMetaData">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">NAIMetaData</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NAIMetaData</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A dataclass representing Novel AI (NAI) metadata.</span>
 
@@ -161,7 +161,7 @@
     <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert the NAIMetadata to a JSON-compatible dictionary.</span>
 
@@ -182,7 +182,7 @@
         <span class="k">return</span> <span class="n">data</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">pnginfo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PngInfo</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pnginfo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PngInfo</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert the NAIMetadata to a PngInfo object.</span>
 
@@ -201,14 +201,14 @@
 <span class="n">NAIMetadata</span> <span class="o">=</span> <span class="n">NAIMetaData</span>
 
 
-<span class="k">class</span> <span class="nc">_InvalidNAIMetaError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_InvalidNAIMetaError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Custom exception raised when NAI metadata is invalid.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span>
 
 
-<span class="k">def</span> <span class="nf">_naimeta_validate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_naimeta_validate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Validate the Novel AI (NAI) metadata.</span>
 
@@ -259,7 +259,7 @@
         <span class="k">raise</span> <span class="n">_InvalidNAIMetaError</span>
 
 
-<span class="k">def</span> <span class="nf">_naimeta_text_validate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_naimeta_text_validate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Validate the Novel AI (NAI) metadata provided as a JSON string.</span>
 
@@ -292,7 +292,7 @@
         <span class="k">raise</span> <span class="n">_InvalidNAIMetaError</span>
 
 
-<span class="k">def</span> <span class="nf">_get_naimeta_raw</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_naimeta_raw</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract raw NAI metadata from an image.</span>
 
@@ -332,7 +332,7 @@
         <span class="k">raise</span> <span class="n">_InvalidNAIMetaError</span>
 
 
-<div class="viewcode-block" id="get_naimeta_from_image"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.get_naimeta_from_image">[docs]</a><span class="k">def</span> <span class="nf">get_naimeta_from_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NAIMetaData</span><span class="p">]:</span>
+<div class="viewcode-block" id="get_naimeta_from_image"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.get_naimeta_from_image">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_naimeta_from_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NAIMetaData</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract and create a NAIMetadata object from an image.</span>
 
@@ -359,7 +359,7 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="add_naimeta_to_image"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.add_naimeta_to_image">[docs]</a><span class="k">def</span> <span class="nf">add_naimeta_to_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<div class="viewcode-block" id="add_naimeta_to_image"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.add_naimeta_to_image">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">add_naimeta_to_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add NAI metadata to an image using LSB (Least Significant Bit) encoding.</span>
 
@@ -374,7 +374,7 @@
     <span class="k">return</span> <span class="n">write_lsb_metadata</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">metadata</span><span class="o">.</span><span class="n">pnginfo</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_save_png_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_png_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save a PNG image with NAI metadata.</span>
 
@@ -389,7 +389,7 @@
     <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">dst_file</span><span class="p">,</span> <span class="n">pnginfo</span><span class="o">=</span><span class="n">metadata</span><span class="o">.</span><span class="n">pnginfo</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_save_exif_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_exif_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save an image with NAI metadata in EXIF format.</span>
 
@@ -404,7 +404,7 @@
     <span class="n">write_geninfo_exif</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">json</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_save_gif_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_gif_with_naimeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save a GIF image with NAI metadata.</span>
 
@@ -428,7 +428,7 @@
 <span class="n">_LSB_ALLOWED_TYPES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;image/png&#39;</span><span class="p">,</span> <span class="s1">&#39;image/tiff&#39;</span><span class="p">}</span>
 
 
-<div class="viewcode-block" id="save_image_with_naimeta"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.save_image_with_naimeta">[docs]</a><span class="k">def</span> <span class="nf">save_image_with_naimeta</span><span class="p">(</span>
+<div class="viewcode-block" id="save_image_with_naimeta"><a class="viewcode-back" href="../../../api_doc/sd/nai.html#imgutils.sd.nai.save_image_with_naimeta">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">save_image_with_naimeta</span><span class="p">(</span>
         <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">NAIMetaData</span><span class="p">,</span>
         <span class="n">add_lsb_meta</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">save_metainfo</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -494,7 +494,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -528,6 +528,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../preprocess/index.html">dev/preprocess</a></dd>
                         <dd><a href="nai.html">dev/denormalize</a></dd>
                         <dd><a href="../../../../../main/index.html">main</a></dd>
                 </dl>

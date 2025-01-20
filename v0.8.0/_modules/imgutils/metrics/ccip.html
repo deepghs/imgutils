@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.metrics.ccip &mdash; imgutils 0.8.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -127,17 +127,17 @@
 <span class="sd">        model repository `deepghs/ccip_onnx &lt;https://huggingface.co/deepghs/ccip_onnx&gt;`_</span>
 <span class="sd">        before performing any manual operations.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
-<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">DBSCAN</span><span class="p">,</span> <span class="n">OPTICS</span>
-<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">DBSCAN</span><span class="p">,</span> <span class="n">OPTICS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm.auto</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">load_images</span><span class="p">,</span> <span class="n">ImageTyping</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">load_images</span><span class="p">,</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;ccip_extract_feature&#39;</span><span class="p">,</span>
@@ -156,12 +156,12 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_normalize</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">0.48145466</span><span class="p">,</span> <span class="mf">0.4578275</span><span class="p">,</span> <span class="mf">0.40821073</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">0.26862954</span><span class="p">,</span> <span class="mf">0.26130258</span><span class="p">,</span> <span class="mf">0.27577711</span><span class="p">)):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_normalize</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">0.48145466</span><span class="p">,</span> <span class="mf">0.4578275</span><span class="p">,</span> <span class="mf">0.40821073</span><span class="p">),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">0.26862954</span><span class="p">,</span> <span class="mf">0.26130258</span><span class="p">,</span> <span class="mf">0.27577711</span><span class="p">)):</span>
     <span class="n">mean</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">mean</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">std</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">data</span> <span class="o">-</span> <span class="n">mean</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span> <span class="o">/</span> <span class="n">std</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_preprocess_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_preprocess_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">):</span>
     <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
     <span class="c1"># noinspection PyTypeChecker</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
@@ -171,7 +171,7 @@
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_feat_model</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_feat_model</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
         <span class="sa">f</span><span class="s1">&#39;deepghs/ccip_onnx&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s1">/model_feat.onnx&#39;</span><span class="p">,</span>
@@ -179,7 +179,7 @@
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_metric_model</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_metric_model</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
         <span class="sa">f</span><span class="s1">&#39;deepghs/ccip_onnx&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s1">/model_metrics.onnx&#39;</span><span class="p">,</span>
@@ -187,13 +187,13 @@
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_metrics</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_metrics</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;deepghs/ccip_onnx&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s1">/metrics.json&#39;</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_open_cluster_metrics</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_cluster_metrics</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;deepghs/ccip_onnx&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s1">/cluster.json&#39;</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
@@ -206,7 +206,7 @@
 <span class="n">_DEFAULT_MODEL_NAMES</span> <span class="o">=</span> <span class="s1">&#39;ccip-caformer-24-randaug-pruned&#39;</span>
 
 
-<div class="viewcode-block" id="ccip_extract_feature"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_extract_feature">[docs]</a><span class="k">def</span> <span class="nf">ccip_extract_feature</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">):</span>
+<div class="viewcode-block" id="ccip_extract_feature"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_extract_feature">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ccip_extract_feature</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts the feature vector of the character from the given anime image.</span>
 
@@ -234,7 +234,7 @@
     <span class="k">return</span> <span class="n">ccip_batch_extract_features</span><span class="p">([</span><span class="n">image</span><span class="p">],</span> <span class="n">size</span><span class="p">,</span> <span class="n">model</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="ccip_batch_extract_features"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_batch_extract_features">[docs]</a><span class="k">def</span> <span class="nf">ccip_batch_extract_features</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">):</span>
+<div class="viewcode-block" id="ccip_batch_extract_features"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_batch_extract_features">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ccip_batch_extract_features</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts the feature vectors of multiple images using the specified model.</span>
 
@@ -268,14 +268,14 @@
 <span class="n">_FeatureOrImage</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">ImageTyping</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_p_feature</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">_FeatureOrImage</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_p_feature</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">_FeatureOrImage</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>  <span class="c1"># if feature</span>
         <span class="k">return</span> <span class="n">x</span>
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># is image or path</span>
         <span class="k">return</span> <span class="n">ccip_extract_feature</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ccip_default_threshold"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_default_threshold">[docs]</a><span class="k">def</span> <span class="nf">ccip_default_threshold</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="ccip_default_threshold"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_default_threshold">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ccip_default_threshold</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieves the default threshold value obtained from model metrics in the Hugging Face model repository.</span>
 
@@ -300,7 +300,7 @@
     <span class="k">return</span> <span class="n">_open_metrics</span><span class="p">(</span><span class="n">model</span><span class="p">)[</span><span class="s1">&#39;threshold&#39;</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="ccip_difference"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_difference">[docs]</a><span class="k">def</span> <span class="nf">ccip_difference</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">_FeatureOrImage</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">_FeatureOrImage</span><span class="p">,</span>
+<div class="viewcode-block" id="ccip_difference"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_difference">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ccip_difference</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">_FeatureOrImage</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">_FeatureOrImage</span><span class="p">,</span>
                     <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates the difference value between two anime characters based on their images or feature vectors.</span>
@@ -343,7 +343,7 @@
     <span class="k">return</span> <span class="n">ccip_batch_differences</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">size</span><span class="p">,</span> <span class="n">model</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="ccip_same"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_same">[docs]</a><span class="k">def</span> <span class="nf">ccip_same</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">_FeatureOrImage</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">_FeatureOrImage</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="ccip_same"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_same">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ccip_same</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">_FeatureOrImage</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">_FeatureOrImage</span><span class="p">,</span> <span class="n">threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
               <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determines whether two given images or feature vectors belong to the same anime character based on the CCIP model.</span>
@@ -392,7 +392,7 @@
     <span class="k">return</span> <span class="n">diff</span> <span class="o">&lt;=</span> <span class="n">threshold</span></div>
 
 
-<div class="viewcode-block" id="ccip_batch_differences"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_batch_differences">[docs]</a><span class="k">def</span> <span class="nf">ccip_batch_differences</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">_FeatureOrImage</span><span class="p">],</span>
+<div class="viewcode-block" id="ccip_batch_differences"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_batch_differences">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ccip_batch_differences</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">_FeatureOrImage</span><span class="p">],</span>
                            <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates the pairwise differences between a given list of images or feature vectors representing anime characters.</span>
@@ -426,7 +426,7 @@
     <span class="k">return</span> <span class="n">output</span></div>
 
 
-<div class="viewcode-block" id="ccip_batch_same"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_batch_same">[docs]</a><span class="k">def</span> <span class="nf">ccip_batch_same</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">_FeatureOrImage</span><span class="p">],</span> <span class="n">threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="ccip_batch_same"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_batch_same">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ccip_batch_same</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">_FeatureOrImage</span><span class="p">],</span> <span class="n">threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                     <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates whether the given list of images or feature vectors representing anime characters are</span>
@@ -469,7 +469,7 @@
 <span class="n">_METHOD_MAPPING</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;optics_best&#39;</span><span class="p">:</span> <span class="s1">&#39;optics&#39;</span><span class="p">}</span>
 
 
-<div class="viewcode-block" id="ccip_default_clustering_params"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_default_clustering_params">[docs]</a><span class="k">def</span> <span class="nf">ccip_default_clustering_params</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">,</span>
+<div class="viewcode-block" id="ccip_default_clustering_params"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_default_clustering_params">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ccip_default_clustering_params</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">,</span>
                                    <span class="n">method</span><span class="p">:</span> <span class="n">CCIPClusterMethodTyping</span> <span class="o">=</span> <span class="s1">&#39;optics&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieves the default configuration for clustering operations.</span>
@@ -519,7 +519,7 @@
         <span class="k">return</span> <span class="n">_info</span><span class="p">[</span><span class="s1">&#39;eps&#39;</span><span class="p">],</span> <span class="n">_info</span><span class="p">[</span><span class="s1">&#39;min_samples&#39;</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="ccip_clustering"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_clustering">[docs]</a><span class="k">def</span> <span class="nf">ccip_clustering</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">_FeatureOrImage</span><span class="p">],</span> <span class="n">method</span><span class="p">:</span> <span class="n">CCIPClusterMethodTyping</span> <span class="o">=</span> <span class="s1">&#39;optics&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="ccip_clustering"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_clustering">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ccip_clustering</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">_FeatureOrImage</span><span class="p">],</span> <span class="n">method</span><span class="p">:</span> <span class="n">CCIPClusterMethodTyping</span> <span class="o">=</span> <span class="s1">&#39;optics&#39;</span><span class="p">,</span>
                     <span class="n">eps</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">min_samples</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                     <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -609,7 +609,7 @@
     <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">_p_feature</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Extract features&#39;</span><span class="p">)]</span>
     <span class="n">batch_diff</span> <span class="o">=</span> <span class="n">ccip_batch_differences</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_metric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_metric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">batch_diff</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
     <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -623,7 +623,7 @@
     <span class="k">return</span> <span class="n">clustering</span><span class="o">.</span><span class="n">labels_</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="ccip_merge"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_merge">[docs]</a><span class="k">def</span> <span class="nf">ccip_merge</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">_FeatureOrImage</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+<div class="viewcode-block" id="ccip_merge"><a class="viewcode-back" href="../../../api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_merge">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ccip_merge</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">_FeatureOrImage</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
                <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">384</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAMES</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Merge multiple feature vectors into a single vector.</span>
@@ -667,7 +667,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -701,6 +701,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/preprocess/index.html">dev/preprocess</a></dd>
                         <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>

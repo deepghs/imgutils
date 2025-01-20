@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.sd.metadata &mdash; imgutils 0.6.3 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
@@ -163,7 +163,7 @@ and <a class="reference download internal" download="" href="../../_downloads/27
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.sd</span> <span class="kn">import</span> <span class="n">get_sdmeta_from_image</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.sd</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_sdmeta_from_image</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sd1</span> <span class="o">=</span> <span class="n">get_sdmeta_from_image</span><span class="p">(</span><span class="s1">&#39;sd_metadata_simple.png&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sd1</span><span class="p">)</span>
@@ -193,8 +193,8 @@ and <a class="reference download internal" download="" href="../../_downloads/27
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.sd</span> <span class="kn">import</span> <span class="n">get_sdmeta_from_image</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.sd</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_sdmeta_from_image</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># get metadata</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sd1</span> <span class="o">=</span> <span class="n">get_sdmeta_from_image</span><span class="p">(</span><span class="s1">&#39;sd_metadata_simple.png&#39;</span><span class="p">)</span>
@@ -265,7 +265,7 @@ of the metadata without calling _sdmeta_text() directly.</p>
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.sd</span> <span class="kn">import</span> <span class="n">parse_sdmeta_from_text</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.sd</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_sdmeta_from_text</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sd1</span> <span class="o">=</span> <span class="n">parse_sdmeta_from_text</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="gp">... </span><span class="s2">(extremely delicate and beautiful), best quality, official art, global illumination, soft shadow, super detailed, Japanese light novel cover, 4K, metal_texture, (striped_background), super detailed background, more detailed, rich detailed, extremely detailed CG unity 8k wallpaper, ((unreal)), sci-fi,(fantasy),(masterpiece),(super delicate), (illustration), (extremely delicate and beautiful), anime coloring,</span>
@@ -321,7 +321,7 @@ metadata reading functions.</p>
 </dd>
 </dl>
 <dl>
-<dt>Example usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.sd</span> <span class="kn">import</span> <span class="n">get_sdmeta_from_image</span>
+<dt>Example usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.sd</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_sdmeta_from_image</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sd_meta</span> <span class="o">=</span> <span class="n">get_sdmeta_from_image</span><span class="p">(</span><span class="s1">&#39;path/to/image.png&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">sd_meta</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prompt: </span><span class="si">{</span><span class="n">sd_meta</span><span class="o">.</span><span class="n">prompt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -365,7 +365,7 @@ saving functions.</p>
 </dd>
 </dl>
 <dl>
-<dt>Example usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.sd</span> <span class="kn">import</span> <span class="n">get_sdmeta_from_image</span><span class="p">,</span> <span class="n">save_image_with_sdmeta</span>
+<dt>Example usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.sd</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_sdmeta_from_image</span><span class="p">,</span> <span class="n">save_image_with_sdmeta</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">input_image</span> <span class="o">=</span> <span class="s1">&#39;path/to/input.png&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_image</span> <span class="o">=</span> <span class="s1">&#39;path/to/output.png&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sd_meta</span> <span class="o">=</span> <span class="n">get_sdmeta_from_image</span><span class="p">(</span><span class="n">input_image</span><span class="p">)</span>
@@ -395,7 +395,7 @@ saving functions.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -429,6 +429,7 @@ saving functions.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../dev/preprocess/api_doc/sd/metadata.html">dev/preprocess</a></dd>
                         <dd><a href="../../../dev/denormalize/api_doc/sd/metadata.html">dev/denormalize</a></dd>
                         <dd><a href="../../../main/api_doc/sd/metadata.html">main</a></dd>
                 </dl>

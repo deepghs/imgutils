@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.generic.enhance &mdash; imgutils 0.8.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -105,17 +105,17 @@
 <span class="sd">Overview:</span>
 <span class="sd">    Generic tools for image enhancement models.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">has_alpha_channel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">has_alpha_channel</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;ImageEnhancer&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="ImageEnhancer"><a class="viewcode-back" href="../../../api_doc/generic/enhance.html#imgutils.generic.enhance.ImageEnhancer">[docs]</a><span class="k">class</span> <span class="nc">ImageEnhancer</span><span class="p">:</span>
+<div class="viewcode-block" id="ImageEnhancer"><a class="viewcode-back" href="../../../api_doc/generic/enhance.html#imgutils.generic.enhance.ImageEnhancer">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ImageEnhancer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enhances images by applying various processing techniques.</span>
 
@@ -134,7 +134,7 @@
 <span class="sd">        None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_process_rgb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rgb_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_rgb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rgb_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Process the RGB channels of an image.</span>
 
@@ -150,7 +150,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>  <span class="c1"># pragma: no cover</span>
 
-    <span class="k">def</span> <span class="nf">_process_alpha_channel_with_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_alpha_channel_with_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Process the alpha channel using a model.</span>
 
@@ -164,7 +164,7 @@
         <span class="n">enhanced_alpha_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_rgb</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">alpha_array</span><span class="p">,</span> <span class="n">alpha_array</span><span class="p">,</span> <span class="n">alpha_array</span><span class="p">]))</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">enhanced_alpha_array</span>
 
-    <span class="k">def</span> <span class="nf">_process_rgba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rgba_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_rgba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rgba_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Process RGBA images.</span>
 
@@ -182,7 +182,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_process_alpha_channel_with_model</span><span class="p">(</span><span class="n">rgba_array</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="o">...</span><span class="p">])[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
         <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ImageEnhancer.process"><a class="viewcode-back" href="../../../api_doc/generic/enhance.html#imgutils.generic.enhance.ImageEnhancer.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageEnhancer.process"><a class="viewcode-back" href="../../../api_doc/generic/enhance.html#imgutils.generic.enhance.ImageEnhancer.process">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Enhances the input image.</span>
 
@@ -212,7 +212,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -246,6 +246,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/preprocess/index.html">dev/preprocess</a></dd>
                         <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>

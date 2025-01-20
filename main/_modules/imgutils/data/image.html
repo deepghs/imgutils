@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.data.image &mdash; imgutils 0.8.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -116,10 +116,10 @@
 <span class="sd">This module is particularly useful for applications that require image preprocessing or manipulation before further processing or analysis.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">PathLike</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">PathLike</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;ImageTyping&#39;</span><span class="p">,</span>
@@ -131,7 +131,7 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_is_readable</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_readable</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if an object is readable (has &#39;read&#39; and &#39;seek&#39; methods).</span>
 
@@ -148,7 +148,7 @@
 <span class="n">MultiImagesTyping</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">ImageTyping</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">ImageTyping</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">ImageTyping</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span>
 
 
-<div class="viewcode-block" id="has_alpha_channel"><a class="viewcode-back" href="../../../api_doc/data/image.html#imgutils.data.image.has_alpha_channel">[docs]</a><span class="k">def</span> <span class="nf">has_alpha_channel</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="has_alpha_channel"><a class="viewcode-back" href="../../../api_doc/data/image.html#imgutils.data.image.has_alpha_channel">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">has_alpha_channel</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine if the given Pillow image object has an alpha channel (transparency)</span>
 
@@ -177,7 +177,7 @@
     <span class="k">return</span> <span class="s1">&#39;transparency&#39;</span> <span class="ow">in</span> <span class="n">image</span><span class="o">.</span><span class="n">info</span></div>
 
 
-<div class="viewcode-block" id="load_image"><a class="viewcode-back" href="../../../api_doc/data/image.html#imgutils.data.image.load_image">[docs]</a><span class="k">def</span> <span class="nf">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="load_image"><a class="viewcode-back" href="../../../api_doc/data/image.html#imgutils.data.image.load_image">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Loads the image from the provided source and applies necessary transformations.</span>
 
@@ -225,7 +225,7 @@
     <span class="k">return</span> <span class="n">image</span></div>
 
 
-<div class="viewcode-block" id="load_images"><a class="viewcode-back" href="../../../api_doc/data/image.html#imgutils.data.image.load_images">[docs]</a><span class="k">def</span> <span class="nf">load_images</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">]:</span>
+<div class="viewcode-block" id="load_images"><a class="viewcode-back" href="../../../api_doc/data/image.html#imgutils.data.image.load_images">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">load_images</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Loads a list of images from the provided sources and applies necessary transformations.</span>
 
@@ -259,7 +259,7 @@
     <span class="k">return</span> <span class="p">[</span><span class="n">load_image</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">force_background</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span></div>
 
 
-<span class="k">def</span> <span class="nf">add_background_for_rgba</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">background</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_background_for_rgba</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">background</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Adds a background color to the RGBA image if it has an alpha channel.</span>
 
@@ -302,7 +302,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -336,6 +336,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/preprocess/index.html">dev/preprocess</a></dd>
                         <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="image.html">main</a></dd>
                 </dl>

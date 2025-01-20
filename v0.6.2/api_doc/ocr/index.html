@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.ocr &mdash; imgutils 0.6.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
@@ -156,7 +156,7 @@
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">detect_text_with_ocr</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">detect_text_with_ocr</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">detect_text_with_ocr</span><span class="p">(</span><span class="s1">&#39;comic.jpg&#39;</span><span class="p">)</span>
 <span class="go">[((742, 485, 809, 511), &#39;text&#39;, 0.9543377610144915),</span>
@@ -206,7 +206,7 @@
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">ocr</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">ocr</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ocr</span><span class="p">(</span><span class="s1">&#39;comic.jpg&#39;</span><span class="p">)</span>
 <span class="go">[((742, 485, 809, 511), &#39;MOB.&#39;, 0.9356705927336156),</span>
@@ -224,7 +224,7 @@ This recognition model has good recognition capabilities for both Chinese and En
 For unsupported text types, its recognition accuracy cannot be guaranteed, resulting in a lower score.
 <strong>If you need recognition for other languages, please use :func:`list_rec_models` to
 view more available recognition models and choose the appropriate one for recognition.</strong></p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">ocr</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">ocr</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># use default recognition model on japanese post</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ocr</span><span class="p">(</span><span class="s1">&#39;post_text.jpg&#39;</span><span class="p">)</span>
@@ -269,7 +269,7 @@ view more available recognition models and choose the appropriate one for recogn
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">list_det_models</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">list_det_models</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">list_det_models</span><span class="p">()</span>
 <span class="go">[&#39;ch_PP-OCRv2_det&#39;,</span>
@@ -302,7 +302,7 @@ view more available recognition models and choose the appropriate one for recogn
 </dd>
 </dl>
 <dl>
-<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.ocr</span> <span class="kn">import</span> <span class="n">list_rec_models</span>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.ocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">list_rec_models</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">list_rec_models</span><span class="p">()</span>
 <span class="go">[&#39;arabic_PP-OCRv3_rec&#39;,</span>
@@ -345,7 +345,7 @@ view more available recognition models and choose the appropriate one for recogn
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -379,6 +379,7 @@ view more available recognition models and choose the appropriate one for recogn
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../dev/preprocess/api_doc/ocr/index.html">dev/preprocess</a></dd>
                         <dd><a href="../../../dev/denormalize/api_doc/ocr/index.html">dev/denormalize</a></dd>
                         <dd><a href="../../../main/api_doc/ocr/index.html">main</a></dd>
                 </dl>

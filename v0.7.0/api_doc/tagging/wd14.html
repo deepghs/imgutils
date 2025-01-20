@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.tagging.wd14 &mdash; imgutils 0.7.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
@@ -173,7 +173,7 @@ project on Hugging Face.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">prediction</span></code>: a 1-dim prediction result of image</p></li>
 </ul>
 <p>You can extract embedding of the given image with the follwing code</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">get_wd14_tags</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.tagging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_wd14_tags</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span> <span class="o">=</span> <span class="n">get_wd14_tags</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;embdding&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span><span class="o">.</span><span class="n">shape</span>
@@ -185,7 +185,7 @@ visual features within large-scale datasets.</p>
 </div>
 <dl>
 <dt>Example:</dt><dd><p>Here are some images for example</p>
-<img alt="../../_images/tagging_demo.plot.py.svg" class="align-center" src="../../_images/tagging_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">get_wd14_tags</span>
+<img alt="../../_images/tagging_demo.plot.py.svg" class="align-center" src="../../_images/tagging_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.tagging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_wd14_tags</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">chars</span> <span class="o">=</span> <span class="n">get_wd14_tags</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span>
@@ -238,8 +238,8 @@ visual features within large-scale datasets.</p>
 <p>Only the embeddings not get normalized can be converted to understandable prediction result.</p>
 </div>
 <dl>
-<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">imgutils.tagging</span> <span class="kn">import</span> <span class="n">get_wd14_tags</span><span class="p">,</span> <span class="n">convert_wd14_emb_to_prediction</span>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.tagging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_wd14_tags</span><span class="p">,</span> <span class="n">convert_wd14_emb_to_prediction</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># extract the feature embedding</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span> <span class="o">=</span> <span class="n">get_wd14_tags</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;embedding&#39;</span><span class="p">)</span>
@@ -268,7 +268,7 @@ visual features within large-scale datasets.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -302,6 +302,7 @@ visual features within large-scale datasets.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../dev/preprocess/api_doc/tagging/wd14.html">dev/preprocess</a></dd>
                         <dd><a href="../../../dev/denormalize/api_doc/tagging/wd14.html">dev/denormalize</a></dd>
                         <dd><a href="../../../main/api_doc/tagging/wd14.html">main</a></dd>
                 </dl>

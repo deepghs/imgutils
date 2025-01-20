@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.pose.format &mdash; imgutils 0.7.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -101,9 +101,9 @@
     
     
   <h1>Source code for imgutils.pose.format</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">IntEnum</span><span class="p">,</span> <span class="n">unique</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntEnum</span><span class="p">,</span> <span class="n">unique</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">OP18_BODY_MIN</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">OP18_BODY_MAX</span> <span class="o">=</span> <span class="mi">17</span>
@@ -120,7 +120,7 @@
 
 
 <div class="viewcode-block" id="OpenPose18"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OpenPose18">[docs]</a><span class="nd">@unique</span>
-<span class="k">class</span> <span class="nc">OpenPose18</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OpenPose18</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Enumeration class representing the OpenPose 18 keypoint indices.</span>
 
@@ -157,7 +157,7 @@
     <span class="n">RIGHT_HEEL</span> <span class="o">=</span> <span class="mi">23</span></div>
 
 
-<div class="viewcode-block" id="OP18KeyPointSet"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet">[docs]</a><span class="k">class</span> <span class="nc">OP18KeyPointSet</span><span class="p">:</span>
+<div class="viewcode-block" id="OP18KeyPointSet"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">OP18KeyPointSet</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing a set of keypoints detected by the OpenPose 18 (OP18) model.</span>
 
@@ -168,40 +168,40 @@
 <span class="sd">    :type all_: np.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="OP18KeyPointSet.__init__"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<div class="viewcode-block" id="OP18KeyPointSet.__init__"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">all_</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">body</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">body</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the body.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_BODY_MIN</span><span class="p">:</span><span class="n">OP18_BODY_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">left_foot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">left_foot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the left foot.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_LEFT_FOOT_MIN</span><span class="p">:</span><span class="n">OP18_LEFT_FOOT_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">right_foot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">right_foot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the right foot.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_RIGHT_FOOT_MIN</span><span class="p">:</span><span class="n">OP18_RIGHT_FOOT_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the face.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_FACE_MIN</span><span class="p">:</span><span class="n">OP18_FACE_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">left_hand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">left_hand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the left hand.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_LEFT_HAND_MIN</span><span class="p">:</span><span class="n">OP18_LEFT_HAND_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">right_hand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">right_hand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the right hand.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_RIGHT_HAND_MIN</span><span class="p">:</span><span class="n">OP18_RIGHT_HAND_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
-<div class="viewcode-block" id="OP18KeyPointSet.__mul__"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__mul__">[docs]</a>    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">):</span>
+<div class="viewcode-block" id="OP18KeyPointSet.__mul__"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__mul__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Multiply the coordinates of all keypoints by a scalar multiplier.</span>
 
@@ -221,7 +221,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid type of multiplier - </span><span class="si">{</span><span class="n">multiplier</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="OP18KeyPointSet.__truediv__"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__truediv__">[docs]</a>    <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">divisor</span><span class="p">):</span>
+<div class="viewcode-block" id="OP18KeyPointSet.__truediv__"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__truediv__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">divisor</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Divide the coordinates of all keypoints by a scalar divisor.</span>
 
@@ -247,7 +247,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -281,6 +281,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/preprocess/index.html">dev/preprocess</a></dd>
                         <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>

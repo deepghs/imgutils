@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.resource.background &mdash; imgutils 0.7.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -111,18 +111,18 @@
 <span class="sd">    .. image:: background_full.plot.py.svg</span>
 <span class="sd">        :align: center</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">from</span> <span class="nn">filelock</span> <span class="kn">import</span> <span class="n">FileLock</span>
-<span class="kn">from</span> <span class="nn">hfutils.index</span> <span class="kn">import</span> <span class="n">hf_tar_file_download</span>
-<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">filelock</span><span class="w"> </span><span class="kn">import</span> <span class="n">FileLock</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_tar_file_download</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
 
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">load_image</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">get_storage_dir</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_storage_dir</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;BackgroundImageSet&#39;</span><span class="p">,</span>
@@ -137,7 +137,7 @@
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_global_df</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_global_df</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load the global dataframe containing information about background images.</span>
 
@@ -152,7 +152,7 @@
 
 
 <span class="nd">@lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_bg_root_dir</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_bg_root_dir</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the root directory for storing background images.</span>
 
@@ -164,8 +164,8 @@
     <span class="k">return</span> <span class="n">root</span>
 
 
-<div class="viewcode-block" id="BackgroundImageSet"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet">[docs]</a><span class="k">class</span> <span class="nc">BackgroundImageSet</span><span class="p">:</span>
-<div class="viewcode-block" id="BackgroundImageSet.__init__"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="BackgroundImageSet"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">BackgroundImageSet</span><span class="p">:</span>
+<div class="viewcode-block" id="BackgroundImageSet.__init__"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">strict_level</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">min_selected</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
                  <span class="n">min_width</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">min_height</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">min_resolution</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -234,7 +234,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No background images selected, please lower your settings.&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">]:</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">)}</span></div>
 
-<div class="viewcode-block" id="BackgroundImageSet.list_image_files"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.list_image_files">[docs]</a>    <span class="k">def</span> <span class="nf">list_image_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="BackgroundImageSet.list_image_files"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.list_image_files">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">list_image_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a list of filenames of background images.</span>
 
@@ -243,7 +243,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="BackgroundImageSet.get_image_file"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.get_image_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_image_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="BackgroundImageSet.get_image_file"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.get_image_file">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_image_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the local file path of a background image by filename.</span>
 
@@ -255,7 +255,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_local_image_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BackgroundImageSet.get_image"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.get_image">[docs]</a>    <span class="k">def</span> <span class="nf">get_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<div class="viewcode-block" id="BackgroundImageSet.get_image"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.get_image">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the PIL Image object of a background image by filename.</span>
 
@@ -267,10 +267,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">load_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image_file</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_random_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_random_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 
-<div class="viewcode-block" id="BackgroundImageSet.random_image_file"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.random_image_file">[docs]</a>    <span class="k">def</span> <span class="nf">random_image_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="BackgroundImageSet.random_image_file"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.random_image_file">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">random_image_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the filename of a randomly selected background image.</span>
 
@@ -279,7 +279,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_image_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_random_filename</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="BackgroundImageSet.random_image"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.random_image">[docs]</a>    <span class="k">def</span> <span class="nf">random_image</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<div class="viewcode-block" id="BackgroundImageSet.random_image"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.BackgroundImageSet.random_image">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">random_image</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the PIL Image object of a randomly selected background image.</span>
 
@@ -288,7 +288,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_random_filename</span><span class="p">())</span></div>
 
-    <span class="k">def</span> <span class="nf">_load_local_image_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_local_image_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normcase</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Background file </span><span class="si">{</span><span class="n">filename</span><span class="si">!r}</span><span class="s1"> not found.&#39;</span><span class="p">)</span>
@@ -309,7 +309,7 @@
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_get_default_set</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_default_set</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the default BackgroundImageSet instance.</span>
 
@@ -319,7 +319,7 @@
     <span class="k">return</span> <span class="n">BackgroundImageSet</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="list_bg_image_files"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.list_bg_image_files">[docs]</a><span class="k">def</span> <span class="nf">list_bg_image_files</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="list_bg_image_files"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.list_bg_image_files">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">list_bg_image_files</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get a list of filenames of background images.</span>
 
@@ -340,7 +340,7 @@
     <span class="k">return</span> <span class="n">_get_default_set</span><span class="p">()</span><span class="o">.</span><span class="n">list_image_files</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="get_bg_image_file"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.get_bg_image_file">[docs]</a><span class="k">def</span> <span class="nf">get_bg_image_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="get_bg_image_file"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.get_bg_image_file">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_bg_image_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the local file path of a background image by filename.</span>
 
@@ -359,7 +359,7 @@
     <span class="k">return</span> <span class="n">_get_default_set</span><span class="p">()</span><span class="o">.</span><span class="n">get_image_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_bg_image"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.get_bg_image">[docs]</a><span class="k">def</span> <span class="nf">get_bg_image</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<div class="viewcode-block" id="get_bg_image"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.get_bg_image">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_bg_image</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the PIL Image object of a background image by filename.</span>
 
@@ -378,7 +378,7 @@
     <span class="k">return</span> <span class="n">_get_default_set</span><span class="p">()</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="random_bg_image_file"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.random_bg_image_file">[docs]</a><span class="k">def</span> <span class="nf">random_bg_image_file</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="random_bg_image_file"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.random_bg_image_file">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">random_bg_image_file</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the filename of a randomly selected background image.</span>
 
@@ -394,7 +394,7 @@
     <span class="k">return</span> <span class="n">_get_default_set</span><span class="p">()</span><span class="o">.</span><span class="n">random_image_file</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="random_bg_image"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.random_bg_image">[docs]</a><span class="k">def</span> <span class="nf">random_bg_image</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<div class="viewcode-block" id="random_bg_image"><a class="viewcode-back" href="../../../api_doc/resource/background.html#imgutils.resource.background.random_bg_image">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">random_bg_image</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the PIL Image object of a randomly selected background image.</span>
 
@@ -418,7 +418,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -452,6 +452,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/preprocess/index.html">dev/preprocess</a></dd>
                         <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>

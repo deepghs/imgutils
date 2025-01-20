@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.detect.booru_yolo &mdash; imgutils 0.7.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -273,16 +273,16 @@
 <span class="sd">           with outstanding mAP scores, though noted to be not completely fair due to training set biases.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span>
-<span class="kn">from</span> <span class="nn">..generic</span> <span class="kn">import</span> <span class="n">yolo_predict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">yolo_predict</span>
 
 <span class="n">_DEFAULT_MODEL</span> <span class="o">=</span> <span class="s1">&#39;yolov8s_aa11&#39;</span>
 <span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/booru_yolo&#39;</span>
 
 
-<div class="viewcode-block" id="detect_with_booru_yolo"><a class="viewcode-back" href="../../../api_doc/detect/booru_yolo.html#imgutils.detect.booru_yolo.detect_with_booru_yolo">[docs]</a><span class="k">def</span> <span class="nf">detect_with_booru_yolo</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL</span><span class="p">,</span>
+<div class="viewcode-block" id="detect_with_booru_yolo"><a class="viewcode-back" href="../../../api_doc/detect/booru_yolo.html#imgutils.detect.booru_yolo.detect_with_booru_yolo">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">detect_with_booru_yolo</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL</span><span class="p">,</span>
                            <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -323,7 +323,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -357,6 +357,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../preprocess/index.html">dev/preprocess</a></dd>
                         <dd><a href="booru_yolo.html">dev/denormalize</a></dd>
                         <dd><a href="../../../../../main/index.html">main</a></dd>
                 </dl>

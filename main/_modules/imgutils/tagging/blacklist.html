@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.tagging.blacklist &mdash; imgutils 0.8.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -105,16 +105,16 @@
 <span class="sd">Overview:</span>
 <span class="sd">    Detect and drop some blacklisted tags, which are listed `here &lt;https://huggingface.co/datasets/alea31415/tag_filtering/blob/main/blacklist_tags.txt&gt;`_.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
 
-<span class="kn">from</span> <span class="nn">.match</span> <span class="kn">import</span> <span class="n">_words_to_matcher</span><span class="p">,</span> <span class="n">_split_to_words</span>
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">ts_lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.match</span><span class="w"> </span><span class="kn">import</span> <span class="n">_words_to_matcher</span><span class="p">,</span> <span class="n">_split_to_words</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">ts_lru_cache</span>
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_load_online_blacklist</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_online_blacklist</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load the online blacklist tags from the specified dataset repository.</span>
 
@@ -130,7 +130,7 @@
 
 
 <span class="nd">@ts_lru_cache</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">_online_blacklist_set</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_online_blacklist_set</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the online blacklist as a set.</span>
 
@@ -143,12 +143,12 @@
     <span class="k">return</span> <span class="n">set_</span>
 
 
-<span class="k">def</span> <span class="nf">_is_blacklisted</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">blacklist_set</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_blacklisted</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">blacklist_set</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="n">_tag_matcher</span> <span class="o">=</span> <span class="n">_words_to_matcher</span><span class="p">(</span><span class="n">_split_to_words</span><span class="p">(</span><span class="n">tag</span><span class="p">))</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">_tag_matcher</span> <span class="o">&amp;</span> <span class="n">blacklist_set</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="is_blacklisted"><a class="viewcode-back" href="../../../api_doc/tagging/blacklist.html#imgutils.tagging.blacklist.is_blacklisted">[docs]</a><span class="k">def</span> <span class="nf">is_blacklisted</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="is_blacklisted"><a class="viewcode-back" href="../../../api_doc/tagging/blacklist.html#imgutils.tagging.blacklist.is_blacklisted">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">is_blacklisted</span><span class="p">(</span><span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if any of the given tags are blacklisted.</span>
 
@@ -172,7 +172,7 @@
     <span class="k">return</span> <span class="n">_is_blacklisted</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">_online_blacklist_set</span><span class="p">())</span></div>
 
 
-<div class="viewcode-block" id="drop_blacklisted_tags"><a class="viewcode-back" href="../../../api_doc/tagging/blacklist.html#imgutils.tagging.blacklist.drop_blacklisted_tags">[docs]</a><span class="k">def</span> <span class="nf">drop_blacklisted_tags</span><span class="p">(</span><span class="n">tags</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+<div class="viewcode-block" id="drop_blacklisted_tags"><a class="viewcode-back" href="../../../api_doc/tagging/blacklist.html#imgutils.tagging.blacklist.drop_blacklisted_tags">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">drop_blacklisted_tags</span><span class="p">(</span><span class="n">tags</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
                           <span class="n">use_presets</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">custom_blacklist</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -221,7 +221,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -255,6 +255,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/preprocess/index.html">dev/preprocess</a></dd>
                         <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="blacklist.html">main</a></dd>
                 </dl>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.sd.metadata &mdash; imgutils 0.8.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -108,20 +108,20 @@
 <span class="sd">    Here are 2 sample images: :download:`sd_metadata_simple.png &lt;sd_metadata_simple.png&gt;`</span>
 <span class="sd">    and :download:`sd_metadata_complex.png &lt;sd_metadata_complex.png&gt;`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">io</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">mimetypes</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">textwrap</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mimetypes</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">from</span> <span class="nn">PIL.PngImagePlugin</span> <span class="kn">import</span> <span class="n">PngInfo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL.PngImagePlugin</span><span class="w"> </span><span class="kn">import</span> <span class="n">PngInfo</span>
 
-<span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
-<span class="kn">from</span> <span class="nn">..metadata</span> <span class="kn">import</span> <span class="n">read_geninfo_parameters</span><span class="p">,</span> <span class="n">read_geninfo_exif</span><span class="p">,</span> <span class="n">write_geninfo_exif</span><span class="p">,</span> <span class="n">write_geninfo_gif</span><span class="p">,</span> \
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_geninfo_parameters</span><span class="p">,</span> <span class="n">read_geninfo_exif</span><span class="p">,</span> <span class="n">write_geninfo_exif</span><span class="p">,</span> <span class="n">write_geninfo_gif</span><span class="p">,</span> \
     <span class="n">read_geninfo_gif</span>
 
 <span class="n">_PARAM_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s*(?P&lt;key&gt;[\w ]+):\s*(?P&lt;value&gt;&quot;(?:</span><span class="se">\\</span><span class="s1">.|[^</span><span class="se">\\</span><span class="s1">&quot;])+&quot;|[^,]*)(?:,|$)&#39;</span><span class="p">)</span>
@@ -139,7 +139,7 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_sdmeta_quote</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_sdmeta_quote</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">x</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
     <span class="k">if</span> <span class="s1">&#39;,&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;:&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -149,7 +149,7 @@
 
 
 <div class="viewcode-block" id="SDMetaData"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.SDMetaData">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">SDMetaData</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SDMetaData</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Store information parsed from the metadata of a PNG image.</span>
 
@@ -165,7 +165,7 @@
     <span class="n">neg_prompt</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">parameters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 
-<div class="viewcode-block" id="SDMetaData.__str__"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.SDMetaData.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SDMetaData.__str__"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.SDMetaData.__str__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a string representation of the metadata.</span>
 
@@ -186,7 +186,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sdmeta_text</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_sdmeta_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sdmeta_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a formatted string representation of the metadata.</span>
 
@@ -222,7 +222,7 @@
             <span class="k">return</span> <span class="n">sio</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the metadata as a formatted string.</span>
 
@@ -246,7 +246,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sdmeta_text</span><span class="p">()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">pnginfo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PngInfo</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pnginfo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PngInfo</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a PngInfo object with the metadata.</span>
 
@@ -277,7 +277,7 @@
         <span class="k">return</span> <span class="n">info</span></div>
 
 
-<span class="k">def</span> <span class="nf">_parse_parameters</span><span class="p">(</span><span class="n">param_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_parameters</span><span class="p">(</span><span class="n">param_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">_PARAM_PATTERN</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">param_text</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -300,7 +300,7 @@
     <span class="k">return</span> <span class="n">params</span>
 
 
-<div class="viewcode-block" id="parse_sdmeta_from_text"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.parse_sdmeta_from_text">[docs]</a><span class="k">def</span> <span class="nf">parse_sdmeta_from_text</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SDMetaData</span><span class="p">:</span>
+<div class="viewcode-block" id="parse_sdmeta_from_text"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.parse_sdmeta_from_text">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">parse_sdmeta_from_text</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SDMetaData</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse metadata information from a string.</span>
 
@@ -372,7 +372,7 @@
     <span class="k">return</span> <span class="n">SDMetaData</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">neg_prompt</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
 
 
-<span class="k">class</span> <span class="nc">_InvalidSDMetaError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_InvalidSDMetaError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Custom exception raised when SD metadata is invalid or not found.</span>
 
@@ -382,7 +382,7 @@
     <span class="k">pass</span>
 
 
-<span class="k">def</span> <span class="nf">_sdtext_validate</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_sdtext_validate</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Validate the given text as SD metadata.</span>
 
@@ -398,7 +398,7 @@
 
 <span class="sd">    :raises _InvalidSDMetaError: If the text is invalid or empty.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">.nai</span> <span class="kn">import</span> <span class="n">_naimeta_text_validate</span><span class="p">,</span> <span class="n">_InvalidNAIMetaError</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.nai</span><span class="w"> </span><span class="kn">import</span> <span class="n">_naimeta_text_validate</span><span class="p">,</span> <span class="n">_InvalidNAIMetaError</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">_naimeta_text_validate</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
@@ -413,7 +413,7 @@
         <span class="k">raise</span> <span class="n">_InvalidSDMetaError</span>
 
 
-<span class="k">def</span> <span class="nf">_get_raw_sdtext</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_raw_sdtext</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract raw SD metadata text from the given image.</span>
 
@@ -447,7 +447,7 @@
         <span class="k">raise</span> <span class="n">_InvalidSDMetaError</span>
 
 
-<div class="viewcode-block" id="get_sdmeta_from_image"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.get_sdmeta_from_image">[docs]</a><span class="k">def</span> <span class="nf">get_sdmeta_from_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SDMetaData</span><span class="p">]:</span>
+<div class="viewcode-block" id="get_sdmeta_from_image"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.get_sdmeta_from_image">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_sdmeta_from_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SDMetaData</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract and parse Stable Diffusion metadata from an image.</span>
 
@@ -486,7 +486,7 @@
         <span class="k">return</span> <span class="n">parse_sdmeta_from_text</span><span class="p">(</span><span class="n">pnginfo_text</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_save_png_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_png_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Internal function to save a PNG image with SD metadata.</span>
 
@@ -498,7 +498,7 @@
     <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">dst_file</span><span class="p">,</span> <span class="n">pnginfo</span><span class="o">=</span><span class="n">metadata</span><span class="o">.</span><span class="n">pnginfo</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_save_exif_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_exif_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Internal function to save an image with SD metadata in EXIF format.</span>
 
@@ -510,7 +510,7 @@
     <span class="n">write_geninfo_exif</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">,</span> <span class="n">metadata</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_save_gif_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_gif_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Internal function to save a GIF image with SD metadata.</span>
 
@@ -530,7 +530,7 @@
 <span class="p">}</span>
 
 
-<div class="viewcode-block" id="save_image_with_sdmeta"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.save_image_with_sdmeta">[docs]</a><span class="k">def</span> <span class="nf">save_image_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="save_image_with_sdmeta"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.save_image_with_sdmeta">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">save_image_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save an image with Stable Diffusion metadata.</span>
 
@@ -578,7 +578,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -612,6 +612,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/preprocess/index.html">dev/preprocess</a></dd>
                         <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>

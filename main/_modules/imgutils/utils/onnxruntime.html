@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>imgutils.utils.onnxruntime &mdash; imgutils 0.8.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
@@ -105,21 +105,21 @@
 <span class="sd">Overview:</span>
 <span class="sd">    Management of onnx models.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">hbutils.system</span> <span class="kn">import</span> <span class="n">pip_install</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hbutils.system</span><span class="w"> </span><span class="kn">import</span> <span class="n">pip_install</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;get_onnx_provider&#39;</span><span class="p">,</span> <span class="s1">&#39;open_onnx_model&#39;</span>
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_ensure_onnxruntime</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_ensure_onnxruntime</span><span class="p">():</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">onnxruntime</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Onnx runtime not installed, preparing to install ...&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s1">&#39;nvidia-smi&#39;</span><span class="p">):</span>
@@ -131,7 +131,7 @@
 
 
 <span class="n">_ensure_onnxruntime</span><span class="p">()</span>
-<span class="kn">from</span> <span class="nn">onnxruntime</span> <span class="kn">import</span> <span class="n">get_available_providers</span><span class="p">,</span> <span class="n">get_all_providers</span><span class="p">,</span> <span class="n">InferenceSession</span><span class="p">,</span> <span class="n">SessionOptions</span><span class="p">,</span> \
+<span class="kn">from</span><span class="w"> </span><span class="nn">onnxruntime</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_available_providers</span><span class="p">,</span> <span class="n">get_all_providers</span><span class="p">,</span> <span class="n">InferenceSession</span><span class="p">,</span> <span class="n">SessionOptions</span><span class="p">,</span> \
     <span class="n">GraphOptimizationLevel</span>
 
 <span class="n">alias</span> <span class="o">=</span> <span class="p">{</span>
@@ -140,7 +140,7 @@
 <span class="p">}</span>
 
 
-<div class="viewcode-block" id="get_onnx_provider"><a class="viewcode-back" href="../../../api_doc/utils/onnxruntime.html#imgutils.utils.onnxruntime.get_onnx_provider">[docs]</a><span class="k">def</span> <span class="nf">get_onnx_provider</span><span class="p">(</span><span class="n">provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="get_onnx_provider"><a class="viewcode-back" href="../../../api_doc/utils/onnxruntime.html#imgutils.utils.onnxruntime.get_onnx_provider">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_onnx_provider</span><span class="p">(</span><span class="n">provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overview:</span>
 <span class="sd">        Get onnx provider.</span>
@@ -166,7 +166,7 @@
                          <span class="sa">f</span><span class="s1">&#39;but unsupported provider </span><span class="si">{</span><span class="n">provider</span><span class="si">!r}</span><span class="s1"> found.&#39;</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_open_onnx_model</span><span class="p">(</span><span class="n">ckpt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_cpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InferenceSession</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_onnx_model</span><span class="p">(</span><span class="n">ckpt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_cpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InferenceSession</span><span class="p">:</span>
     <span class="n">options</span> <span class="o">=</span> <span class="n">SessionOptions</span><span class="p">()</span>
     <span class="n">options</span><span class="o">.</span><span class="n">graph_optimization_level</span> <span class="o">=</span> <span class="n">GraphOptimizationLevel</span><span class="o">.</span><span class="n">ORT_ENABLE_ALL</span>
     <span class="k">if</span> <span class="n">provider</span> <span class="o">==</span> <span class="s2">&quot;CPUExecutionProvider&quot;</span><span class="p">:</span>
@@ -180,7 +180,7 @@
     <span class="k">return</span> <span class="n">InferenceSession</span><span class="p">(</span><span class="n">ckpt</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">providers</span><span class="o">=</span><span class="n">providers</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="open_onnx_model"><a class="viewcode-back" href="../../../api_doc/utils/onnxruntime.html#imgutils.utils.onnxruntime.open_onnx_model">[docs]</a><span class="k">def</span> <span class="nf">open_onnx_model</span><span class="p">(</span><span class="n">ckpt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InferenceSession</span><span class="p">:</span>
+<div class="viewcode-block" id="open_onnx_model"><a class="viewcode-back" href="../../../api_doc/utils/onnxruntime.html#imgutils.utils.onnxruntime.open_onnx_model">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">open_onnx_model</span><span class="p">(</span><span class="n">ckpt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InferenceSession</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Overview:</span>
 <span class="sd">        Open an ONNX model and load its ONNX runtime.</span>
@@ -207,7 +207,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, narugo1992, 7eu7d7.</p>
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
@@ -241,6 +241,7 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
+                        <dd><a href="../../../../dev/preprocess/index.html">dev/preprocess</a></dd>
                         <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="onnxruntime.html">main</a></dd>
                 </dl>
