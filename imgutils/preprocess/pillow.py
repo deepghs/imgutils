@@ -1,7 +1,7 @@
 import copy
 import io
 from textwrap import indent
-from typing import Union, Sequence, Optional, Tuple
+from typing import Union, Optional, Tuple, List
 
 import numpy as np
 from PIL import Image
@@ -60,16 +60,21 @@ class PillowResize:
     # noinspection PyUnresolvedReferences
     def __init__(
             self,
-            size: Union[int, Sequence[int]],
+            size: Union[int, List[int], Tuple[int, ...]],
             interpolation: int = Image.BILINEAR,
             max_size: Optional[int] = None,
             antialias: bool = True
     ):
-        if not isinstance(size, (int, Sequence)):
+        if not isinstance(size, (int, list, tuple)):
             raise TypeError(f"Size should be int or sequence. Got {type(size)}")
-        if isinstance(size, Sequence) and len(size) not in (1, 2):
+        if isinstance(size, (list, tuple)) and len(size) not in (1, 2):
             raise ValueError("If size is a sequence, it should have 1 or 2 values")
+        if max_size is not None and isinstance(size, (list, tuple)) and len(size) != 1:
+            raise ValueError(
+                "max_size is only supported for single int size or sequence of length 1"
+            )
 
+        # noinspection PyTypeChecker
         self.size = size
         self.interpolation = interpolation
         self.max_size = max_size
@@ -77,12 +82,8 @@ class PillowResize:
 
     def _get_resize_size(self, img: Image.Image) -> Tuple[int, int]:
         w, h = img.size
-
-        if isinstance(self.size, int) or (isinstance(self.size, Sequence) and len(self.size) == 1):
+        if isinstance(self.size, int) or (isinstance(self.size, (list, tuple)) and len(self.size) == 1):
             size = self.size if isinstance(self.size, int) else self.size[0]
-            if (w <= h and w == size) or (h <= w and h == size):
-                return w, h
-
             if w < h:
                 ow = size
                 oh = int(size * h / w)
@@ -91,19 +92,14 @@ class PillowResize:
                 ow = int(size * w / h)
 
             if self.max_size is not None:
-                if isinstance(self.size, int) or len(self.size) == 1:
-                    max_size = self.max_size
-                    if max(oh, ow) > max_size:
-                        if oh > ow:
-                            ow = int(max_size * ow / oh)
-                            oh = max_size
-                        else:
-                            oh = int(max_size * oh / ow)
-                            ow = max_size
-                else:
-                    raise ValueError(
-                        "max_size is only supported for single int size or sequence of length 1"
-                    )
+                max_size = self.max_size
+                if max(oh, ow) > max_size:
+                    if oh > ow:
+                        ow = int(max_size * ow / oh)
+                        oh = max_size
+                    else:
+                        oh = int(max_size * oh / ow)
+                        ow = max_size
 
             return ow, oh
         else:
@@ -122,6 +118,8 @@ class PillowResize:
                 return img.resize(size, self.interpolation, reducing_gap=None if self.antialias else 1.0)
             else:
                 return img.resize(size, self.interpolation)
+        else:
+            return img
 
     def __repr__(self) -> str:
         interpolate_str = _PILLOW_TO_STR[self.interpolation]
