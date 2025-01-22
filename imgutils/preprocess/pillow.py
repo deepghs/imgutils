@@ -70,9 +70,7 @@ class PillowResize:
         if isinstance(size, (list, tuple)) and len(size) not in (1, 2):
             raise ValueError("If size is a sequence, it should have 1 or 2 values")
         if max_size is not None and isinstance(size, (list, tuple)) and len(size) != 1:
-            raise ValueError(
-                "max_size is only supported for single int size or sequence of length 1"
-            )
+            raise ValueError("max_size is only supported for single int size or sequence of length 1")
 
         # noinspection PyTypeChecker
         self.size = size

@@ -55,6 +55,8 @@ class TestPreprocessPillow:
             _ = PillowResize(size=())
         with pytest.raises(ValueError):
             _ = PillowResize(size=(1, 1, 4, 5, 1, 4))
+        with pytest.raises(ValueError):
+            _ = PillowResize(size=(224, 384), max_size=512)
 
     def test_resize_invalid_input(self):
         resize = PillowResize(size=640)
