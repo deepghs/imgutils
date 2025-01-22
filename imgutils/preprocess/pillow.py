@@ -190,27 +190,23 @@ def _create_center_crop(size):
 
 
 class PillowToTensor:
-    def __init__(self):
-
-        self.pil_modes = {'L', 'LA', 'P', 'I', 'F', 'RGB', 'YCbCr', 'RGBA', 'CMYK', '1'}
-
     def __call__(self, pic):
         if not isinstance(pic, Image.Image):
             raise TypeError('pic should be PIL Image. Got {}'.format(type(pic)))
 
         if pic.mode == 'I':
             # 32-bit signed integer pixels
-            return np.array(pic, np.int32, copy=True)
+            return np.array(pic, np.int32, copy=True)[None, ...]
         elif pic.mode == 'I;16':
             # 16-bit signed integer pixels
-            return np.array(pic, np.int16, copy=True)
+            return np.array(pic, np.int16, copy=True)[None, ...]
         elif pic.mode == 'F':
             # 32-bit floating point pixels
-            return np.array(pic, np.float32, copy=True)
+            return np.array(pic, np.float32, copy=True)[None, ...]
 
         img = np.array(pic, copy=True)
         if pic.mode == '1':
-            return img.astype(np.float32)
+            return img.astype(np.float32)[None, ...]
         elif pic.mode == 'L':
             img = img.reshape((1,) + img.shape)
             return img.astype(np.float32) / 255
@@ -219,9 +215,7 @@ class PillowToTensor:
             img_a = img[..., 1].reshape((1,) + img.shape[:2])
             return np.concatenate((img_l, img_a), axis=0).astype(np.float32) / 255
         elif pic.mode == 'P':
-            pic = pic.convert('RGB')
-            img = np.array(pic, copy=True)
-            img = img.transpose((2, 0, 1))
+            img = np.array(pic, copy=True)[None, ...]
             return img.astype(np.float32) / 255
         elif pic.mode in ('RGB', 'YCbCr'):
             img = img.transpose((2, 0, 1))
@@ -233,7 +227,7 @@ class PillowToTensor:
             img = img.transpose((2, 0, 1))
             return img.astype(np.float32) / 255
 
-        raise ValueError(f"Unsupported PIL image mode: {pic.mode}")
+        raise ValueError(f"Unsupported PIL image mode: {pic.mode}")  # pragma: no cover
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}()"
