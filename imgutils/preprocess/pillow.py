@@ -142,7 +142,7 @@ class PillowCenterCrop:
         elif isinstance(size, (tuple, list)) and len(size) == 1:
             self.size = (size[0], size[0])
         elif isinstance(size, (tuple, list)) and len(size) == 2:
-            self.size = size
+            self.size = (size[0], size[1])
         else:
             raise ValueError("Please provide only two dimensions (h, w) for size.")
 

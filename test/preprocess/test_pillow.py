@@ -374,3 +374,14 @@ class TestPreprocessPillow:
         pcentercrop = PillowCenterCrop(size=size)
         tcentercrop = CenterCrop(size=size)
         assert image_diff(pcentercrop(image), tcentercrop(image), throw_exception=False) < 1e-3
+
+    @pytest.mark.parametrize(['size', 'repr_text'], [
+        (224, 'PillowCenterCrop(size=(224, 224))'),
+        (384, 'PillowCenterCrop(size=(384, 384))'),
+        ((224,), 'PillowCenterCrop(size=(224, 224))'),
+        ([384], 'PillowCenterCrop(size=(384, 384))'),
+        ((224, 384), 'PillowCenterCrop(size=(224, 384))'),
+        ([224, 284], 'PillowCenterCrop(size=(224, 284))'),
+    ])
+    def test_center_crop_repr(self, size, repr_text):
+        assert repr(PillowCenterCrop(size=size)) == repr_text
