@@ -10,7 +10,7 @@ def _check_torchvision():
                                'Please install it by `pip install dghs-imgutils[torchvision]`.')
 
 
-def _get_interpolation_mode(value: Union[int, str]):
+def _get_interpolation_mode(value):
     from torchvision.transforms import InterpolationMode
     _INT_TO_INTERMODE = {
         0: InterpolationMode.NEAREST,
