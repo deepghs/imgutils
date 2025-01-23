@@ -44,8 +44,9 @@ def _get_interpolation_mode(value: Union[int, str]):
 _TRANS_CREATORS = {}
 
 
-def register_torchvision_transform(name: str):
-    _check_torchvision()
+def _register(name: str, safe: bool = True):
+    if safe:
+        _check_torchvision()
 
     def _fn(func):
         _TRANS_CREATORS[name] = func
@@ -54,7 +55,11 @@ def register_torchvision_transform(name: str):
     return _fn
 
 
-@register_torchvision_transform('resize')
+def register_torchvision_transform(name: str):
+    _register(name, safe=True)
+
+
+@_register('resize', safe=False)
 def _create_resize(size, interpolation='bilinear', max_size=None, antialias=True):
     from torchvision.transforms import Resize
     return Resize(
@@ -65,7 +70,7 @@ def _create_resize(size, interpolation='bilinear', max_size=None, antialias=True
     )
 
 
-@register_torchvision_transform('center_crop')
+@_register('center_crop', safe=False)
 def _create_center_crop(size):
     from torchvision.transforms import CenterCrop
     return CenterCrop(
@@ -73,7 +78,7 @@ def _create_center_crop(size):
     )
 
 
-@register_torchvision_transform('maybe_to_tensor')
+@_register('maybe_to_tensor', safe=False)
 def _create_maybe_to_tensor():
     from torchvision.transforms import ToTensor
     class MaybeToTensor(ToTensor):
@@ -93,13 +98,13 @@ def _create_maybe_to_tensor():
     return MaybeToTensor()
 
 
-@register_torchvision_transform('to_tensor')
+@_register('to_tensor', safe=False)
 def _create_to_tensor():
     from torchvision.transforms import ToTensor
     return ToTensor()
 
 
-@register_torchvision_transform('normalize')
+@_register('normalize', safe=False)
 def _create_normalize(mean, std, inplace=False):
     import torch
     from torchvision.transforms import Normalize

@@ -387,6 +387,7 @@ class TestPreprocessPillow:
     def test_center_crop_repr(self, size, repr_text):
         assert repr(PillowCenterCrop(size=size)) == repr_text
 
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required')
     @pytest.mark.parametrize(*tmatrix({
         'src_image': [
             'png_640.png',

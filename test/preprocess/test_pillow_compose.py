@@ -18,7 +18,6 @@ else:
     _TORCHVISION_AVAILABLE = True
 
 
-@pytest.fixture()
 def torchvision_maybetotensor():
     from torchvision.transforms import ToTensor
     class MaybeToTensor(ToTensor):
@@ -38,19 +37,17 @@ def torchvision_maybetotensor():
     return MaybeToTensor()
 
 
-@pytest.fixture()
-def torchvision_mobilenet(torchvision_maybetotensor):
+def torchvision_mobilenet():
     import torch
     from torchvision.transforms import Compose, Resize, CenterCrop, Normalize, InterpolationMode
     return Compose([
         Resize(size=404, interpolation=InterpolationMode.BICUBIC, max_size=None, antialias=True),
         CenterCrop(size=[384, 384]),
-        torchvision_maybetotensor,
+        torchvision_maybetotensor(),
         Normalize(mean=torch.tensor([0.4850, 0.4560, 0.4060]), std=torch.tensor([0.2290, 0.2240, 0.2250])),
     ])
 
 
-@pytest.fixture()
 def pillow_mobilenet():
     return PillowCompose([
         PillowResize(size=404, interpolation=Image.BICUBIC, max_size=None, antialias=True),
@@ -60,19 +57,17 @@ def pillow_mobilenet():
     ])
 
 
-@pytest.fixture()
-def torchvision_beit(torchvision_maybetotensor):
+def torchvision_beit():
     import torch
     from torchvision.transforms import Compose, Resize, CenterCrop, Normalize, InterpolationMode
     return Compose([
         Resize(size=384, interpolation=InterpolationMode.BICUBIC, max_size=None, antialias=True),
         CenterCrop(size=[384, 384]),
-        torchvision_maybetotensor,
+        torchvision_maybetotensor(),
         Normalize(mean=torch.tensor([0.5000, 0.5000, 0.5000]), std=torch.tensor([0.5000, 0.5000, 0.5000])),
     ])
 
 
-@pytest.fixture()
 def pillow_beit():
     return PillowCompose([
         PillowResize(size=384, interpolation=Image.BICUBIC, max_size=None, antialias=True),
@@ -91,10 +86,10 @@ class TestPreprocessPillowCompose:
             'png_640_m90.png',
         ],
     }))
-    def test_compose_mobilenet(self, src_image, pillow_mobilenet, torchvision_mobilenet):
+    def test_compose_mobilenet(self, src_image):
         image = Image.open(get_testfile(src_image))
-        presult = pillow_mobilenet(image)
-        tresult = torchvision_mobilenet(image)
+        presult = pillow_mobilenet()(image)
+        tresult = torchvision_mobilenet()(image)
         np.testing.assert_array_almost_equal(presult, tresult.numpy())
 
     @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
@@ -104,14 +99,14 @@ class TestPreprocessPillowCompose:
             'png_640_m90.png',
         ],
     }))
-    def test_compose_beit(self, src_image, pillow_beit, torchvision_beit):
+    def test_compose_beit(self, src_image):
         image = Image.open(get_testfile(src_image))
-        presult = pillow_beit(image)
-        tresult = torchvision_beit(image)
+        presult = pillow_beit()(image)
+        tresult = torchvision_beit()(image)
         np.testing.assert_array_almost_equal(presult, tresult.numpy())
 
-    def test_compose_repr(self, pillow_mobilenet, pillow_beit):
-        assert textwrap.dedent(repr(pillow_mobilenet)).strip() == \
+    def test_compose_repr(self):
+        assert textwrap.dedent(repr(pillow_mobilenet())).strip() == \
                textwrap.dedent("""
 PillowCompose(
     PillowResize(size=404, interpolation=bicubic, max_size=None, antialias=True)
@@ -121,7 +116,7 @@ PillowCompose(
 )
             """).strip()
 
-        assert textwrap.dedent(repr(pillow_beit)).strip() == \
+        assert textwrap.dedent(repr(pillow_beit())).strip() == \
                textwrap.dedent("""
 PillowCompose(
     PillowResize(size=384, interpolation=bicubic, max_size=None, antialias=True)
