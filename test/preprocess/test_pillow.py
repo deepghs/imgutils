@@ -596,3 +596,91 @@ class TestPreprocessPillow:
         pnormalize = PillowNormalize(mean=mean, std=std)
         tnormalize = Normalize(mean=mean, std=std)
         np.testing.assert_array_almost_equal(pnormalize(arr.numpy()), tnormalize(arr).numpy())
+
+    @pytest.mark.parametrize(*tmatrix({
+        'src_image': [
+            'png_640.png',
+            'png_640_m90.png',
+        ],
+    }))
+    def test_maybe_normalize_invalid_image(self, src_image):
+        image = Image.open(get_testfile(src_image))
+        pnormalize = PillowNormalize(mean=0.5, std=0.5)
+        with pytest.raises(TypeError):
+            _ = pnormalize(image)
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'src_image': [
+            'png_640.png',
+            'png_640_m90.png',
+        ],
+        'mode': [
+            'I', 'I;16'
+        ],
+        'mean': [
+            (0.4850, 0.4560, 0.4060),
+            (0.5, 0.5, 0.5),
+            (0.0, 0.0, 0.0),
+            (0.4850,),
+            (0.5,),
+            (0.0,),
+        ],
+        'std': [
+            (0.2290, 0.2240, 0.2250),
+            (0.5, 0.5, 0.5),
+            (1.0, 1.0, 1.0),
+            (0.2290,),
+            (0.5,),
+            (1.0,),
+        ]
+    }))
+    def test_maybe_normalize_invalid_non_float(self, src_image, mode, mean, std):
+        from torchvision.transforms import ToTensor
+        image = Image.open(get_testfile(src_image))
+        image = image.convert(mode)
+        assert image.mode == mode
+
+        arr = ToTensor()(image)
+        pnormalize = PillowNormalize(mean=mean, std=std)
+        with pytest.raises(TypeError):
+            _ = pnormalize(arr.numpy())
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'src_image': [
+            'png_640.png',
+            'png_640_m90.png',
+        ],
+        'mode': [
+            'F', '1', 'L', 'P',  # 1dim
+        ],
+        'mean': [
+            (0.4850, 0.4560, 0.4060),
+            (0.5, 0.5, 0.5),
+            (0.0, 0.0, 0.0),
+            (0.4850,),
+            (0.5,),
+            (0.0,),
+        ],
+        'std': [
+            (0.2290, 0.2240, 0.2250),
+            (0.5, 0.5, 0.5),
+            (1.0, 1.0, 1.0),
+            (0.2290,),
+            (0.5,),
+            (1.0,),
+        ]
+    }))
+    def test_maybe_normalize_invalid_CHW(self, src_image, mode, mean, std):
+        from torchvision.transforms import ToTensor
+        image = Image.open(get_testfile(src_image))
+        image = image.convert(mode)
+        assert image.mode == mode
+
+        arr = ToTensor()(image)
+        assert arr.shape[0]
+        arr = arr[0]
+        pnormalize = PillowNormalize(mean=mean, std=std)
+        with pytest.raises(ValueError):
+            _ = pnormalize(arr.numpy())
