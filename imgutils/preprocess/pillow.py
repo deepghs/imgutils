@@ -269,31 +269,22 @@ class PillowNormalize:
     def __call__(self, array):
         if not isinstance(array, np.ndarray):
             raise TypeError('Input should be a numpy.ndarray')
+        if not np.issubdtype(array.dtype, np.floating):
+            raise TypeError(f'Input tensor should ba a float array, but {array.dtype!r} given.')
 
-        if array.dtype != np.float32:
-            array = array.astype(np.float32)
-        if not self.inplace:
-            array = array.copy()
-
-        if array.ndim == 2:
-            if isinstance(self.mean, np.ndarray) or isinstance(self.std, np.ndarray):
-                raise ValueError("Channel-wise mean/std can't be used for single channel data")
-            return self._normalize_single(array)
-        elif array.ndim >= 3:
-            return self._normalize_multi(array)
+        if array.ndim < 3:
+            raise ValueError(f'Expected array to be an array image of size (..., C, H, W). '
+                             f'Got array.shape == {array.shape!r}')
         else:
-            raise ValueError(f"Expected 2D or more dims array, got {array.ndim}D")
-
-    def _normalize_single(self, array):
-        mean = self.mean.reshape(1, 1)
-        std = self.std.reshape(1, 1)
-        array = (array - mean) / std
-        return array
+            if not self.inplace:
+                array = array.copy()
+            return self._normalize_multi(array)
 
     def _normalize_multi(self, array):
         mean = self.mean.reshape(-1, 1, 1)
         std = self.std.reshape(-1, 1, 1)
-        array = (array - mean) / std
+        array -= mean
+        array /= std
         return array
 
     def __repr__(self) -> str:

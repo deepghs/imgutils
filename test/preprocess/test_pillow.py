@@ -6,7 +6,7 @@ from PIL import Image
 from hbutils.testing import tmatrix
 
 from imgutils.preprocess.pillow import PillowResize, _get_pillow_resample, PillowCenterCrop, PillowToTensor, \
-    PillowMaybeToTensor
+    PillowMaybeToTensor, PillowNormalize
 from imgutils.preprocess.torchvision import _get_interpolation_mode
 from test.testings import get_testfile
 
@@ -415,6 +415,7 @@ class TestPreprocessPillow:
     def test_to_tensor_repr(self):
         assert repr(PillowToTensor()) == 'PillowToTensor()'
 
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
     @pytest.mark.parametrize(*tmatrix({
         'src_image': [
             'png_640.png',
@@ -446,3 +447,152 @@ class TestPreprocessPillow:
 
     def test_maybe_to_tensor_repr(self):
         assert repr(PillowMaybeToTensor()) == 'PillowMaybeToTensor()'
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'src_image': [
+            'png_640.png',
+            'png_640_m90.png',
+        ],
+        'mode': [
+            # 'I', 'I;16', 'F', '1', 'L', 'P',  # 1dim
+            # 'LA',  # 2dim
+            'RGB', 'YCbCr',  # 3dim
+            # 'RGBA', 'CMYK',  # 4dim
+        ],
+        'mean': [
+            (0.4850, 0.4560, 0.4060),
+            (0.5, 0.5, 0.5),
+            (0.0, 0.0, 0.0),
+            (0.4850,),
+            (0.5,),
+            (0.0,),
+        ],
+        'std': [
+            (0.2290, 0.2240, 0.2250),
+            (0.5, 0.5, 0.5),
+            (1.0, 1.0, 1.0),
+            (0.2290,),
+            (0.5,),
+            (1.0,),
+        ]
+    }))
+    def test_maybe_normalize_3dim(self, src_image, mode, mean, std):
+        from torchvision.transforms import ToTensor, Normalize
+        image = Image.open(get_testfile(src_image))
+        image = image.convert(mode)
+        assert image.mode == mode
+
+        arr = ToTensor()(image)
+        pnormalize = PillowNormalize(mean=mean, std=std)
+        tnormalize = Normalize(mean=mean, std=std)
+        np.testing.assert_array_almost_equal(pnormalize(arr.numpy()), tnormalize(arr).numpy())
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'src_image': [
+            'png_640.png',
+            'png_640_m90.png',
+        ],
+        'mode': [
+            # 'I', 'I;16', 'F', '1', 'L', 'P',  # 1dim
+            # 'LA',  # 2dim
+            'RGB', 'YCbCr',  # 3dim
+            # 'RGBA', 'CMYK',  # 4dim
+        ],
+        'mean': [
+            (0.4850, 0.4560, 0.4060),
+            (0.5, 0.5, 0.5),
+            (0.0, 0.0, 0.0),
+            (0.4850,),
+            (0.5,),
+            (0.0,),
+        ],
+        'std': [
+            (0.2290, 0.2240, 0.2250),
+            (0.5, 0.5, 0.5),
+            (1.0, 1.0, 1.0),
+            (0.2290,),
+            (0.5,),
+            (1.0,),
+        ]
+    }))
+    def test_maybe_normalize_3dim_upgrade(self, src_image, mode, mean, std):
+        from torchvision.transforms import ToTensor, Normalize
+        image = Image.open(get_testfile(src_image))
+        image = image.convert(mode)
+        assert image.mode == mode
+
+        arr = ToTensor()(image)
+        arr = arr.unsqueeze(0).unsqueeze(0)
+        pnormalize = PillowNormalize(mean=mean, std=std)
+        tnormalize = Normalize(mean=mean, std=std)
+        np.testing.assert_array_almost_equal(pnormalize(arr.numpy()), tnormalize(arr).numpy())
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'src_image': [
+            'png_640.png',
+            'png_640_m90.png',
+        ],
+        'mode': [
+            'F', '1', 'L', 'P',  # 1dim
+            # 'LA',  # 2dim
+            # 'RGB', 'YCbCr',  # 3dim
+            # 'RGBA', 'CMYK',  # 4dim
+        ],
+        'mean': [
+            (0.4850,),
+            (0.5,),
+            (0.0,),
+        ],
+        'std': [
+            (0.2290,),
+            (0.5,),
+            (1.0,),
+        ]
+    }))
+    def test_maybe_normalize_1dim(self, src_image, mode, mean, std):
+        from torchvision.transforms import ToTensor, Normalize
+        image = Image.open(get_testfile(src_image))
+        image = image.convert(mode)
+        assert image.mode == mode
+
+        arr = ToTensor()(image)
+        pnormalize = PillowNormalize(mean=mean, std=std)
+        tnormalize = Normalize(mean=mean, std=std)
+        np.testing.assert_array_almost_equal(pnormalize(arr.numpy()), tnormalize(arr).numpy())
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'src_image': [
+            'png_640.png',
+            'png_640_m90.png',
+        ],
+        'mode': [
+            'F', '1', 'L', 'P',  # 1dim
+            # 'LA',  # 2dim
+            # 'RGB', 'YCbCr',  # 3dim
+            # 'RGBA', 'CMYK',  # 4dim
+        ],
+        'mean': [
+            0.4850,
+            0.5,
+            0.0,
+        ],
+        'std': [
+            0.2290,
+            0.5,
+            1.0,
+        ]
+    }))
+    def test_maybe_normalize_1dim_single_value(self, src_image, mode, mean, std):
+        from torchvision.transforms import ToTensor, Normalize
+        image = Image.open(get_testfile(src_image))
+        image = image.convert(mode)
+        assert image.mode == mode
+
+        arr = ToTensor()(image)
+        pnormalize = PillowNormalize(mean=mean, std=std)
+        tnormalize = Normalize(mean=mean, std=std)
+        np.testing.assert_array_almost_equal(pnormalize(arr.numpy()), tnormalize(arr).numpy())
