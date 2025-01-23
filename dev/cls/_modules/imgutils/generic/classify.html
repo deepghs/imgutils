@@ -321,7 +321,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_open_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_open_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load and cache model labels from metadata.</span>
 
@@ -332,7 +332,7 @@
 <span class="sd">        :type model_name: str</span>
 
 <span class="sd">        :return: List of model labels</span>
-<span class="sd">        :rtype: Dict[str, List[str]]</span>
+<span class="sd">        :rtype: Dict[str, np.ndarray]</span>
 
 <span class="sd">        :raises RuntimeError: If label loading fails</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -345,9 +345,13 @@
                         <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">(),</span>
                 <span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">meta_info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">d_groups</span> <span class="o">=</span> <span class="p">{</span>
                         <span class="o">**</span><span class="p">(</span><span class="n">meta_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;other_labels&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}),</span>
                         <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="n">meta_info</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span>
+                    <span class="p">}</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="n">key</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">d_groups</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
                     <span class="p">}</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
@@ -411,7 +415,8 @@
         <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">input_</span><span class="p">})</span>
         <span class="k">return</span> <span class="n">output</span>
 
-<div class="viewcode-block" id="ClassifyModel.predict_score"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.predict_score">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label_group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<div class="viewcode-block" id="ClassifyModel.predict_score"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.predict_score">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                      <span class="n">label_group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">topk</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Predict the scores for each class using the specified model.</span>
 
@@ -421,6 +426,10 @@
 <span class="sd">        :type image: ImageTyping</span>
 <span class="sd">        :param model_name: The name of the model to use for prediction.</span>
 <span class="sd">        :type model_name: str</span>
+<span class="sd">        :param label_group: Label group for the classification result.</span>
+<span class="sd">        :type label_group: str</span>
+<span class="sd">        :param topk: Top-K result. Default is 20, return all results when None ia assigned.</span>
+<span class="sd">        :type topk: Optional[int]</span>
 
 <span class="sd">        :return: A dictionary mapping class labels to their predicted scores.</span>
 <span class="sd">        :rtype: Dict[str, float]</span>
@@ -429,7 +438,15 @@
 <span class="sd">        :raises RuntimeError: If there&#39;s an error during prediction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_open_label</span><span class="p">(</span><span class="n">model_name</span><span class="p">)[</span><span class="n">label_group</span><span class="p">],</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_label</span><span class="p">(</span><span class="n">model_name</span><span class="p">)[</span><span class="n">label_group</span><span class="p">]</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">topk</span> <span class="ow">and</span> <span class="n">topk</span> <span class="o">&lt;</span> <span class="n">labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="o">-</span><span class="n">topk</span><span class="p">)[</span><span class="o">-</span><span class="n">topk</span><span class="p">:]</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">scores</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;mergesort&#39;</span><span class="p">)]</span>
+            <span class="n">labels</span><span class="p">,</span> <span class="n">scores</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+
+        <span class="c1"># noinspection PyTypeChecker</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">scores</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
         <span class="k">return</span> <span class="n">values</span></div>
 
 <div class="viewcode-block" id="ClassifyModel.predict"><a class="viewcode-back" href="../../../api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.predict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label_group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
@@ -442,6 +459,8 @@
 <span class="sd">        :type image: ImageTyping</span>
 <span class="sd">        :param model_name: The name of the model to use for prediction.</span>
 <span class="sd">        :type model_name: str</span>
+<span class="sd">        :param label_group: Label group for the classification result.</span>
+<span class="sd">        :type label_group: str</span>
 
 <span class="sd">        :return: A tuple containing the predicted class label and its score.</span>
 <span class="sd">        :rtype: Tuple[str, float]</span>
