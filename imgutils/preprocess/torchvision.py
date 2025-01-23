@@ -1,5 +1,8 @@
 import copy
+from functools import wraps
 from typing import Union
+
+from .base import NotParseTarget
 
 
 def _check_torchvision():
@@ -44,7 +47,7 @@ def _get_interpolation_mode(value):
 _TRANS_CREATORS = {}
 
 
-def _register(name: str, safe: bool = True):
+def _register_transform(name: str, safe: bool = True):
     if safe:
         _check_torchvision()
 
@@ -56,10 +59,35 @@ def _register(name: str, safe: bool = True):
 
 
 def register_torchvision_transform(name: str):
-    _register(name, safe=True)
+    _register_transform(name, safe=True)
 
 
-@_register('resize', safe=False)
+_TRANS_PARSERS = {}
+
+
+def _register_parse(name: str, safe: bool = True):
+    if safe:
+        _check_torchvision()
+
+    def _fn(func):
+        @wraps(func)
+        def _new_func(*args, **kwargs):
+            return {
+                'type': name,
+                **func(*args, **kwargs),
+            }
+
+        _TRANS_PARSERS[name] = _new_func
+        return _new_func
+
+    return _fn
+
+
+def register_torchvision_parse(name: str):
+    _register_parse(name, safe=True)
+
+
+@_register_transform('resize', safe=False)
 def _create_resize(size, interpolation='bilinear', max_size=None, antialias=True):
     from torchvision.transforms import Resize
     return Resize(
@@ -70,7 +98,22 @@ def _create_resize(size, interpolation='bilinear', max_size=None, antialias=True
     )
 
 
-@_register('center_crop', safe=False)
+@_register_parse('resize', safe=False)
+def _parse_resize(obj):
+    from torchvision.transforms import Resize
+    if not isinstance(obj, Resize):
+        raise NotParseTarget
+
+    obj: Resize
+    return {
+        'size': obj.size,
+        'interpolation': obj.interpolation.value,
+        'max_size': obj.max_size,
+        'antialias': obj.antialias,
+    }
+
+
+@_register_transform('center_crop', safe=False)
 def _create_center_crop(size):
     from torchvision.transforms import CenterCrop
     return CenterCrop(
@@ -78,7 +121,19 @@ def _create_center_crop(size):
     )
 
 
-@_register('maybe_to_tensor', safe=False)
+@_register_parse('center_crop', safe=False)
+def _parse_center_crop(obj):
+    from torchvision.transforms import CenterCrop
+    if not isinstance(obj, CenterCrop):
+        raise NotParseTarget
+
+    obj: CenterCrop
+    return {
+        'size': obj.size,
+    }
+
+
+@_register_transform('maybe_to_tensor', safe=False)
 def _create_maybe_to_tensor():
     from torchvision.transforms import ToTensor
     class MaybeToTensor(ToTensor):
@@ -98,13 +153,29 @@ def _create_maybe_to_tensor():
     return MaybeToTensor()
 
 
-@_register('to_tensor', safe=False)
+@_register_parse('maybe_to_tensor', safe=False)
+def _parse_maybe_to_tensor(obj):
+    if type(obj).__name__ != 'MaybeToTensor':
+        raise NotParseTarget
+
+    return {}
+
+
+@_register_transform('to_tensor', safe=False)
 def _create_to_tensor():
     from torchvision.transforms import ToTensor
     return ToTensor()
 
 
-@_register('normalize', safe=False)
+@_register_parse('to_tensor', safe=False)
+def _parse_to_tensor(obj):
+    if type(obj).__name__ != 'ToTensor':
+        raise NotParseTarget
+
+    return {}
+
+
+@_register_transform('normalize', safe=False)
 def _create_normalize(mean, std, inplace=False):
     import torch
     from torchvision.transforms import Normalize
@@ -113,6 +184,19 @@ def _create_normalize(mean, std, inplace=False):
         std=torch.tensor(std),
         inplace=inplace,
     )
+
+
+@_register_parse('normalize', safe=False)
+def _parse_normalize(obj):
+    from torchvision.transforms import Normalize
+    if not isinstance(obj, Normalize):
+        raise NotParseTarget
+
+    obj: Normalize
+    return {
+        'mean': obj.mean.tolist(),
+        'std': obj.std.tolist(),
+    }
 
 
 def create_torchvision_transforms(tvalue: Union[list, dict]):
@@ -127,3 +211,22 @@ def create_torchvision_transforms(tvalue: Union[list, dict]):
         return _TRANS_CREATORS[ttype](**tvalue)
     else:
         raise TypeError(f'Unknown type of transforms - {tvalue!r}.')
+
+
+def parse_torchvision_transforms(value):
+    _check_torchvision()
+
+    from torchvision.transforms import Compose
+    if isinstance(value, Compose):
+        return [
+            parse_torchvision_transforms(trans)
+            for trans in value.transforms
+        ]
+    else:
+        for key, _parser in _TRANS_PARSERS.items():
+            try:
+                return _parser(value)
+            except NotParseTarget:
+                pass
+
+        raise TypeError(f'Unknown parse transform - {value!r}.')

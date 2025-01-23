@@ -1,0 +1,2 @@
+class NotParseTarget(Exception):
+    pass

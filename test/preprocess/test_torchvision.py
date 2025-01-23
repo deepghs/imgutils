@@ -4,7 +4,8 @@ import pytest
 from PIL import Image
 from hbutils.testing import tmatrix
 
-from imgutils.preprocess.torchvision import _get_interpolation_mode, create_torchvision_transforms
+from imgutils.preprocess.torchvision import _get_interpolation_mode, create_torchvision_transforms, \
+    parse_torchvision_transforms
 from test.testings import get_testfile
 
 try:
@@ -132,3 +133,58 @@ class TestPreprocessPillow:
     def test_create_transform_non_torchvision(self):
         with pytest.raises(EnvironmentError):
             _ = create_torchvision_transforms([])
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required')
+    def test_parse_torchvision_transforms(self):
+        import torch
+        from torchvision.transforms import Compose, Resize, InterpolationMode, CenterCrop, Normalize, ToTensor
+
+        assert parse_torchvision_transforms(Compose([
+            Resize(size=384, interpolation=InterpolationMode.BICUBIC, max_size=None, antialias=True),
+            CenterCrop(size=[384, 384]),
+            create_torchvision_transforms({'type': 'maybe_to_tensor'}),
+            Normalize(mean=torch.tensor([0.5000, 0.5000, 0.5000]), std=torch.tensor([0.5000, 0.5000, 0.5000])),
+        ])) == [
+                   {'antialias': True,
+                    'interpolation': 'bicubic',
+                    'max_size': None,
+                    'size': 384,
+                    'type': 'resize'},
+                   {'size': [384, 384], 'type': 'center_crop'},
+                   {'type': 'maybe_to_tensor'},
+                   {'mean': [0.5, 0.5, 0.5], 'std': [0.5, 0.5, 0.5], 'type': 'normalize'}
+               ]
+
+        assert parse_torchvision_transforms(Compose([
+            Resize(size=384, interpolation=InterpolationMode.BICUBIC, max_size=None, antialias=True),
+            CenterCrop(size=[384, 384]),
+            ToTensor(),
+            Normalize(mean=torch.tensor([0.5000, 0.5000, 0.5000]), std=torch.tensor([0.5000, 0.5000, 0.5000])),
+        ])) == [
+                   {'antialias': True,
+                    'interpolation': 'bicubic',
+                    'max_size': None,
+                    'size': 384,
+                    'type': 'resize'},
+                   {'size': [384, 384], 'type': 'center_crop'},
+                   {'type': 'to_tensor'},
+                   {'mean': [0.5, 0.5, 0.5], 'std': [0.5, 0.5, 0.5], 'type': 'normalize'}
+               ]
+
+        assert parse_torchvision_transforms(
+            Resize(size=384, interpolation=InterpolationMode.BICUBIC, max_size=None, antialias=True)) \
+               == {'antialias': True,
+                   'interpolation': 'bicubic',
+                   'max_size': None,
+                   'size': 384,
+                   'type': 'resize'}
+        assert parse_torchvision_transforms(CenterCrop(size=[384, 384])) == {'size': [384, 384], 'type': 'center_crop'}
+        assert parse_torchvision_transforms(ToTensor()) == {'type': 'to_tensor'}
+        assert parse_torchvision_transforms(
+            Normalize(mean=torch.tensor([0.5000, 0.5000, 0.5000]), std=torch.tensor([0.5000, 0.5000, 0.5000]))) \
+               == {'mean': [0.5, 0.5, 0.5], 'std': [0.5, 0.5, 0.5], 'type': 'normalize'}
+
+        with pytest.raises(TypeError):
+            _ = parse_torchvision_transforms(None)
+        with pytest.raises(TypeError):
+            _ = parse_torchvision_transforms(23344)
