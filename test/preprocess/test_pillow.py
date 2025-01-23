@@ -5,7 +5,8 @@ import pytest
 from PIL import Image
 from hbutils.testing import tmatrix
 
-from imgutils.preprocess.pillow import PillowResize, _get_pillow_resample, PillowCenterCrop, PillowToTensor
+from imgutils.preprocess.pillow import PillowResize, _get_pillow_resample, PillowCenterCrop, PillowToTensor, \
+    PillowMaybeToTensor
 from imgutils.preprocess.torchvision import _get_interpolation_mode
 from test.testings import get_testfile
 
@@ -412,4 +413,36 @@ class TestPreprocessPillow:
             _ = ptotensor(np.random.randn(3, 384, 384))
 
     def test_to_tensor_repr(self):
-        return repr(PillowToTensor()) == 'PillowToTensor()'
+        assert repr(PillowToTensor()) == 'PillowToTensor()'
+
+    @pytest.mark.parametrize(*tmatrix({
+        'src_image': [
+            'png_640.png',
+            'png_640_m90.png',
+        ],
+        'mode': [
+            'I', 'I;16', 'F',
+            '1', 'L', 'LA', 'P',
+            'RGB', 'YCbCr', 'RGBA', 'CMYK',
+        ]
+    }))
+    def test_maybe_to_tensor(self, src_image, mode):
+        from torchvision.transforms import ToTensor
+        image = Image.open(get_testfile(src_image))
+        image = image.convert(mode)
+        assert image.mode == mode
+        pmaybetotensor = PillowMaybeToTensor()
+        ttotensor = ToTensor()
+        np.testing.assert_array_almost_equal(pmaybetotensor(image), ttotensor(image).numpy())
+
+    @pytest.mark.parametrize(['seed'], [
+        (i,) for i in range(10)
+    ])
+    def test_maybe_to_tensor_numpy(self, seed):
+        np.random.seed(seed)
+        arr = np.random.randn(3, 384, 384)
+        pmaybetotensor = PillowMaybeToTensor()
+        np.testing.assert_array_almost_equal(arr, pmaybetotensor(arr))
+
+    def test_maybe_to_tensor_repr(self):
+        assert repr(PillowMaybeToTensor()) == 'PillowMaybeToTensor()'
