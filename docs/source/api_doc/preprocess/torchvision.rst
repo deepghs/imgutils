@@ -13,17 +13,17 @@ register_torchvision_transform
 
 
 
-create_torchvision_transforms
-------------------------------------------------------------------------
-
-.. autofunction:: create_torchvision_transforms
-
-
-
 register_torchvision_parse
 ------------------------------------------------------------------------
 
 .. autofunction:: register_torchvision_parse
+
+
+
+create_torchvision_transforms
+------------------------------------------------------------------------
+
+.. autofunction:: create_torchvision_transforms
 
 
 

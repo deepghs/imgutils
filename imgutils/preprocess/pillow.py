@@ -285,7 +285,6 @@ class PillowCenterCrop:
         Initialize the PillowCenterCrop instance.
 
         :param size: The target size for cropping.
-        :type size: Union[int, Tuple[int, int], List[int]]
         """
         if isinstance(size, int):
             # noinspection PyTypeChecker
@@ -546,9 +545,7 @@ class PillowNormalize:
     Normalizes an image by subtracting the mean and dividing by the standard deviation.
 
     :param mean: The mean value(s) for normalization.
-    :type mean: np.ndarray
     :param std: The standard deviation value(s) for normalization.
-    :type std: np.ndarray
     :param inplace: If True, perform normalization in-place.
     :type inplace: bool
     """
@@ -703,6 +700,36 @@ def create_pillow_transforms(tvalue: Union[list, dict]):
     :return: A transformation or a composition of transformations.
     :rtype: Union[PillowCompose, Any]
     :raises TypeError: If the input value is not a list or dictionary.
+
+    :example:
+        >>> from imgutils.preprocess import create_pillow_transforms
+        >>>
+        >>> create_pillow_transforms({
+        ...     'type': 'resize',
+        ...     'size': 384,
+        ...     'interpolation': 'bicubic',
+        ... })
+        PillowResize(size=384, interpolation=bicubic, max_size=None, antialias=True)
+        >>> create_pillow_transforms({
+        ...     'type': 'resize',
+        ...     'size': (224, 256),
+        ...     'interpolation': 'bilinear',
+        ... })
+        PillowResize(size=(224, 256), interpolation=bilinear, max_size=None, antialias=True)
+        >>> create_pillow_transforms({'type': 'center_crop', 'size': 224})
+        PillowCenterCrop(size=(224, 224))
+        >>> create_pillow_transforms({'type': 'to_tensor'})
+        PillowToTensor()
+        >>> create_pillow_transforms({'type': 'maybe_to_tensor'})
+        PillowMaybeToTensor()
+        >>> create_pillow_transforms({'type': 'normalize', 'mean': 0.5, 'std': 0.5})
+        PillowNormalize(mean=[0.5], std=[0.5])
+        >>> create_pillow_transforms({
+        ...     'type': 'normalize',
+        ...     'mean': [0.485, 0.456, 0.406],
+        ...     'std': [0.229, 0.224, 0.225],
+        ... })
+        PillowNormalize(mean=[0.485 0.456 0.406], std=[0.229 0.224 0.225])
     """
     if isinstance(tvalue, list):
         return PillowCompose([create_pillow_transforms(titem) for titem in tvalue])
@@ -719,10 +746,58 @@ def parse_pillow_transforms(value):
     Parse transformations into a serializable format.
 
     :param value: The transformation or composition to parse.
-    :type value: Union[PillowCompose, Any]
+    :type value: Any
     :return: A serializable representation of the transformation.
     :rtype: Union[list, dict]
     :raises TypeError: If the transformation cannot be parsed.
+
+    :example:
+        >>> from PIL import Image
+        >>>
+        >>> from imgutils.preprocess import parse_pillow_transforms
+        >>> from imgutils.preprocess.pillow import PillowResize, PillowCenterCrop, PillowMaybeToTensor, PillowToTensor, \
+        ...     PillowNormalize
+        >>>
+        >>> parse_pillow_transforms(PillowResize(
+        ...     size=384,
+        ...     interpolation=Image.BICUBIC,
+        ... ))
+        {'type': 'resize', 'size': 384, 'interpolation': 'bicubic', 'max_size': None, 'antialias': True}
+        >>> parse_pillow_transforms(PillowResize(
+        ...     size=(224, 256),
+        ...     interpolation=Image.BILINEAR,
+        ... ))
+        {'type': 'resize', 'size': (224, 256), 'interpolation': 'bilinear', 'max_size': None, 'antialias': True}
+        >>> parse_pillow_transforms(PillowCenterCrop(size=224))
+        {'type': 'center_crop', 'size': [224, 224]}
+        >>> parse_pillow_transforms(PillowToTensor())
+        {'type': 'to_tensor'}
+        >>> parse_pillow_transforms(PillowMaybeToTensor())
+        {'type': 'maybe_to_tensor'}
+        >>> parse_pillow_transforms(PillowNormalize(mean=0.5, std=0.5))
+        {'type': 'normalize', 'mean': [0.5], 'std': [0.5]}
+        >>> parse_pillow_transforms(PillowNormalize(
+        ...     mean=[0.485, 0.456, 0.406],
+        ...     std=[0.229, 0.224, 0.225],
+        ... ))
+        {'type': 'normalize', 'mean': [0.48500001430511475, 0.4560000002384186, 0.4059999883174896], 'std': [0.2290000021457672, 0.2240000069141388, 0.22499999403953552]}
+        >>> parse_pillow_transforms(PillowCompose([
+        ...     PillowResize(
+        ...         size=384,
+        ...         interpolation=Image.BICUBIC,
+        ...     ),
+        ...     PillowCenterCrop(size=224),
+        ...     PillowMaybeToTensor(),
+        ...     PillowNormalize(mean=0.5, std=0.5),
+        ... ]))
+        [{'antialias': True,
+          'interpolation': 'bicubic',
+          'max_size': None,
+          'size': 384,
+          'type': 'resize'},
+         {'size': [224, 224], 'type': 'center_crop'},
+         {'type': 'maybe_to_tensor'},
+         {'mean': [0.5], 'std': [0.5], 'type': 'normalize'}]
     """
     if isinstance(value, PillowCompose):
         return [parse_pillow_transforms(trans) for trans in value.transforms]

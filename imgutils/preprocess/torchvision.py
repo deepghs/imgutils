@@ -310,8 +310,8 @@ def _parse_normalize(obj):
 
     obj: Normalize
     return {
-        'mean': obj.mean.tolist(),
-        'std': obj.std.tolist(),
+        'mean': obj.mean.tolist() if hasattr(obj.mean, 'tolist') else obj.mean,
+        'std': obj.std.tolist() if hasattr(obj.std, 'tolist') else obj.std,
     }
 
 
@@ -322,6 +322,45 @@ def create_torchvision_transforms(tvalue: Union[list, dict]):
     :param tvalue: Transform configuration as list or dict
     :return: Composed transforms or single transform
     :raises TypeError: If tvalue has unsupported type
+
+    :example:
+        >>> from imgutils.preprocess import create_torchvision_transforms
+        >>>
+        >>> create_torchvision_transforms({
+        ...     'type': 'resize',
+        ...     'size': 384,
+        ...     'interpolation': 'bicubic',
+        ... })
+        Resize(size=384, interpolation=bicubic, max_size=None, antialias=True)
+        >>> create_torchvision_transforms({
+        ...     'type': 'resize',
+        ...     'size': (224, 256),
+        ...     'interpolation': 'bilinear',
+        ... })
+        Resize(size=(224, 256), interpolation=bilinear, max_size=None, antialias=True)
+        >>> create_torchvision_transforms({'type': 'center_crop', 'size': 224})
+        CenterCrop(size=(224, 224))
+        >>> create_torchvision_transforms({'type': 'to_tensor'})
+        ToTensor()
+        >>> create_torchvision_transforms({'type': 'maybe_to_tensor'})
+        MaybeToTensor()
+        >>> create_torchvision_transforms({'type': 'normalize', 'mean': 0.5, 'std': 0.5})
+        Normalize(mean=0.5, std=0.5)
+        >>> create_torchvision_transforms({
+        ...     'type': 'normalize',
+        ...     'mean': [0.485, 0.456, 0.406],
+        ...     'std': [0.229, 0.224, 0.225],
+        ... })
+        Normalize(mean=tensor([0.4850, 0.4560, 0.4060]), std=tensor([0.2290, 0.2240, 0.2250]))
+
+    .. note::
+        Currently the following transforms are supported:
+
+        - `torchvision.transforms.Resize`
+        - `torchvision.transforms.CenterCrop`
+        - `torchvision.transforms.ToTensor`
+        - `timm.data.MaybeToTensor`
+        - `torchvision.transforms.Normalize`
     """
     _check_torchvision()
 
@@ -343,6 +382,53 @@ def parse_torchvision_transforms(value):
     :param value: Transform object to parse
     :return: Transform configuration as list or dict
     :raises TypeError: If transform type is not supported
+
+    :example:
+        >>> from timm.data import MaybeToTensor
+        >>> from torchvision.transforms import Resize, InterpolationMode, CenterCrop, ToTensor, Normalize
+        >>>
+        >>> from imgutils.preprocess import parse_torchvision_transforms
+        >>>
+        >>> parse_torchvision_transforms(Resize(
+        ...     size=384,
+        ...     interpolation=InterpolationMode.BICUBIC,
+        ... ))
+        {'type': 'resize', 'size': 384, 'interpolation': 'bicubic', 'max_size': None, 'antialias': True}
+        >>> parse_torchvision_transforms(Resize(
+        ...     size=(224, 256),
+        ...     interpolation=InterpolationMode.BILINEAR,
+        ... ))
+        {'type': 'resize', 'size': (224, 256), 'interpolation': 'bilinear', 'max_size': None, 'antialias': True}
+        >>> parse_torchvision_transforms(CenterCrop(size=224))
+        {'type': 'center_crop', 'size': (224, 224)}
+        >>> parse_torchvision_transforms(ToTensor())
+        {'type': 'to_tensor'}
+        >>> parse_torchvision_transforms(MaybeToTensor())
+        {'type': 'maybe_to_tensor'}
+        >>> parse_torchvision_transforms(Normalize(mean=0.5, std=0.5))
+        {'type': 'normalize', 'mean': 0.5, 'std': 0.5}
+        >>> parse_torchvision_transforms(Normalize(
+        ...     mean=[0.485, 0.456, 0.406],
+        ...     std=[0.229, 0.224, 0.225],
+        ... ))
+        {'type': 'normalize', 'mean': [0.485, 0.456, 0.406], 'std': [0.229, 0.224, 0.225]}
+        >>> parse_torchvision_transforms(Compose([
+        ...     Resize(
+        ...         size=384,
+        ...         interpolation=Image.BICUBIC,
+        ...     ),
+        ...     CenterCrop(size=224),
+        ...     MaybeToTensor(),
+        ...     Normalize(mean=0.5, std=0.5),
+        ... ]))
+        [{'antialias': True,
+          'interpolation': 'bicubic',
+          'max_size': None,
+          'size': 384,
+          'type': 'resize'},
+         {'size': (224, 224), 'type': 'center_crop'},
+         {'type': 'maybe_to_tensor'},
+         {'mean': 0.5, 'std': 0.5, 'type': 'normalize'}]
     """
     _check_torchvision()
 
