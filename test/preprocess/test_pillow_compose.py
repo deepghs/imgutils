@@ -215,3 +215,13 @@ PillowCompose(
             ptrans(image),
             ttrans(image).numpy(),
         )
+
+
+    def test_create_transform_invalid(self):
+        with pytest.raises(TypeError):
+            _ = create_pillow_transforms(None)
+        with pytest.raises(TypeError):
+            _ = create_pillow_transforms(1)
+        with pytest.raises(TypeError):
+            _ = create_pillow_transforms('str')
+

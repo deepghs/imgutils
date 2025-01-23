@@ -6,7 +6,7 @@ from PIL import Image
 from hbutils.testing import tmatrix
 
 from imgutils.preprocess.pillow import PillowResize, _get_pillow_resample, PillowCenterCrop, PillowToTensor, \
-    PillowMaybeToTensor, PillowNormalize
+    PillowMaybeToTensor, PillowNormalize, create_pillow_transforms
 from imgutils.preprocess.torchvision import _get_interpolation_mode
 from test.testings import get_testfile
 
@@ -405,6 +405,27 @@ class TestPreprocessPillow:
         image = image.convert(mode)
         assert image.mode == mode
         ptotensor = PillowToTensor()
+        ttotensor = ToTensor()
+        np.testing.assert_array_almost_equal(ptotensor(image), ttotensor(image).numpy())
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required')
+    @pytest.mark.parametrize(*tmatrix({
+        'src_image': [
+            'png_640.png',
+            'png_640_m90.png',
+        ],
+        'mode': [
+            'I', 'I;16', 'F',
+            '1', 'L', 'LA', 'P',
+            'RGB', 'YCbCr', 'RGBA', 'CMYK',
+        ]
+    }))
+    def test_to_tensor(self, src_image, mode):
+        from torchvision.transforms import ToTensor
+        image = Image.open(get_testfile(src_image))
+        image = image.convert(mode)
+        assert image.mode == mode
+        ptotensor = create_pillow_transforms({'type': 'to_tensor'})
         ttotensor = ToTensor()
         np.testing.assert_array_almost_equal(ptotensor(image), ttotensor(image).numpy())
 

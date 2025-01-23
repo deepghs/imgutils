@@ -56,6 +56,7 @@ class TestPreprocessPillow:
         with pytest.raises(ValueError):
             _ = _get_interpolation_mode('')
 
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
     def test_get_interpolation_mode_invalid(self):
         with pytest.raises(TypeError):
             _ = _get_interpolation_mode(None)
@@ -117,3 +118,17 @@ class TestPreprocessPillow:
         ttrans = create_torchvision_transforms({'type': 'to_tensor'})
         result = ttrans(image)
         assert tuple(result.shape) == (channels, image.height, image.width)
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    def test_create_transform_invalid(self):
+        with pytest.raises(TypeError):
+            _ = create_torchvision_transforms(None)
+        with pytest.raises(TypeError):
+            _ = create_torchvision_transforms(1)
+        with pytest.raises(TypeError):
+            _ = create_torchvision_transforms('str')
+
+    @skipUnless(not _TORCHVISION_AVAILABLE, 'Non-torchvision required.')
+    def test_create_transform_non_torchvision(self):
+        with pytest.raises(EnvironmentError):
+            _ = create_torchvision_transforms([])
