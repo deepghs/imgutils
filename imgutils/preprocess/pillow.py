@@ -730,6 +730,22 @@ def create_pillow_transforms(tvalue: Union[list, dict]):
         ...     'std': [0.229, 0.224, 0.225],
         ... })
         PillowNormalize(mean=[0.485 0.456 0.406], std=[0.229 0.224 0.225])
+        >>> create_pillow_transforms([
+        ...     {'antialias': True,
+        ...      'interpolation': 'bicubic',
+        ...      'max_size': None,
+        ...      'size': 384,
+        ...      'type': 'resize'},
+        ...     {'size': (224, 224), 'type': 'center_crop'},
+        ...     {'type': 'maybe_to_tensor'},
+        ...     {'mean': 0.5, 'std': 0.5, 'type': 'normalize'}
+        ... ])
+        PillowCompose(
+            PillowResize(size=384, interpolation=bicubic, max_size=None, antialias=True)
+            PillowCenterCrop(size=(224, 224))
+            PillowMaybeToTensor()
+            PillowNormalize(mean=[0.5], std=[0.5])
+        )
     """
     if isinstance(tvalue, list):
         return PillowCompose([create_pillow_transforms(titem) for titem in tvalue])

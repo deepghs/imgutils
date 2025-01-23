@@ -352,6 +352,22 @@ def create_torchvision_transforms(tvalue: Union[list, dict]):
         ...     'std': [0.229, 0.224, 0.225],
         ... })
         Normalize(mean=tensor([0.4850, 0.4560, 0.4060]), std=tensor([0.2290, 0.2240, 0.2250]))
+        >>> create_torchvision_transforms([
+        ...     {'antialias': True,
+        ...      'interpolation': 'bicubic',
+        ...      'max_size': None,
+        ...      'size': 384,
+        ...      'type': 'resize'},
+        ...     {'size': (224, 224), 'type': 'center_crop'},
+        ...     {'type': 'maybe_to_tensor'},
+        ...     {'mean': 0.5, 'std': 0.5, 'type': 'normalize'}
+        ... ])
+        Compose(
+            Resize(size=384, interpolation=bicubic, max_size=None, antialias=True)
+            CenterCrop(size=(224, 224))
+            MaybeToTensor()
+            Normalize(mean=0.5, std=0.5)
+        )
 
     .. note::
         Currently the following transforms are supported:
