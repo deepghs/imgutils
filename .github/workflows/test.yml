@@ -6,7 +6,7 @@ on:
 
 jobs:
   unittest:
-    name: Code test
+    name: Test
     runs-on: ${{ matrix.os }}
     if: ${{ !contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'test skip') }}
     strategy:
@@ -22,6 +22,14 @@ jobs:
           - '3.10'
           - '3.11'
           - '3.12'
+        install:
+          - 'full'
+          - 'simple'
+        exclude:
+          - os: 'windows-latest'
+            install: 'simple'
+          - os: 'macos-latest'
+            install: 'simple'
 
     steps:
       - name: Get system version for Linux
@@ -86,8 +94,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install --upgrade flake8 setuptools wheel twine
           pip install -r requirements.txt
-          pip install -r requirements-model.txt
           pip install -r requirements-test.txt
+      - name: Install full dependencies
+        shell: bash
+        if: ${{ matrix.install == 'full' }}
+        run: |
+          pip install -r requirements-model.txt
           pip install -r requirements-torchvision.txt
       - name: Test the basic environment
         shell: bash
