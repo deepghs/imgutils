@@ -59,7 +59,7 @@ def _register_transform(name: str, safe: bool = True):
 
 
 def register_torchvision_transform(name: str):
-    _register_transform(name, safe=True)
+    return _register_transform(name, safe=True)
 
 
 _TRANS_PARSERS = {}
@@ -84,7 +84,7 @@ def _register_parse(name: str, safe: bool = True):
 
 
 def register_torchvision_parse(name: str):
-    _register_parse(name, safe=True)
+    return _register_parse(name, safe=True)
 
 
 @_register_transform('resize', safe=False)
