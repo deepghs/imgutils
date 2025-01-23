@@ -6,7 +6,7 @@ from PIL import Image
 from hbutils.testing import tmatrix
 
 from imgutils.preprocess.pillow import PillowResize, _get_pillow_resample, PillowCenterCrop, PillowToTensor, \
-    PillowMaybeToTensor, PillowNormalize, create_pillow_transforms
+    PillowMaybeToTensor, PillowNormalize, create_pillow_transforms, parse_pillow_transforms, PillowCompose
 from imgutils.preprocess.torchvision import _get_interpolation_mode
 from test.testings import get_testfile
 
@@ -816,3 +816,54 @@ class TestPreprocessPillow:
     def test_normalize_repr(self, mean, std, repr_text):
         pnormalize = PillowNormalize(mean, std)
         assert repr(pnormalize) == repr_text
+
+    def test_parse_pillow_transforms(self):
+        assert parse_pillow_transforms(PillowCompose([
+            PillowResize(size=384, interpolation=Image.BICUBIC, max_size=None, antialias=True),
+            PillowCenterCrop(size=[384, 384]),
+            PillowMaybeToTensor(),
+            PillowNormalize(mean=[0.5000, 0.5000, 0.5000], std=[0.5000, 0.5000, 0.5000]),
+        ])) == [
+                   {'antialias': True,
+                    'interpolation': 'bicubic',
+                    'max_size': None,
+                    'size': 384,
+                    'type': 'resize'},
+                   {'size': [384, 384], 'type': 'center_crop'},
+                   {'type': 'maybe_to_tensor'},
+                   {'mean': [0.5, 0.5, 0.5], 'std': [0.5, 0.5, 0.5], 'type': 'normalize'}
+               ]
+
+        assert parse_pillow_transforms(PillowCompose([
+            PillowResize(size=384, interpolation=Image.BICUBIC, max_size=None, antialias=True),
+            PillowCenterCrop(size=[384, 384]),
+            PillowToTensor(),
+            PillowNormalize(mean=[0.5000, 0.5000, 0.5000], std=[0.5000, 0.5000, 0.5000]),
+        ])) == [
+                   {'antialias': True,
+                    'interpolation': 'bicubic',
+                    'max_size': None,
+                    'size': 384,
+                    'type': 'resize'},
+                   {'size': [384, 384], 'type': 'center_crop'},
+                   {'type': 'to_tensor'},
+                   {'mean': [0.5, 0.5, 0.5], 'std': [0.5, 0.5, 0.5], 'type': 'normalize'}
+               ]
+
+        assert parse_pillow_transforms(
+            PillowResize(size=384, interpolation=Image.BICUBIC, max_size=None, antialias=True)) \
+               == {'antialias': True,
+                   'interpolation': 'bicubic',
+                   'max_size': None,
+                   'size': 384,
+                   'type': 'resize'}
+        assert parse_pillow_transforms(PillowCenterCrop(size=[384, 384])) == {'size': [384, 384], 'type': 'center_crop'}
+        assert parse_pillow_transforms(PillowToTensor()) == {'type': 'to_tensor'}
+        assert parse_pillow_transforms(
+            PillowNormalize(mean=[0.5000, 0.5000, 0.5000], std=[0.5000, 0.5000, 0.5000])) \
+               == {'mean': [0.5, 0.5, 0.5], 'std': [0.5, 0.5, 0.5], 'type': 'normalize'}
+
+        with pytest.raises(TypeError):
+            _ = parse_pillow_transforms(None)
+        with pytest.raises(TypeError):
+            _ = parse_pillow_transforms(23344)

@@ -7,8 +7,8 @@ from PIL import Image
 from hbutils.testing import tmatrix
 
 from imgutils.preprocess.pillow import PillowNormalize, PillowCompose, PillowResize, PillowMaybeToTensor, \
-    PillowCenterCrop, create_pillow_transforms
-from imgutils.preprocess.torchvision import create_torchvision_transforms
+    PillowCenterCrop, create_pillow_transforms, parse_pillow_transforms
+from imgutils.preprocess.torchvision import create_torchvision_transforms, parse_torchvision_transforms
 from test.testings import get_testfile
 
 try:
@@ -216,7 +216,6 @@ PillowCompose(
             ttrans(image).numpy(),
         )
 
-
     def test_create_transform_invalid(self):
         with pytest.raises(TypeError):
             _ = create_pillow_transforms(None)
@@ -225,3 +224,52 @@ PillowCompose(
         with pytest.raises(TypeError):
             _ = create_pillow_transforms('str')
 
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'src_image': [
+            'png_640.png',
+            'png_640_m90.png',
+        ],
+        'meta_name': [
+            'mobilenetv4_conv_large.e600_r384_in1k',
+            'caformer_s36.sail_in1k_384',
+            'beit_base_patch16_384.in22k_ft_in22k_in1k',
+            'resnet101d.ra2_in1k',
+        ]
+    }))
+    def test_compose_parse_and_create_alignment_p_t(self, src_image, meta_name, meta_collect):
+        image = Image.open(get_testfile(src_image))
+        meta = meta_collect[meta_name]
+
+        ptrans = create_pillow_transforms(meta)
+        parsed_meta = parse_pillow_transforms(ptrans)
+        ttrans = create_torchvision_transforms(parsed_meta)
+        np.testing.assert_array_almost_equal(
+            ptrans(image),
+            ttrans(image).numpy(),
+        )
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'src_image': [
+            'png_640.png',
+            'png_640_m90.png',
+        ],
+        'meta_name': [
+            'mobilenetv4_conv_large.e600_r384_in1k',
+            'caformer_s36.sail_in1k_384',
+            'beit_base_patch16_384.in22k_ft_in22k_in1k',
+            'resnet101d.ra2_in1k',
+        ]
+    }))
+    def test_compose_parse_and_create_alignment_t_p(self, src_image, meta_name, meta_collect):
+        image = Image.open(get_testfile(src_image))
+        meta = meta_collect[meta_name]
+
+        ttrans = create_torchvision_transforms(meta)
+        parsed_meta = parse_torchvision_transforms(ttrans)
+        ptrans = create_pillow_transforms(parsed_meta)
+        np.testing.assert_array_almost_equal(
+            ptrans(image),
+            ttrans(image).numpy(),
+        )

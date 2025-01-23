@@ -1,10 +1,13 @@
 import copy
 import io
+from functools import wraps
 from textwrap import indent
 from typing import Union, Optional, Tuple, List
 
 import numpy as np
 from PIL import Image
+
+from .base import NotParseTarget
 
 # noinspection PyUnresolvedReferences
 _INT_TO_PILLOW = {
@@ -52,6 +55,24 @@ def register_pillow_transform(name: str):
     def _fn(func):
         _PTRANS_CREATORS[name] = func
         return func
+
+    return _fn
+
+
+_PTRANS_PARSERS = {}
+
+
+def register_pillow_parse(name: str):
+    def _fn(func):
+        @wraps(func)
+        def _new_func(*args, **kwargs):
+            return {
+                'type': name,
+                **func(*args, **kwargs),
+            }
+
+        _PTRANS_PARSERS[name] = _new_func
+        return _new_func
 
     return _fn
 
@@ -135,6 +156,19 @@ def _create_resize(size, interpolation='bilinear', max_size=None, antialias=True
     )
 
 
+@register_pillow_parse('resize')
+def _parse_resize(obj: PillowResize):
+    if not isinstance(obj, PillowResize):
+        raise NotParseTarget
+
+    return {
+        'size': obj.size,
+        'interpolation': _PILLOW_TO_STR[obj.interpolation],
+        'max_size': obj.max_size,
+        'antialias': obj.antialias,
+    }
+
+
 class PillowCenterCrop:
     def __init__(self, size):
         if isinstance(size, int):
@@ -189,6 +223,16 @@ def _create_center_crop(size):
     )
 
 
+@register_pillow_parse('center_crop')
+def _parse_center_crop(obj: PillowCenterCrop):
+    if not isinstance(obj, PillowCenterCrop):
+        raise NotParseTarget
+
+    return {
+        'size': list(obj.size),
+    }
+
+
 class PillowToTensor:
     def __call__(self, pic):
         if not isinstance(pic, Image.Image):
@@ -238,6 +282,14 @@ def _create_to_tensor():
     return PillowToTensor()
 
 
+@register_pillow_parse('to_tensor')
+def _parse_to_tensor(obj: PillowToTensor):
+    if not isinstance(obj, PillowToTensor):
+        raise NotParseTarget
+
+    return {}
+
+
 class PillowMaybeToTensor:
     def __call__(self, image):
         if isinstance(image, np.ndarray):
@@ -252,6 +304,14 @@ class PillowMaybeToTensor:
 @register_pillow_transform('maybe_to_tensor')
 def _create_maybe_to_tensor():
     return PillowMaybeToTensor()
+
+
+@register_pillow_parse('maybe_to_tensor')
+def _parse_maybe_to_tensor(obj: PillowMaybeToTensor):
+    if not isinstance(obj, PillowMaybeToTensor):
+        raise NotParseTarget
+
+    return {}
 
 
 class PillowNormalize:
@@ -300,6 +360,17 @@ def _create_normalize(mean, std, inplace=False):
     )
 
 
+@register_pillow_parse('normalize')
+def _parse_normalize(obj: PillowNormalize):
+    if not isinstance(obj, PillowNormalize):
+        raise NotParseTarget
+
+    return {
+        'mean': obj.mean.tolist(),
+        'std': obj.std.tolist(),
+    }
+
+
 class PillowCompose:
     def __init__(self, transforms):
         self.transforms = transforms
@@ -328,3 +399,16 @@ def create_pillow_transforms(tvalue: Union[list, dict]):
         return _PTRANS_CREATORS[ttype](**tvalue)
     else:
         raise TypeError(f'Unknown type of transforms - {tvalue!r}.')
+
+
+def parse_pillow_transforms(value):
+    if isinstance(value, PillowCompose):
+        return [parse_pillow_transforms(trans) for trans in value.transforms]
+    else:
+        for key, parser in _PTRANS_PARSERS.items():
+            try:
+                return parser(value)
+            except NotParseTarget:
+                pass
+
+        raise TypeError(f'Unknown parse transform - {value!r}.')
