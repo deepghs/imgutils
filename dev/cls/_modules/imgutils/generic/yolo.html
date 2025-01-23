@@ -1,0 +1,1016 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.generic.yolo &mdash; imgutils 0.8.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=6a14807c"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.generic.yolo</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.generic.yolo</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functionality for YOLO object detection using ONNX models from Hugging Face.</span>
+
+<span class="sd">It includes utilities for preprocessing images, performing object detection, and post-processing</span>
+<span class="sd">the results. The main components are:</span>
+
+<span class="sd">1. YOLOModel class: Manages YOLO models from a Hugging Face repository.</span>
+<span class="sd">2. Helper functions for coordinate conversion, non-maximum suppression, and image processing.</span>
+<span class="sd">3. A high-level function &#39;yolo_predict&#39; for easy object detection on images.</span>
+
+<span class="sd">The module supports various image input types and allows customization of confidence and IoU thresholds.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lock</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hbutils.color</span><span class="w"> </span><span class="kn">import</span> <span class="n">rnd_colors</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.operate</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_hf_client</span><span class="p">,</span> <span class="n">get_hf_fs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_repo_url</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_fs_path</span><span class="p">,</span> <span class="n">hf_normpath</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">HfFileSystem</span><span class="p">,</span> <span class="n">hf_hub_download</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">rgb_encode</span><span class="p">,</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">gradio</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gr</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
+    <span class="n">gr</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;YOLOModel&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;yolo_predict&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_gradio_env</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if the Gradio library is installed and available.</span>
+
+<span class="sd">    :raises EnvironmentError: If Gradio is not installed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">gr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gradio required for launching webui-based demo.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                               <span class="sa">f</span><span class="s1">&#39;Please install it with `pip install dghs-imgutils[demo]`.&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_v_fix</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Round and convert a float value to an integer.</span>
+
+<span class="sd">    :param v: The float value to be rounded and converted.</span>
+<span class="sd">    :type v: float</span>
+<span class="sd">    :return: The rounded integer value.</span>
+<span class="sd">    :rtype: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_bbox_fix</span><span class="p">(</span><span class="n">bbox</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fix the bounding box coordinates by rounding them to integers.</span>
+
+<span class="sd">    :param bbox: The bounding box coordinates.</span>
+<span class="sd">    :type bbox: tuple</span>
+<span class="sd">    :return: A tuple of fixed (rounded to integer) bounding box coordinates.</span>
+<span class="sd">    :rtype: tuple</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">_v_fix</span><span class="p">,</span> <span class="n">bbox</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_yolo_xywh2xyxy</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert bounding box coordinates from (x, y, width, height) format to (x1, y1, x2, y2) format.</span>
+
+<span class="sd">    This function is adapted from YOLOv8 and transforms the center-based representation</span>
+<span class="sd">    to a corner-based representation of bounding boxes.</span>
+
+<span class="sd">    :param x: Input bounding box coordinates in (x, y, width, height) format.</span>
+<span class="sd">    :type x: np.ndarray</span>
+
+<span class="sd">    :return: Bounding box coordinates in (x1, y1, x2, y2) format.</span>
+<span class="sd">    :rtype: np.ndarray</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; boxes = np.array([[10, 10, 20, 20]])</span>
+<span class="sd">    &gt;&gt;&gt; _yolo_xywh2xyxy(boxes)</span>
+<span class="sd">    array([[  0.,   0.,  20.,  20.]])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># top left x</span>
+    <span class="n">y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># top left y</span>
+    <span class="n">y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># bottom right x</span>
+    <span class="n">y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># bottom right y</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_yolo_nms</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform Non-Maximum Suppression (NMS) on bounding boxes.</span>
+
+<span class="sd">    This function applies NMS to remove overlapping bounding boxes, keeping only the most confident detections.</span>
+
+<span class="sd">    :param boxes: Array of bounding boxes, each in the format [xmin, ymin, xmax, ymax].</span>
+<span class="sd">    :type boxes: np.ndarray</span>
+<span class="sd">    :param scores: Array of confidence scores for each bounding box.</span>
+<span class="sd">    :type scores: np.ndarray</span>
+<span class="sd">    :param iou_threshold: IoU threshold for considering boxes as overlapping. Default is 0.7.</span>
+<span class="sd">    :type iou_threshold: float</span>
+
+<span class="sd">    :return: List of indices of the boxes to keep after NMS.</span>
+<span class="sd">    :rtype: List[int]</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; boxes = np.array([[0, 0, 10, 10], [1, 1, 11, 11], [20, 20, 30, 30]])</span>
+<span class="sd">    &gt;&gt;&gt; scores = np.array([0.9, 0.8, 0.7])</span>
+<span class="sd">    &gt;&gt;&gt; _yolo_nms(boxes, scores, 0.5)</span>
+<span class="sd">    [0, 2]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">boxes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="n">boxes</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">boxes</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="n">boxes</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">areas</span> <span class="o">=</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">order</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">keep</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">order</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">keep</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">xx1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">x1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x1</span><span class="p">[</span><span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])</span>
+        <span class="n">yy1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">y1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y1</span><span class="p">[</span><span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])</span>
+        <span class="n">xx2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">x2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x2</span><span class="p">[</span><span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])</span>
+        <span class="n">yy2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">y2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y2</span><span class="p">[</span><span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">xx2</span> <span class="o">-</span> <span class="n">xx1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">yy2</span> <span class="o">-</span> <span class="n">yy1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">inter</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">h</span>
+        <span class="n">iou</span> <span class="o">=</span> <span class="n">inter</span> <span class="o">/</span> <span class="p">(</span><span class="n">areas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">areas</span><span class="p">[</span><span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span> <span class="o">-</span> <span class="n">inter</span><span class="p">)</span>
+
+        <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">iou</span> <span class="o">&lt;=</span> <span class="n">iou_threshold</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="n">inds</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">keep</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1216</span><span class="p">,</span>
+                      <span class="n">allow_dynamic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">align</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Preprocess an input image for inference.</span>
+
+<span class="sd">    This function resizes the image while maintaining its aspect ratio, and ensures</span>
+<span class="sd">    the dimensions are multiples of &#39;align&#39;.</span>
+
+<span class="sd">    :param image: Input image to be preprocessed.</span>
+<span class="sd">    :type image: Image.Image</span>
+<span class="sd">    :param max_infer_size: Maximum size (width or height) of the processed image. Default is 1216.</span>
+<span class="sd">    :type max_infer_size: int</span>
+<span class="sd">    :param allow_dynamic: If True, allows dynamic resizing of the image while maintaining aspect ratio. Default is False.</span>
+<span class="sd">    :type allow_dynamic: bool</span>
+<span class="sd">    :param align: Value to align the image dimensions to. Default is 32.</span>
+<span class="sd">    :type align: int</span>
+
+<span class="sd">    :return: A tuple containing:</span>
+<span class="sd">        - The preprocessed image</span>
+<span class="sd">        - Original image dimensions (width, height)</span>
+<span class="sd">        - New image dimensions (width, height)</span>
+<span class="sd">    :rtype: tuple(Image.Image, Tuple[int, int], Tuple[int, int])</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">    &gt;&gt;&gt; img = Image.new(&#39;RGB&#39;, (1000, 800))</span>
+<span class="sd">    &gt;&gt;&gt; processed_img, old_size, new_size = _image_preprocess(img)</span>
+<span class="sd">    &gt;&gt;&gt; print(old_size, new_size)</span>
+<span class="sd">    (1000, 800) (1216, 992)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">max_infer_size</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">max_infer_width</span><span class="p">,</span> <span class="n">max_infer_height</span> <span class="o">=</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">max_infer_size</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">max_infer_width</span><span class="p">,</span> <span class="n">max_infer_height</span> <span class="o">=</span> <span class="n">max_infer_size</span>
+
+    <span class="n">old_width</span><span class="p">,</span> <span class="n">old_height</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">height</span>
+    <span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">=</span> <span class="n">old_width</span><span class="p">,</span> <span class="n">old_height</span>
+    <span class="k">if</span> <span class="n">allow_dynamic</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_infer_width</span> <span class="o">/</span> <span class="n">new_width</span><span class="p">,</span> <span class="n">max_infer_height</span> <span class="o">/</span> <span class="n">new_height</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">=</span> <span class="n">new_width</span> <span class="o">*</span> <span class="n">r</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">*</span> <span class="n">r</span>
+        <span class="n">new_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">new_width</span> <span class="o">/</span> <span class="n">align</span><span class="p">)</span> <span class="o">*</span> <span class="n">align</span><span class="p">)</span>
+        <span class="n">new_height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">new_height</span> <span class="o">/</span> <span class="n">align</span><span class="p">)</span> <span class="o">*</span> <span class="n">align</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">=</span> <span class="n">max_infer_width</span><span class="p">,</span> <span class="n">max_infer_height</span>
+
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">old_width</span><span class="p">,</span> <span class="n">old_height</span><span class="p">),</span> <span class="p">(</span><span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_xy_postprocess</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">old_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert coordinates from the preprocessed image size back to the original image size.</span>
+
+<span class="sd">    :param x: X-coordinate in the preprocessed image.</span>
+<span class="sd">    :type x: float</span>
+<span class="sd">    :param y: Y-coordinate in the preprocessed image.</span>
+<span class="sd">    :type y: float</span>
+<span class="sd">    :param old_size: Original image dimensions (width, height).</span>
+<span class="sd">    :type old_size: Tuple[float, float]</span>
+<span class="sd">    :param new_size: Preprocessed image dimensions (width, height).</span>
+<span class="sd">    :type new_size: Tuple[float, float]</span>
+
+<span class="sd">    :return: Adjusted (x, y) coordinates for the original image size.</span>
+<span class="sd">    :rtype: Tuple[int, int]</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; _xy_postprocess(100, 100, (1000, 800), (1216, 992))</span>
+<span class="sd">    (82, 80)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">old_width</span><span class="p">,</span> <span class="n">old_height</span> <span class="o">=</span> <span class="n">old_size</span>
+    <span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span> <span class="o">=</span> <span class="n">new_size</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">new_width</span> <span class="o">*</span> <span class="n">old_width</span><span class="p">,</span> <span class="n">y</span> <span class="o">/</span> <span class="n">new_height</span> <span class="o">*</span> <span class="n">old_height</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="n">old_width</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">())</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="n">old_height</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_end2end_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                         <span class="n">old_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> \
+        <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-process the output of an end-to-end object detection model.</span>
+
+<span class="sd">    This function filters detections based on confidence, applies non-maximum suppression,</span>
+<span class="sd">    and transforms coordinates back to the original image size.</span>
+
+<span class="sd">    :param output: Raw output from the end-to-end object detection model.</span>
+<span class="sd">    :type output: np.ndarray</span>
+<span class="sd">    :param conf_threshold: Confidence threshold for filtering detections.</span>
+<span class="sd">    :type conf_threshold: float</span>
+<span class="sd">    :param iou_threshold: IoU threshold for non-maximum suppression (not used in this function).</span>
+<span class="sd">    :type iou_threshold: float</span>
+<span class="sd">    :param old_size: Original image dimensions (width, height).</span>
+<span class="sd">    :type old_size: Tuple[float, float]</span>
+<span class="sd">    :param new_size: Preprocessed image dimensions (width, height).</span>
+<span class="sd">    :type new_size: Tuple[float, float]</span>
+<span class="sd">    :param labels: List of class labels.</span>
+<span class="sd">    :type labels: List[str]</span>
+
+<span class="sd">    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).</span>
+<span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    :raises AssertionError: If the output shape is not as expected.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">iou_threshold</span>  <span class="c1"># actually the iou_threshold has not been supplied to end2end post-processing</span>
+    <span class="n">detections</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">conf_threshold</span><span class="p">]</span>
+    <span class="n">selected_idx</span> <span class="o">=</span> <span class="n">_yolo_nms</span><span class="p">(</span><span class="n">output</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="n">output</span><span class="p">[</span><span class="n">selected_idx</span><span class="p">]:</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+        <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">labels</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">item</span><span class="p">())],</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">detections</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_nms_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                     <span class="n">old_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> \
+        <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-process the output of an NMS-based object detection model.</span>
+
+<span class="sd">    This function applies confidence thresholding, non-maximum suppression,</span>
+<span class="sd">    and transforms coordinates back to the original image size.</span>
+
+<span class="sd">    :param output: Raw output from the NMS-based object detection model.</span>
+<span class="sd">    :type output: np.ndarray</span>
+<span class="sd">    :param conf_threshold: Confidence threshold for filtering detections.</span>
+<span class="sd">    :type conf_threshold: float</span>
+<span class="sd">    :param iou_threshold: IoU threshold for non-maximum suppression.</span>
+<span class="sd">    :type iou_threshold: float</span>
+<span class="sd">    :param old_size: Original image dimensions (width, height).</span>
+<span class="sd">    :type old_size: Tuple[float, float]</span>
+<span class="sd">    :param new_size: Preprocessed image dimensions (width, height).</span>
+<span class="sd">    :type new_size: Tuple[float, float]</span>
+<span class="sd">    :param labels: List of class labels.</span>
+<span class="sd">    :type labels: List[str]</span>
+
+<span class="sd">    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).</span>
+<span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    :raises AssertionError: If the output shape is not as expected.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="c1"># the output should be like [4+cls, box_cnt]</span>
+    <span class="c1"># cls means count of classes</span>
+    <span class="c1"># box_cnt means count of bboxes</span>
+    <span class="n">max_scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">4</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="n">max_scores</span> <span class="o">&gt;</span> <span class="n">conf_threshold</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">boxes</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span>
+    <span class="n">filtered_max_scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">boxes</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="n">boxes</span> <span class="o">=</span> <span class="n">_yolo_xywh2xyxy</span><span class="p">(</span><span class="n">boxes</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">_yolo_nms</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">filtered_max_scores</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">)</span>
+    <span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span> <span class="o">=</span> <span class="n">boxes</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">scores</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="n">detections</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span><span class="p">):</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">_xy_postprocess</span><span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span><span class="p">)</span>
+        <span class="n">max_score_id</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+        <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">labels</span><span class="p">[</span><span class="n">max_score_id</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">[</span><span class="n">max_score_id</span><span class="p">])))</span>
+
+    <span class="k">return</span> <span class="n">detections</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_yolo_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                      <span class="n">old_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> \
+        <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-process the raw output from the object detection model.</span>
+
+<span class="sd">    This function applies confidence thresholding, non-maximum suppression, and</span>
+<span class="sd">    converts the coordinates back to the original image size.</span>
+
+<span class="sd">    :param output: Raw output from the object detection model.</span>
+<span class="sd">    :type output: np.ndarray</span>
+<span class="sd">    :param conf_threshold: Confidence threshold for filtering detections.</span>
+<span class="sd">    :type conf_threshold: float</span>
+<span class="sd">    :param iou_threshold: IoU threshold for non-maximum suppression.</span>
+<span class="sd">    :type iou_threshold: float</span>
+<span class="sd">    :param old_size: Original image dimensions (width, height).</span>
+<span class="sd">    :type old_size: Tuple[float, float]</span>
+<span class="sd">    :param new_size: Preprocessed image dimensions (width, height).</span>
+<span class="sd">    :type new_size: Tuple[float, float]</span>
+<span class="sd">    :param labels: List of class labels.</span>
+<span class="sd">    :type labels: List[str]</span>
+
+<span class="sd">    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).</span>
+<span class="sd">    :rtype: List[tuple(tuple(int, int, int, int), str, float)]</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; output = np.array([[10, 10, 20, 20, 0.9, 0.1]])</span>
+<span class="sd">    &gt;&gt;&gt; _yolo_postprocess(output, 0.5, 0.5, (100, 100), (128, 128), [&#39;cat&#39;, &#39;dog&#39;])</span>
+<span class="sd">    [((7, 7, 15, 15), &#39;cat&#39;, 0.9)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>  <span class="c1"># for end-to-end models like yolov10</span>
+        <span class="k">return</span> <span class="n">_end2end_postprocess</span><span class="p">(</span>
+            <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
+            <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+            <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+            <span class="n">old_size</span><span class="o">=</span><span class="n">old_size</span><span class="p">,</span>
+            <span class="n">new_size</span><span class="o">=</span><span class="n">new_size</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># for nms-based models like yolov8</span>
+        <span class="k">return</span> <span class="n">_nms_postprocess</span><span class="p">(</span>
+            <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
+            <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+            <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+            <span class="n">old_size</span><span class="o">=</span><span class="n">old_size</span><span class="p">,</span>
+            <span class="n">new_size</span><span class="o">=</span><span class="n">new_size</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_rtdetr_postprocess</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                        <span class="n">old_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">new_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> \
+        <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Post-process the output from an RT-DETR (Real-Time DEtection TRansformer) model.</span>
+
+<span class="sd">    This function handles the specific output format of RT-DETR models and applies</span>
+<span class="sd">    the necessary post-processing steps.</span>
+
+<span class="sd">    :param output: Raw output from the RT-DETR model.</span>
+<span class="sd">    :type output: np.ndarray</span>
+<span class="sd">    :param conf_threshold: Confidence threshold for filtering detections.</span>
+<span class="sd">    :type conf_threshold: float</span>
+<span class="sd">    :param iou_threshold: IoU threshold for non-maximum suppression.</span>
+<span class="sd">    :type iou_threshold: float</span>
+<span class="sd">    :param old_size: Original image dimensions (width, height).</span>
+<span class="sd">    :type old_size: Tuple[int, int]</span>
+<span class="sd">    :param new_size: Preprocessed image dimensions (width, height) (not used in this function).</span>
+<span class="sd">    :type new_size: Tuple[int, int]</span>
+<span class="sd">    :param labels: List of class labels.</span>
+<span class="sd">    :type labels: List[str]</span>
+
+<span class="sd">    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).</span>
+<span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    :raises AssertionError: If the output shape is not as expected.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="c1"># the size rtdetr using is [0.0, 1.0]</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">new_size</span>
+    <span class="k">return</span> <span class="n">_nms_postprocess</span><span class="p">(</span>
+        <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+        <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+        <span class="n">old_size</span><span class="o">=</span><span class="n">old_size</span><span class="p">,</span>
+        <span class="n">new_size</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+        <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_safe_eval_names_str</span><span class="p">(</span><span class="n">names_str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Safely evaluate the names string from model metadata.</span>
+
+<span class="sd">    :param names_str: String representation of names dictionary.</span>
+<span class="sd">    :type names_str: str</span>
+<span class="sd">    :return: Dictionary of name mappings.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises RuntimeError: If an invalid key or value type is encountered.</span>
+
+<span class="sd">    This function parses the names string from the model metadata, ensuring that</span>
+<span class="sd">    only string and number literals are evaluated for safety.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">names_str</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;eval&#39;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># noinspection PyUnresolvedReferences</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">Str</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Num</span><span class="p">)):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid key type: </span><span class="si">{</span><span class="n">key</span><span class="si">!r}</span><span class="s2">, this should be a bug, &quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot;please open an issue to dghs-imgutils.&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">Str</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Num</span><span class="p">)):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value type: </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">, this should be a bug, &quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot;please open an issue to dghs-imgutils.&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+        <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<div class="viewcode-block" id="YOLOModel"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">YOLOModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to manage YOLO models from a Hugging Face repository.</span>
+
+<span class="sd">    This class handles the loading, caching, and inference of YOLO models.</span>
+
+<span class="sd">    :param repo_id: The Hugging Face repository ID containing the YOLO models.</span>
+<span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; model = YOLOModel(&quot;username/repo_name&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; image = Image.open(&quot;path/to/image.jpg&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; detections = model.predict(image, &quot;model_name&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="YOLOModel.__init__"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the YOLOModel.</span>
+
+<span class="sd">        :param repo_id: The Hugging Face repository ID containing the YOLO models.</span>
+<span class="sd">        :type repo_id: str</span>
+<span class="sd">        :param hf_token: Optional Hugging Face authentication token.</span>
+<span class="sd">        :type hf_token: Optional[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span> <span class="o">=</span> <span class="n">repo_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_models</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="o">=</span> <span class="n">hf_token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_global_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span></div>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_hf_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the Hugging Face token, either from the instance or environment variable.</span>
+
+<span class="sd">        :return: Hugging Face token.</span>
+<span class="sd">        :rtype: Optional[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HF_TOKEN&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">model_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the list of available model names in the repository.</span>
+
+<span class="sd">        :return: List of model names.</span>
+<span class="sd">        :rtype: List[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_global_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">HfFileSystem</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">hf_normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">)))</span>
+                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">hf_fs_path</span><span class="p">(</span>
+                        <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;*/model.onnx&#39;</span><span class="p">,</span>
+                    <span class="p">))</span>
+                <span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_model_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the given model name is valid for this repository.</span>
+
+<span class="sd">        :param model_name: Name of the model to check.</span>
+<span class="sd">        :type model_name: str</span>
+<span class="sd">        :raises ValueError: If the model name is not found in the repository.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_names</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown model </span><span class="si">{</span><span class="n">model_name</span><span class="si">!r}</span><span class="s1"> in model repository </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">!r}</span><span class="s1">, &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;models </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_names</span><span class="si">!r}</span><span class="s1"> are available.&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_open_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open and cache a YOLO model.</span>
+
+<span class="sd">        :param model_name: Name of the model to open.</span>
+<span class="sd">        :type model_name: str</span>
+<span class="sd">        :return: Tuple containing the ONNX model, maximum inference size, and labels.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_check_model_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+                <span class="n">model</span> <span class="o">=</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span><span class="p">,</span>
+                    <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">(),</span>
+                <span class="p">))</span>
+                <span class="n">model_metadata</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_modelmeta</span><span class="p">()</span>
+                <span class="k">if</span> <span class="s1">&#39;imgsz&#39;</span> <span class="ow">in</span> <span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">:</span>
+                    <span class="n">max_infer_size</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;imgsz&#39;</span><span class="p">]))</span>
+                    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">max_infer_size</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;imgsz should have 2 dims, but </span><span class="si">{</span><span class="n">max_infer_size</span><span class="si">!r}</span><span class="s1"> found.&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">max_infer_size</span> <span class="o">=</span> <span class="mi">640</span>
+                <span class="n">names_map</span> <span class="o">=</span> <span class="n">_safe_eval_names_str</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">])</span>
+                <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">names_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names_map</span><span class="p">))]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">:</span>
+                <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">get_hf_fs</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
+                <span class="n">fs_path</span> <span class="o">=</span> <span class="n">hf_fs_path</span><span class="p">(</span>
+                    <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                    <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                    <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model_type.json&#39;</span><span class="p">,</span>
+                    <span class="n">revision</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fs_path</span><span class="p">):</span>
+                    <span class="n">model_type</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">hf_fs</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">fs_path</span><span class="p">))[</span><span class="s1">&#39;model_type&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">model_type</span> <span class="o">=</span> <span class="s1">&#39;yolo&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_type</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
+
+<div class="viewcode-block" id="YOLOModel.predict"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.predict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                <span class="n">allow_dynamic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> \
+            <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform object detection on an image using the specified YOLO model.</span>
+
+<span class="sd">        :param image: Input image for object detection.</span>
+<span class="sd">        :type image: ImageTyping</span>
+<span class="sd">        :param model_name: Name of the YOLO model to use.</span>
+<span class="sd">        :type model_name: str</span>
+<span class="sd">        :param conf_threshold: Confidence threshold for filtering detections. Default is 0.25.</span>
+<span class="sd">        :type conf_threshold: float</span>
+<span class="sd">        :param iou_threshold: IoU threshold for non-maximum suppression. Default is 0.7.</span>
+<span class="sd">        :type iou_threshold: float</span>
+<span class="sd">        :param allow_dynamic: If True, allows dynamic resizing of the image while maintaining aspect ratio.</span>
+<span class="sd">                              Default is False.</span>
+<span class="sd">        :type allow_dynamic: bool</span>
+
+<span class="sd">        :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).</span>
+<span class="sd">        :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; model = YOLOModel(&quot;username/repo_name&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; image = Image.open(&quot;path/to/image.jpg&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; detections = model.predict(image, &quot;model_name&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(detections[0])  # First detection</span>
+<span class="sd">        ((100, 200, 300, 400), &#39;person&#39;, 0.95)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+        <span class="n">new_image</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span> <span class="o">=</span> <span class="n">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">allow_dynamic</span><span class="o">=</span><span class="n">allow_dynamic</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">rgb_encode</span><span class="p">(</span><span class="n">new_image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+        <span class="n">output</span><span class="p">,</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output0&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;images&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
+        <span class="n">model_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model_type</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s1">&#39;yolo&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_yolo_postprocess</span><span class="p">(</span>
+                <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+                <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+                <span class="n">old_size</span><span class="o">=</span><span class="n">old_size</span><span class="p">,</span>
+                <span class="n">new_size</span><span class="o">=</span><span class="n">new_size</span><span class="p">,</span>
+                <span class="n">labels</span><span class="o">=</span><span class="n">labels</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s1">&#39;rtdetr&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_rtdetr_postprocess</span><span class="p">(</span>
+                <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+                <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+                <span class="n">old_size</span><span class="o">=</span><span class="n">old_size</span><span class="p">,</span>
+                <span class="n">new_size</span><span class="o">=</span><span class="n">new_size</span><span class="p">,</span>
+                <span class="n">labels</span><span class="o">=</span><span class="n">labels</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown object detection model type - </span><span class="si">{</span><span class="n">model_type</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
+
+<div class="viewcode-block" id="YOLOModel.clear"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.clear">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clear cached model and metadata.</span>
+
+<span class="sd">        This method removes all cached models and their associated metadata from memory.</span>
+<span class="sd">        It&#39;s useful for freeing up memory or ensuring that the latest versions of models are loaded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="YOLOModel.make_ui"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.make_ui">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">make_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">default_conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">default_iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a Gradio-based user interface for object detection.</span>
+
+<span class="sd">        This method sets up an interactive UI that allows users to upload images,</span>
+<span class="sd">        select models, and adjust detection parameters. It uses the Gradio library</span>
+<span class="sd">        to create the interface.</span>
+
+<span class="sd">        :param default_model_name: The name of the default model to use.</span>
+<span class="sd">                                   If None, the most recently updated model is selected.</span>
+<span class="sd">        :type default_model_name: Optional[str]</span>
+<span class="sd">        :param default_conf_threshold: Default confidence threshold for the UI. Default is 0.25.</span>
+<span class="sd">        :type default_conf_threshold: float</span>
+<span class="sd">        :param default_iou_threshold: Default IoU threshold for the UI. Default is 0.7.</span>
+<span class="sd">        :type default_iou_threshold: float</span>
+
+<span class="sd">        :raises ImportError: If Gradio is not installed in the environment.</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; model = YOLOModel(&quot;username/repo_name&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; model.make_ui(default_model_name=&quot;yolov5s&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_check_gradio_env</span><span class="p">()</span>
+        <span class="n">model_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_names</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">default_model_name</span><span class="p">:</span>
+            <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
+            <span class="n">selected_model_name</span><span class="p">,</span> <span class="n">selected_time</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">fileitem</span> <span class="ow">in</span> <span class="n">hf_client</span><span class="o">.</span><span class="n">get_paths_info</span><span class="p">(</span>
+                    <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                    <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                    <span class="n">paths</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/model.onnx&#39;</span> <span class="k">for</span> <span class="n">model_name</span> <span class="ow">in</span> <span class="n">model_list</span><span class="p">],</span>
+                    <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">selected_time</span> <span class="ow">or</span> <span class="n">fileitem</span><span class="o">.</span><span class="n">last_commit</span><span class="o">.</span><span class="n">date</span> <span class="o">&gt;</span> <span class="n">selected_time</span><span class="p">:</span>
+                    <span class="n">selected_model_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fileitem</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                    <span class="n">selected_time</span> <span class="o">=</span> <span class="n">fileitem</span><span class="o">.</span><span class="n">last_commit</span><span class="o">.</span><span class="n">date</span>
+            <span class="n">default_model_name</span> <span class="o">=</span> <span class="n">selected_model_name</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_gr_detect</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                       <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">score_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span>
+                       <span class="n">allow_dynamic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> \
+                <span class="o">-&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">AnnotatedImage</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_model</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+            <span class="n">_colors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">rnd_colors</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))))</span>
+            <span class="n">_color_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">_colors</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">gr</span><span class="o">.</span><span class="n">AnnotatedImage</span><span class="p">(</span>
+                <span class="n">value</span><span class="o">=</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">[</span>
+                    <span class="p">(</span><span class="n">_bbox_fix</span><span class="p">(</span><span class="n">bbox</span><span class="p">),</span> <span class="n">label</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">bbox</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+                        <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
+                        <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+                        <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+                        <span class="n">conf_threshold</span><span class="o">=</span><span class="n">score_threshold</span><span class="p">,</span>
+                        <span class="n">allow_dynamic</span><span class="o">=</span><span class="n">allow_dynamic</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">]),</span>
+                <span class="n">color_map</span><span class="o">=</span><span class="n">_color_map</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Labeled&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
+                <span class="n">gr_input_image</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;pil&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Image&#39;</span><span class="p">)</span>
+                <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                    <span class="n">gr_model</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">model_list</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+                    <span class="n">gr_allow_dynamic</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Checkbox</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Allow Dynamic Size&#39;</span><span class="p">)</span>
+                <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                    <span class="n">gr_iou_threshold</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">default_iou_threshold</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;IOU Threshold&#39;</span><span class="p">)</span>
+                    <span class="n">gr_score_threshold</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">default_conf_threshold</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Score Threshold&#39;</span><span class="p">)</span>
+
+                <span class="n">gr_submit</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;Submit&#39;</span><span class="p">,</span> <span class="n">variant</span><span class="o">=</span><span class="s1">&#39;primary&#39;</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
+                <span class="n">gr_output_image</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">AnnotatedImage</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Labeled&quot;</span><span class="p">)</span>
+
+            <span class="n">gr_submit</span><span class="o">.</span><span class="n">click</span><span class="p">(</span>
+                <span class="n">_gr_detect</span><span class="p">,</span>
+                <span class="n">inputs</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">gr_input_image</span><span class="p">,</span>
+                    <span class="n">gr_model</span><span class="p">,</span>
+                    <span class="n">gr_iou_threshold</span><span class="p">,</span>
+                    <span class="n">gr_score_threshold</span><span class="p">,</span>
+                    <span class="n">gr_allow_dynamic</span><span class="p">,</span>
+                <span class="p">],</span>
+                <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">gr_output_image</span><span class="p">],</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="YOLOModel.launch_demo"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.launch_demo">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">launch_demo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">default_conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">default_iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                    <span class="n">server_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">server_port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Launch a Gradio demo for object detection.</span>
+
+<span class="sd">        This method creates and launches a Gradio demo that allows users to interactively</span>
+<span class="sd">        perform object detection on uploaded images using the YOLO model.</span>
+
+<span class="sd">        :param default_model_name: The name of the default model to use.</span>
+<span class="sd">                                   If None, the most recently updated model is selected.</span>
+<span class="sd">        :type default_model_name: Optional[str]</span>
+<span class="sd">        :param default_conf_threshold: Default confidence threshold for the demo. Default is 0.25.</span>
+<span class="sd">        :type default_conf_threshold: float</span>
+<span class="sd">        :param default_iou_threshold: Default IoU threshold for the demo. Default is 0.7.</span>
+<span class="sd">        :type default_iou_threshold: float</span>
+<span class="sd">        :param server_name: The name of the server to run the demo on. Default is None.</span>
+<span class="sd">        :type server_name: Optional[str]</span>
+<span class="sd">        :param server_port: The port to run the demo on. Default is None.</span>
+<span class="sd">        :type server_port: Optional[int]</span>
+<span class="sd">        :param kwargs: Additional keyword arguments to pass to gr.Blocks.launch().</span>
+
+<span class="sd">        :raises EnvironmentError: If Gradio is not installed in the environment.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; model = YOLOModel(&quot;username/repo_name&quot;)</span>
+<span class="sd">            &gt;&gt;&gt; model.launch_demo(default_model_name=&quot;yolov5s&quot;, server_name=&quot;0.0.0.0&quot;, server_port=7860)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_check_gradio_env</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Blocks</span><span class="p">()</span> <span class="k">as</span> <span class="n">demo</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
+                    <span class="n">repo_url</span> <span class="o">=</span> <span class="n">hf_hub_repo_url</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">HTML</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;h2 style=&quot;text-align: center;&quot;&gt;YOLO Demo For </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">}</span><span class="s1">&lt;/h2&gt;&#39;</span><span class="p">)</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;This is the quick demo for YOLO model [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">}</span><span class="s1">](</span><span class="si">{</span><span class="n">repo_url</span><span class="si">}</span><span class="s1">). &#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;Powered by `dghs-imgutils`</span><span class="se">\&#39;</span><span class="s1">s quick demo module.&#39;</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">make_ui</span><span class="p">(</span>
+                    <span class="n">default_model_name</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span>
+                    <span class="n">default_conf_threshold</span><span class="o">=</span><span class="n">default_conf_threshold</span><span class="p">,</span>
+                    <span class="n">default_iou_threshold</span><span class="o">=</span><span class="n">default_iou_threshold</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">demo</span><span class="o">.</span><span class="n">launch</span><span class="p">(</span>
+            <span class="n">server_name</span><span class="o">=</span><span class="n">server_name</span><span class="p">,</span>
+            <span class="n">server_port</span><span class="o">=</span><span class="n">server_port</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">YOLOModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load and cache a YOLO model from a Hugging Face repository.</span>
+
+<span class="sd">    This function uses the `lru_cache` decorator to cache the loaded models,</span>
+<span class="sd">    improving performance for repeated calls with the same repository ID.</span>
+
+<span class="sd">    :param repo_id: The Hugging Face repository ID for the YOLO model.</span>
+<span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
+
+<span class="sd">    :return: The loaded YOLO model.</span>
+<span class="sd">    :rtype: YOLOModel</span>
+
+<span class="sd">    :raises Exception: If there&#39;s an error loading the model from the repository.</span>
+
+<span class="sd">    Usage:</span>
+<span class="sd">        &gt;&gt;&gt; model = _open_models_for_repo_id(&quot;yolov5/yolov5s&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; # Subsequent calls with the same repo_id will return the cached model</span>
+<span class="sd">        &gt;&gt;&gt; same_model = _open_models_for_repo_id(&quot;yolov5/yolov5s&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">YOLOModel</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="yolo_predict"><a class="viewcode-back" href="../../../api_doc/generic/yolo.html#imgutils.generic.yolo.yolo_predict">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">yolo_predict</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                 <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> \
+        <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform object detection on an image using a YOLO model from a Hugging Face repository.</span>
+
+<span class="sd">    This function is a high-level wrapper around the YOLOModel class, providing a simple</span>
+<span class="sd">    interface for object detection without needing to explicitly manage model instances.</span>
+
+<span class="sd">    :param image: Input image for object detection.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param repo_id: The Hugging Face repository ID containing the YOLO models.</span>
+<span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param model_name: Name of the YOLO model to use.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :param conf_threshold: Confidence threshold for filtering detections. Default is 0.25.</span>
+<span class="sd">    :type conf_threshold: float</span>
+<span class="sd">    :param iou_threshold: IoU threshold for non-maximum suppression. Default is 0.7.</span>
+<span class="sd">    :type iou_threshold: float</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token.</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
+
+<span class="sd">    :return: List of detections, each in the format ((x0, y0, x1, y1), label, confidence).</span>
+<span class="sd">    :rtype: List[Tuple[Tuple[int, int, int, int], str, float]]</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">    &gt;&gt;&gt; image = Image.open(&quot;path/to/image.jpg&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; detections = yolo_predict(image, &quot;username/repo_name&quot;, &quot;model_name&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(detections[0])  # First detection</span>
+<span class="sd">    ((100, 200, 300, 400), &#39;person&#39;, 0.95)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+        <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+        <span class="n">conf_threshold</span><span class="o">=</span><span class="n">conf_threshold</span><span class="p">,</span>
+        <span class="n">iou_threshold</span><span class="o">=</span><span class="n">iou_threshold</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/cls
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.5.0/index.html">v0.5.0</a></dd>
+                        <dd><a href="../../../../../v0.6.0/index.html">v0.6.0</a></dd>
+                        <dd><a href="../../../../../v0.6.1/index.html">v0.6.1</a></dd>
+                        <dd><a href="../../../../../v0.6.2/index.html">v0.6.2</a></dd>
+                        <dd><a href="../../../../../v0.6.3/index.html">v0.6.3</a></dd>
+                        <dd><a href="../../../../../v0.7.0/index.html">v0.7.0</a></dd>
+                        <dd><a href="../../../../../v0.7.1/index.html">v0.7.1</a></dd>
+                        <dd><a href="../../../../../v0.8.0/index.html">v0.8.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="yolo.html">dev/cls</a></dd>
+                        <dd><a href="../../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../denormalize/index.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
