@@ -57,7 +57,7 @@ jobs:
           ls -al ./${{ matrix.model-name }}
           zip -r ${{ matrix.model-name }}.zip ${{ matrix.model-name }}
       - name: Upload the character databases
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: onnx-models
           path: ${{ matrix.model-name }}.zip
@@ -84,7 +84,7 @@ jobs:
           git clone https://huggingface.co/deepghs/imgutils-models
           ls -al imgutils-models
       - name: Download from artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: onnx-models
           path: imgutils-models
