@@ -1,0 +1,453 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.detect.booru_yolo &mdash; imgutils 0.9.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=1bc1ca25"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.detect.censor" href="censor.html" />
+    <link rel="prev" title="imgutils.detect" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.detect</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.detect.booru_yolo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#detect-with-booru-yolo">detect_with_booru_yolo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.detect.booru_yolo.detect_with_booru_yolo"><code class="docutils literal notranslate"><span class="pre">detect_with_booru_yolo()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="censor.html">imgutils.detect.censor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eye.html">imgutils.detect.eye</a></li>
+<li class="toctree-l2"><a class="reference internal" href="face.html">imgutils.detect.face</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halfbody.html">imgutils.detect.halfbody</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hand.html">imgutils.detect.hand</a></li>
+<li class="toctree-l2"><a class="reference internal" href="head.html">imgutils.detect.head</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nudenet.html">imgutils.detect.nudenet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="person.html">imgutils.detect.person</a></li>
+<li class="toctree-l2"><a class="reference internal" href="similarity.html">imgutils.detect.similarity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text.html">imgutils.detect.text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visual.html">imgutils.detect.visual</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.detect</a></li>
+      <li class="breadcrumb-item active">imgutils.detect.booru_yolo</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/detect/booru_yolo.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.detect.booru_yolo">
+<span id="imgutils-detect-booru-yolo"></span><h1>imgutils.detect.booru_yolo<a class="headerlink" href="#module-imgutils.detect.booru_yolo" title="Permalink to this heading"></a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>This module provides functionality for object detection using the Booru YOLO model.</p>
+<p>The Booru YOLO model is sourced from <a class="reference external" href="https://github.com/aperveyev/booru_yolo">aperveyev/booru_yolo</a> and
+model files are hosted on <a class="reference external" href="https://huggingface.co/deepghs/booru_yolo">deepghs/booru_yolo</a>.</p>
+<details class="summary-overview-of-booru-yolo-detect-nsfw-warning">
+<summary>Overview of Booru YOLO Detect (NSFW Warning!!!)</summary><img alt="../../_images/booru_yolo_detect_demo.plot.py.svg" class="align-center" src="../../_images/booru_yolo_detect_demo.plot.py.svg" /></details><p>This is an overall benchmark of all the booru yolo models:</p>
+<img alt="../../_images/booru_yolo_detect_benchmark.plot.py.svg" class="align-center" src="../../_images/booru_yolo_detect_benchmark.plot.py.svg" /><p>Here is the explanations of each label:</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Model Labels and Descriptions</span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 20.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>No.</p></th>
+<th class="head"><p>Label</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>head</p></td>
+<td><p>Anime pretty girl and not only</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>bust</p></td>
+<td><p>Torso part from collarbone center to pair of covered breasts</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>boob</p></td>
+<td><p>Bust with no bra, nipples mostly visible, generally NSFW</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>shld</p></td>
+<td><p>Shoulder and maybe one breast viewed mostly in profile, exactly rear view excluded</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>sideb</p></td>
+<td><p>Uncovered version of shld, with nipples or other NSFW visual marks</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>belly</p></td>
+<td><p>From belly button to hips half (stocking line), knees below belly, mostly covered</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>nopan</p></td>
+<td><p>No panty-like clothes on bikini area (regardless of censoring), evidently NSFW belly</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>butt</p></td>
+<td><p>Buttock area visible at least partially from behind, more or less covered, standing or sitting</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>ass</p></td>
+<td><p>Uncovered NSFW version of butt</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>split</p></td>
+<td><p>Sitting with legs open wide (90+ degrees), typically with at least one knee above belly</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>sprd</p></td>
+<td><p>Strongly NSFW version of split</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>vsplt</p></td>
+<td><p>Stand split or visually similar pose</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>vsprd</p></td>
+<td><p>Strongly NSFW version of vsplit</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>hip</p></td>
+<td><p>Full or almost full hip(-s) side view with knee(-s) above belly, usually when sitting or lying</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>wing</p></td>
+<td><p>Mostly dragon or pony related</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>feral</p></td>
+<td><p>All-four non-human torso</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>hdrago</p></td>
+<td><p>Dragon style head</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>hpony</p></td>
+<td><p>Pony style head</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>hfox</p></td>
+<td><p>Cartoon fox / dog head - Zootopia Nick Wilde</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>hrabb</p></td>
+<td><p>Cartoon rabbit head - Zootopia Judy Hopps or bunnygirl</p></td>
+</tr>
+<tr class="row-even"><td><p>20</p></td>
+<td><p>hcat</p></td>
+<td><p>Cartoon cat or anime catgirl head (less sharp muzzle compared to hfox)</p></td>
+</tr>
+<tr class="row-odd"><td><p>21</p></td>
+<td><p>hbear</p></td>
+<td><p>Cartoon bear head</p></td>
+</tr>
+<tr class="row-even"><td><p>22</p></td>
+<td><p>jacko</p></td>
+<td><p>Memetic “Jack’O contest pose” with a head toward viewer</p></td>
+</tr>
+<tr class="row-odd"><td><p>23</p></td>
+<td><p>jackx</p></td>
+<td><p>Jacko viewed from behind, sometimes strongly NSFW</p></td>
+</tr>
+<tr class="row-even"><td><p>24</p></td>
+<td><p>hhorse</p></td>
+<td><p>Horse head first implemented in aa09</p></td>
+</tr>
+<tr class="row-odd"><td><p>25</p></td>
+<td><p>hbird</p></td>
+<td><p>Bird head first implemented in aa09</p></td>
+</tr>
+</tbody>
+</table>
+<p>Here are the list of available models.</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Available Models (PP Series)</span><a class="headerlink" href="#id2" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Model Name</p></th>
+<th class="head"><p>Release Time</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>yolov8s_pp09</p></td>
+<td><p>2023.11</p></td>
+<td><p>PP model focusing on NSFW content with 9 specialized classes, providing advanced detection capabilities
+for specific NSFW scenarios.</p></td>
+</tr>
+<tr class="row-odd"><td><p>yolov8s_pp12</p></td>
+<td><p>2024.2</p></td>
+<td><p>Final patch for PP models, continuing the focus on specialized NSFW content detection with enhanced
+capabilities and improvements from previous versions.</p></td>
+</tr>
+<tr class="row-even"><td><p>yolov8m_pp13</p></td>
+<td><p>2024.2</p></td>
+<td><p>PP model final patch, focusing on specific NSFW content with 9 specialized classes, offering advanced
+NSFW detection capabilities.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Available Models (AS Series)</span><a class="headerlink" href="#id3" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Model Name</p></th>
+<th class="head"><p>Release Time</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>yolov8n_as01</p></td>
+<td><p>2023.12</p></td>
+<td><p>Spinoff model with 26 classes trained for 80 epochs on an SFW subset. This model was eventually
+abandoned due to ineffective results.</p></td>
+</tr>
+<tr class="row-odd"><td><p>yolov8m_as02</p></td>
+<td><p>2023.12</p></td>
+<td><p>Spinoff model started using an SFW training subset. It includes 26 classes and was trained for
+30 epochs, offering a more public-friendly model with reduced NSFW content.</p></td>
+</tr>
+<tr class="row-even"><td><p>yolov8m_as03</p></td>
+<td><p>2024.1</p></td>
+<td><p>Advanced spinoff model from as02 with 26 classes, trained for 60 epochs. This SFW subset model
+aims to reduce bottlenecks and improve reproducibility of results.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">Available Models (AA Series)</span><a class="headerlink" href="#id4" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Model Name</p></th>
+<th class="head"><p>Release Time</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>yolov8s_aa06</p></td>
+<td><p>2023.8</p></td>
+<td><p>Initial version for current reincarnation with 24 classes trained for 90 epochs. Focuses on general
+torso components and includes some NSFW content.</p></td>
+</tr>
+<tr class="row-odd"><td><p>yolov8s_aa09</p></td>
+<td><p>2023.10</p></td>
+<td><p>Added HHORSE and HBIRD classes, updating the dataset with more head closeups and adjusting for
+large hats, trained from aa06.</p></td>
+</tr>
+<tr class="row-even"><td><p>yolov8s_aa10</p></td>
+<td><p>2023.12</p></td>
+<td><p>Major training dataset update from aa09, focusing on improving detection of HHORSE and HBIRD and
+fixing issues with heads wearing large hats.</p></td>
+</tr>
+<tr class="row-odd"><td><p>yolov8s_aa11</p></td>
+<td><p>2024.1</p></td>
+<td><p>Latest mainstream general torso components model with 26 classes. It includes an update from aa10
+with outstanding mAP scores, though noted to be not completely fair due to training set biases.</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<section id="detect-with-booru-yolo">
+<h2>detect_with_booru_yolo<a class="headerlink" href="#detect-with-booru-yolo" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.detect.booru_yolo.detect_with_booru_yolo">
+<span class="sig-prename descclassname"><span class="pre">imgutils.detect.booru_yolo.</span></span><span class="sig-name descname"><span class="pre">detect_with_booru_yolo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'yolov8s_aa11'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iou_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/detect/booru_yolo.html#detect_with_booru_yolo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.detect.booru_yolo.detect_with_booru_yolo" title="Permalink to this definition"></a></dt>
+<dd><p>Perform object detection on an image using the Booru YOLO model.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – Input image to perform detection on.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the Booru YOLO model to use, defaults to ‘yolov8s_aa11’.</p></li>
+<li><p><strong>conf_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – Confidence threshold for detection, defaults to 0.25.</p></li>
+<li><p><strong>iou_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – IOU threshold for non-maximum suppression, defaults to 0.7.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of detected objects, each represented as (bounding_box as <cite>(x1, y1, x2, y2)</cite>, label, confidence).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Tuple[Tuple[int, int, int, int], str, float]]</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.detect</span><span class="w"> </span><span class="kn">import</span> <span class="n">detect_with_booru_yolo</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">detections</span> <span class="o">=</span> <span class="n">detect_with_booru_yolo</span><span class="p">(</span><span class="s2">&quot;path/to/image.jpg&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">confidence</span> <span class="ow">in</span> <span class="n">detections</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detected </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> with confidence </span><span class="si">{</span><span class="n">confidence</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="n">box</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="imgutils.detect" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="censor.html" class="btn btn-neutral float-right" title="imgutils.detect.censor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.9.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.5.0/api_doc/detect/booru_yolo.html">v0.5.0</a></dd>
+                        <dd><a href="../../../v0.6.0/api_doc/detect/booru_yolo.html">v0.6.0</a></dd>
+                        <dd><a href="../../../v0.6.1/api_doc/detect/booru_yolo.html">v0.6.1</a></dd>
+                        <dd><a href="../../../v0.6.2/api_doc/detect/booru_yolo.html">v0.6.2</a></dd>
+                        <dd><a href="../../../v0.6.3/api_doc/detect/booru_yolo.html">v0.6.3</a></dd>
+                        <dd><a href="../../../v0.7.0/api_doc/detect/booru_yolo.html">v0.7.0</a></dd>
+                        <dd><a href="../../../v0.7.1/api_doc/detect/booru_yolo.html">v0.7.1</a></dd>
+                        <dd><a href="../../../v0.8.0/api_doc/detect/booru_yolo.html">v0.8.0</a></dd>
+                        <dd><a href="booru_yolo.html">v0.9.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../HEAD/api_doc/detect/booru_yolo.html">HEAD</a></dd>
+                        <dd><a href="../../../dev/denormalize/api_doc/detect/booru_yolo.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../main/api_doc/detect/booru_yolo.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

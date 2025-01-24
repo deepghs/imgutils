@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.tagging.match &mdash; imgutils 0.9.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=1bc1ca25"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.tagging.match</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.tagging.match</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">hbutils.string</span><span class="w"> </span><span class="kn">import</span> <span class="n">singular_form</span><span class="p">,</span> <span class="n">plural_form</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_cached_singular_form</span><span class="p">(</span><span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the singular form of a word.</span>
+
+<span class="sd">    :param word: The input word.</span>
+<span class="sd">    :type word: str</span>
+<span class="sd">    :return: The singular form of the word.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">singular_form</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_cache_plural_form</span><span class="p">(</span><span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the plural form of a word.</span>
+
+<span class="sd">    :param word: The input word.</span>
+<span class="sd">    :type word: str</span>
+<span class="sd">    :return: The plural form of the word.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">plural_form</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_split_to_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Split a string into words and return them in lowercase.</span>
+
+<span class="sd">    :param text: The input text to split.</span>
+<span class="sd">    :type text: str</span>
+<span class="sd">    :return: List of lowercase words.</span>
+<span class="sd">    :rtype: List[str]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[\s_]+&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span> <span class="k">if</span> <span class="n">word</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_words_to_matcher</span><span class="p">(</span><span class="n">words</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">enable_forms</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate word matchers based on single, plural, and singular forms.</span>
+
+<span class="sd">    :param words: List of words.</span>
+<span class="sd">    :type words: List[str]</span>
+<span class="sd">    :param enable_forms: Enable singular and plural forms. Default is True.</span>
+<span class="sd">    :type enable_forms: bool</span>
+<span class="sd">    :return: Set of word matchers.</span>
+<span class="sd">    :rtype: Set[Tuple[str, ...]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">words</span> <span class="ow">and</span> <span class="n">enable_forms</span><span class="p">:</span>
+        <span class="n">words_tuples</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">words</span><span class="p">,</span>
+            <span class="p">[</span><span class="o">*</span><span class="n">words</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">_cached_singular_form</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])],</span>
+            <span class="p">[</span><span class="o">*</span><span class="n">words</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">_cache_plural_form</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])],</span>
+        <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">words_tuples</span> <span class="o">=</span> <span class="p">[</span><span class="n">words</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">words_tuples</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="tag_match_suffix"><a class="viewcode-back" href="../../../api_doc/tagging/match.html#imgutils.tagging.match.tag_match_suffix">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">tag_match_suffix</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a text matches a given suffix.</span>
+
+<span class="sd">    :param text: The input text.</span>
+<span class="sd">    :type text: str</span>
+<span class="sd">    :param suffix: The suffix to match.</span>
+<span class="sd">    :type suffix: str</span>
+<span class="sd">    :return: True if the text matches the suffix, False otherwise.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_suffix_words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span>
+    <span class="n">_text_words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_suffix_words</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">_text_words</span> <span class="o">=</span> <span class="n">_text_words</span><span class="p">[</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">_suffix_words</span><span class="p">):]</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">_words_to_matcher</span><span class="p">(</span><span class="n">_text_words</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">_words_to_matcher</span><span class="p">(</span><span class="n">_suffix_words</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="tag_match_prefix"><a class="viewcode-back" href="../../../api_doc/tagging/match.html#imgutils.tagging.match.tag_match_prefix">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">tag_match_prefix</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a text matches a given prefix.</span>
+
+<span class="sd">    :param text: The input text.</span>
+<span class="sd">    :type text: str</span>
+<span class="sd">    :param prefix: The prefix to match.</span>
+<span class="sd">    :type prefix: str</span>
+<span class="sd">    :return: True if the text matches the prefix, False otherwise.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_prefix_words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+    <span class="n">_text_words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_prefix_words</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">_text_words</span> <span class="o">=</span> <span class="n">_text_words</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">_prefix_words</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
+        <span class="n">_words_to_matcher</span><span class="p">(</span><span class="n">_text_words</span><span class="p">,</span> <span class="n">enable_forms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">&amp;</span>
+        <span class="n">_words_to_matcher</span><span class="p">(</span><span class="n">_prefix_words</span><span class="p">,</span> <span class="n">enable_forms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="tag_match_full"><a class="viewcode-back" href="../../../api_doc/tagging/match.html#imgutils.tagging.match.tag_match_full">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">tag_match_full</span><span class="p">(</span><span class="n">t1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">t2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if two texts match each other fully.</span>
+
+<span class="sd">    :param t1: The first text.</span>
+<span class="sd">    :type t1: str</span>
+<span class="sd">    :param t2: The second text.</span>
+<span class="sd">    :type t2: str</span>
+<span class="sd">    :return: True if the texts match fully, False otherwise.</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_t1_words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+    <span class="n">_t2_words</span> <span class="o">=</span> <span class="n">_split_to_words</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">_words_to_matcher</span><span class="p">(</span><span class="n">_t1_words</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">_words_to_matcher</span><span class="p">(</span><span class="n">_t2_words</span><span class="p">))</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.9.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.5.0/index.html">v0.5.0</a></dd>
+                        <dd><a href="../../../../v0.6.0/index.html">v0.6.0</a></dd>
+                        <dd><a href="../../../../v0.6.1/index.html">v0.6.1</a></dd>
+                        <dd><a href="../../../../v0.6.2/index.html">v0.6.2</a></dd>
+                        <dd><a href="../../../../v0.6.3/index.html">v0.6.3</a></dd>
+                        <dd><a href="../../../../v0.7.0/index.html">v0.7.0</a></dd>
+                        <dd><a href="../../../../v0.7.1/index.html">v0.7.1</a></dd>
+                        <dd><a href="../../../../v0.8.0/index.html">v0.8.0</a></dd>
+                        <dd><a href="match.html">v0.9.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
