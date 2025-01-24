@@ -124,7 +124,7 @@ jobs:
       - name: Run unittest
         env:
           CI: 'true'
-          REMOTE_PIXIV_SESSION_INDEX_URL: ${{ secrets.REMOTE_PIXIV_SESSION_INDEX_URL }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         shell: bash
         run: |
           make unittest IS_WIN=${{ env.IS_WIN }} IS_MAC=${{ env.IS_MAC }}
