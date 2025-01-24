@@ -37,6 +37,7 @@ __all__ = [
     'ClassifyModel',
     'classify_predict_score',
     'classify_predict',
+    'classify_predict_fmt',
 ]
 
 
@@ -390,14 +391,8 @@ class ClassifyModel:
         for vname in vnames(fmt, str_only=True):
             matching = re.fullmatch(r'^scores(-top(?P<topk>\d+))?(-(?P<label_group>[a-zA-Z\d_]+))?$', vname)
             if matching:
-                if matching.group('topk'):
-                    topk = int(matching.group('topk'))
-                else:
-                    topk = None
-                if matching.group('label_group'):
-                    group_label = matching.group('label_group')
-                else:
-                    group_label = 'default'
+                topk = int(matching.group('topk')) if matching.group('topk') else None
+                group_label = matching.group('label_group') if matching.group('label_group') else 'default'
                 vname_to_spair[vname] = (topk, group_label)
                 if (topk, group_label) not in d_scores:
                     d_scores[(topk, group_label)] = _labels_scores_to_topk(
@@ -620,4 +615,13 @@ def classify_predict(image: ImageTyping, repo_id: str, model_name: str, label_gr
         image=image,
         model_name=model_name,
         label_group=label_group,
+    )
+
+
+def classify_predict_fmt(image: ImageTyping, repo_id: str, model_name: str, fmt='scores-top5',
+                         hf_token: Optional[str] = None):
+    return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict_fmt(
+        image=image,
+        model_name=model_name,
+        fmt=fmt,
     )
