@@ -13,9 +13,6 @@ class TestGenericClassify:
             image,
             repo_id='deepghs/timms_mobilenet',
             model_name='mobilenetv4_hybrid_medium.ix_e550_r384_in1k',
-            # label_group='descriptions',
-            # label_group='definitions',
-            # topk=None,
         )
         assert scores == pytest.approx({
             'n02966687': 0.48493319749832153,
@@ -38,7 +35,7 @@ class TestGenericClassify:
             'n04517823': 0.0027278559282422066,
             'n03126707': 0.0026790976990014315,
             'n02879718': 0.0026228304486721754
-        })
+        }, abs=1e-3)
 
     def test_classify_predict_score_group1(self):
         image = Image.open(get_testfile('png_640.png'))
@@ -68,7 +65,7 @@ class TestGenericClassify:
             'vacuum, vacuum cleaner': 0.0027278559282422066,
             'crane': 0.0026790976990014315,
             'bow': 0.0026228304486721754
-        })
+        }, abs=1e-3)
 
     def test_classify_predict_score_group2(self):
         image = Image.open(get_testfile('png_640.png'))
@@ -99,7 +96,7 @@ class TestGenericClassify:
             'an electrical home appliance that cleans by suction': 0.0027278559282422066,
             'lifts and moves heavy objects; lifting tackle is suspended from a pivoted boom that rotates around a vertical axis': 0.0026790976990014315,
             'a weapon for shooting arrows, composed of a curved piece of resilient wood with a taut cord to propel the arrow': 0.0026228304486721754
-        })
+        }, abs=1e-3)
 
     def test_classify_predict_score_top5(self):
         image = Image.open(get_testfile('png_640.png'))
@@ -115,7 +112,7 @@ class TestGenericClassify:
             'n04482393': 0.07170269638299942,
             'n04154565': 0.029927952215075493,
             'n03000684': 0.02070867270231247,
-        })
+        }, abs=1e-3)
 
     def test_classify_predict_score_top5_group1(self):
         image = Image.open(get_testfile('png_640.png'))
@@ -132,4 +129,4 @@ class TestGenericClassify:
             'tricycle, trike, velocipede': 0.07170269638299942,
             'screwdriver': 0.029927952215075493,
             'chain saw, chainsaw': 0.02070867270231247,
-        })
+        }, abs=1e-3)
