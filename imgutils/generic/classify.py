@@ -21,8 +21,10 @@ from hfutils.operate import get_hf_client
 from hfutils.repository import hf_hub_repo_url
 from hfutils.utils import hf_fs_path, hf_normpath
 from huggingface_hub import hf_hub_download, HfFileSystem
+from huggingface_hub.errors import EntryNotFoundError
 
 from ..data import rgb_encode, ImageTyping, load_image
+from ..preprocess import create_pillow_transforms
 from ..utils import open_onnx_model, ts_lru_cache
 
 try:
@@ -133,6 +135,7 @@ class ClassifyModel:
         self._model_names = None
         self._models = {}
         self._labels = {}
+        self._preprocesses = {}
         self._hf_token = hf_token
         self._global_lock = Lock()
         self._model_lock = Lock()
@@ -214,7 +217,7 @@ class ClassifyModel:
 
         return self._models[model_name]
 
-    def _open_label(self, model_name: str) -> List[str]:
+    def _open_label(self, model_name: str) -> Dict[str, np.ndarray]:
         """
         Load and cache model labels from metadata.
 
@@ -225,7 +228,7 @@ class ClassifyModel:
         :type model_name: str
 
         :return: List of model labels
-        :rtype: List[str]
+        :rtype: Dict[str, np.ndarray]
 
         :raises RuntimeError: If label loading fails
         """
@@ -237,9 +240,35 @@ class ClassifyModel:
                         f'{model_name}/meta.json',
                         token=self._get_hf_token(),
                 ), 'r') as f:
-                    self._labels[model_name] = json.load(f)['labels']
+                    meta_info = json.load(f)
+                    d_groups = {
+                        **(meta_info.get('other_labels') or {}),
+                        'default': meta_info['labels']
+                    }
+                    self._labels[model_name] = {
+                        key: np.array(labels)
+                        for key, labels in d_groups.items()
+                    }
 
         return self._labels[model_name]
+
+    def _open_preprocess(self, model_name: str):
+        with self._model_lock:
+            if model_name not in self._preprocesses:
+                try:
+                    pfile = hf_hub_download(
+                        self.repo_id,
+                        f'{model_name}/preprocess.json',
+                        token=self._get_hf_token(),
+                    )
+                except EntryNotFoundError:
+                    self._preprocesses[model_name] = None
+                else:
+                    with open(pfile, 'r') as f:
+                        stages_info = json.load(f)['stages']
+                        self._preprocesses[model_name] = create_pillow_transforms(stages_info)
+
+            return self._preprocesses[model_name]
 
     def _raw_predict(self, image: ImageTyping, model_name: str):
         """
@@ -271,14 +300,19 @@ class ClassifyModel:
         if self._fn_preprocess:
             image = self._fn_preprocess(image)
 
-        if isinstance(height, int) and isinstance(width, int):
-            input_ = _img_encode(image, size=(width, height))[None, ...]
+        preprocess = self._open_preprocess(model_name=model_name)
+        if preprocess:
+            input_ = preprocess(image)[None, ...]
         else:
-            input_ = _img_encode(image)[None, ...]
+            if isinstance(height, int) and isinstance(width, int):
+                input_ = _img_encode(image, size=(width, height))[None, ...]
+            else:
+                input_ = _img_encode(image)[None, ...]
         output, = self._open_model(model_name).run(['output'], {'input': input_})
         return output
 
-    def predict_score(self, image: ImageTyping, model_name: str) -> Dict[str, float]:
+    def predict_score(self, image: ImageTyping, model_name: str,
+                      label_group: str = 'default', topk: Optional[int] = 20) -> Dict[str, float]:
         """
         Predict the scores for each class using the specified model.
 
@@ -288,6 +322,10 @@ class ClassifyModel:
         :type image: ImageTyping
         :param model_name: The name of the model to use for prediction.
         :type model_name: str
+        :param label_group: Label group for the classification result.
+        :type label_group: str
+        :param topk: Top-K result. Default is 20, return all results when None ia assigned.
+        :type topk: Optional[int]
 
         :return: A dictionary mapping class labels to their predicted scores.
         :rtype: Dict[str, float]
@@ -296,10 +334,20 @@ class ClassifyModel:
         :raises RuntimeError: If there's an error during prediction.
         """
         output = self._raw_predict(image, model_name)
-        values = dict(zip(self._open_label(model_name), map(lambda x: x.item(), output[0])))
+        labels = self._open_label(model_name)[label_group]
+        scores = output[0]
+        if topk and topk < labels.shape[-1]:
+            indices = np.argpartition(scores, -topk)[-topk:]
+            indices = indices[np.argsort(-scores[indices], kind='mergesort')]
+        else:
+            indices = np.argsort(-scores, kind='mergesort')
+        labels, scores = labels[indices], scores[indices]
+
+        # noinspection PyTypeChecker
+        values = dict(zip(labels.tolist(), scores.tolist()))
         return values
 
-    def predict(self, image: ImageTyping, model_name: str) -> Tuple[str, float]:
+    def predict(self, image: ImageTyping, model_name: str, label_group: str = 'default') -> Tuple[str, float]:
         """
         Predict the class with the highest score for the given image.
 
@@ -309,6 +357,8 @@ class ClassifyModel:
         :type image: ImageTyping
         :param model_name: The name of the model to use for prediction.
         :type model_name: str
+        :param label_group: Label group for the classification result.
+        :type label_group: str
 
         :return: A tuple containing the predicted class label and its score.
         :rtype: Tuple[str, float]
@@ -318,7 +368,7 @@ class ClassifyModel:
         """
         output = self._raw_predict(image, model_name)[0]
         max_id = np.argmax(output)
-        return self._open_label(model_name)[max_id], output[max_id].item()
+        return self._open_label(model_name)[label_group][max_id], output[max_id].item()
 
     def clear(self):
         """
@@ -366,20 +416,42 @@ class ClassifyModel:
 
         with gr.Row():
             with gr.Column():
-                gr_input_image = gr.Image(type='pil', label='Original Image')
-                gr_model = gr.Dropdown(model_list, value=default_model_name, label='Model')
-                gr_submit = gr.Button(value='Submit', variant='primary')
+                with gr.Row():
+                    gr_input_image = gr.Image(type='pil', label='Original Image')
+                with gr.Row():
+                    gr_model = gr.Dropdown(model_list, value=default_model_name, label='Model')
+                    gr_label_group = gr.Dropdown(list(self._open_label(default_model_name).keys()),
+                                                 value='default', label='Label Group')
+                with gr.Row():
+                    gr_submit = gr.Button(value='Submit', variant='primary')
 
             with gr.Column():
                 gr_output = gr.Label(label='Prediction')
+
+            def _fn_label_group(new_model_name, old_label_group):
+                labels_info = self._open_label(new_model_name)
+                return gr.Dropdown(
+                    list(labels_info.keys()),
+                    value=old_label_group if old_label_group in labels_info else 'default',
+                    label='Label Group'
+                )
 
             gr_submit.click(
                 self.predict_score,
                 inputs=[
                     gr_input_image,
                     gr_model,
+                    gr_label_group,
                 ],
                 outputs=[gr_output],
+            )
+            gr_model.change(
+                _fn_label_group,
+                inputs=[
+                    gr_model,
+                    gr_label_group
+                ],
+                outputs=[gr_label_group]
             )
 
     def launch_demo(self, default_model_name: Optional[str] = None,
@@ -444,6 +516,7 @@ def _open_models_for_repo_id(repo_id: str, hf_token: Optional[str] = None) -> Cl
 
 
 def classify_predict_score(image: ImageTyping, repo_id: str, model_name: str,
+                           label_group: str = 'default', topk: Optional[int] = 20,
                            hf_token: Optional[str] = None) -> Dict[str, float]:
     """
     Predict the scores for each class using the specified model and repository.
@@ -456,6 +529,10 @@ def classify_predict_score(image: ImageTyping, repo_id: str, model_name: str,
     :type repo_id: str
     :param model_name: The name of the model to use for prediction.
     :type model_name: str
+    :param label_group: Label group for the classification result.
+    :type label_group: str
+    :param topk: Top-K result. Default is 20, return all results when None ia assigned.
+    :type topk: Optional[int]
     :param hf_token: Optional Hugging Face authentication token.
     :type hf_token: Optional[str]
 
@@ -465,10 +542,15 @@ def classify_predict_score(image: ImageTyping, repo_id: str, model_name: str,
     :raises ValueError: If the model name or repository ID is invalid.
     :raises RuntimeError: If there's an error during prediction.
     """
-    return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict_score(image, model_name)
+    return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict_score(
+        image=image,
+        model_name=model_name,
+        label_group=label_group,
+        topk=topk,
+    )
 
 
-def classify_predict(image: ImageTyping, repo_id: str, model_name: str,
+def classify_predict(image: ImageTyping, repo_id: str, model_name: str, label_group: str = 'default',
                      hf_token: Optional[str] = None) -> Tuple[str, float]:
     """
     Predict the class with the highest score using the specified model and repository.
@@ -481,6 +563,8 @@ def classify_predict(image: ImageTyping, repo_id: str, model_name: str,
     :type repo_id: str
     :param model_name: The name of the model to use for prediction.
     :type model_name: str
+    :param label_group: Label group for the classification result.
+    :type label_group: str
     :param hf_token: Optional Hugging Face authentication token.
     :type hf_token: Optional[str]
 
@@ -490,4 +574,8 @@ def classify_predict(image: ImageTyping, repo_id: str, model_name: str,
     :raises ValueError: If the model name or repository ID is invalid.
     :raises RuntimeError: If there's an error during prediction.
     """
-    return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict(image, model_name)
+    return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict(
+        image=image,
+        model_name=model_name,
+        label_group=label_group,
+    )
