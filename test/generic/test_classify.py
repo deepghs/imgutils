@@ -2,7 +2,16 @@ import pytest
 from PIL import Image
 
 from imgutils.generic import classify_predict_score
+from imgutils.generic.classify import _open_models_for_repo_id
 from test.testings import get_testfile
+
+
+@pytest.fixture(scope='module', autouse=True)
+def _release_model_after_run():
+    try:
+        yield
+    finally:
+        _open_models_for_repo_id('deepghs/timms_mobilenet').clear()
 
 
 @pytest.mark.unittest

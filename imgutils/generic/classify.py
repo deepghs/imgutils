@@ -92,6 +92,19 @@ def _img_encode(image: Image.Image, size: Tuple[int, int] = (384, 384),
     return data.astype(np.float32)
 
 
+def _labels_scores_to_topk(labels: np.ndarray, scores: np.ndarray, topk: Optional[int] = 20):
+    if topk and topk < labels.shape[-1]:
+        indices = np.argpartition(scores, -topk)[-topk:]
+        indices = indices[np.argsort(-scores[indices], kind='mergesort')]
+    else:
+        indices = np.argsort(-scores, kind='mergesort')
+    labels, scores = labels[indices], scores[indices]
+
+    # noinspection PyTypeChecker
+    values = dict(zip(labels.tolist(), scores.tolist()))
+    return values
+
+
 ImagePreprocessFunc = Callable[[Image.Image], Image.Image]
 
 
@@ -286,7 +299,7 @@ class ClassifyModel:
         :type model_name: str
 
         :return: Raw model output
-        :rtype: np.ndarray
+        :rtype: Dict[str, np.ndarray]
 
         :raises RuntimeError: If model input shape is incompatible
         """
@@ -308,8 +321,10 @@ class ClassifyModel:
                 input_ = _img_encode(image, size=(width, height))[None, ...]
             else:
                 input_ = _img_encode(image)[None, ...]
-        output, = self._open_model(model_name).run(['output'], {'input': input_})
-        return output
+        onnx_model = self._open_model(model_name)
+        output_names = [output.name for output in onnx_model.get_outputs()]
+        output_values = self._open_model(model_name).run(output_names, {'input': input_})
+        return {name: value for name, value in zip(output_names, output_values)}
 
     def predict_score(self, image: ImageTyping, model_name: str,
                       label_group: str = 'default', topk: Optional[int] = 20) -> Dict[str, float]:
@@ -333,19 +348,14 @@ class ClassifyModel:
         :raises ValueError: If the model name is invalid.
         :raises RuntimeError: If there's an error during prediction.
         """
-        output = self._raw_predict(image, model_name)
+        output = self._raw_predict(image, model_name)['output']
         labels = self._open_label(model_name)[label_group]
         scores = output[0]
-        if topk and topk < labels.shape[-1]:
-            indices = np.argpartition(scores, -topk)[-topk:]
-            indices = indices[np.argsort(-scores[indices], kind='mergesort')]
-        else:
-            indices = np.argsort(-scores, kind='mergesort')
-        labels, scores = labels[indices], scores[indices]
-
-        # noinspection PyTypeChecker
-        values = dict(zip(labels.tolist(), scores.tolist()))
-        return values
+        return _labels_scores_to_topk(
+            labels=labels,
+            scores=scores,
+            topk=topk,
+        )
 
     def predict(self, image: ImageTyping, model_name: str, label_group: str = 'default') -> Tuple[str, float]:
         """
@@ -366,9 +376,16 @@ class ClassifyModel:
         :raises ValueError: If the model name is invalid.
         :raises RuntimeError: If there's an error during prediction.
         """
-        output = self._raw_predict(image, model_name)[0]
+        output = self._raw_predict(image, model_name)['output'][0]
         max_id = np.argmax(output)
         return self._open_label(model_name)[label_group][max_id], output[max_id].item()
+
+    def predict_fmt(self, image: ImageTyping, model_name: str,
+                      label_group: str = 'default', topk: Optional[int] = 20):
+        d_data = {name: value[0] for name, value in self._raw_predict(image, model_name).items()}
+        scores = d_data['output']
+
+
 
     def clear(self):
         """
@@ -378,6 +395,7 @@ class ClassifyModel:
         """
         self._models.clear()
         self._labels.clear()
+        self._preprocesses.clear()
 
     def make_ui(self, default_model_name: Optional[str] = None):
         """
