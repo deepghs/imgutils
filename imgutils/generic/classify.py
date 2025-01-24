@@ -339,7 +339,9 @@ class ClassifyModel:
         if topk and topk < labels.shape[-1]:
             indices = np.argpartition(scores, -topk)[-topk:]
             indices = indices[np.argsort(-scores[indices], kind='mergesort')]
-            labels, scores = labels[indices], scores[indices]
+        else:
+            indices = np.argsort(-scores, kind='mergesort')
+        labels, scores = labels[indices], scores[indices]
 
         # noinspection PyTypeChecker
         values = dict(zip(labels.tolist(), scores.tolist()))
@@ -514,6 +516,7 @@ def _open_models_for_repo_id(repo_id: str, hf_token: Optional[str] = None) -> Cl
 
 
 def classify_predict_score(image: ImageTyping, repo_id: str, model_name: str,
+                           label_group: str = 'default', topk: Optional[int] = 20,
                            hf_token: Optional[str] = None) -> Dict[str, float]:
     """
     Predict the scores for each class using the specified model and repository.
@@ -526,6 +529,10 @@ def classify_predict_score(image: ImageTyping, repo_id: str, model_name: str,
     :type repo_id: str
     :param model_name: The name of the model to use for prediction.
     :type model_name: str
+    :param label_group: Label group for the classification result.
+    :type label_group: str
+    :param topk: Top-K result. Default is 20, return all results when None ia assigned.
+    :type topk: Optional[int]
     :param hf_token: Optional Hugging Face authentication token.
     :type hf_token: Optional[str]
 
@@ -535,10 +542,15 @@ def classify_predict_score(image: ImageTyping, repo_id: str, model_name: str,
     :raises ValueError: If the model name or repository ID is invalid.
     :raises RuntimeError: If there's an error during prediction.
     """
-    return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict_score(image, model_name)
+    return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict_score(
+        image=image,
+        model_name=model_name,
+        label_group=label_group,
+        topk=topk,
+    )
 
 
-def classify_predict(image: ImageTyping, repo_id: str, model_name: str,
+def classify_predict(image: ImageTyping, repo_id: str, model_name: str, label_group: str = 'default',
                      hf_token: Optional[str] = None) -> Tuple[str, float]:
     """
     Predict the class with the highest score using the specified model and repository.
@@ -551,6 +563,8 @@ def classify_predict(image: ImageTyping, repo_id: str, model_name: str,
     :type repo_id: str
     :param model_name: The name of the model to use for prediction.
     :type model_name: str
+    :param label_group: Label group for the classification result.
+    :type label_group: str
     :param hf_token: Optional Hugging Face authentication token.
     :type hf_token: Optional[str]
 
@@ -560,4 +574,8 @@ def classify_predict(image: ImageTyping, repo_id: str, model_name: str,
     :raises ValueError: If the model name or repository ID is invalid.
     :raises RuntimeError: If there's an error during prediction.
     """
-    return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict(image, model_name)
+    return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict(
+        image=image,
+        model_name=model_name,
+        label_group=label_group,
+    )
