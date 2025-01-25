@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.detect.nudenet &mdash; imgutils 0.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=bfb94e3c"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.detect.nudenet</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.detect.nudenet</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    This module provides functionality for detecting nudity in images using the NudeNet model.</span>
+<span class="sd">    </span>
+<span class="sd">    The module includes functions for preprocessing images, running the NudeNet YOLO model,</span>
+<span class="sd">    applying non-maximum suppression (NMS), and postprocessing the results. It utilizes</span>
+<span class="sd">    ONNX models hosted on `deepghs/nudenet_onnx &lt;https://huggingface.co/deepghs/nudenet_onnx&gt;`_</span>
+<span class="sd">    for efficient inference. The original project is</span>
+<span class="sd">    `notAI-tech/NudeNet &lt;https://github.com/notAI-tech/NudeNet&gt;`_.</span>
+<span class="sd">    </span>
+<span class="sd">    .. collapse:: Overview of NudeNet Detect (NSFW Warning!!!)</span>
+
+<span class="sd">        .. image:: nudenet_detect_demo.plot.py.svg</span>
+<span class="sd">            :align: center</span>
+<span class="sd">    </span>
+<span class="sd">    The main function :func:`detect_with_nudenet` can be used to perform nudity detection on</span>
+<span class="sd">    given images, returning a list of bounding boxes, labels, and confidence scores.</span>
+<span class="sd">    </span>
+<span class="sd">    This is an overall benchmark of all the nudenet models:</span>
+
+<span class="sd">    .. image:: nudenet_detect_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Here is a detailed list of labels from the NudeNet detection model and their respective meanings:</span>
+
+<span class="sd">        .. list-table::</span>
+<span class="sd">           :widths: 25 75</span>
+<span class="sd">           :header-rows: 1</span>
+
+<span class="sd">           * - Label</span>
+<span class="sd">             - Description</span>
+<span class="sd">           * - FEMALE_GENITALIA_COVERED</span>
+<span class="sd">             - Detects covered female genitalia in the image.</span>
+<span class="sd">           * - FACE_FEMALE</span>
+<span class="sd">             - Detects the face of a female in the image.</span>
+<span class="sd">           * - BUTTOCKS_EXPOSED</span>
+<span class="sd">             - Detects exposed buttocks in the image.</span>
+<span class="sd">           * - FEMALE_BREAST_EXPOSED</span>
+<span class="sd">             - Detects exposed female breasts in the image.</span>
+<span class="sd">           * - FEMALE_GENITALIA_EXPOSED</span>
+<span class="sd">             - Detects exposed female genitalia in the image.</span>
+<span class="sd">           * - MALE_BREAST_EXPOSED</span>
+<span class="sd">             - Detects exposed male breasts in the image.</span>
+<span class="sd">           * - ANUS_EXPOSED</span>
+<span class="sd">             - Detects exposed anus in the image.</span>
+<span class="sd">           * - FEET_EXPOSED</span>
+<span class="sd">             - Detects exposed feet in the image.</span>
+<span class="sd">           * - BELLY_COVERED</span>
+<span class="sd">             - Detects a covered belly in the image.</span>
+<span class="sd">           * - FEET_COVERED</span>
+<span class="sd">             - Detects covered feet in the image.</span>
+<span class="sd">           * - ARMPITS_COVERED</span>
+<span class="sd">             - Detects covered armpits in the image.</span>
+<span class="sd">           * - ARMPITS_EXPOSED</span>
+<span class="sd">             - Detects exposed armpits in the image.</span>
+<span class="sd">           * - FACE_MALE</span>
+<span class="sd">             - Detects the face of a male in the image.</span>
+<span class="sd">           * - BELLY_EXPOSED</span>
+<span class="sd">             - Detects an exposed belly in the image.</span>
+<span class="sd">           * - MALE_GENITALIA_EXPOSED</span>
+<span class="sd">             - Detects exposed male genitalia in the image.</span>
+<span class="sd">           * - ANUS_COVERED</span>
+<span class="sd">             - Detects a covered anus in the image.</span>
+<span class="sd">           * - FEMALE_BREAST_COVERED</span>
+<span class="sd">             - Detects covered female breasts in the image.</span>
+<span class="sd">           * - BUTTOCKS_COVERED</span>
+<span class="sd">             - Detects covered buttocks in the image.</span>
+
+
+<span class="sd">    .. note::</span>
+<span class="sd">    </span>
+<span class="sd">        This module requires onnxruntime version 1.18 or higher.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hbutils.testing.requires.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">VersionInfo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_image</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_compatibility</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if the installed onnxruntime version is compatible with NudeNet.</span>
+
+<span class="sd">    :raises EnvironmentError: If the onnxruntime version is less than 1.18.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
+    <span class="k">if</span> <span class="n">VersionInfo</span><span class="p">(</span><span class="n">onnxruntime</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="s1">&#39;1.18&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Nudenet not supported on onnxruntime </span><span class="si">{</span><span class="n">onnxruntime</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s1">, &#39;</span>
+                               <span class="sa">f</span><span class="s1">&#39;please upgrade it to 1.18+ version.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                               <span class="sa">f</span><span class="s1">&#39;If you are running on CPU, use &quot;pip install -U onnxruntime&quot; .</span><span class="se">\n</span><span class="s1">&#39;</span>
+                               <span class="sa">f</span><span class="s1">&#39;If you are running on GPU, use &quot;pip install -U onnxruntime-gpu&quot; .&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+
+<span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/nudenet_onnx&#39;</span>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_nudenet_yolo</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Open and cache the NudeNet YOLO ONNX model.</span>
+
+<span class="sd">    :return: The loaded ONNX model for YOLO.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">_REPO_ID</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;320n.onnx&#39;</span><span class="p">,</span>
+    <span class="p">))</span>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_nudenet_nms</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Open and cache the NudeNet NMS ONNX model.</span>
+
+<span class="sd">    :return: The loaded ONNX model for NMS.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">_REPO_ID</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;nms-yolov8.onnx&#39;</span><span class="p">,</span>
+    <span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_nn_preprocessing</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">320</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Preprocess the input image for the NudeNet model.</span>
+
+<span class="sd">    :param image: The input image.</span>
+<span class="sd">    :param model_size: The size to which the image should be resized (default: 320).</span>
+<span class="sd">    :return: A tuple containing the preprocessed image array and the scaling ratio.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">image</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;RGB&#39;</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+    <span class="n">max_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+
+    <span class="n">mat_pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">max_size</span><span class="p">,</span> <span class="n">max_size</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="n">mat_pad</span><span class="p">[:</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">:</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">mat</span>
+    <span class="n">img_resized</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">mat_pad</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">model_size</span><span class="p">,</span> <span class="n">model_size</span><span class="p">),</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
+
+    <span class="n">input_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img_resized</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+    <span class="n">input_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">input_data</span><span class="p">,</span> <span class="n">max_size</span> <span class="o">/</span> <span class="n">model_size</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_make_np_config</span><span class="p">(</span><span class="n">topk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.45</span><span class="p">,</span> <span class="n">score_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a configuration array for the NMS model.</span>
+
+<span class="sd">    :param topk: The maximum number of detections to keep (default: 100).</span>
+<span class="sd">    :param iou_threshold: The IoU threshold for NMS (default: 0.45).</span>
+<span class="sd">    :param score_threshold: The score threshold for detections (default: 0.25).</span>
+<span class="sd">    :return: A numpy array containing the configuration parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">topk</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">,</span> <span class="n">score_threshold</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_nn_postprocess</span><span class="p">(</span><span class="n">selected</span><span class="p">,</span> <span class="n">global_ratio</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Postprocess the model output to generate bounding boxes and labels.</span>
+
+<span class="sd">    :param selected: The output from the NMS model.</span>
+<span class="sd">    :param global_ratio: The scaling ratio to apply to the bounding boxes.</span>
+<span class="sd">    :return: A list of tuples, each containing a bounding box, label, and confidence score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bboxes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">num_boxes</span> <span class="o">=</span> <span class="n">selected</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_boxes</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+
+        <span class="n">box</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">global_ratio</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">box</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">box</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">box</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="n">bboxes</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span> <span class="n">_LABELS</span><span class="p">[</span><span class="n">label</span><span class="p">],</span> <span class="n">score</span><span class="o">.</span><span class="n">item</span><span class="p">()))</span>
+
+    <span class="k">return</span> <span class="n">bboxes</span>
+
+
+<span class="n">_LABELS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;FEMALE_GENITALIA_COVERED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FACE_FEMALE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BUTTOCKS_EXPOSED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FEMALE_BREAST_EXPOSED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FEMALE_GENITALIA_EXPOSED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MALE_BREAST_EXPOSED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ANUS_EXPOSED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FEET_EXPOSED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BELLY_COVERED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FEET_COVERED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ARMPITS_COVERED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ARMPITS_EXPOSED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FACE_MALE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BELLY_EXPOSED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MALE_GENITALIA_EXPOSED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ANUS_COVERED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FEMALE_BREAST_COVERED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BUTTOCKS_COVERED&quot;</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="detect_with_nudenet"><a class="viewcode-back" href="../../../api_doc/detect/nudenet.html#imgutils.detect.nudenet.detect_with_nudenet">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">detect_with_nudenet</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">topk</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                        <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.45</span><span class="p">,</span> <span class="n">score_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">)</span> \
+        <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Detect nudity in the given image using the NudeNet model.</span>
+
+<span class="sd">    :param image: The input image to analyze.</span>
+<span class="sd">    :param topk: The maximum number of detections to keep (default: 100).</span>
+<span class="sd">    :param iou_threshold: The IoU threshold for NMS (default: 0.45).</span>
+<span class="sd">    :param score_threshold: The score threshold for detections (default: 0.25).</span>
+<span class="sd">    :return: A list of tuples, each containing:</span>
+
+<span class="sd">             - A bounding box as (x1, y1, x2, y2)</span>
+<span class="sd">             - A label string</span>
+<span class="sd">             - A confidence score</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_check_compatibility</span><span class="p">()</span>
+    <span class="n">input_</span><span class="p">,</span> <span class="n">global_ratio</span> <span class="o">=</span> <span class="n">_nn_preprocessing</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_size</span><span class="o">=</span><span class="mi">320</span><span class="p">)</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">_make_np_config</span><span class="p">(</span><span class="n">topk</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">,</span> <span class="n">score_threshold</span><span class="p">)</span>
+    <span class="n">output0</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_nudenet_yolo</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;output0&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;images&#39;</span><span class="p">:</span> <span class="n">input_</span><span class="p">})</span>
+    <span class="n">selected</span><span class="p">,</span> <span class="o">=</span> <span class="n">_open_nudenet_nms</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;selected&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;detection&#39;</span><span class="p">:</span> <span class="n">output0</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">_nn_postprocess</span><span class="p">(</span><span class="n">selected</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">global_ratio</span><span class="o">=</span><span class="n">global_ratio</span><span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.9.1
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.5.0/index.html">v0.5.0</a></dd>
+                        <dd><a href="../../../../v0.6.0/index.html">v0.6.0</a></dd>
+                        <dd><a href="../../../../v0.6.1/index.html">v0.6.1</a></dd>
+                        <dd><a href="../../../../v0.6.2/index.html">v0.6.2</a></dd>
+                        <dd><a href="../../../../v0.6.3/index.html">v0.6.3</a></dd>
+                        <dd><a href="../../../../v0.7.0/index.html">v0.7.0</a></dd>
+                        <dd><a href="../../../../v0.7.1/index.html">v0.7.1</a></dd>
+                        <dd><a href="../../../../v0.8.0/index.html">v0.8.0</a></dd>
+                        <dd><a href="../../../../v0.9.0/index.html">v0.9.0</a></dd>
+                        <dd><a href="nudenet.html">v0.9.1</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

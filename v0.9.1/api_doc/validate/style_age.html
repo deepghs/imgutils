@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.validate.style_age &mdash; imgutils 0.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=bfb94e3c"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.validate.teen" href="teen.html" />
+    <link rel="prev" title="imgutils.validate.safe" href="safe.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.validate</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aicheck.html">imgutils.validate.aicheck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bangumi_char.html">imgutils.validate.bangumi_char</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classify.html">imgutils.validate.classify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">imgutils.validate.color</a></li>
+<li class="toctree-l2"><a class="reference internal" href="completeness.html">imgutils.validate.completeness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dbrating.html">imgutils.validate.dbrating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="furry.html">imgutils.validate.furry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monochrome.html">imgutils.validate.monochrome</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nsfw.html">imgutils.validate.nsfw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="portrait.html">imgutils.validate.portrait</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rating.html">imgutils.validate.rating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="real.html">imgutils.validate.real</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safe.html">imgutils.validate.safe</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.validate.style_age</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#anime-style-age-score">anime_style_age_score</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.validate.style_age.anime_style_age_score"><code class="docutils literal notranslate"><span class="pre">anime_style_age_score()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#anime-style-age">anime_style_age</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.validate.style_age.anime_style_age"><code class="docutils literal notranslate"><span class="pre">anime_style_age()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="teen.html">imgutils.validate.teen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="truncate.html">imgutils.validate.truncate</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.validate</a></li>
+      <li class="breadcrumb-item active">imgutils.validate.style_age</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/validate/style_age.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.validate.style_age">
+<span id="imgutils-validate-style-age"></span><h1>imgutils.validate.style_age<a class="headerlink" href="#module-imgutils.validate.style_age" title="Permalink to this heading"></a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>A model for classifying anime style_age images into 7 classes
+(<code class="docutils literal notranslate"><span class="pre">1970s-</span></code>, <code class="docutils literal notranslate"><span class="pre">1980s</span></code>, <code class="docutils literal notranslate"><span class="pre">1990s</span></code>, <code class="docutils literal notranslate"><span class="pre">2000s</span></code>, <code class="docutils literal notranslate"><span class="pre">2010s</span></code>, <code class="docutils literal notranslate"><span class="pre">2015s</span></code>, <code class="docutils literal notranslate"><span class="pre">2020s</span></code>).</p>
+<p>The following are sample images for testing.</p>
+<img alt="../../_images/style_age.plot.py.svg" class="align-center" src="../../_images/style_age.plot.py.svg" /><p>This is an overall benchmark of all the style_age classification models:</p>
+<img alt="../../_images/style_age_benchmark.plot.py.svg" class="align-center" src="../../_images/style_age_benchmark.plot.py.svg" /><p>The models are hosted on
+<a class="reference external" href="https://huggingface.co/deepghs/anime_style_ages">huggingface - deepghs/anime_style_ages</a>.</p>
+</dd>
+</dl>
+<section id="anime-style-age-score">
+<h2>anime_style_age_score<a class="headerlink" href="#anime-style-age-score" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.validate.style_age.anime_style_age_score">
+<span class="sig-prename descclassname"><span class="pre">imgutils.validate.style_age.</span></span><span class="sig-name descname"><span class="pre">anime_style_age_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mobilenetv3_v0_dist'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/validate/style_age.html#anime_style_age_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.validate.style_age.anime_style_age_score" title="Permalink to this definition"></a></dt>
+<dd><p>Get the scores for different types in an anime style age.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – The model name. Default is ‘mobilenetv3_v0_dist’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with type scores.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, float]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.validate</span><span class="w"> </span><span class="kn">import</span> <span class="n">anime_style_age_score</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age_score</span><span class="p">(</span><span class="s1">&#39;style_age/1970s-/1.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;1970s-&#39;: 0.9805465340614319, &#39;1980s&#39;: 8.761269782553427e-06, &#39;1990s&#39;: 0.0005044879508204758, &#39;2000s&#39;: 0.01569165475666523, &#39;2010s&#39;: 0.002850610064342618, &#39;2015s&#39;: 0.00037849770160391927, &#39;2020s&#39;: 1.9434612113400362e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age_score</span><span class="p">(</span><span class="s1">&#39;style_age/1980s/5.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;1970s-&#39;: 9.053497342392802e-05, &#39;1980s&#39;: 0.9992554783821106, &#39;1990s&#39;: 0.0006490182713605464, &#39;2000s&#39;: 2.8857468805654207e-06, &#39;2010s&#39;: 4.317252262353577e-07, &#39;2015s&#39;: 6.314484721769986e-07, &#39;2020s&#39;: 1.0750001138148946e-06}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age_score</span><span class="p">(</span><span class="s1">&#39;style_age/1990s/9.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;1970s-&#39;: 1.706833609205205e-05, &#39;1980s&#39;: 0.00034479793976061046, &#39;1990s&#39;: 0.9995512366294861, &#39;2000s&#39;: 4.391363472677767e-05, &#39;2010s&#39;: 1.4607510820496827e-05, &#39;2015s&#39;: 2.0679690351244062e-05, &#39;2020s&#39;: 7.661913514311891e-06}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age_score</span><span class="p">(</span><span class="s1">&#39;style_age/2000s/13.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;1970s-&#39;: 3.757471131393686e-05, &#39;1980s&#39;: 3.0744897230761126e-05, &#39;1990s&#39;: 2.76177470368566e-05, &#39;2000s&#39;: 0.9996387958526611, &#39;2010s&#39;: 9.160279296338558e-05, &#39;2015s&#39;: 0.00013228354509919882, &#39;2020s&#39;: 4.1361367038916796e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age_score</span><span class="p">(</span><span class="s1">&#39;style_age/2010s/17.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;1970s-&#39;: 7.464057489414699e-06, &#39;1980s&#39;: 3.2412899599876255e-05, &#39;1990s&#39;: 5.703883653040975e-05, &#39;2000s&#39;: 9.127358498517424e-05, &#39;2010s&#39;: 0.9973921775817871, &#39;2015s&#39;: 0.0022309015039354563, &#39;2020s&#39;: 0.00018872201326303184}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age_score</span><span class="p">(</span><span class="s1">&#39;style_age/2015s/21.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;1970s-&#39;: 3.780902943617548e-06, &#39;1980s&#39;: 1.422096920578042e-05, &#39;1990s&#39;: 1.638929097680375e-05, &#39;2000s&#39;: 2.152203023797483e-06, &#39;2010s&#39;: 0.00028818511054851115, &#39;2015s&#39;: 0.9996094107627869, &#39;2020s&#39;: 6.58777353237383e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age_score</span><span class="p">(</span><span class="s1">&#39;style_age/2020s/25.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;1970s-&#39;: 1.9200742826797068e-05, &#39;1980s&#39;: 0.00017117452807724476, &#39;1990s&#39;: 9.518441947875544e-05, &#39;2000s&#39;: 2.885544381570071e-05, &#39;2010s&#39;: 1.4389253010449465e-05, &#39;2015s&#39;: 3.1696006772108376e-05, &#39;2020s&#39;: 0.9996393918991089}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="anime-style-age">
+<h2>anime_style_age<a class="headerlink" href="#anime-style-age" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.validate.style_age.anime_style_age">
+<span class="sig-prename descclassname"><span class="pre">imgutils.validate.style_age.</span></span><span class="sig-name descname"><span class="pre">anime_style_age</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mobilenetv3_v0_dist'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/validate/style_age.html#anime_style_age"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.validate.style_age.anime_style_age" title="Permalink to this definition"></a></dt>
+<dd><p>Get the primary anime style age type and its score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – The model name. Default is ‘mobilenetv3_v0_dist’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple with the primary type and its score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[str, float]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.validate</span><span class="w"> </span><span class="kn">import</span> <span class="n">anime_style_age</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age</span><span class="p">(</span><span class="s1">&#39;style_age/1970s-/1.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;1970s-&#39;, 0.9805465340614319)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age</span><span class="p">(</span><span class="s1">&#39;style_age/1980s/5.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;1980s&#39;, 0.9992554783821106)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age</span><span class="p">(</span><span class="s1">&#39;style_age/1990s/9.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;1990s&#39;, 0.9995512366294861)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age</span><span class="p">(</span><span class="s1">&#39;style_age/2000s/13.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;2000s&#39;, 0.9996387958526611)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age</span><span class="p">(</span><span class="s1">&#39;style_age/2010s/17.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;2010s&#39;, 0.9973921775817871)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age</span><span class="p">(</span><span class="s1">&#39;style_age/2015s/21.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;2015s&#39;, 0.9996094107627869)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anime_style_age</span><span class="p">(</span><span class="s1">&#39;style_age/2020s/25.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;2020s&#39;, 0.9996393918991089)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="safe.html" class="btn btn-neutral float-left" title="imgutils.validate.safe" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="teen.html" class="btn btn-neutral float-right" title="imgutils.validate.teen" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.9.1
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.5.0/api_doc/validate/style_age.html">v0.5.0</a></dd>
+                        <dd><a href="../../../v0.6.0/api_doc/validate/style_age.html">v0.6.0</a></dd>
+                        <dd><a href="../../../v0.6.1/api_doc/validate/style_age.html">v0.6.1</a></dd>
+                        <dd><a href="../../../v0.6.2/api_doc/validate/style_age.html">v0.6.2</a></dd>
+                        <dd><a href="../../../v0.6.3/api_doc/validate/style_age.html">v0.6.3</a></dd>
+                        <dd><a href="../../../v0.7.0/api_doc/validate/style_age.html">v0.7.0</a></dd>
+                        <dd><a href="../../../v0.7.1/api_doc/validate/style_age.html">v0.7.1</a></dd>
+                        <dd><a href="../../../v0.8.0/api_doc/validate/style_age.html">v0.8.0</a></dd>
+                        <dd><a href="../../../v0.9.0/api_doc/validate/style_age.html">v0.9.0</a></dd>
+                        <dd><a href="style_age.html">v0.9.1</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../HEAD/api_doc/validate/style_age.html">HEAD</a></dd>
+                        <dd><a href="../../../dev/denormalize/api_doc/validate/style_age.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../main/api_doc/validate/style_age.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
