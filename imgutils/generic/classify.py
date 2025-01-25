@@ -12,6 +12,7 @@ It also handles token-based authentication for accessing private Hugging Face re
 
 import json
 import os
+import re
 from threading import Lock
 from typing import Tuple, Optional, List, Dict, Callable
 
@@ -25,7 +26,7 @@ from huggingface_hub.errors import EntryNotFoundError
 
 from ..data import rgb_encode, ImageTyping, load_image
 from ..preprocess import create_pillow_transforms
-from ..utils import open_onnx_model, ts_lru_cache
+from ..utils import open_onnx_model, ts_lru_cache, vnames, vreplace
 
 try:
     import gradio as gr
@@ -36,6 +37,7 @@ __all__ = [
     'ClassifyModel',
     'classify_predict_score',
     'classify_predict',
+    'classify_predict_fmt',
 ]
 
 
@@ -90,6 +92,19 @@ def _img_encode(image: Image.Image, size: Tuple[int, int] = (384, 384),
         data = (data - mean) / std
 
     return data.astype(np.float32)
+
+
+def _labels_scores_to_topk(labels: np.ndarray, scores: np.ndarray, topk: Optional[int] = 20):
+    if topk and topk < labels.shape[-1]:
+        indices = np.argpartition(scores, -topk)[-topk:]
+        indices = indices[np.argsort(-scores[indices], kind='mergesort')]
+    else:
+        indices = np.argsort(-scores, kind='mergesort')
+    labels, scores = labels[indices], scores[indices]
+
+    # noinspection PyTypeChecker
+    values = dict(zip(labels.tolist(), scores.tolist()))
+    return values
 
 
 ImagePreprocessFunc = Callable[[Image.Image], Image.Image]
@@ -286,7 +301,7 @@ class ClassifyModel:
         :type model_name: str
 
         :return: Raw model output
-        :rtype: np.ndarray
+        :rtype: Dict[str, np.ndarray]
 
         :raises RuntimeError: If model input shape is incompatible
         """
@@ -308,8 +323,10 @@ class ClassifyModel:
                 input_ = _img_encode(image, size=(width, height))[None, ...]
             else:
                 input_ = _img_encode(image)[None, ...]
-        output, = self._open_model(model_name).run(['output'], {'input': input_})
-        return output
+        onnx_model = self._open_model(model_name)
+        output_names = [output.name for output in onnx_model.get_outputs()]
+        output_values = self._open_model(model_name).run(output_names, {'input': input_})
+        return {name: value for name, value in zip(output_names, output_values)}
 
     def predict_score(self, image: ImageTyping, model_name: str,
                       label_group: str = 'default', topk: Optional[int] = 20) -> Dict[str, float]:
@@ -333,19 +350,14 @@ class ClassifyModel:
         :raises ValueError: If the model name is invalid.
         :raises RuntimeError: If there's an error during prediction.
         """
-        output = self._raw_predict(image, model_name)
+        output = self._raw_predict(image, model_name)['output']
         labels = self._open_label(model_name)[label_group]
         scores = output[0]
-        if topk and topk < labels.shape[-1]:
-            indices = np.argpartition(scores, -topk)[-topk:]
-            indices = indices[np.argsort(-scores[indices], kind='mergesort')]
-        else:
-            indices = np.argsort(-scores, kind='mergesort')
-        labels, scores = labels[indices], scores[indices]
-
-        # noinspection PyTypeChecker
-        values = dict(zip(labels.tolist(), scores.tolist()))
-        return values
+        return _labels_scores_to_topk(
+            labels=labels,
+            scores=scores,
+            topk=topk,
+        )
 
     def predict(self, image: ImageTyping, model_name: str, label_group: str = 'default') -> Tuple[str, float]:
         """
@@ -366,9 +378,58 @@ class ClassifyModel:
         :raises ValueError: If the model name is invalid.
         :raises RuntimeError: If there's an error during prediction.
         """
-        output = self._raw_predict(image, model_name)[0]
+        output = self._raw_predict(image, model_name)['output'][0]
         max_id = np.argmax(output)
         return self._open_label(model_name)[label_group][max_id], output[max_id].item()
+
+    def predict_fmt(self, image: ImageTyping, model_name: str, fmt='scores-top5'):
+        """
+        Predict the scores for each class with given format specification using the specified model.
+
+        :param image: The input image to classify.
+        :type image: ImageTyping
+        :param model_name: The name of the model to use for prediction.
+        :type model_name: str
+        :param fmt: Format specification. Default is ``scores-top5``.
+
+        :return: Prediction result formatted with parameter ``fmt``.
+
+        :raises ValueError: If the model name is invalid.
+        :raises RuntimeError: If there's an error during prediction.
+
+        .. note::
+            The following specifications are supported in parameter ``fmt``:
+
+            - ``output``, raw prediction result, in np.ndarray format.
+            - ``logits``, (not available in some models) logits result, in np.ndarray format.
+            - ``embedding``, (not available in some models) embeddings result, in np.ndarray format.
+            - ``scores``, prediction scores of all classes in dict format.
+            - ``scores-topK``, prediction scores of top-K classes in dict format, e.g. ``scores-top10`` means top 10 scores.
+            - ``scores-<label_group>``, prediction scores of all classes with label group ``<label_group>``, e.g. ``scores-descriptions`` means all scores with ``descriptions`` label group.
+            - ``scores-topK-<label_group>``, prediction scores of top-K classes with label group ``<label_group>``.
+        """
+        d_data = {name: value[0] for name, value in self._raw_predict(image, model_name).items()}
+        scores = d_data['output']
+        d_labels = self._open_label(model_name)
+        vname_to_spair = {}
+        d_scores = {}
+        for vname in vnames(fmt, str_only=True):
+            matching = re.fullmatch(r'^scores(-top(?P<topk>\d+))?(-(?P<label_group>[a-zA-Z\d_]+))?$', vname)
+            if matching:
+                topk = int(matching.group('topk')) if matching.group('topk') else None
+                label_group = matching.group('label_group') if matching.group('label_group') else 'default'
+                vname_to_spair[vname] = (topk, label_group)
+                if (topk, label_group) not in d_scores:
+                    d_scores[(topk, label_group)] = _labels_scores_to_topk(
+                        labels=d_labels[label_group],
+                        scores=scores,
+                        topk=topk,
+                    )
+
+        return vreplace(fmt, mapping={
+            **d_data,
+            **{vname: d_scores[vpair] for vname, vpair in vname_to_spair.items()},
+        })
 
     def clear(self):
         """
@@ -378,6 +439,7 @@ class ClassifyModel:
         """
         self._models.clear()
         self._labels.clear()
+        self._preprocesses.clear()
 
     def make_ui(self, default_model_name: Optional[str] = None):
         """
@@ -578,4 +640,44 @@ def classify_predict(image: ImageTyping, repo_id: str, model_name: str, label_gr
         image=image,
         model_name=model_name,
         label_group=label_group,
+    )
+
+
+def classify_predict_fmt(image: ImageTyping, repo_id: str, model_name: str, fmt='scores-top5',
+                         hf_token: Optional[str] = None):
+    """
+    Predict the scores for each class with given format specification using the specified model.
+
+    This function is a convenience wrapper around ClassifyModel's predict method.
+
+    :param image: The input image to classify.
+    :type image: ImageTyping
+    :param repo_id: The repository ID containing the models.
+    :type repo_id: str
+    :param model_name: The name of the model to use for prediction.
+    :type model_name: str
+    :param fmt: Format specification. Default is ``scores-top5``.
+    :param hf_token: Optional Hugging Face authentication token.
+    :type hf_token: Optional[str]
+
+    :return: Prediction result formatted with parameter ``fmt``.
+
+    :raises ValueError: If the model name is invalid.
+    :raises RuntimeError: If there's an error during prediction.
+
+    .. note::
+        The following specifications are supported in parameter ``fmt``:
+
+        - ``output``, raw prediction result, in np.ndarray format.
+        - ``logits``, (not available in some models) logits result, in np.ndarray format.
+        - ``embedding``, (not available in some models) embeddings result, in np.ndarray format.
+        - ``scores``, prediction scores of all classes in dict format.
+        - ``scores-topK``, prediction scores of top-K classes in dict format, e.g. ``scores-top10`` means top 10 scores.
+        - ``scores-<label_group>``, prediction scores of all classes with label group ``<label_group>``, e.g. ``scores-descriptions`` means all scores with ``descriptions`` label group.
+        - ``scores-topK-<label_group>``, prediction scores of top-K classes with label group ``<label_group>``.
+    """
+    return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict_fmt(
+        image=image,
+        model_name=model_name,
+        fmt=fmt,
     )
