@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>imgutils.generic.classify &mdash; imgutils 0.9.0 documentation</title>
+  <title>imgutils.generic.classify &mdash; imgutils 0.9.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=1bc1ca25"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=bfb94e3c"></script>
       <script src="../../_static/doctools.js?v=888ff710"></script>
       <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -73,6 +73,10 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#classify-predict">classify_predict</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#imgutils.generic.classify.classify_predict"><code class="docutils literal notranslate"><span class="pre">classify_predict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#classify-predict-fmt">classify_predict_fmt</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.generic.classify.classify_predict_fmt"><code class="docutils literal notranslate"><span class="pre">classify_predict_fmt()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -266,6 +270,43 @@ If None, the most recently updated model will be selected.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="imgutils.generic.classify.ClassifyModel.predict_fmt">
+<span class="sig-name descname"><span class="pre">predict_fmt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scores-top5'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify.html#ClassifyModel.predict_fmt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify.ClassifyModel.predict_fmt" title="Permalink to this definition"></a></dt>
+<dd><p>Predict the scores for each class with given format specification using the specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image to classify.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – The name of the model to use for prediction.</p></li>
+<li><p><strong>fmt</strong> – Format specification. Default is <code class="docutils literal notranslate"><span class="pre">scores-top5</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Prediction result formatted with parameter <code class="docutils literal notranslate"><span class="pre">fmt</span></code>.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the model name is invalid.</p></li>
+<li><p><strong>RuntimeError</strong> – If there’s an error during prediction.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The following specifications are supported in parameter <code class="docutils literal notranslate"><span class="pre">fmt</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output</span></code>, raw prediction result, in np.ndarray format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logits</span></code>, (not available in some models) logits result, in np.ndarray format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">embedding</span></code>, (not available in some models) embeddings result, in np.ndarray format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scores</span></code>, prediction scores of all classes in dict format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scores-topK</span></code>, prediction scores of top-K classes in dict format, e.g. <code class="docutils literal notranslate"><span class="pre">scores-top10</span></code> means top 10 scores.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scores-&lt;label_group&gt;</span></code>, prediction scores of all classes with label group <code class="docutils literal notranslate"><span class="pre">&lt;label_group&gt;</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">scores-descriptions</span></code> means all scores with <code class="docutils literal notranslate"><span class="pre">descriptions</span></code> label group.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scores-topK-&lt;label_group&gt;</span></code>, prediction scores of top-K classes with label group <code class="docutils literal notranslate"><span class="pre">&lt;label_group&gt;</span></code>.</p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="imgutils.generic.classify.ClassifyModel.predict_score">
 <span class="sig-name descname"><span class="pre">predict_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/generic/classify.html#ClassifyModel.predict_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify.ClassifyModel.predict_score" title="Permalink to this definition"></a></dt>
 <dd><p>Predict the scores for each class using the specified model.</p>
@@ -364,6 +405,49 @@ If None, the most recently updated model will be selected.</p>
 </dd></dl>
 
 </section>
+<section id="classify-predict-fmt">
+<h2>classify_predict_fmt<a class="headerlink" href="#classify-predict-fmt" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.generic.classify.classify_predict_fmt">
+<span class="sig-prename descclassname"><span class="pre">imgutils.generic.classify.</span></span><span class="sig-name descname"><span class="pre">classify_predict_fmt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scores-top5'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify.html#classify_predict_fmt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify.classify_predict_fmt" title="Permalink to this definition"></a></dt>
+<dd><p>Predict the scores for each class with given format specification using the specified model.</p>
+<p>This function is a convenience wrapper around ClassifyModel’s predict method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image to classify.</p></li>
+<li><p><strong>repo_id</strong> (<em>str</em>) – The repository ID containing the models.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – The name of the model to use for prediction.</p></li>
+<li><p><strong>fmt</strong> – Format specification. Default is <code class="docutils literal notranslate"><span class="pre">scores-top5</span></code>.</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Optional Hugging Face authentication token.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Prediction result formatted with parameter <code class="docutils literal notranslate"><span class="pre">fmt</span></code>.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the model name is invalid.</p></li>
+<li><p><strong>RuntimeError</strong> – If there’s an error during prediction.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The following specifications are supported in parameter <code class="docutils literal notranslate"><span class="pre">fmt</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output</span></code>, raw prediction result, in np.ndarray format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logits</span></code>, (not available in some models) logits result, in np.ndarray format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">embedding</span></code>, (not available in some models) embeddings result, in np.ndarray format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scores</span></code>, prediction scores of all classes in dict format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scores-topK</span></code>, prediction scores of top-K classes in dict format, e.g. <code class="docutils literal notranslate"><span class="pre">scores-top10</span></code> means top 10 scores.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scores-&lt;label_group&gt;</span></code>, prediction scores of all classes with label group <code class="docutils literal notranslate"><span class="pre">&lt;label_group&gt;</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">scores-descriptions</span></code> means all scores with <code class="docutils literal notranslate"><span class="pre">descriptions</span></code> label group.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scores-topK-&lt;label_group&gt;</span></code>, prediction scores of top-K classes with label group <code class="docutils literal notranslate"><span class="pre">&lt;label_group&gt;</span></code>.</p></li>
+</ul>
+</div>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -413,10 +497,9 @@ If None, the most recently updated model will be selected.</p>
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/cls/api_doc/generic/classify.html">dev/cls</a></dd>
+                        <dd><a href="../../../main/api_doc/generic/classify.html">main</a></dd>
                         <dd><a href="classify.html">HEAD</a></dd>
                         <dd><a href="../../../dev/denormalize/api_doc/generic/classify.html">dev/denormalize</a></dd>
-                        <dd><a href="../../../main/api_doc/generic/classify.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
