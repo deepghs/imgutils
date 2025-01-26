@@ -7,7 +7,7 @@ Overview:
 __TITLE__ = 'imgutils'
 
 #: Version of this project.
-__VERSION__ = '0.8.0'
+__VERSION__ = '0.9.1'
 
 #: Short description of the project, will be included in ``setup.py``.
 __DESCRIPTION__ = 'A convenient and user-friendly anime-style image data processing library that integrates ' \
@@ -17,4 +17,4 @@ __DESCRIPTION__ = 'A convenient and user-friendly anime-style image data process
 __AUTHOR__ = 'narugo1992, 7eu7d7'
 
 #: Email of the authors'.
-__AUTHOR_EMAIL__ = 'narugo992@gmail.com'
+__AUTHOR_EMAIL__ = 'narugo1992@deepghs.org'
