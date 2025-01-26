@@ -13,6 +13,13 @@ from typing import Union
 
 from .base import NotParseTarget
 
+try:
+    import torchvision
+except (ImportError, ModuleNotFoundError):
+    _HAS_TORCHVISION = False
+else:
+    _HAS_TORCHVISION = True
+
 
 def _check_torchvision():
     """
@@ -20,9 +27,7 @@ def _check_torchvision():
 
     :raises EnvironmentError: If torchvision is not installed
     """
-    try:
-        import torchvision
-    except (ImportError, ModuleNotFoundError):
+    if not _HAS_TORCHVISION:
         raise EnvironmentError('No torchvision available.\n'
                                'Please install it by `pip install dghs-imgutils[torchvision]`.')
 
@@ -210,14 +215,10 @@ def _parse_center_crop(obj):
     }
 
 
-@_register_transform('maybe_to_tensor', safe=False)
-def _create_maybe_to_tensor():
-    """
-    Create a MaybeToTensor transform that converts input to tensor if not already a tensor.
-
-    :return: MaybeToTensor transform
-    """
+if _HAS_TORCHVISION:
     from torchvision.transforms import ToTensor
+
+
     class MaybeToTensor(ToTensor):
         def __init__(self) -> None:
             super().__init__()
@@ -232,6 +233,17 @@ def _create_maybe_to_tensor():
         def __repr__(self) -> str:
             return f"{self.__class__.__name__}()"
 
+else:
+    MaybeToTensor = None
+
+
+@_register_transform('maybe_to_tensor', safe=False)
+def _create_maybe_to_tensor():
+    """
+    Create a MaybeToTensor transform that converts input to tensor if not already a tensor.
+
+    :return: MaybeToTensor transform
+    """
     return MaybeToTensor()
 
 

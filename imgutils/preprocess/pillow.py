@@ -19,6 +19,7 @@ import numpy as np
 from PIL import Image
 
 from .base import NotParseTarget
+from ..data import load_image
 
 # noinspection PyUnresolvedReferences
 _INT_TO_PILLOW = {
@@ -649,6 +650,32 @@ def _parse_normalize(obj: PillowNormalize):
         'mean': obj.mean.tolist(),
         'std': obj.std.tolist(),
     }
+
+
+class PillowConvertRGB:
+    def __init__(self, force_background: Optional[str] = 'white'):
+        self.force_background = force_background
+
+    def forward(self, pic):
+        if not isinstance(pic, Image.Image):
+            raise TypeError('pic should be PIL Image. Got {}'.format(type(pic)))
+        return load_image(pic, mode='RGB', force_background=self.force_background)
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(force_background={self.force_background!r})'
+
+
+class PillowRescale:
+    def __init__(self, rescale_factor: float = 1 / 255):
+        self.rescale_factor = rescale_factor
+
+    def __call__(self, array):
+        if not isinstance(array, np.ndarray):
+            raise TypeError('Input should be a numpy.ndarray')
+        return array * self.rescale_factor
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(rescale_factor={self.rescale_factor!r})'
 
 
 class PillowCompose:

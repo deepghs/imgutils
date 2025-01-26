@@ -101,6 +101,7 @@ jobs:
         run: |
           pip install -r requirements-model.txt
           pip install -r requirements-torchvision.txt
+          pip install -r requirements-transformers.txt
       - name: Test the basic environment
         shell: bash
         run: |

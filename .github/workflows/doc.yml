@@ -47,6 +47,7 @@ jobs:
           python -m pip install -r requirements-model.txt
           python -m pip install -r requirements-doc.txt
           python -m pip install -r requirements-torchvision.txt
+          python -m pip install -r requirements-transformers.txt
       - name: Prepare dataset
         uses: nick-fields/retry@v2
         if: ${{ github.event_name == 'push' }}
