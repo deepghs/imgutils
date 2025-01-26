@@ -303,7 +303,7 @@ def get_wd14_tags(
 
         >>> from imgutils.tagging import get_wd14_tags
         >>>
-        >>> embedding = get_wd14_tags('skadi.jpg', fmt='embdding')
+        >>> embedding = get_wd14_tags('skadi.jpg', fmt='embedding')
         >>> embedding.shape
         (1024, )
 
