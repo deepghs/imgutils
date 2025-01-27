@@ -1,7 +1,8 @@
 from PIL import Image
 
-from imgutils.preprocess.pillow import PillowResize, PillowCenterCrop, PillowToTensor, PillowNormalize, PillowCompose, \
-    PillowRescale, PillowConvertRGB
+from .base import _check_transformers, NotProcessorTypeError, register_creators_for_transformers
+from ..pillow import PillowResize, PillowCenterCrop, PillowToTensor, PillowNormalize, PillowCompose, PillowRescale, \
+    PillowConvertRGB
 
 _DEFAULT_SIZE = {"shortest_edge": 224}
 _DEFAULT_CROP_SIZE = {"height": 224, "width": 224}
@@ -11,17 +12,17 @@ _DEFAULT = object()
 
 
 def create_clip_transforms(
-        do_resize=True,
+        do_resize: bool = True,
         size=_DEFAULT,
         resample=Image.BICUBIC,
         do_center_crop=True,
         crop_size=_DEFAULT,
-        do_rescale=True,
-        rescale_factor=1 / 255,
-        do_normalize=True,
+        do_rescale: bool = True,
+        rescale_factor: float = 1 / 255,
+        do_normalize: bool = True,
         image_mean=_DEFAULT,
         image_std=_DEFAULT,
-        do_convert_rgb=True
+        do_convert_rgb: bool = True
 ):
     size = size if size is not _DEFAULT else _DEFAULT_SIZE
     crop_size = crop_size if crop_size is not _DEFAULT else _DEFAULT_CROP_SIZE
@@ -59,17 +60,29 @@ def create_clip_transforms(
     return PillowCompose(transform_list)
 
 
-clip_transforms = create_clip_transforms(
-    do_resize=True,
-    size={"shortest_edge": 224},
-    resample=Image.BICUBIC,
-    do_center_crop=True,
-    crop_size={"height": 224, "width": 224},
-    do_rescale=True,
-    rescale_factor=1 / 254,
-    do_normalize=True,
-    image_mean=[0.48145466, 0.4578275, 0.40821073],
-    image_std=[0.26862954, 0.26130258, 0.27577711],
-    do_convert_rgb=True
-)
-print(clip_transforms)
+@register_creators_for_transformers()
+def create_transforms_from_clip_processor(processor):
+    _check_transformers()
+    from transformers import CLIPProcessor, CLIPImageProcessor
+
+    if isinstance(processor, CLIPProcessor):
+        processor = processor.image_processor
+    elif isinstance(processor, CLIPImageProcessor):
+        pass
+    else:
+        raise NotProcessorTypeError(f'Unknown CLIP processor - {processor!r}.')
+    processor: CLIPImageProcessor
+
+    return create_clip_transforms(
+        do_resize=processor.do_resize,
+        size=processor.size,
+        resample=processor.resample,
+        do_center_crop=processor.do_center_crop,
+        crop_size=processor.crop_size,
+        do_rescale=processor.do_rescale,
+        rescale_factor=processor.rescale_factor,
+        do_normalize=processor.do_normalize,
+        image_mean=processor.image_mean,
+        image_std=processor.image_std,
+        do_convert_rgb=processor.do_convert_rgb,
+    )
