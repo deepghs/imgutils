@@ -656,7 +656,7 @@ class PillowConvertRGB:
     def __init__(self, force_background: Optional[str] = 'white'):
         self.force_background = force_background
 
-    def forward(self, pic):
+    def __call__(self, pic):
         if not isinstance(pic, Image.Image):
             raise TypeError('pic should be PIL Image. Got {}'.format(type(pic)))
         return load_image(pic, mode='RGB', force_background=self.force_background)
@@ -665,9 +665,25 @@ class PillowConvertRGB:
         return f'{self.__class__.__name__}(force_background={self.force_background!r})'
 
 
+@register_pillow_transform('convert_rgb')
+def _create_convert_rgb(force_background: Optional[str] = 'white'):
+    return PillowConvertRGB(force_background=force_background)
+
+
+@register_pillow_parse('convert_rgb')
+def _parse_convert_rgb(obj):
+    if not isinstance(obj, PillowConvertRGB):
+        raise NotParseTarget
+
+    obj: PillowConvertRGB
+    return {
+        'force_background': obj.force_background,
+    }
+
+
 class PillowRescale:
     def __init__(self, rescale_factor: float = 1 / 255):
-        self.rescale_factor = rescale_factor
+        self.rescale_factor = np.float32(rescale_factor)
 
     def __call__(self, array):
         if not isinstance(array, np.ndarray):
@@ -676,6 +692,22 @@ class PillowRescale:
 
     def __repr__(self):
         return f'{self.__class__.__name__}(rescale_factor={self.rescale_factor!r})'
+
+
+@register_pillow_transform('rescale')
+def _create_rescale(rescale_factor: float = 1 / 255):
+    return PillowRescale(rescale_factor=rescale_factor)
+
+
+@register_pillow_parse('rescale')
+def _parse_rescale(obj):
+    if not isinstance(obj, PillowRescale):
+        raise NotParseTarget
+
+    obj: PillowRescale
+    return {
+        'rescale_factor': obj.rescale_factor.item(),
+    }
 
 
 class PillowCompose:
