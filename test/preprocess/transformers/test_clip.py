@@ -17,7 +17,7 @@ else:
 
 
 @pytest.mark.unittest
-class TestPreprocessTransformersAlign:
+class TestPreprocessTransformersClip:
     @skipUnless(_HAS_TRANSFORMERS, 'Transformers required.')
     @pytest.mark.parametrize(*tmatrix({
         'repo_id': [
@@ -38,7 +38,7 @@ class TestPreprocessTransformersAlign:
             'nian_640.png',
         ]
     }))
-    def test_image_preprocess_align(self, src_image, repo_id):
+    def test_clip_image_preprocess_align(self, src_image, repo_id):
         from transformers import AutoImageProcessor
         image = load_image(get_testfile(src_image), mode='RGB', force_background='white')
         processor = AutoImageProcessor.from_pretrained(repo_id)
@@ -67,7 +67,7 @@ class TestPreprocessTransformersAlign:
             'nian_640.png',
         ]
     }))
-    def test_auto_preprocess_align(self, src_image, repo_id):
+    def test_clip_preprocess_align(self, src_image, repo_id):
         from transformers import AutoProcessor
         image = load_image(get_testfile(src_image), mode='RGB', force_background='white')
         processor = AutoProcessor.from_pretrained(repo_id)

@@ -1,14 +1,12 @@
 from PIL import Image
 
-from .base import _check_transformers, NotProcessorTypeError, register_creators_for_transformers
+from .base import _check_transformers, NotProcessorTypeError, register_creators_for_transformers, OPENAI_CLIP_MEAN, \
+    OPENAI_CLIP_STD, _DEFAULT
 from ..pillow import PillowResize, PillowCenterCrop, PillowToTensor, PillowNormalize, PillowCompose, PillowRescale, \
     PillowConvertRGB
 
 _DEFAULT_SIZE = {"shortest_edge": 224}
 _DEFAULT_CROP_SIZE = {"height": 224, "width": 224}
-_DEFAULT_IMAGE_MEAN = [0.48145466, 0.4578275, 0.40821073]
-_DEFAULT_IMAGE_STD = [0.26862954, 0.26130258, 0.27577711]
-_DEFAULT = object()
 
 
 def create_clip_transforms(
@@ -26,8 +24,8 @@ def create_clip_transforms(
 ):
     size = size if size is not _DEFAULT else _DEFAULT_SIZE
     crop_size = crop_size if crop_size is not _DEFAULT else _DEFAULT_CROP_SIZE
-    image_mean = image_mean if image_mean is not _DEFAULT else _DEFAULT_IMAGE_MEAN
-    image_std = image_std if image_std is not _DEFAULT else _DEFAULT_IMAGE_STD
+    image_mean = image_mean if image_mean is not _DEFAULT else OPENAI_CLIP_MEAN
+    image_std = image_std if image_std is not _DEFAULT else OPENAI_CLIP_STD
 
     transform_list = []
 
