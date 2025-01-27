@@ -90,9 +90,19 @@ def create_transforms_from_transformers(processor):
     :raises NotProcessorTypeError: If no suitable creator is found for the processor
 
     :example:
-
-        >>> processor = AutoProcessor.from_pretrained("openai/clip-vit-base-patch32")
+        >>> from transformers import AutoImageProcessor
+        >>> from imgutils.preprocess.transformers import create_transforms_from_transformers
+        >>>
+        >>> processor = AutoImageProcessor.from_pretrained("openai/clip-vit-base-patch32")
         >>> transforms = create_transforms_from_transformers(processor)
+        >>> transforms
+        PillowCompose(
+            PillowConvertRGB(force_background='white')
+            PillowResize(size=224, interpolation=bicubic, max_size=None, antialias=True)
+            PillowCenterCrop(size=(224, 224))
+            PillowToTensor()
+            PillowNormalize(mean=[0.48145467 0.4578275  0.40821072], std=[0.26862955 0.2613026  0.2757771 ])
+        )
     """
     for _fn in _FN_CREATORS:
         try:
