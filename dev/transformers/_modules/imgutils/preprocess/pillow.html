@@ -757,29 +757,151 @@
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">PillowConvertRGB</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for converting images to RGB format.</span>
+
+<span class="sd">    This class provides functionality to convert PIL Images to RGB format,</span>
+<span class="sd">    with an option to specify background color for images with transparency.</span>
+
+<span class="sd">    :param force_background: Background color to use when converting images with alpha channel.</span>
+<span class="sd">                           Default is &#39;white&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force_background</span> <span class="o">=</span> <span class="n">force_background</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the input image to RGB format.</span>
+
+<span class="sd">        :param pic: Input image to be converted</span>
+<span class="sd">        :type pic: PIL.Image.Image</span>
+
+<span class="sd">        :return: RGB converted image</span>
+<span class="sd">        :rtype: PIL.Image.Image</span>
+<span class="sd">        :raises TypeError: If input is not a PIL Image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;pic should be PIL Image. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">pic</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">load_image</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">force_background</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return string representation of the class.</span>
+
+<span class="sd">        :return: String representation</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(force_background=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">force_background</span><span class="si">!r}</span><span class="s1">)&#39;</span>
 
 
+<span class="nd">@register_pillow_transform</span><span class="p">(</span><span class="s1">&#39;convert_rgb&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_convert_rgb</span><span class="p">(</span><span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory function to create PillowConvertRGB instance.</span>
+
+<span class="sd">    :param force_background: Background color for transparency conversion</span>
+<span class="sd">    :type force_background: Optional[str]</span>
+
+<span class="sd">    :return: PillowConvertRGB instance</span>
+<span class="sd">    :rtype: PillowConvertRGB</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">PillowConvertRGB</span><span class="p">(</span><span class="n">force_background</span><span class="o">=</span><span class="n">force_background</span><span class="p">)</span>
+
+
+<span class="nd">@register_pillow_parse</span><span class="p">(</span><span class="s1">&#39;convert_rgb&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_convert_rgb</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse PillowConvertRGB object to dictionary configuration.</span>
+
+<span class="sd">    :param obj: Object to parse</span>
+<span class="sd">    :type obj: Any</span>
+
+<span class="sd">    :return: Configuration dictionary</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If object is not PillowConvertRGB instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PillowConvertRGB</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NotParseTarget</span>
+
+    <span class="n">obj</span><span class="p">:</span> <span class="n">PillowConvertRGB</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;force_background&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">force_background</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
 <span class="k">class</span><span class="w"> </span><span class="nc">PillowRescale</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for rescaling image pixel values.</span>
+
+<span class="sd">    This class provides functionality to rescale numpy array values by a given factor,</span>
+<span class="sd">    commonly used to normalize image pixel values (e.g., from [0-255] to [0-1]).</span>
+
+<span class="sd">    :param rescale_factor: Factor to multiply pixel values by. Default is 1/255.</span>
+<span class="sd">    :type rescale_factor: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rescale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">255</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rescale_factor</span> <span class="o">=</span> <span class="n">rescale_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rescale_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">rescale_factor</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Rescale the input array values.</span>
+
+<span class="sd">        :param array: Input array to be rescaled</span>
+<span class="sd">        :type array: numpy.ndarray</span>
+
+<span class="sd">        :return: Rescaled array</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        :raises TypeError: If input is not a numpy array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Input should be a numpy.ndarray&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">array</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rescale_factor</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return string representation of the class.</span>
+
+<span class="sd">        :return: String representation</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(rescale_factor=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rescale_factor</span><span class="si">!r}</span><span class="s1">)&#39;</span>
+
+
+<span class="nd">@register_pillow_transform</span><span class="p">(</span><span class="s1">&#39;rescale&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_rescale</span><span class="p">(</span><span class="n">rescale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">255</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory function to create PillowRescale instance.</span>
+
+<span class="sd">    :param rescale_factor: Factor for rescaling pixel values</span>
+<span class="sd">    :type rescale_factor: float</span>
+
+<span class="sd">    :return: PillowRescale instance</span>
+<span class="sd">    :rtype: PillowRescale</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">PillowRescale</span><span class="p">(</span><span class="n">rescale_factor</span><span class="o">=</span><span class="n">rescale_factor</span><span class="p">)</span>
+
+
+<span class="nd">@register_pillow_parse</span><span class="p">(</span><span class="s1">&#39;rescale&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_rescale</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse PillowRescale object to dictionary configuration.</span>
+
+<span class="sd">    :param obj: Object to parse</span>
+<span class="sd">    :type obj: Any</span>
+
+<span class="sd">    :return: Configuration dictionary</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If object is not PillowRescale instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PillowRescale</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NotParseTarget</span>
+
+    <span class="n">obj</span><span class="p">:</span> <span class="n">PillowRescale</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;rescale_factor&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">rescale_factor</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+    <span class="p">}</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">PillowCompose</span><span class="p">:</span>
