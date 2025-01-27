@@ -49,8 +49,8 @@ for name in dir(transformers):
         })
 
 df = pd.DataFrame(rows)
-df['Ratio'] = (df['Repos'] / df['Repos'].sum()).map(lambda x: f'{x * 100.0:.2f}%')
-df = df.sort_values(by=['Repos', 'Supported', 'Name'], ascending=[False, True, True])
-df = df[['Name', 'Supported', 'Repos', 'Ratio', 'Function']]
+total = df['Repos'].sum()
 df = df[df['Repos'] >= 5]
+df = df.sort_values(by=['Repos', 'Supported', 'Name'], ascending=[False, True, True])
+df['Repos'] = df['Repos'].map(lambda x: f'{x} ({x / total * 100.0:.2f}%)')
 print(df.to_markdown(headers='keys', tablefmt='rst', index=False))
