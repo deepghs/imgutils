@@ -125,6 +125,7 @@ jobs:
         uses: nick-fields/retry@v2
         env:
           CI: 'true'
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         with:
           shell: bash
           timeout_minutes: 20
@@ -140,6 +141,7 @@ jobs:
         env:
           ENV_PROD: 'true'
           PLANTUML_HOST: http://localhost:18080
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           git fetch --all --tags
           git branch -av
