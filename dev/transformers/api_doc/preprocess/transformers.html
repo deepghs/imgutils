@@ -108,6 +108,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_vit_processor"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_vit_processor()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#create-siglip-transforms">create_siglip_transforms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_siglip_transforms"><code class="docutils literal notranslate"><span class="pre">create_siglip_transforms()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-transforms-from-siglip-processor">create_transforms_from_siglip_processor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_siglip_processor"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_siglip_processor()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -207,9 +215,9 @@
 <td><p>N/A</p></td>
 </tr>
 <tr class="row-even"><td><p>SiglipImageProcessor</p></td>
-<td><p>❌</p></td>
+<td><p>✅</p></td>
 <td><p>440 (2.48%)</p></td>
-<td><p>N/A</p></td>
+<td><p><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_siglip_processor" title="imgutils.preprocess.transformers.create_transforms_from_siglip_processor"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_transforms_from_siglip_processor()</span></code></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>LayoutLMv3ImageProcessor</p></td>
 <td><p>❌</p></td>
@@ -690,6 +698,69 @@ a matching transform pipeline that replicates the processor’s preprocessing st
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If the provided processor is not a ViTImageProcessor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-siglip-transforms">
+<h2>create_siglip_transforms<a class="headerlink" href="#create-siglip-transforms" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_siglip_transforms">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_siglip_transforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">do_resize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_rescale:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rescale_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.00392156862745098</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_normalize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_mean=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_std=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_convert_rgb:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/siglip.html#create_siglip_transforms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_siglip_transforms" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a composition of image transformations for SigLIP model input processing.</p>
+<p>This function builds a pipeline of image transformations that can include:</p>
+<ul class="simple">
+<li><p>RGB conversion</p></li>
+<li><p>Image resizing</p></li>
+<li><p>Tensor conversion</p></li>
+<li><p>Image rescaling</p></li>
+<li><p>Normalization</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>do_resize</strong> (<em>bool</em>) – Whether to resize the image</p></li>
+<li><p><strong>size</strong> (<em>dict</em>) – Target size dictionary with ‘height’ and ‘width’ keys</p></li>
+<li><p><strong>resample</strong> (<em>int</em>) – PIL image resampling filter to use for resizing</p></li>
+<li><p><strong>do_rescale</strong> (<em>bool</em>) – Whether to rescale pixel values</p></li>
+<li><p><strong>rescale_factor</strong> (<em>float</em>) – Factor to use for pixel value rescaling</p></li>
+<li><p><strong>do_normalize</strong> (<em>bool</em>) – Whether to normalize the image</p></li>
+<li><p><strong>image_mean</strong> (<em>tuple</em><em> or </em><em>list</em>) – Mean values for normalization</p></li>
+<li><p><strong>image_std</strong> (<em>tuple</em><em> or </em><em>list</em>) – Standard deviation values for normalization</p></li>
+<li><p><strong>do_convert_rgb</strong> (<em>bool</em>) – Whether to convert image to RGB</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composed transformation pipeline</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-transforms-from-siglip-processor">
+<h2>create_transforms_from_siglip_processor<a class="headerlink" href="#create-transforms-from-siglip-processor" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_transforms_from_siglip_processor">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_transforms_from_siglip_processor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/siglip.html#create_transforms_from_siglip_processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_transforms_from_siglip_processor" title="Permalink to this definition"></a></dt>
+<dd><p>Creates image transformations from a SigLIP processor configuration.</p>
+<p>This function extracts transformation parameters from a HuggingFace SigLIP
+image processor and creates a corresponding transformation pipeline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processor</strong> (<em>SiglipImageProcessor</em>) – A HuggingFace SigLIP image processor instance</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composed transformation pipeline</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If the processor is not a SiglipImageProcessor</p>
 </dd>
 </dl>
 </dd></dl>
