@@ -57,3 +57,17 @@ create_transforms_from_convnext_processor
 
 
 
+create_vit_transforms
+--------------------------------------------------------------------
+
+.. autofunction:: create_vit_transforms
+
+
+
+create_transforms_from_vit_processor
+--------------------------------------------------------------------
+
+.. autofunction:: create_transforms_from_vit_processor
+
+
+

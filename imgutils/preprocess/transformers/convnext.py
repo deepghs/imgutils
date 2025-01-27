@@ -110,7 +110,7 @@ def create_transforms_from_convnext_processor(processor):
     if isinstance(processor, ConvNextImageProcessor):
         pass
     else:
-        raise NotProcessorTypeError(f'Unknown CLIP processor - {processor!r}.')
+        raise NotProcessorTypeError(f'Unknown ConvNext processor - {processor!r}.')
     processor: ConvNextImageProcessor
 
     return create_convnext_transforms(
