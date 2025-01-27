@@ -214,7 +214,7 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="n">ConvNextImageProcessor</span><span class="p">):</span>
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">NotProcessorTypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown CLIP processor - </span><span class="si">{</span><span class="n">processor</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">NotProcessorTypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown ConvNext processor - </span><span class="si">{</span><span class="n">processor</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
     <span class="n">processor</span><span class="p">:</span> <span class="n">ConvNextImageProcessor</span>
 
     <span class="k">return</span> <span class="n">create_convnext_transforms</span><span class="p">(</span>

@@ -100,6 +100,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_convnext_processor"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_convnext_processor()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#create-vit-transforms">create_vit_transforms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_vit_transforms"><code class="docutils literal notranslate"><span class="pre">create_vit_transforms()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-transforms-from-vit-processor">create_transforms_from_vit_processor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_vit_processor"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_vit_processor()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -159,9 +167,9 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>ViTImageProcessor</p></td>
-<td><p>❌</p></td>
+<td><p>✅</p></td>
 <td><p>5906 (33.24%)</p></td>
-<td><p>N/A</p></td>
+<td><p><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_vit_processor" title="imgutils.preprocess.transformers.create_transforms_from_vit_processor"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_transforms_from_vit_processor()</span></code></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>DonutImageProcessor</p></td>
 <td><p>❌</p></td>
@@ -625,6 +633,63 @@ transformation pipeline that matches its configuration settings.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If the provided processor is not a ConvNextImageProcessor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-vit-transforms">
+<h2>create_vit_transforms<a class="headerlink" href="#create-vit-transforms" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_vit_transforms">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_vit_transforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">do_resize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_rescale:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rescale_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.00392156862745098</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_normalize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_mean=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_std=&lt;object</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/vit.html#create_vit_transforms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_vit_transforms" title="Permalink to this definition"></a></dt>
+<dd><p>Create a composition of image transforms typically used for ViT models.</p>
+<p>This function creates a transform pipeline that can include resizing, tensor conversion,
+rescaling, and normalization operations. The transforms are applied in sequence to
+prepare images for ViT model input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>do_resize</strong> (<em>bool</em>) – Whether to resize the input images</p></li>
+<li><p><strong>size</strong> (<em>dict</em>) – Target size for resizing, should be dict with ‘height’ and ‘width’ keys</p></li>
+<li><p><strong>resample</strong> (<em>int</em>) – PIL resampling filter to use for resizing</p></li>
+<li><p><strong>do_rescale</strong> (<em>bool</em>) – Whether to rescale pixel values</p></li>
+<li><p><strong>rescale_factor</strong> (<em>float</em>) – Factor to use for rescaling pixel values</p></li>
+<li><p><strong>do_normalize</strong> (<em>bool</em>) – Whether to normalize the image</p></li>
+<li><p><strong>image_mean</strong> (<em>tuple</em><em> or </em><em>list</em>) – Mean values for normalization</p></li>
+<li><p><strong>image_std</strong> (<em>tuple</em><em> or </em><em>list</em>) – Standard deviation values for normalization</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composition of image transforms</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-transforms-from-vit-processor">
+<h2>create_transforms_from_vit_processor<a class="headerlink" href="#create-transforms-from-vit-processor" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_transforms_from_vit_processor">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_transforms_from_vit_processor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/vit.html#create_transforms_from_vit_processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_transforms_from_vit_processor" title="Permalink to this definition"></a></dt>
+<dd><p>Create image transforms from a Hugging Face ViT processor configuration.</p>
+<p>This function takes a ViT image processor from the transformers library and creates
+a matching transform pipeline that replicates the processor’s preprocessing steps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processor</strong> (<em>ViTImageProcessor</em>) – A ViT image processor from Hugging Face transformers</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composition of image transforms matching the processor’s configuration</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If the provided processor is not a ViTImageProcessor</p>
 </dd>
 </dl>
 </dd></dl>
