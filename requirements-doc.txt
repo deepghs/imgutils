@@ -17,3 +17,4 @@ psutil>=5.8.0
 ipykernel>=6.15
 py-cpuinfo>=8.0.0
 click>=7.0.0
+pyarrow

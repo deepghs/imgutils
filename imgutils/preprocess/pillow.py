@@ -19,6 +19,7 @@ import numpy as np
 from PIL import Image
 
 from .base import NotParseTarget
+from ..data import load_image
 
 # noinspection PyUnresolvedReferences
 _INT_TO_PILLOW = {
@@ -648,6 +649,154 @@ def _parse_normalize(obj: PillowNormalize):
     return {
         'mean': obj.mean.tolist(),
         'std': obj.std.tolist(),
+    }
+
+
+class PillowConvertRGB:
+    """
+    A class for converting images to RGB format.
+
+    This class provides functionality to convert PIL Images to RGB format,
+    with an option to specify background color for images with transparency.
+
+    :param force_background: Background color to use when converting images with alpha channel.
+                           Default is 'white'.
+    """
+
+    def __init__(self, force_background: Optional[str] = 'white'):
+        self.force_background = force_background
+
+    def __call__(self, pic):
+        """
+        Convert the input image to RGB format.
+
+        :param pic: Input image to be converted
+        :type pic: PIL.Image.Image
+
+        :return: RGB converted image
+        :rtype: PIL.Image.Image
+        :raises TypeError: If input is not a PIL Image
+        """
+        if not isinstance(pic, Image.Image):
+            raise TypeError('pic should be PIL Image. Got {}'.format(type(pic)))
+        return load_image(pic, mode='RGB', force_background=self.force_background)
+
+    def __repr__(self):
+        """
+        Return string representation of the class.
+
+        :return: String representation
+        :rtype: str
+        """
+        return f'{self.__class__.__name__}(force_background={self.force_background!r})'
+
+
+@register_pillow_transform('convert_rgb')
+def _create_convert_rgb(force_background: Optional[str] = 'white'):
+    """
+    Factory function to create PillowConvertRGB instance.
+
+    :param force_background: Background color for transparency conversion
+    :type force_background: Optional[str]
+
+    :return: PillowConvertRGB instance
+    :rtype: PillowConvertRGB
+    """
+    return PillowConvertRGB(force_background=force_background)
+
+
+@register_pillow_parse('convert_rgb')
+def _parse_convert_rgb(obj):
+    """
+    Parse PillowConvertRGB object to dictionary configuration.
+
+    :param obj: Object to parse
+    :type obj: Any
+
+    :return: Configuration dictionary
+    :rtype: dict
+    :raises NotParseTarget: If object is not PillowConvertRGB instance
+    """
+    if not isinstance(obj, PillowConvertRGB):
+        raise NotParseTarget
+
+    obj: PillowConvertRGB
+    return {
+        'force_background': obj.force_background,
+    }
+
+
+class PillowRescale:
+    """
+    A class for rescaling image pixel values.
+
+    This class provides functionality to rescale numpy array values by a given factor,
+    commonly used to normalize image pixel values (e.g., from [0-255] to [0-1]).
+
+    :param rescale_factor: Factor to multiply pixel values by. Default is 1/255.
+    :type rescale_factor: float
+    """
+
+    def __init__(self, rescale_factor: float = 1 / 255):
+        self.rescale_factor = np.float32(rescale_factor)
+
+    def __call__(self, array):
+        """
+        Rescale the input array values.
+
+        :param array: Input array to be rescaled
+        :type array: numpy.ndarray
+
+        :return: Rescaled array
+        :rtype: numpy.ndarray
+        :raises TypeError: If input is not a numpy array
+        """
+        if not isinstance(array, np.ndarray):
+            raise TypeError('Input should be a numpy.ndarray')
+        return array * self.rescale_factor
+
+    def __repr__(self):
+        """
+        Return string representation of the class.
+
+        :return: String representation
+        :rtype: str
+        """
+        return f'{self.__class__.__name__}(rescale_factor={self.rescale_factor!r})'
+
+
+@register_pillow_transform('rescale')
+def _create_rescale(rescale_factor: float = 1 / 255):
+    """
+    Factory function to create PillowRescale instance.
+
+    :param rescale_factor: Factor for rescaling pixel values
+    :type rescale_factor: float
+
+    :return: PillowRescale instance
+    :rtype: PillowRescale
+    """
+    return PillowRescale(rescale_factor=rescale_factor)
+
+
+@register_pillow_parse('rescale')
+def _parse_rescale(obj):
+    """
+    Parse PillowRescale object to dictionary configuration.
+
+    :param obj: Object to parse
+    :type obj: Any
+
+    :return: Configuration dictionary
+    :rtype: dict
+    :raises NotParseTarget: If object is not PillowRescale instance
+    """
+    if not isinstance(obj, PillowRescale):
+        raise NotParseTarget
+
+    obj: PillowRescale
+    return {
+        'rescale_factor': obj.rescale_factor.item(),
     }
 
 

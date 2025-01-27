@@ -47,11 +47,13 @@ jobs:
           python -m pip install -r requirements-model.txt
           python -m pip install -r requirements-doc.txt
           python -m pip install -r requirements-torchvision.txt
+          python -m pip install -r requirements-transformers.txt
       - name: Prepare dataset
         uses: nick-fields/retry@v2
         if: ${{ github.event_name == 'push' }}
         env:
           CI: 'true'
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         with:
           shell: bash
           timeout_minutes: 20
@@ -64,6 +66,7 @@ jobs:
         env:
           ENV_PROD: 'true'
           PLANTUML_HOST: http://localhost:18080
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           plantumlcli -c
           make docs
@@ -117,11 +120,15 @@ jobs:
           sudo apt-get install -y make wget curl cloc graphviz pandoc
           dot -V
           python -m pip install -r requirements.txt
+          python -m pip install -r requirements-model.txt
           python -m pip install -r requirements-doc.txt
+          python -m pip install -r requirements-torchvision.txt
+          python -m pip install -r requirements-transformers.txt
       - name: Prepare dataset
         uses: nick-fields/retry@v2
         env:
           CI: 'true'
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         with:
           shell: bash
           timeout_minutes: 20
@@ -137,6 +144,7 @@ jobs:
         env:
           ENV_PROD: 'true'
           PLANTUML_HOST: http://localhost:18080
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           git fetch --all --tags
           git branch -av
