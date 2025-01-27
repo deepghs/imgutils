@@ -71,3 +71,18 @@ create_transforms_from_vit_processor
 
 
 
+create_siglip_transforms
+--------------------------------------------------------------------
+
+.. autofunction:: create_siglip_transforms
+
+
+
+create_transforms_from_siglip_processor
+--------------------------------------------------------------------
+
+.. autofunction:: create_transforms_from_siglip_processor
+
+
+
+

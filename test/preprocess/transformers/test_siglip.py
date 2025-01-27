@@ -17,18 +17,25 @@ else:
 
 
 @pytest.mark.unittest
-class TestPreprocessTransformersViT:
+class TestPreprocessTransformersSiglip:
     @skipUnless(_HAS_TRANSFORMERS, 'Transformers required.')
     @pytest.mark.parametrize(*tmatrix({
         'repo_id': [
-            "Falconsai/nsfw_image_detection",
-            "microsoft/trocr-base-handwritten",
-            "microsoft/trocr-base-printed",
-            "dima806/facial_emotions_image_detection",
-            "rizvandwiki/gender-classification",
-            "AdamCodd/vit-base-nsfw-detector",
-            "MixTex/ZhEn-Latex-OCR",
-            "prithivMLmods/Deep-Fake-Detector-Model",
+            'Marqo/marqo-ecommerce-embeddings-B',
+            'ucsahin/TraVisionLM-DPO',
+            'google/siglip-base-patch16-384',
+            'google/siglip-base-patch16-512',
+            'llava-hf/llava-interleave-qwen-0.5b-hf',
+            'zhumj34/Mipha-3B',
+            'google/siglip-so400m-patch14-384',
+            'lmms-lab/llava-onevision-qwen2-72b-ov-sft',
+            'p1atdev/siglip-tagger-test-3',
+            'gokaygokay/paligemma-rich-captions',
+            'lmms-lab/llava-onevision-qwen2-0.5b-ov',
+            'gokaygokay/sd3-long-captioner-v2',
+            'OpenFace-CQUPT/Human_LLaVA',
+            'ucsahin/TraVisionLM-base',
+            'mlx-community/paligemma-3b-mix-448-8bit',
         ],
         'src_image': [
             'png_640.png',
@@ -38,7 +45,7 @@ class TestPreprocessTransformersViT:
             'nian_640.png',
         ]
     }))
-    def test_vit_image_preprocess_align(self, src_image, repo_id):
+    def test_siglip_image_preprocess_align(self, src_image, repo_id):
         from transformers import AutoImageProcessor
         image = load_image(get_testfile(src_image), mode='RGB', force_background='white')
         processor = AutoImageProcessor.from_pretrained(repo_id)
