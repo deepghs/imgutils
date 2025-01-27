@@ -1,3 +1,9 @@
+"""
+This module provides image transformation utilities specifically designed for SigLIP (Simple Grouped Learning with Image-text Pairs) models.
+It includes functions to create image transformation pipelines compatible with the SigLIP architecture, supporting operations like
+resizing, rescaling, normalization, and RGB conversion.
+"""
+
 from PIL import Image
 
 from .base import IMAGENET_STANDARD_MEAN, IMAGENET_STANDARD_STD, _DEFAULT, _check_transformers, NotProcessorTypeError, \
@@ -18,6 +24,39 @@ def create_siglip_transforms(
         image_std=_DEFAULT,
         do_convert_rgb: bool = True,
 ):
+    """
+    Creates a composition of image transformations for SigLIP model input processing.
+
+    This function builds a pipeline of image transformations that can include:
+
+    - RGB conversion
+    - Image resizing
+    - Tensor conversion
+    - Image rescaling
+    - Normalization
+
+    :param do_resize: Whether to resize the image
+    :type do_resize: bool
+    :param size: Target size dictionary with 'height' and 'width' keys
+    :type size: dict
+    :param resample: PIL image resampling filter to use for resizing
+    :type resample: int
+    :param do_rescale: Whether to rescale pixel values
+    :type do_rescale: bool
+    :param rescale_factor: Factor to use for pixel value rescaling
+    :type rescale_factor: float
+    :param do_normalize: Whether to normalize the image
+    :type do_normalize: bool
+    :param image_mean: Mean values for normalization
+    :type image_mean: tuple or list
+    :param image_std: Standard deviation values for normalization
+    :type image_std: tuple or list
+    :param do_convert_rgb: Whether to convert image to RGB
+    :type do_convert_rgb: bool
+
+    :return: A composed transformation pipeline
+    :rtype: PillowCompose
+    """
     # Set default values
     size = size if size is not _DEFAULT else _DEFAULT_SIZE
     image_mean = image_mean if image_mean is not _DEFAULT else IMAGENET_STANDARD_MEAN
@@ -49,6 +88,19 @@ def create_siglip_transforms(
 
 @register_creators_for_transformers()
 def create_transforms_from_siglip_processor(processor):
+    """
+    Creates image transformations from a SigLIP processor configuration.
+
+    This function extracts transformation parameters from a HuggingFace SigLIP
+    image processor and creates a corresponding transformation pipeline.
+
+    :param processor: A HuggingFace SigLIP image processor instance
+    :type processor: SiglipImageProcessor
+
+    :return: A composed transformation pipeline
+    :rtype: PillowCompose
+    :raises NotProcessorTypeError: If the processor is not a SiglipImageProcessor
+    """
     _check_transformers()
     from transformers import SiglipImageProcessor
 
