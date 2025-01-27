@@ -12,4 +12,5 @@ imgutils.preprocess
     base
     pillow
     torchvision
+    transformers
 

@@ -286,14 +286,14 @@
         <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.ImageBasedCensor.censor_area">(imgutils.operate.imgcensor.ImageBasedCensor method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.censor_areas">censor_areas() (in module imgutils.operate.censor_)</a>
 </li>
       <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.censor_nsfw">censor_nsfw() (in module imgutils.operate.censor_)</a>
 </li>
       <li><a href="api_doc/tagging/character.html#imgutils.tagging.character.CHAR_PREFIXES">CHAR_PREFIXES (in module imgutils.tagging.character)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/tagging/character.html#imgutils.tagging.character.CHAR_SUFFIXES">CHAR_SUFFIXES (in module imgutils.tagging.character)</a>
 </li>
       <li><a href="api_doc/tagging/character.html#imgutils.tagging.character.CHAR_WHITELIST_PREFIX">CHAR_WHITELIST_PREFIX (in module imgutils.tagging.character)</a>
@@ -322,9 +322,19 @@
 </li>
       <li><a href="api_doc/tagging/wd14.html#imgutils.tagging.wd14.convert_wd14_emb_to_prediction">convert_wd14_emb_to_prediction() (in module imgutils.tagging.wd14)</a>
 </li>
+      <li><a href="api_doc/preprocess/transformers.html#imgutils.preprocess.transformers.create_clip_transforms">create_clip_transforms() (in module imgutils.preprocess.transformers)</a>
+</li>
+      <li><a href="api_doc/preprocess/transformers.html#imgutils.preprocess.transformers.create_convnext_transforms">create_convnext_transforms() (in module imgutils.preprocess.transformers)</a>
+</li>
       <li><a href="api_doc/preprocess/pillow.html#imgutils.preprocess.pillow.create_pillow_transforms">create_pillow_transforms() (in module imgutils.preprocess.pillow)</a>
 </li>
       <li><a href="api_doc/preprocess/torchvision.html#imgutils.preprocess.torchvision.create_torchvision_transforms">create_torchvision_transforms() (in module imgutils.preprocess.torchvision)</a>
+</li>
+      <li><a href="api_doc/preprocess/transformers.html#imgutils.preprocess.transformers.create_transforms_from_clip_processor">create_transforms_from_clip_processor() (in module imgutils.preprocess.transformers)</a>
+</li>
+      <li><a href="api_doc/preprocess/transformers.html#imgutils.preprocess.transformers.create_transforms_from_convnext_processor">create_transforms_from_convnext_processor() (in module imgutils.preprocess.transformers)</a>
+</li>
+      <li><a href="api_doc/preprocess/transformers.html#imgutils.preprocess.transformers.create_transforms_from_transformers">create_transforms_from_transformers() (in module imgutils.preprocess.transformers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -866,6 +876,13 @@
 </li>
       </ul></li>
       <li>
+    imgutils.preprocess.transformers
+
+      <ul>
+        <li><a href="api_doc/preprocess/transformers.html#module-imgutils.preprocess.transformers">module</a>
+</li>
+      </ul></li>
+      <li>
     imgutils.resource
 
       <ul>
@@ -1390,6 +1407,8 @@
 </li>
         <li><a href="api_doc/preprocess/torchvision.html#module-imgutils.preprocess.torchvision">imgutils.preprocess.torchvision</a>
 </li>
+        <li><a href="api_doc/preprocess/transformers.html#module-imgutils.preprocess.transformers">imgutils.preprocess.transformers</a>
+</li>
         <li><a href="api_doc/resource/index.html#module-imgutils.resource">imgutils.resource</a>
 </li>
         <li><a href="api_doc/resource/background.html#module-imgutils.resource.background">imgutils.resource.background</a>
@@ -1493,11 +1512,13 @@
 </li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.NECK">NECK (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.NOSE">NOSE (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/preprocess/base.html#imgutils.preprocess.base.NotParseTarget">NotParseTarget (class in imgutils.preprocess.base)</a>
+</li>
+      <li><a href="api_doc/preprocess/transformers.html#imgutils.preprocess.transformers.NotProcessorTypeError">NotProcessorTypeError (class in imgutils.preprocess.transformers)</a>
 </li>
       <li><a href="api_doc/validate/nsfw.html#imgutils.validate.nsfw.nsfw_pred">nsfw_pred() (in module imgutils.validate.nsfw)</a>
 </li>
@@ -1608,6 +1629,8 @@
       <li><a href="api_doc/sd/model.html#imgutils.sd.model.read_metadata">read_metadata() (in module imgutils.sd.model)</a>
 </li>
       <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.register_censor_method">register_censor_method() (in module imgutils.operate.censor_)</a>
+</li>
+      <li><a href="api_doc/preprocess/transformers.html#imgutils.preprocess.transformers.register_creators_for_transformers">register_creators_for_transformers() (in module imgutils.preprocess.transformers)</a>
 </li>
       <li><a href="api_doc/preprocess/pillow.html#imgutils.preprocess.pillow.register_pillow_parse">register_pillow_parse() (in module imgutils.preprocess.pillow)</a>
 </li>
