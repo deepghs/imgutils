@@ -1,0 +1,831 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.preprocess.transformers &mdash; imgutils 0.9.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=8841c456"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.resource" href="../resource/index.html" />
+    <link rel="prev" title="imgutils.preprocess.torchvision" href="torchvision.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.preprocess</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">imgutils.preprocess.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pillow.html">imgutils.preprocess.pillow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torchvision.html">imgutils.preprocess.torchvision</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.preprocess.transformers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#register-creators-for-transformers">register_creators_for_transformers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.register_creators_for_transformers"><code class="docutils literal notranslate"><span class="pre">register_creators_for_transformers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#notprocessortypeerror">NotProcessorTypeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError"><code class="docutils literal notranslate"><span class="pre">NotProcessorTypeError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-transforms-from-transformers">create_transforms_from_transformers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_transformers"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_transformers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-clip-transforms">create_clip_transforms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_clip_transforms"><code class="docutils literal notranslate"><span class="pre">create_clip_transforms()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-transforms-from-clip-processor">create_transforms_from_clip_processor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_clip_processor"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_clip_processor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-convnext-transforms">create_convnext_transforms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_convnext_transforms"><code class="docutils literal notranslate"><span class="pre">create_convnext_transforms()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-transforms-from-convnext-processor">create_transforms_from_convnext_processor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_convnext_processor"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_convnext_processor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-vit-transforms">create_vit_transforms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_vit_transforms"><code class="docutils literal notranslate"><span class="pre">create_vit_transforms()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-transforms-from-vit-processor">create_transforms_from_vit_processor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_vit_processor"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_vit_processor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-siglip-transforms">create_siglip_transforms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_siglip_transforms"><code class="docutils literal notranslate"><span class="pre">create_siglip_transforms()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-transforms-from-siglip-processor">create_transforms_from_siglip_processor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_siglip_processor"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_siglip_processor()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.preprocess</a></li>
+      <li class="breadcrumb-item active">imgutils.preprocess.transformers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/preprocess/transformers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.preprocess.transformers">
+<span id="imgutils-preprocess-transformers"></span><h1>imgutils.preprocess.transformers<a class="headerlink" href="#module-imgutils.preprocess.transformers" title="Permalink to this heading"></a></h1>
+<dl class="simple">
+<dt>Overview:</dt><dd><p>Convert transformers image processors to PillowCompose objects.</p>
+</dd>
+</dl>
+<p>Supported Processors:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Supported</p></th>
+<th class="head"><p>Repos</p></th>
+<th class="head"><p>Function</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ViTImageProcessor</p></td>
+<td><p>✅</p></td>
+<td><p>5906 (33.24%)</p></td>
+<td><p><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_vit_processor" title="imgutils.preprocess.transformers.create_transforms_from_vit_processor"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_transforms_from_vit_processor()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>DonutImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>1901 (10.70%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>DetrImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>1575 (8.86%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>CLIPImageProcessor</p></td>
+<td><p>✅</p></td>
+<td><p>1374 (7.73%)</p></td>
+<td><p><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_clip_processor" title="imgutils.preprocess.transformers.create_transforms_from_clip_processor"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_transforms_from_clip_processor()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>VideoMAEImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>1093 (6.15%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>ConvNextImageProcessor</p></td>
+<td><p>✅</p></td>
+<td><p>648 (3.65%)</p></td>
+<td><p><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_convnext_processor" title="imgutils.preprocess.transformers.create_transforms_from_convnext_processor"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_transforms_from_convnext_processor()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>SegformerImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>533 (3.00%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>BeitImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>468 (2.63%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>SiglipImageProcessor</p></td>
+<td><p>✅</p></td>
+<td><p>440 (2.48%)</p></td>
+<td><p><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_siglip_processor" title="imgutils.preprocess.transformers.create_transforms_from_siglip_processor"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_transforms_from_siglip_processor()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>LayoutLMv3ImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>403 (2.27%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>LayoutLMv2ImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>332 (1.87%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>MllamaImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>332 (1.87%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>Qwen2VLImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>314 (1.77%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>BlipImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>276 (1.55%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>Idefics2ImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>226 (1.27%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>LlavaNextImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>215 (1.21%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>BitImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>210 (1.18%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pix2StructImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>113 (0.64%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>ConditionalDetrImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>95 (0.53%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>SamImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>92 (0.52%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>DeiTImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>91 (0.51%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mask2FormerImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>89 (0.50%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>VivitImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>88 (0.50%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>YolosImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>84 (0.47%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>ViltImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>73 (0.41%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>DetaImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>68 (0.38%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>PixtralImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>68 (0.38%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>MobileNetV2ImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>63 (0.35%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>MobileViTImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>61 (0.34%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>DPTImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>51 (0.29%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>MaskFormerImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>49 (0.28%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>NougatImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>48 (0.27%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>IdeficsImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>47 (0.26%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTDetrImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>45 (0.25%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>EfficientNetImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>40 (0.23%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>DeformableDetrImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>36 (0.20%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>Idefics3ImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>32 (0.18%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>FuyuImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>22 (0.12%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>VideoLlavaImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>17 (0.10%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>PvtImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>16 (0.09%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>OneFormerImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>14 (0.08%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>MobileNetV1ImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>12 (0.07%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>Owlv2ImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>12 (0.07%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>ChineseCLIPImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>9 (0.05%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>EfficientFormerImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>8 (0.05%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>LlavaOnevisionImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>8 (0.05%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>Swin2SRImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>8 (0.05%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>ViTHybridImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>8 (0.05%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>OwlViTImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>7 (0.04%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>GroundingDinoImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>6 (0.03%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>PerceiverImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>6 (0.03%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>ChameleonImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>5 (0.03%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>LevitImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>5 (0.03%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>VitMatteImageProcessor</p></td>
+<td><p>❌</p></td>
+<td><p>5 (0.03%)</p></td>
+<td><p>N/A</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<section id="register-creators-for-transformers">
+<h2>register_creators_for_transformers<a class="headerlink" href="#register-creators-for-transformers" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.register_creators_for_transformers">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">register_creators_for_transformers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/base.html#register_creators_for_transformers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.register_creators_for_transformers" title="Permalink to this definition"></a></dt>
+<dd><p>Decorator for registering transform creator functions.</p>
+<p>This decorator adds the decorated function to the list of available
+transform creators that will be tried when creating transforms from
+a transformers processor.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Decorator function</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>callable</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@register_creators_for_transformers</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">my_transform_creator</span><span class="p">(</span><span class="n">processor</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Create and return transforms</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="notprocessortypeerror">
+<h2>NotProcessorTypeError<a class="headerlink" href="#notprocessortypeerror" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.NotProcessorTypeError">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">NotProcessorTypeError</span></span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/base.html#NotProcessorTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="Permalink to this definition"></a></dt>
+<dd><p>Exception raised when a processor type is not recognized or supported.</p>
+<p>This error occurs when attempting to create transforms from an unsupported
+or unknown transformers processor type.</p>
+</dd></dl>
+
+</section>
+<section id="create-transforms-from-transformers">
+<h2>create_transforms_from_transformers<a class="headerlink" href="#create-transforms-from-transformers" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_transforms_from_transformers">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_transforms_from_transformers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/base.html#create_transforms_from_transformers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_transforms_from_transformers" title="Permalink to this definition"></a></dt>
+<dd><p>Create image transforms from a transformers processor.</p>
+<p>This function attempts to create appropriate image transforms by trying
+each registered creator function until one succeeds.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processor</strong> (<em>object</em>) – A transformers processor object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Image transforms appropriate for the given processor</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If no suitable creator is found for the processor</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoImageProcessor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.preprocess.transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_transforms_from_transformers</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">processor</span> <span class="o">=</span> <span class="n">AutoImageProcessor</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;openai/clip-vit-base-patch32&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transforms</span> <span class="o">=</span> <span class="n">create_transforms_from_transformers</span><span class="p">(</span><span class="n">processor</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transforms</span>
+<span class="go">PillowCompose(</span>
+<span class="go">    PillowConvertRGB(force_background=&#39;white&#39;)</span>
+<span class="go">    PillowResize(size=224, interpolation=bicubic, max_size=None, antialias=True)</span>
+<span class="go">    PillowCenterCrop(size=(224, 224))</span>
+<span class="go">    PillowToTensor()</span>
+<span class="go">    PillowNormalize(mean=[0.48145467 0.4578275  0.40821072], std=[0.26862955 0.2613026  0.2757771 ])</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-clip-transforms">
+<h2>create_clip_transforms<a class="headerlink" href="#create-clip-transforms" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_clip_transforms">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_clip_transforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">do_resize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample=3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_center_crop=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_size=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_rescale:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rescale_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.00392156862745098</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_normalize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_mean=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_std=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_convert_rgb:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/clip.html#create_clip_transforms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_clip_transforms" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a composition of image transforms typically used for CLIP models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>do_resize</strong> (<em>bool</em>) – Whether to resize the image.</p></li>
+<li><p><strong>size</strong> (<em>dict</em>) – Target size for resizing. Can be {“shortest_edge”: int} or {“height”: int, “width”: int}.</p></li>
+<li><p><strong>resample</strong> (<em>int</em>) – PIL resampling filter to use for resizing.</p></li>
+<li><p><strong>do_center_crop</strong> (<em>bool</em>) – Whether to center crop the image.</p></li>
+<li><p><strong>crop_size</strong> (<em>dict</em>) – Size for center cropping in {“height”: int, “width”: int} format.</p></li>
+<li><p><strong>do_rescale</strong> (<em>bool</em>) – Whether to rescale pixel values.</p></li>
+<li><p><strong>rescale_factor</strong> (<em>float</em>) – Factor to use for rescaling pixels.</p></li>
+<li><p><strong>do_normalize</strong> (<em>bool</em>) – Whether to normalize the image.</p></li>
+<li><p><strong>image_mean</strong> (<em>list</em><em> or </em><em>tuple</em>) – Mean values for normalization.</p></li>
+<li><p><strong>image_std</strong> (<em>list</em><em> or </em><em>tuple</em>) – Standard deviation values for normalization.</p></li>
+<li><p><strong>do_convert_rgb</strong> (<em>bool</em>) – Whether to convert image to RGB.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composed transformation pipeline.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-transforms-from-clip-processor">
+<h2>create_transforms_from_clip_processor<a class="headerlink" href="#create-transforms-from-clip-processor" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_transforms_from_clip_processor">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_transforms_from_clip_processor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/clip.html#create_transforms_from_clip_processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_transforms_from_clip_processor" title="Permalink to this definition"></a></dt>
+<dd><p>Creates image transforms from a CLIP processor configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processor</strong> (<em>Union</em><em>[</em><em>CLIPProcessor</em><em>, </em><em>CLIPImageProcessor</em><em>]</em>) – A CLIP processor or image processor instance from transformers library.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composed transformation pipeline matching the processor’s configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If the provided processor is not a CLIP processor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-convnext-transforms">
+<h2>create_convnext_transforms<a class="headerlink" href="#create-convnext-transforms" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_convnext_transforms">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_convnext_transforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">do_resize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_pct:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample=2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_rescale:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rescale_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.00392156862745098</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_normalize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_mean=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_std=&lt;object</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/convnext.html#create_convnext_transforms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_convnext_transforms" title="Permalink to this definition"></a></dt>
+<dd><p>Create a composition of image transforms specifically tailored for ConvNext models.</p>
+<p>This function creates a transformation pipeline that can include resizing, rescaling,
+and normalization operations. The transforms are applied in the following order:</p>
+<ol class="arabic simple">
+<li><p>Resize (optional)</p></li>
+<li><p>Convert to tensor</p></li>
+<li><p>Rescale (optional)</p></li>
+<li><p>Normalize (optional)</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>do_resize</strong> (<em>bool</em>) – Whether to resize the image</p></li>
+<li><p><strong>size</strong> (<em>dict</em>) – Target size dictionary with ‘shortest_edge’ key</p></li>
+<li><p><strong>crop_pct</strong> (<em>float</em>) – Center crop percentage, used to compute resize size</p></li>
+<li><p><strong>resample</strong> (<em>int</em>) – PIL resampling filter to use for resizing</p></li>
+<li><p><strong>do_rescale</strong> (<em>bool</em>) – Whether to rescale pixel values</p></li>
+<li><p><strong>rescale_factor</strong> (<em>float</em>) – Factor to use for rescaling pixels</p></li>
+<li><p><strong>do_normalize</strong> (<em>bool</em>) – Whether to normalize the image</p></li>
+<li><p><strong>image_mean</strong> (<em>tuple</em><em> or </em><em>list</em>) – Mean values for normalization</p></li>
+<li><p><strong>image_std</strong> (<em>tuple</em><em> or </em><em>list</em>) – Standard deviation values for normalization</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composed transformation pipeline</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-transforms-from-convnext-processor">
+<h2>create_transforms_from_convnext_processor<a class="headerlink" href="#create-transforms-from-convnext-processor" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_transforms_from_convnext_processor">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_transforms_from_convnext_processor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/convnext.html#create_transforms_from_convnext_processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_transforms_from_convnext_processor" title="Permalink to this definition"></a></dt>
+<dd><p>Create image transforms from a ConvNext processor configuration.</p>
+<p>This function takes a Hugging Face ConvNextImageProcessor and creates a corresponding
+transformation pipeline that matches its configuration settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processor</strong> (<em>ConvNextImageProcessor</em>) – The ConvNext image processor to create transforms from</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composed transformation pipeline matching the processor’s configuration</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If the provided processor is not a ConvNextImageProcessor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-vit-transforms">
+<h2>create_vit_transforms<a class="headerlink" href="#create-vit-transforms" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_vit_transforms">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_vit_transforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">do_resize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_rescale:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rescale_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.00392156862745098</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_normalize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_mean=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_std=&lt;object</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/vit.html#create_vit_transforms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_vit_transforms" title="Permalink to this definition"></a></dt>
+<dd><p>Create a composition of image transforms typically used for ViT models.</p>
+<p>This function creates a transform pipeline that can include resizing, tensor conversion,
+rescaling, and normalization operations. The transforms are applied in sequence to
+prepare images for ViT model input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>do_resize</strong> (<em>bool</em>) – Whether to resize the input images</p></li>
+<li><p><strong>size</strong> (<em>dict</em>) – Target size for resizing, should be dict with ‘height’ and ‘width’ keys</p></li>
+<li><p><strong>resample</strong> (<em>int</em>) – PIL resampling filter to use for resizing</p></li>
+<li><p><strong>do_rescale</strong> (<em>bool</em>) – Whether to rescale pixel values</p></li>
+<li><p><strong>rescale_factor</strong> (<em>float</em>) – Factor to use for rescaling pixel values</p></li>
+<li><p><strong>do_normalize</strong> (<em>bool</em>) – Whether to normalize the image</p></li>
+<li><p><strong>image_mean</strong> (<em>tuple</em><em> or </em><em>list</em>) – Mean values for normalization</p></li>
+<li><p><strong>image_std</strong> (<em>tuple</em><em> or </em><em>list</em>) – Standard deviation values for normalization</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composition of image transforms</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-transforms-from-vit-processor">
+<h2>create_transforms_from_vit_processor<a class="headerlink" href="#create-transforms-from-vit-processor" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_transforms_from_vit_processor">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_transforms_from_vit_processor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/vit.html#create_transforms_from_vit_processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_transforms_from_vit_processor" title="Permalink to this definition"></a></dt>
+<dd><p>Create image transforms from a Hugging Face ViT processor configuration.</p>
+<p>This function takes a ViT image processor from the transformers library and creates
+a matching transform pipeline that replicates the processor’s preprocessing steps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processor</strong> (<em>ViTImageProcessor</em>) – A ViT image processor from Hugging Face transformers</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composition of image transforms matching the processor’s configuration</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If the provided processor is not a ViTImageProcessor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-siglip-transforms">
+<h2>create_siglip_transforms<a class="headerlink" href="#create-siglip-transforms" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_siglip_transforms">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_siglip_transforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">do_resize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_rescale:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rescale_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.00392156862745098</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_normalize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_mean=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_std=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_convert_rgb:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/siglip.html#create_siglip_transforms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_siglip_transforms" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a composition of image transformations for SigLIP model input processing.</p>
+<p>This function builds a pipeline of image transformations that can include:</p>
+<ul class="simple">
+<li><p>RGB conversion</p></li>
+<li><p>Image resizing</p></li>
+<li><p>Tensor conversion</p></li>
+<li><p>Image rescaling</p></li>
+<li><p>Normalization</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>do_resize</strong> (<em>bool</em>) – Whether to resize the image</p></li>
+<li><p><strong>size</strong> (<em>dict</em>) – Target size dictionary with ‘height’ and ‘width’ keys</p></li>
+<li><p><strong>resample</strong> (<em>int</em>) – PIL image resampling filter to use for resizing</p></li>
+<li><p><strong>do_rescale</strong> (<em>bool</em>) – Whether to rescale pixel values</p></li>
+<li><p><strong>rescale_factor</strong> (<em>float</em>) – Factor to use for pixel value rescaling</p></li>
+<li><p><strong>do_normalize</strong> (<em>bool</em>) – Whether to normalize the image</p></li>
+<li><p><strong>image_mean</strong> (<em>tuple</em><em> or </em><em>list</em>) – Mean values for normalization</p></li>
+<li><p><strong>image_std</strong> (<em>tuple</em><em> or </em><em>list</em>) – Standard deviation values for normalization</p></li>
+<li><p><strong>do_convert_rgb</strong> (<em>bool</em>) – Whether to convert image to RGB</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composed transformation pipeline</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-transforms-from-siglip-processor">
+<h2>create_transforms_from_siglip_processor<a class="headerlink" href="#create-transforms-from-siglip-processor" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_transforms_from_siglip_processor">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_transforms_from_siglip_processor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/siglip.html#create_transforms_from_siglip_processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_transforms_from_siglip_processor" title="Permalink to this definition"></a></dt>
+<dd><p>Creates image transformations from a SigLIP processor configuration.</p>
+<p>This function extracts transformation parameters from a HuggingFace SigLIP
+image processor and creates a corresponding transformation pipeline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processor</strong> (<em>SiglipImageProcessor</em>) – A HuggingFace SigLIP image processor instance</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composed transformation pipeline</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If the processor is not a SiglipImageProcessor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="torchvision.html" class="btn btn-neutral float-left" title="imgutils.preprocess.torchvision" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../resource/index.html" class="btn btn-neutral float-right" title="imgutils.resource" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: main
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.5.0/index.html">v0.5.0</a></dd>
+                        <dd><a href="../../../v0.6.0/index.html">v0.6.0</a></dd>
+                        <dd><a href="../../../v0.6.1/index.html">v0.6.1</a></dd>
+                        <dd><a href="../../../v0.6.2/index.html">v0.6.2</a></dd>
+                        <dd><a href="../../../v0.6.3/index.html">v0.6.3</a></dd>
+                        <dd><a href="../../../v0.7.0/index.html">v0.7.0</a></dd>
+                        <dd><a href="../../../v0.7.1/index.html">v0.7.1</a></dd>
+                        <dd><a href="../../../v0.8.0/index.html">v0.8.0</a></dd>
+                        <dd><a href="../../../v0.9.0/index.html">v0.9.0</a></dd>
+                        <dd><a href="../../../v0.9.1/index.html">v0.9.1</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="transformers.html">main</a></dd>
+                        <dd><a href="../../../HEAD/api_doc/preprocess/transformers.html">HEAD</a></dd>
+                        <dd><a href="../../../dev/denormalize/index.html">dev/denormalize</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

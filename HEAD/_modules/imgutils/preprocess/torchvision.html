@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>imgutils.preprocess.torchvision &mdash; imgutils 0.9.1 documentation</title>
+  <title>imgutils.preprocess.torchvision &mdash; imgutils 0.9.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=bfb94e3c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=8841c456"></script>
       <script src="../../../_static/doctools.js?v=888ff710"></script>
       <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -117,6 +117,13 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotParseTarget</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torchvision</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
+    <span class="n">_HAS_TORCHVISION</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">_HAS_TORCHVISION</span> <span class="o">=</span> <span class="kc">True</span>
+
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_check_torchvision</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -124,9 +131,7 @@
 
 <span class="sd">    :raises EnvironmentError: If torchvision is not installed</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">torchvision</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_HAS_TORCHVISION</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s1">&#39;No torchvision available.</span><span class="se">\n</span><span class="s1">&#39;</span>
                                <span class="s1">&#39;Please install it by `pip install dghs-imgutils[torchvision]`.&#39;</span><span class="p">)</span>
 
@@ -314,14 +319,10 @@
     <span class="p">}</span>
 
 
-<span class="nd">@_register_transform</span><span class="p">(</span><span class="s1">&#39;maybe_to_tensor&#39;</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">_create_maybe_to_tensor</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a MaybeToTensor transform that converts input to tensor if not already a tensor.</span>
-
-<span class="sd">    :return: MaybeToTensor transform</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">if</span> <span class="n">_HAS_TORCHVISION</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">torchvision.transforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">ToTensor</span>
+
+
     <span class="k">class</span><span class="w"> </span><span class="nc">MaybeToTensor</span><span class="p">(</span><span class="n">ToTensor</span><span class="p">):</span>
         <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -336,6 +337,17 @@
         <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">()&quot;</span>
 
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">MaybeToTensor</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="nd">@_register_transform</span><span class="p">(</span><span class="s1">&#39;maybe_to_tensor&#39;</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_maybe_to_tensor</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a MaybeToTensor transform that converts input to tensor if not already a tensor.</span>
+
+<span class="sd">    :return: MaybeToTensor transform</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">MaybeToTensor</span><span class="p">()</span>
 
 
@@ -612,10 +624,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/transformers/index.html">dev/transformers</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
                         <dd><a href="torchvision.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
-                        <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
