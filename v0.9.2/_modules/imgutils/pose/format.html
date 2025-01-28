@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.pose.format &mdash; imgutils 0.9.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=8841c456"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.pose.format</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.pose.format</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntEnum</span><span class="p">,</span> <span class="n">unique</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">OP18_BODY_MIN</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">OP18_BODY_MAX</span> <span class="o">=</span> <span class="mi">17</span>
+<span class="n">OP18_LEFT_FOOT_MIN</span> <span class="o">=</span> <span class="mi">18</span>
+<span class="n">OP18_LEFT_FOOT_MAX</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">OP18_RIGHT_FOOT_MIN</span> <span class="o">=</span> <span class="mi">21</span>
+<span class="n">OP18_RIGHT_FOOT_MAX</span> <span class="o">=</span> <span class="mi">23</span>
+<span class="n">OP18_FACE_MIN</span> <span class="o">=</span> <span class="mi">24</span>
+<span class="n">OP18_FACE_MAX</span> <span class="o">=</span> <span class="mi">91</span>
+<span class="n">OP18_LEFT_HAND_MIN</span> <span class="o">=</span> <span class="mi">92</span>
+<span class="n">OP18_LEFT_HAND_MAX</span> <span class="o">=</span> <span class="mi">112</span>
+<span class="n">OP18_RIGHT_HAND_MIN</span> <span class="o">=</span> <span class="mi">113</span>
+<span class="n">OP18_RIGHT_HAND_MAX</span> <span class="o">=</span> <span class="mi">135</span>
+
+
+<div class="viewcode-block" id="OpenPose18"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OpenPose18">[docs]</a><span class="nd">@unique</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OpenPose18</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Enumeration class representing the OpenPose 18 keypoint indices.</span>
+
+<span class="sd">    The enumeration provides symbolic names for the keypoint indices, making it more readable and maintainable</span>
+<span class="sd">    when accessing specific keypoints in the OP18 keypoint set.</span>
+
+<span class="sd">    The keypoint indices are categorized into different body parts such as nose, neck, shoulders, elbows, wrists,</span>
+<span class="sd">    hips, knees, ankles, eyes, ears, feet, and hands.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NOSE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">NECK</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">RIGHT_SHOULDER</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">RIGHT_ELBOW</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">RIGHT_WRIST</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">LEFT_SHOULDER</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">LEFT_ELBOW</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">LEFT_WRIST</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">RIGHT_HIP</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">RIGHT_KNEE</span> <span class="o">=</span> <span class="mi">9</span>
+    <span class="n">RIGHT_ANKLE</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">LEFT_HIP</span> <span class="o">=</span> <span class="mi">11</span>
+    <span class="n">LEFT_KNEE</span> <span class="o">=</span> <span class="mi">12</span>
+    <span class="n">LEFT_ANKLE</span> <span class="o">=</span> <span class="mi">13</span>
+    <span class="n">RIGHT_EYE</span> <span class="o">=</span> <span class="mi">14</span>
+    <span class="n">LEFT_EYE</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="n">RIGHT_EAR</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">LEFT_EAR</span> <span class="o">=</span> <span class="mi">17</span>
+
+    <span class="n">LEFT_BIG_TOE</span> <span class="o">=</span> <span class="mi">18</span>
+    <span class="n">LEFT_SMALL_TOE</span> <span class="o">=</span> <span class="mi">19</span>
+    <span class="n">LEFT_HEEL</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">RIGHT_BIG_TOE</span> <span class="o">=</span> <span class="mi">21</span>
+    <span class="n">RIGHT_SMALL_TOE</span> <span class="o">=</span> <span class="mi">22</span>
+    <span class="n">RIGHT_HEEL</span> <span class="o">=</span> <span class="mi">23</span></div>
+
+
+<div class="viewcode-block" id="OP18KeyPointSet"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">OP18KeyPointSet</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing a set of keypoints detected by the OpenPose 18 (OP18) model.</span>
+
+<span class="sd">    This class provides convenient properties to access keypoints for different body parts, including the body,</span>
+<span class="sd">    left foot, right foot, face, left hand, and right hand.</span>
+
+<span class="sd">    :param all_: NumPy array containing the coordinates and confidence scores of all keypoints.</span>
+<span class="sd">    :type all_: np.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="OP18KeyPointSet.__init__"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">all_</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">body</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the body.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_BODY_MIN</span><span class="p">:</span><span class="n">OP18_BODY_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">left_foot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the left foot.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_LEFT_FOOT_MIN</span><span class="p">:</span><span class="n">OP18_LEFT_FOOT_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">right_foot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the right foot.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_RIGHT_FOOT_MIN</span><span class="p">:</span><span class="n">OP18_RIGHT_FOOT_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the face.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_FACE_MIN</span><span class="p">:</span><span class="n">OP18_FACE_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">left_hand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the left hand.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_LEFT_HAND_MIN</span><span class="p">:</span><span class="n">OP18_LEFT_HAND_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">right_hand</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property representing the keypoints for the right hand.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">[</span><span class="n">OP18_RIGHT_HAND_MIN</span><span class="p">:</span><span class="n">OP18_RIGHT_HAND_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+<div class="viewcode-block" id="OP18KeyPointSet.__mul__"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__mul__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Multiply the coordinates of all keypoints by a scalar multiplier.</span>
+
+<span class="sd">        :param multiplier: The scalar multiplier.</span>
+<span class="sd">        :type multiplier: Union[float, int]</span>
+
+<span class="sd">        :return: New OP18KeyPointSet with scaled coordinates.</span>
+<span class="sd">        :rtype: OP18KeyPointSet</span>
+
+<span class="sd">        :raises TypeError: If the type of the multiplier is not float or int.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">multiplier</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="n">new_all</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">new_all</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="n">multiplier</span>
+            <span class="n">new_all</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="n">multiplier</span>
+            <span class="k">return</span> <span class="n">OP18KeyPointSet</span><span class="p">(</span><span class="n">new_all</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid type of multiplier - </span><span class="si">{</span><span class="n">multiplier</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OP18KeyPointSet.__truediv__"><a class="viewcode-back" href="../../../api_doc/pose/format.html#imgutils.pose.format.OP18KeyPointSet.__truediv__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">divisor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Divide the coordinates of all keypoints by a scalar divisor.</span>
+
+<span class="sd">        :param divisor: The scalar divisor.</span>
+<span class="sd">        :type divisor: Union[float, int]</span>
+
+<span class="sd">        :return: New OP18KeyPointSet with scaled coordinates.</span>
+<span class="sd">        :rtype: OP18KeyPointSet</span>
+
+<span class="sd">        :raises TypeError: If the type of the divisor is not float or int.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">divisor</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="bp">self</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">divisor</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid type of divisor - </span><span class="si">{</span><span class="n">divisor</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.9.2
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.5.0/index.html">v0.5.0</a></dd>
+                        <dd><a href="../../../../v0.6.0/index.html">v0.6.0</a></dd>
+                        <dd><a href="../../../../v0.6.1/index.html">v0.6.1</a></dd>
+                        <dd><a href="../../../../v0.6.2/index.html">v0.6.2</a></dd>
+                        <dd><a href="../../../../v0.6.3/index.html">v0.6.3</a></dd>
+                        <dd><a href="../../../../v0.7.0/index.html">v0.7.0</a></dd>
+                        <dd><a href="../../../../v0.7.1/index.html">v0.7.1</a></dd>
+                        <dd><a href="../../../../v0.8.0/index.html">v0.8.0</a></dd>
+                        <dd><a href="../../../../v0.9.0/index.html">v0.9.0</a></dd>
+                        <dd><a href="../../../../v0.9.1/index.html">v0.9.1</a></dd>
+                        <dd><a href="format.html">v0.9.2</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
