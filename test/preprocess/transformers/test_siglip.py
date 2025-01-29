@@ -23,11 +23,8 @@ class TestPreprocessTransformersSiglip:
         'repo_id': [
             'Marqo/marqo-ecommerce-embeddings-B',
             'ucsahin/TraVisionLM-DPO',
-            'google/siglip-base-patch16-384',
-            'google/siglip-base-patch16-512',
             'llava-hf/llava-interleave-qwen-0.5b-hf',
             'zhumj34/Mipha-3B',
-            'google/siglip-so400m-patch14-384',
             'lmms-lab/llava-onevision-qwen2-72b-ov-sft',
             'p1atdev/siglip-tagger-test-3',
             'gokaygokay/paligemma-rich-captions',
@@ -36,6 +33,17 @@ class TestPreprocessTransformersSiglip:
             'OpenFace-CQUPT/Human_LLaVA',
             'ucsahin/TraVisionLM-base',
             'mlx-community/paligemma-3b-mix-448-8bit',
+
+            'google/siglip-so400m-patch14-384',
+            'google/siglip-so400m-patch14-224',
+            'google/siglip-base-patch16-256-multilingual',
+            'google/siglip-base-patch16-224',
+            'google/siglip-so400m-patch16-256-i18n',
+            'google/siglip-base-patch16-512',
+            'google/siglip-large-patch16-256',
+            'google/siglip-base-patch16-384',
+            'google/siglip-large-patch16-384',
+            'google/siglip-base-patch16-256'
         ],
         'src_image': [
             'png_640.png',
