@@ -85,4 +85,17 @@ create_transforms_from_siglip_processor
 
 
 
+create_bit_transforms
+--------------------------------------------------------------------
+
+.. autofunction:: create_bit_transforms
+
+
+
+create_transforms_from_bit_processor
+--------------------------------------------------------------------
+
+.. autofunction:: create_transforms_from_bit_processor
+
+
 
