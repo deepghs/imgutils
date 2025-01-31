@@ -10,7 +10,7 @@ pandas
 scipy
 emoji>=2.5.0,<2.12
 pilmoji>=1.3.0
-shapely
+shapely!=2.0.7
 pyclipper
 deprecation>=2.0.0
 hfutils>=0.4.2
