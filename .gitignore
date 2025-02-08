@@ -1224,3 +1224,4 @@ fabric.properties
 /runs
 /YOLOv8
 .tests
+*.onnx
