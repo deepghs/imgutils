@@ -223,12 +223,28 @@ class ClassifyModel:
         """
         with self._model_lock:
             if model_name not in self._models:
-                self._check_model_name(model_name)
-                self._models[model_name] = open_onnx_model(hf_hub_download(
-                    self.repo_id,
-                    f'{model_name}/model.onnx',
-                    token=self._get_hf_token(),
-                ))
+                # Check if HF_HUB_OFFLINE is set to 1
+                hf_hub_offline = os.getenv('HF_HUB_OFFLINE') == "1"
+                # If not in offline mode, check the model name
+                if not hf_hub_offline:
+                    self._check_model_name(model_name)
+                try:
+                    self._models[model_name] = open_onnx_model(hf_hub_download(
+                        self.repo_id,
+                        f'{model_name}/model.onnx',
+                        token=self._get_hf_token(),
+                    ))
+                except Exception as e:
+                    if hf_hub_offline:
+                        raise Exception(
+                            "You have set HF_HUB_OFFLINE=1, but the model is not available in the local cache. "
+                            "Please unset HF_HUB_OFFLINE and download the model first."
+                        )
+                    else:
+                        raise Exception(f"Failed to load the model: {e}")
+                finally:
+                    # Clean up useless variables
+                    del hf_hub_offline
 
         return self._models[model_name]
 
