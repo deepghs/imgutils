@@ -665,7 +665,9 @@ class DeepDanbooruModel(nn.Module):
         t_766 = torch.add(t_765, t_760)
         t_767 = F.relu(t_766)
         t_768 = self.n_Conv_178(t_767)
-        t_769 = F.avg_pool2d(t_768, kernel_size=t_768.shape[-2:])
+        # print(t_768.shape)
+        # t_769 = F.avg_pool2d(t_768, kernel_size=t_768.shape[-2:])  # original line
+        t_769 = F.avg_pool2d(t_768, kernel_size=(4, 4))  # replaced to 4x4 for onnx export
         t_770 = torch.squeeze(t_769, 3)
         t_770 = torch.squeeze(t_770, 2)
         t_771 = torch.sigmoid(t_770)
