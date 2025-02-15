@@ -12,6 +12,7 @@ imgutils.tagging
     mldanbooru
     wd14
     deepdanbooru
+    deepgelbooru
     format
     overlap
     blacklist
