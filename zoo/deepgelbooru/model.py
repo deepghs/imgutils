@@ -12,7 +12,7 @@ class DeepDanbooruModel(nn.Module):
             raise ValueError("Number of tags can't be 0!")
 
         self.tags = []
-    
+
         self.n_Conv_0 = nn.Conv2d(kernel_size=(7, 7), in_channels=3, out_channels=64, stride=(2, 2))
         self.n_MaxPool_0 = nn.MaxPool2d(kernel_size=(3, 3), stride=(2, 2))
         self.n_Conv_1 = nn.Conv2d(kernel_size=(1, 1), in_channels=64, out_channels=256)
