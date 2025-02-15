@@ -46,6 +46,9 @@ def _image_preprocess(image: Image.Image):
     return _open_preprocessor()(image).transpose((1, 2, 0))[None, ...].astype(np.float32)
 
 
+_PREFIX_LENGTH = len('rating:')
+
+
 def get_deepgelbooru_tags(image: ImageTyping,
                           general_threshold: float = 0.3, character_threshold: float = 0.3,
                           drop_overlap: bool = False, fmt=('rating', 'general', 'character')):
@@ -66,7 +69,7 @@ def get_deepgelbooru_tags(image: ImageTyping,
             if score >= character_threshold:
                 d_characters[tag_info['name']] = score
         elif category == 9:
-            d_rating[tag_info['name']] = score
+            d_rating[tag_info['name'][_PREFIX_LENGTH:]] = score
         else:
             assert False, 'Should not reach this line.'  # pragma: no cover
 
