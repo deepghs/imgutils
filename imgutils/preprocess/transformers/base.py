@@ -21,10 +21,6 @@ Usage:
     )
 """
 
-from PIL import Image
-
-from ..pillow import PillowResize
-
 try:
     import transformers
 except (ImportError, ModuleNotFoundError):
@@ -137,26 +133,3 @@ def create_transforms_from_transformers(processor):
             pass
     else:
         raise NotProcessorTypeError(f'Unknown transformers processor - {processor!r}.')
-
-
-def _create_resize(size, resample=Image.BICUBIC):
-    """
-    Create a PillowResize transform based on the given size configuration.
-
-    :param size: Dictionary containing size configuration, either with 'shortest_edge'
-                or both 'height' and 'width' keys
-    :type size: dict
-    :param resample: PIL resampling filter to use for resizing, defaults to Image.BICUBIC
-    :type resample: int
-
-    :return: A PillowResize transform configured according to the size parameters
-    :rtype: PillowResize
-
-    :raises ValueError: If the size configuration is not recognized
-    """
-    if "shortest_edge" in size:
-        return PillowResize(size["shortest_edge"], interpolation=resample)
-    elif "height" in size and "width" in size:
-        return PillowResize((size["height"], size["width"]), interpolation=resample)
-    else:
-        raise ValueError(f'Unknown size configuration - {size!r}.')  # pragma: no cover

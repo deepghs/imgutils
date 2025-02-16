@@ -10,7 +10,8 @@ ensuring images are properly prepared for model inference.
 from PIL import Image
 
 from .base import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD, _DEFAULT, register_creators_for_transformers, \
-    _check_transformers, NotProcessorTypeError, _create_resize
+    _check_transformers, NotProcessorTypeError
+from .size import _create_resize
 from ..pillow import PillowRescale, PillowToTensor, PillowNormalize, PillowCompose
 
 _DEFAULT_SIZE = {"height": 224, "width": 224}

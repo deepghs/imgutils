@@ -8,7 +8,8 @@ library integration.
 from PIL import Image
 
 from .base import OPENAI_CLIP_MEAN, OPENAI_CLIP_STD, _DEFAULT, register_creators_for_transformers, _check_transformers, \
-    NotProcessorTypeError, _create_resize
+    NotProcessorTypeError
+from .size import _create_resize
 from ..pillow import PillowConvertRGB, PillowCenterCrop, PillowToTensor, PillowNormalize, PillowCompose, \
     PillowRescale
 

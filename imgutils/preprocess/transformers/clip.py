@@ -8,7 +8,8 @@ The module integrates with the Hugging Face transformers library and provides co
 from PIL import Image
 
 from .base import _check_transformers, NotProcessorTypeError, register_creators_for_transformers, OPENAI_CLIP_MEAN, \
-    OPENAI_CLIP_STD, _DEFAULT, _create_resize
+    OPENAI_CLIP_STD, _DEFAULT
+from .size import _create_resize
 from ..pillow import PillowCenterCrop, PillowToTensor, PillowNormalize, PillowCompose, PillowRescale, \
     PillowConvertRGB
 

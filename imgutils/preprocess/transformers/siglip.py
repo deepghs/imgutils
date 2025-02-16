@@ -7,7 +7,8 @@ resizing, rescaling, normalization, and RGB conversion.
 from PIL import Image
 
 from .base import IMAGENET_STANDARD_MEAN, IMAGENET_STANDARD_STD, _DEFAULT, _check_transformers, NotProcessorTypeError, \
-    register_creators_for_transformers, _create_resize
+    register_creators_for_transformers
+from .size import _create_resize
 from ..pillow import PillowCompose, PillowNormalize, PillowRescale, PillowToTensor, PillowConvertRGB
 
 _DEFAULT_SIZE = {"height": 224, "width": 224}

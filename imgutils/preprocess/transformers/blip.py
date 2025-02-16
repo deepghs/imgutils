@@ -9,7 +9,8 @@ all implemented using Pillow-based operations.
 from PIL import Image
 
 from .base import OPENAI_CLIP_STD, OPENAI_CLIP_MEAN, _DEFAULT, _check_transformers, NotProcessorTypeError, \
-    register_creators_for_transformers, _create_resize
+    register_creators_for_transformers
+from .size import _create_resize
 from ..pillow import PillowConvertRGB, PillowRescale, PillowNormalize, PillowToTensor, PillowCompose
 
 _DEFAULT_SIZE = {"height": 384, "width": 384}
