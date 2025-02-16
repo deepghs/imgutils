@@ -27,6 +27,26 @@ create_transforms_from_transformers
 
 
 
+is_valid_size_dict
+--------------------------------------------------------------------
+
+.. autofunction:: is_valid_size_dict
+
+
+
+convert_to_size_dict
+--------------------------------------------------------------------
+
+.. autofunction:: convert_to_size_dict
+
+
+
+get_size_dict
+--------------------------------------------------------------------
+
+.. autofunction:: get_size_dict
+
+
 
 create_clip_transforms
 --------------------------------------------------------------------
@@ -110,6 +130,20 @@ create_transforms_from_blip_processor
 --------------------------------------------------------------------
 
 .. autofunction:: create_transforms_from_blip_processor
+
+
+
+create_mobilenetv2_transforms
+--------------------------------------------------------------------
+
+.. autofunction:: create_mobilenetv2_transforms
+
+
+
+create_transforms_from_mobilenetv2_processor
+--------------------------------------------------------------------
+
+.. autofunction:: create_transforms_from_mobilenetv2_processor
 
 
 

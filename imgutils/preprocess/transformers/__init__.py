@@ -13,4 +13,5 @@ from .clip import create_clip_transforms, create_transforms_from_clip_processor
 from .convnext import create_convnext_transforms, create_transforms_from_convnext_processor
 from .mobilenetv2 import create_mobilenetv2_transforms, create_transforms_from_mobilenetv2_processor
 from .siglip import create_siglip_transforms, create_transforms_from_siglip_processor
+from .size import is_valid_size_dict, convert_to_size_dict, get_size_dict
 from .vit import create_vit_transforms, create_transforms_from_vit_processor
