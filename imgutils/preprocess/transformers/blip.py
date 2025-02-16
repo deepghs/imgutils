@@ -1,3 +1,11 @@
+"""
+This module provides image transformation utilities specifically designed for BLIP (Bootstrapping Language-Image Pre-training) models.
+It includes functions to create transformation pipelines for processing images according to BLIP's requirements.
+
+The transformations include operations like resizing, RGB conversion, normalization, and tensor conversion,
+all implemented using Pillow-based operations.
+"""
+
 from PIL import Image
 
 from .base import OPENAI_CLIP_STD, OPENAI_CLIP_MEAN, _DEFAULT, _check_transformers, NotProcessorTypeError, \
@@ -18,6 +26,35 @@ def create_blip_transforms(
         image_std=_DEFAULT,
         do_convert_rgb: bool = True,
 ):
+    """
+    Create a transformation pipeline for BLIP image processing.
+
+    This function builds a sequence of image transformations commonly used in BLIP models,
+    including RGB conversion, resizing, tensor conversion, rescaling, and normalization.
+
+    :param do_resize: Whether to resize the image.
+    :type do_resize: bool
+    :param size: Target size for resizing, expects dict with 'height' and 'width' keys.
+                Defaults to {'height': 384, 'width': 384}.
+    :type size: dict
+    :param resample: Resampling filter for resize operation. Defaults to PIL.Image.BICUBIC.
+    :type resample: int
+    :param do_rescale: Whether to rescale pixel values.
+    :type do_rescale: bool
+    :param rescale_factor: Factor to rescale pixel values. Defaults to 1/255.
+    :type rescale_factor: float
+    :param do_normalize: Whether to normalize the image.
+    :type do_normalize: bool
+    :param image_mean: Mean values for normalization. Defaults to OPENAI_CLIP_MEAN.
+    :type image_mean: tuple or list
+    :param image_std: Standard deviation values for normalization. Defaults to OPENAI_CLIP_STD.
+    :type image_std: tuple or list
+    :param do_convert_rgb: Whether to convert image to RGB.
+    :type do_convert_rgb: bool
+
+    :return: A composed transformation pipeline.
+    :rtype: PillowCompose
+    """
     size = size if size is not _DEFAULT else _DEFAULT_SIZE
     image_mean = image_mean if image_mean is not _DEFAULT else OPENAI_CLIP_MEAN
     image_std = image_std if image_std is not _DEFAULT else OPENAI_CLIP_STD
@@ -48,6 +85,19 @@ def create_blip_transforms(
 
 @register_creators_for_transformers()
 def create_transforms_from_blip_processor(processor):
+    """
+    Create image transformations from a HuggingFace BLIP processor.
+
+    This function extracts configuration from a HuggingFace BLIP processor and creates
+    a corresponding transformation pipeline using create_blip_transforms.
+
+    :param processor: A HuggingFace BLIP image processor instance.
+    :type processor: transformers.BlipImageProcessor
+
+    :return: A composed transformation pipeline configured according to the processor's settings.
+    :rtype: PillowCompose
+    :raises NotProcessorTypeError: If the provided processor is not a BlipImageProcessor.
+    """
     _check_transformers()
     from transformers import BlipImageProcessor
 
