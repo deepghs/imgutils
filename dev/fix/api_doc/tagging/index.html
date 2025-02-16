@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.tagging &mdash; imgutils 0.9.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e7b0d082"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.tagging.mldanbooru" href="mldanbooru.html" />
+    <link rel="prev" title="imgutils.segment.isnetis" href="../segment/isnetis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">imgutils.tagging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mldanbooru.html">imgutils.tagging.mldanbooru</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wd14.html">imgutils.tagging.wd14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepdanbooru.html">imgutils.tagging.deepdanbooru</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deepgelbooru.html">imgutils.tagging.deepgelbooru</a></li>
+<li class="toctree-l2"><a class="reference internal" href="format.html">imgutils.tagging.format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overlap.html">imgutils.tagging.overlap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blacklist.html">imgutils.tagging.blacklist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="character.html">imgutils.tagging.character</a></li>
+<li class="toctree-l2"><a class="reference internal" href="order.html">imgutils.tagging.order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="match.html">imgutils.tagging.match</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">imgutils.tagging</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/tagging/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.tagging">
+<span id="imgutils-tagging"></span><h1>imgutils.tagging<a class="headerlink" href="#module-imgutils.tagging" title="Permalink to this heading"></a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>Get tags for anime images.</p>
+<p>This is an overall benchmark of all the danbooru models:</p>
+<img alt="../../_images/tagging_benchmark.plot.py.svg" class="align-center" src="../../_images/tagging_benchmark.plot.py.svg" /></dd>
+</dl>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mldanbooru.html">imgutils.tagging.mldanbooru</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mldanbooru.html#get-mldanbooru-tags">get_mldanbooru_tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mldanbooru.html#imgutils.tagging.mldanbooru.get_mldanbooru_tags"><code class="docutils literal notranslate"><span class="pre">get_mldanbooru_tags()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="wd14.html">imgutils.tagging.wd14</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="wd14.html#get-wd14-tags">get_wd14_tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="wd14.html#imgutils.tagging.wd14.get_wd14_tags"><code class="docutils literal notranslate"><span class="pre">get_wd14_tags()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="wd14.html#convert-wd14-emb-to-prediction">convert_wd14_emb_to_prediction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="wd14.html#imgutils.tagging.wd14.convert_wd14_emb_to_prediction"><code class="docutils literal notranslate"><span class="pre">convert_wd14_emb_to_prediction()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="wd14.html#denormalize-wd14-emb">denormalize_wd14_emb</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="wd14.html#imgutils.tagging.wd14.denormalize_wd14_emb"><code class="docutils literal notranslate"><span class="pre">denormalize_wd14_emb()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deepdanbooru.html">imgutils.tagging.deepdanbooru</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deepdanbooru.html#get-deepdanbooru-tags">get_deepdanbooru_tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deepdanbooru.html#imgutils.tagging.deepdanbooru.get_deepdanbooru_tags"><code class="docutils literal notranslate"><span class="pre">get_deepdanbooru_tags()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deepgelbooru.html">imgutils.tagging.deepgelbooru</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deepgelbooru.html#get-deepgelbooru-tags">get_deepgelbooru_tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deepgelbooru.html#imgutils.tagging.deepgelbooru.get_deepgelbooru_tags"><code class="docutils literal notranslate"><span class="pre">get_deepgelbooru_tags()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="format.html">imgutils.tagging.format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="format.html#add-underline">add_underline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="format.html#imgutils.tagging.format.add_underline"><code class="docutils literal notranslate"><span class="pre">add_underline()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="format.html#remove-underline">remove_underline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="format.html#imgutils.tagging.format.remove_underline"><code class="docutils literal notranslate"><span class="pre">remove_underline()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="format.html#tags-to-text">tags_to_text</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="format.html#imgutils.tagging.format.tags_to_text"><code class="docutils literal notranslate"><span class="pre">tags_to_text()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="overlap.html">imgutils.tagging.overlap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overlap.html#drop-overlap-tags">drop_overlap_tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overlap.html#imgutils.tagging.overlap.drop_overlap_tags"><code class="docutils literal notranslate"><span class="pre">drop_overlap_tags()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blacklist.html">imgutils.tagging.blacklist</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blacklist.html#is-blacklisted">is_blacklisted</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blacklist.html#imgutils.tagging.blacklist.is_blacklisted"><code class="docutils literal notranslate"><span class="pre">is_blacklisted()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blacklist.html#drop-blacklisted-tags">drop_blacklisted_tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blacklist.html#imgutils.tagging.blacklist.drop_blacklisted_tags"><code class="docutils literal notranslate"><span class="pre">drop_blacklisted_tags()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="character.html">imgutils.tagging.character</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="character.html#char-whitelist-suffix">CHAR_WHITELIST_SUFFIX</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="character.html#imgutils.tagging.character.CHAR_WHITELIST_SUFFIX"><code class="docutils literal notranslate"><span class="pre">CHAR_WHITELIST_SUFFIX</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="character.html#char-whitelist-prefix">CHAR_WHITELIST_PREFIX</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="character.html#imgutils.tagging.character.CHAR_WHITELIST_PREFIX"><code class="docutils literal notranslate"><span class="pre">CHAR_WHITELIST_PREFIX</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="character.html#char-whitelist-word">CHAR_WHITELIST_WORD</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="character.html#imgutils.tagging.character.CHAR_WHITELIST_WORD"><code class="docutils literal notranslate"><span class="pre">CHAR_WHITELIST_WORD</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="character.html#char-suffixes">CHAR_SUFFIXES</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="character.html#imgutils.tagging.character.CHAR_SUFFIXES"><code class="docutils literal notranslate"><span class="pre">CHAR_SUFFIXES</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="character.html#char-prefixes">CHAR_PREFIXES</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="character.html#imgutils.tagging.character.CHAR_PREFIXES"><code class="docutils literal notranslate"><span class="pre">CHAR_PREFIXES</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="character.html#charactertagpool">CharacterTagPool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="character.html#imgutils.tagging.character.CharacterTagPool"><code class="docutils literal notranslate"><span class="pre">CharacterTagPool</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="character.html#is-basic-character-tag">is_basic_character_tag</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="character.html#imgutils.tagging.character.is_basic_character_tag"><code class="docutils literal notranslate"><span class="pre">is_basic_character_tag()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="character.html#drop-basic-character-tags">drop_basic_character_tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="character.html#imgutils.tagging.character.drop_basic_character_tags"><code class="docutils literal notranslate"><span class="pre">drop_basic_character_tags()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="order.html">imgutils.tagging.order</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="order.html#sort-tags">sort_tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="order.html#imgutils.tagging.order.sort_tags"><code class="docutils literal notranslate"><span class="pre">sort_tags()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="match.html">imgutils.tagging.match</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="match.html#tag-match-suffix">tag_match_suffix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="match.html#imgutils.tagging.match.tag_match_suffix"><code class="docutils literal notranslate"><span class="pre">tag_match_suffix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="match.html#tag-match-prefix">tag_match_prefix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="match.html#imgutils.tagging.match.tag_match_prefix"><code class="docutils literal notranslate"><span class="pre">tag_match_prefix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="match.html#tag-match-full">tag_match_full</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="match.html#imgutils.tagging.match.tag_match_full"><code class="docutils literal notranslate"><span class="pre">tag_match_full()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../segment/isnetis.html" class="btn btn-neutral float-left" title="imgutils.segment.isnetis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mldanbooru.html" class="btn btn-neutral float-right" title="imgutils.tagging.mldanbooru" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/fix
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.7.0/api_doc/tagging/index.html">v0.7.0</a></dd>
+                        <dd><a href="../../../../v0.7.1/api_doc/tagging/index.html">v0.7.1</a></dd>
+                        <dd><a href="../../../../v0.8.0/api_doc/tagging/index.html">v0.8.0</a></dd>
+                        <dd><a href="../../../../v0.9.0/api_doc/tagging/index.html">v0.9.0</a></dd>
+                        <dd><a href="../../../../v0.9.1/api_doc/tagging/index.html">v0.9.1</a></dd>
+                        <dd><a href="../../../../v0.9.2/api_doc/tagging/index.html">v0.9.2</a></dd>
+                        <dd><a href="../../../../v0.9.3/api_doc/tagging/index.html">v0.9.3</a></dd>
+                        <dd><a href="../../../../v0.9.4/api_doc/tagging/index.html">v0.9.4</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="index.html">dev/fix</a></dd>
+                        <dd><a href="../../../../HEAD/api_doc/tagging/index.html">HEAD</a></dd>
+                        <dd><a href="../../../denormalize/api_doc/tagging/index.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../../main/api_doc/tagging/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
