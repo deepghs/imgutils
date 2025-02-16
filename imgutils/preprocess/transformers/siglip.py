@@ -7,8 +7,8 @@ resizing, rescaling, normalization, and RGB conversion.
 from PIL import Image
 
 from .base import IMAGENET_STANDARD_MEAN, IMAGENET_STANDARD_STD, _DEFAULT, _check_transformers, NotProcessorTypeError, \
-    register_creators_for_transformers
-from ..pillow import PillowCompose, PillowNormalize, PillowRescale, PillowToTensor, PillowResize, PillowConvertRGB
+    register_creators_for_transformers, _create_resize
+from ..pillow import PillowCompose, PillowNormalize, PillowRescale, PillowToTensor, PillowConvertRGB
 
 _DEFAULT_SIZE = {"height": 224, "width": 224}
 
@@ -70,7 +70,7 @@ def create_siglip_transforms(
 
     # Resize
     if do_resize:
-        transforms_list.append(PillowResize((size["height"], size["width"]), interpolation=resample))
+        transforms_list.append(_create_resize(size, resample=resample))
 
     # Convert to tensor (implicitly rescales to 0-1)
     transforms_list.append(PillowToTensor())

@@ -6,6 +6,9 @@ particularly for image processing tasks. It includes constants for standard imag
 normalization values and utilities for creating image transforms from transformers
 processors.
 """
+from PIL import Image
+
+from ..pillow import PillowResize
 
 try:
     import transformers
@@ -111,3 +114,12 @@ def create_transforms_from_transformers(processor):
             pass
     else:
         raise NotProcessorTypeError(f'Unknown transformers processor - {processor!r}.')
+
+
+def _create_resize(size, resample=Image.BICUBIC):
+    if "shortest_edge" in size:
+        return PillowResize(size["shortest_edge"], interpolation=resample)
+    elif "height" in size and "width" in size:
+        return PillowResize((size["height"], size["width"]), interpolation=resample)
+    else:
+        raise ValueError(f'Unknown size configuration - {size!r}.')  # pragma: no cover

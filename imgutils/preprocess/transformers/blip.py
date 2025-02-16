@@ -9,8 +9,8 @@ all implemented using Pillow-based operations.
 from PIL import Image
 
 from .base import OPENAI_CLIP_STD, OPENAI_CLIP_MEAN, _DEFAULT, _check_transformers, NotProcessorTypeError, \
-    register_creators_for_transformers
-from ..pillow import PillowConvertRGB, PillowRescale, PillowNormalize, PillowToTensor, PillowResize, PillowCompose
+    register_creators_for_transformers, _create_resize
+from ..pillow import PillowConvertRGB, PillowRescale, PillowNormalize, PillowToTensor, PillowCompose
 
 _DEFAULT_SIZE = {"height": 384, "width": 384}
 
@@ -67,7 +67,7 @@ def create_blip_transforms(
 
     # Resize if needed
     if do_resize:
-        transform_list.append(PillowResize((size["height"], size["width"]), interpolation=resample))
+        transform_list.append(_create_resize(size, resample=resample))
 
     # Convert PIL to tensor (which automatically scales to [0,1])
     transform_list.append(PillowToTensor())

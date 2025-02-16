@@ -8,8 +8,8 @@ The module integrates with the Hugging Face transformers library and provides co
 from PIL import Image
 
 from .base import _check_transformers, NotProcessorTypeError, register_creators_for_transformers, OPENAI_CLIP_MEAN, \
-    OPENAI_CLIP_STD, _DEFAULT
-from ..pillow import PillowResize, PillowCenterCrop, PillowToTensor, PillowNormalize, PillowCompose, PillowRescale, \
+    OPENAI_CLIP_STD, _DEFAULT, _create_resize
+from ..pillow import PillowCenterCrop, PillowToTensor, PillowNormalize, PillowCompose, PillowRescale, \
     PillowConvertRGB
 
 _DEFAULT_SIZE = {"shortest_edge": 224}
@@ -69,10 +69,7 @@ def create_clip_transforms(
         transform_list.append(PillowConvertRGB())
 
     if do_resize:
-        if "shortest_edge" in size:
-            transform_list.append(PillowResize(size["shortest_edge"], interpolation=resample))
-        elif "height" in size and "width" in size:
-            transform_list.append(PillowResize((size["height"], size["width"]), interpolation=resample))
+        transform_list.append(_create_resize(size, resample=resample))
 
     if do_center_crop:
         transform_list.append(PillowCenterCrop((crop_size["height"], crop_size["width"])))
