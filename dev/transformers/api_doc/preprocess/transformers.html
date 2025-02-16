@@ -84,6 +84,18 @@
 <li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_transformers"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_transformers()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#is-valid-size-dict">is_valid_size_dict</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.is_valid_size_dict"><code class="docutils literal notranslate"><span class="pre">is_valid_size_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#convert-to-size-dict">convert_to_size_dict</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.convert_to_size_dict"><code class="docutils literal notranslate"><span class="pre">convert_to_size_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-size-dict">get_size_dict</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.get_size_dict"><code class="docutils literal notranslate"><span class="pre">get_size_dict()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#create-clip-transforms">create_clip_transforms</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_clip_transforms"><code class="docutils literal notranslate"><span class="pre">create_clip_transforms()</span></code></a></li>
 </ul>
@@ -130,6 +142,14 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#create-transforms-from-blip-processor">create_transforms_from_blip_processor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_blip_processor"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_blip_processor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-mobilenetv2-transforms">create_mobilenetv2_transforms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_mobilenetv2_transforms"><code class="docutils literal notranslate"><span class="pre">create_mobilenetv2_transforms()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-transforms-from-mobilenetv2-processor">create_transforms_from_mobilenetv2_processor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_mobilenetv2_processor"><code class="docutils literal notranslate"><span class="pre">create_transforms_from_mobilenetv2_processor()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -326,9 +346,9 @@
 <td><p>N/A</p></td>
 </tr>
 <tr class="row-odd"><td><p>MobileNetV2ImageProcessor</p></td>
-<td><p>❌</p></td>
+<td><p>✅</p></td>
 <td><p>63 (0.35%)</p></td>
-<td><p>N/A</p></td>
+<td><p><a class="reference internal" href="#imgutils.preprocess.transformers.create_transforms_from_mobilenetv2_processor" title="imgutils.preprocess.transformers.create_transforms_from_mobilenetv2_processor"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_transforms_from_mobilenetv2_processor()</span></code></a></p></td>
 </tr>
 <tr class="row-even"><td><p>MobileViTImageProcessor</p></td>
 <td><p>❌</p></td>
@@ -547,6 +567,115 @@ for the given processor type.</p>
 <span class="go">    PillowToTensor()</span>
 <span class="go">    PillowNormalize(mean=[0.48145467 0.4578275  0.40821072], std=[0.26862955 0.2613026  0.2757771 ])</span>
 <span class="go">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="is-valid-size-dict">
+<h2>is_valid_size_dict<a class="headerlink" href="#is-valid-size-dict" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.is_valid_size_dict">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">is_valid_size_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/size.html#is_valid_size_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.is_valid_size_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Validate if a dictionary contains valid image size specifications.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size_dict</strong> (<em>dict</em>) – Dictionary to validate</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the dictionary contains valid size specifications, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
+<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid_size_dict</span><span class="p">({</span><span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">})</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid_size_dict</span><span class="p">({</span><span class="s2">&quot;shortest_edge&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">})</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid_size_dict</span><span class="p">({</span><span class="s2">&quot;invalid_key&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">})</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="convert-to-size-dict">
+<h2>convert_to_size_dict<a class="headerlink" href="#convert-to-size-dict" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.convert_to_size_dict">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">convert_to_size_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_to_square</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_width_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/size.html#convert_to_size_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.convert_to_size_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Convert various size input formats to a standardized size dictionary.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> (<em>int</em><em> or </em><em>tuple</em><em> or </em><em>list</em><em> or </em><em>None</em>) – Size specification as integer, tuple/list, or None</p></li>
+<li><p><strong>max_size</strong> (<em>int</em><em> or </em><em>None</em>) – Optional maximum size constraint</p></li>
+<li><p><strong>default_to_square</strong> (<em>bool</em>) – If True, single integer creates square dimensions</p></li>
+<li><p><strong>height_width_order</strong> (<em>bool</em>) – If True, tuple values are (height, width), else (width, height)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with standardized size format</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If size specification is invalid or incompatible with other parameters</p>
+</dd>
+<dt class="field-odd">Examples<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">convert_to_size_dict</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="go">{&#39;height&#39;: 100, &#39;width&#39;: 100}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convert_to_size_dict</span><span class="p">((</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span> <span class="n">height_width_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">{&#39;height&#39;: 200, &#39;width&#39;: 300}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convert_to_size_dict</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">max_size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">default_to_square</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">{&#39;shortest_edge&#39;: 100, &#39;longest_edge&#39;: 200}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="get-size-dict">
+<h2>get_size_dict<a class="headerlink" href="#get-size-dict" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.get_size_dict">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">get_size_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_width_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_to_square</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'size'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/size.html#get_size_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.get_size_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Convert and validate size parameters into a standardized dictionary format.</p>
+<p>This function serves as the main entry point for size processing, handling various
+input formats and ensuring they conform to valid size specifications.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> (<em>int</em><em> or </em><em>tuple</em><em> or </em><em>list</em><em> or </em><em>dict</em><em> or </em><em>None</em>) – Size specification as integer, tuple/list, dictionary, or None</p></li>
+<li><p><strong>max_size</strong> (<em>int</em><em> or </em><em>None</em>) – Optional maximum size constraint</p></li>
+<li><p><strong>height_width_order</strong> (<em>bool</em>) – If True, tuple values are (height, width), else (width, height)</p></li>
+<li><p><strong>default_to_square</strong> (<em>bool</em>) – If True, single integer creates square dimensions</p></li>
+<li><p><strong>param_name</strong> (<em>str</em>) – Parameter name for error messages</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with standardized size format</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If size specification is invalid or incompatible with other parameters</p>
+</dd>
+<dt class="field-odd">Examples<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_size_dict</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="go">{&#39;height&#39;: 100, &#39;width&#39;: 100}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_size_dict</span><span class="p">({</span><span class="s1">&#39;shortest_edge&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">})</span>
+<span class="go">{&#39;shortest_edge&#39;: 100}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_size_dict</span><span class="p">((</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span> <span class="n">height_width_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">{&#39;height&#39;: 200, &#39;width&#39;: 300}</span>
 </pre></div>
 </div>
 </dd>
@@ -912,6 +1041,66 @@ a corresponding transformation pipeline using create_blip_transforms.</p>
 </dd></dl>
 
 </section>
+<section id="create-mobilenetv2-transforms">
+<h2>create_mobilenetv2_transforms<a class="headerlink" href="#create-mobilenetv2-transforms" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_mobilenetv2_transforms">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_mobilenetv2_transforms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">do_resize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size:</span> <span class="pre">~typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample=2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_center_crop:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_size:</span> <span class="pre">~typing.Dict[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int]</span> <span class="pre">=</span> <span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_rescale:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rescale_factor:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.00392156862745098</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_normalize:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_mean:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~typing.List[float]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_std:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~typing.List[float]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;object</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/mobilenetv2.html#create_mobilenetv2_transforms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_mobilenetv2_transforms" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a composition of transforms that replicates the behavior of MobileNetV2ImageProcessor.</p>
+<p>This function builds a pipeline of image transformations typically used for MobileNetV2 models,
+including resizing, center cropping, tensor conversion, rescaling, and normalization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>do_resize</strong> (<em>bool</em>) – Whether to resize the image.</p></li>
+<li><p><strong>size</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em>) – Size dictionary specifying resize parameters. Can include keys like
+‘shortest_edge’, ‘height’, ‘width’, etc.</p></li>
+<li><p><strong>resample</strong> (<em>PIL.Image.Resampling</em>) – Resampling filter to use for resizing operations.</p></li>
+<li><p><strong>do_center_crop</strong> (<em>bool</em>) – Whether to apply center cropping to the image.</p></li>
+<li><p><strong>crop_size</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em>) – Dictionary specifying the height and width for center cropping.</p></li>
+<li><p><strong>do_rescale</strong> (<em>bool</em>) – Whether to rescale pixel values after tensor conversion.</p></li>
+<li><p><strong>rescale_factor</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>float</em><em>]</em>) – Factor by which to rescale the image pixel values.</p></li>
+<li><p><strong>do_normalize</strong> (<em>bool</em>) – Whether to normalize the image with mean and std.</p></li>
+<li><p><strong>image_mean</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>float</em><em>, </em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em><em>]</em>) – Mean values for normalization, per channel.</p></li>
+<li><p><strong>image_std</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>float</em><em>, </em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em><em>]</em>) – Standard deviation values for normalization, per channel.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composition of transforms matching MobileNetV2ImageProcessor behavior.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="create-transforms-from-mobilenetv2-processor">
+<h2>create_transforms_from_mobilenetv2_processor<a class="headerlink" href="#create-transforms-from-mobilenetv2-processor" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_transforms_from_mobilenetv2_processor">
+<span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_transforms_from_mobilenetv2_processor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/mobilenetv2.html#create_transforms_from_mobilenetv2_processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_transforms_from_mobilenetv2_processor" title="Permalink to this definition"></a></dt>
+<dd><p>Creates transform composition from a MobileNetV2ImageProcessor instance.</p>
+<p>This function extracts configuration from a transformers MobileNetV2ImageProcessor
+and creates an equivalent transform pipeline using the create_mobilenetv2_transforms
+function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processor</strong> (<em>transformers.MobileNetV2ImageProcessor</em>) – A MobileNetV2ImageProcessor instance from the transformers library.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A composition of transforms matching the processor’s configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PillowCompose</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If the provided processor is not a MobileNetV2ImageProcessor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -962,6 +1151,7 @@ a corresponding transformation pipeline using create_blip_transforms.</p>
                     <dt>Branches</dt>
                         <dd><a href="transformers.html">dev/transformers</a></dd>
                         <dd><a href="../../../../HEAD/api_doc/preprocess/transformers.html">HEAD</a></dd>
+                        <dd><a href="../../../deepgelbooru/api_doc/preprocess/transformers.html">dev/deepgelbooru</a></dd>
                         <dd><a href="../../../denormalize/index.html">dev/denormalize</a></dd>
                         <dd><a href="../../../../main/api_doc/preprocess/transformers.html">main</a></dd>
                 </dl>
