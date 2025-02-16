@@ -468,22 +468,25 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="imgutils.preprocess.transformers.register_creators_for_transformers">
 <span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">register_creators_for_transformers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/base.html#register_creators_for_transformers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.register_creators_for_transformers" title="Permalink to this definition"></a></dt>
-<dd><p>Decorator for registering transform creator functions.</p>
-<p>This decorator adds the decorated function to the list of available
-transform creators that will be tried when creating transforms from
+<dd><p>Decorator that registers functions as transform creators for transformers processors.</p>
+<p>This decorator system allows for extensible support of different processor types.
+When a function is decorated with this decorator, it is added to the list of
+available transform creators that will be tried when creating transforms from
 a transformers processor.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Decorator function</p>
+<dd class="field-odd"><p>Decorator function that registers the decorated function</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>callable</p>
 </dd>
 <dt class="field-odd">Example<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@register_creators_for_transformers</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">my_transform_creator</span><span class="p">(</span><span class="n">processor</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="c1"># Create and return transforms</span>
-<span class="gp">... </span>    <span class="k">pass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">create_clip_transforms</span><span class="p">(</span><span class="n">processor</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="s1">&#39;feature_extractor&#39;</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">raise</span> <span class="n">NotProcessorTypeError</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="c1"># Create and return transforms for CLIP</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">transforms</span>
 </pre></div>
 </div>
 </dd>
@@ -496,9 +499,15 @@ a transformers processor.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="imgutils.preprocess.transformers.NotProcessorTypeError">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">NotProcessorTypeError</span></span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/base.html#NotProcessorTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="Permalink to this definition"></a></dt>
-<dd><p>Exception raised when a processor type is not recognized or supported.</p>
-<p>This error occurs when attempting to create transforms from an unsupported
-or unknown transformers processor type.</p>
+<dd><p>Exception raised when an unsupported processor type is encountered.</p>
+<p>This custom exception is used when the system cannot create transforms
+from a given transformers processor, either because the processor type
+is not recognized or is not supported by any registered transform creators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Inherits<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TypeError</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -507,21 +516,22 @@ or unknown transformers processor type.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="imgutils.preprocess.transformers.create_transforms_from_transformers">
 <span class="sig-prename descclassname"><span class="pre">imgutils.preprocess.transformers.</span></span><span class="sig-name descname"><span class="pre">create_transforms_from_transformers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/preprocess/transformers/base.html#create_transforms_from_transformers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.preprocess.transformers.create_transforms_from_transformers" title="Permalink to this definition"></a></dt>
-<dd><p>Create image transforms from a transformers processor.</p>
-<p>This function attempts to create appropriate image transforms by trying
-each registered creator function until one succeeds.</p>
+<dd><p>Create appropriate image transforms from a given transformers processor.</p>
+<p>This function attempts to create image transforms by iterating through
+registered creator functions until one successfully creates transforms
+for the given processor type.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>processor</strong> (<em>object</em>) – A transformers processor object</p>
+<dd class="field-odd"><p><strong>processor</strong> (<em>transformers.ImageProcessor</em><em> or </em><em>similar</em>) – A processor instance from the transformers library</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Image transforms appropriate for the given processor</p>
+<dd class="field-even"><p>A composition of image transforms suitable for the given processor</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>object</p>
+<dd class="field-odd"><p>PillowCompose or similar transform object</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If no suitable creator is found for the processor</p>
+<dd class="field-even"><p><a class="reference internal" href="#imgutils.preprocess.transformers.NotProcessorTypeError" title="imgutils.preprocess.transformers.NotProcessorTypeError"><strong>NotProcessorTypeError</strong></a> – If no registered creator can handle the processor type</p>
 </dd>
 <dt class="field-odd">Example<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoImageProcessor</span>

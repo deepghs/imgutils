@@ -112,8 +112,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">OPENAI_CLIP_MEAN</span><span class="p">,</span> <span class="n">OPENAI_CLIP_STD</span><span class="p">,</span> <span class="n">_DEFAULT</span><span class="p">,</span> <span class="n">register_creators_for_transformers</span><span class="p">,</span> <span class="n">_check_transformers</span><span class="p">,</span> \
-    <span class="n">NotProcessorTypeError</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..pillow</span><span class="w"> </span><span class="kn">import</span> <span class="n">PillowConvertRGB</span><span class="p">,</span> <span class="n">PillowResize</span><span class="p">,</span> <span class="n">PillowCenterCrop</span><span class="p">,</span> <span class="n">PillowToTensor</span><span class="p">,</span> <span class="n">PillowNormalize</span><span class="p">,</span> <span class="n">PillowCompose</span><span class="p">,</span> \
+    <span class="n">NotProcessorTypeError</span><span class="p">,</span> <span class="n">_create_resize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..pillow</span><span class="w"> </span><span class="kn">import</span> <span class="n">PillowConvertRGB</span><span class="p">,</span> <span class="n">PillowCenterCrop</span><span class="p">,</span> <span class="n">PillowToTensor</span><span class="p">,</span> <span class="n">PillowNormalize</span><span class="p">,</span> <span class="n">PillowCompose</span><span class="p">,</span> \
     <span class="n">PillowRescale</span>
 
 <span class="n">_DEFAULT_SIZE</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;shortest_edge&quot;</span><span class="p">:</span> <span class="mi">224</span><span class="p">}</span>
@@ -180,12 +180,7 @@
 
     <span class="c1"># Resize</span>
     <span class="k">if</span> <span class="n">do_resize</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s2">&quot;shortest_edge&quot;</span> <span class="ow">in</span> <span class="n">size</span><span class="p">:</span>
-            <span class="n">transform_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PillowResize</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;shortest_edge&quot;</span><span class="p">],</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">resample</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="s2">&quot;height&quot;</span> <span class="ow">in</span> <span class="n">size</span> <span class="ow">and</span> <span class="s2">&quot;width&quot;</span> <span class="ow">in</span> <span class="n">size</span><span class="p">:</span>
-            <span class="n">transform_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PillowResize</span><span class="p">((</span><span class="n">size</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">],</span> <span class="n">size</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">]),</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">resample</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown size configuration - </span><span class="si">{</span><span class="n">size</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">transform_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_create_resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">resample</span><span class="o">=</span><span class="n">resample</span><span class="p">))</span>
 
     <span class="c1"># Center crop</span>
     <span class="k">if</span> <span class="n">do_center_crop</span><span class="p">:</span>
