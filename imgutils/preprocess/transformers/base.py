@@ -1,10 +1,24 @@
 """
-Transformers Integration Module
+Transformers Integration Module for Image Processing
 
-This module provides functionality for integrating with the transformers library,
-particularly for image processing tasks. It includes constants for standard image
-normalization values and utilities for creating image transforms from transformers
-processors.
+This module provides functionality for integrating with the Hugging Face transformers library,
+particularly focused on image processing tasks. It includes standard image normalization
+constants and utilities for creating image transforms from transformers processors.
+
+Usage:
+    >>> from transformers import AutoImageProcessor
+    >>> from imgutils.preprocess.transformers import create_transforms_from_transformers
+    >>>
+    >>> processor = AutoImageProcessor.from_pretrained("openai/clip-vit-base-patch32")
+    >>> transforms = create_transforms_from_transformers(processor)
+    >>> transforms
+    PillowCompose(
+        PillowConvertRGB(force_background='white')
+        PillowResize(size=224, interpolation=bicubic, max_size=None, antialias=True)
+        PillowCenterCrop(size=(224, 224))
+        PillowToTensor()
+        PillowNormalize(mean=[0.48145467 0.4578275  0.40821072], std=[0.26862955 0.2613026  0.2757771 ])
+    )
 """
 
 try:
@@ -17,9 +31,9 @@ else:
 
 def _check_transformers():
     """
-    Check if transformers library is available.
+    Check if the transformers library is available in the current environment.
 
-    :raises EnvironmentError: If transformers is not installed
+    :raises EnvironmentError: If transformers is not installed, with instructions for installation
     """
     if not _HAS_TRANSFORMERS:
         raise EnvironmentError('No torchvision available.\n'
@@ -39,10 +53,13 @@ _DEFAULT = object()
 
 class NotProcessorTypeError(TypeError):
     """
-    Exception raised when a processor type is not recognized or supported.
+    Exception raised when an unsupported processor type is encountered.
 
-    This error occurs when attempting to create transforms from an unsupported
-    or unknown transformers processor type.
+    This custom exception is used when the system cannot create transforms
+    from a given transformers processor, either because the processor type
+    is not recognized or is not supported by any registered transform creators.
+
+    :inherits: TypeError
     """
     pass
 
@@ -52,21 +69,23 @@ _FN_CREATORS = []
 
 def register_creators_for_transformers():
     """
-    Decorator for registering transform creator functions.
+    Decorator that registers functions as transform creators for transformers processors.
 
-    This decorator adds the decorated function to the list of available
-    transform creators that will be tried when creating transforms from
+    This decorator system allows for extensible support of different processor types.
+    When a function is decorated with this decorator, it is added to the list of
+    available transform creators that will be tried when creating transforms from
     a transformers processor.
 
-    :return: Decorator function
+    :return: Decorator function that registers the decorated function
     :rtype: callable
 
     :example:
-
         >>> @register_creators_for_transformers()
-        >>> def my_transform_creator(processor):
-        ...     # Create and return transforms
-        ...     pass
+        >>> def create_clip_transforms(processor):
+        ...     if not hasattr(processor, 'feature_extractor'):
+        ...         raise NotProcessorTypeError()
+        ...     # Create and return transforms for CLIP
+        ...     return transforms
     """
 
     def _decorator(func):
@@ -78,16 +97,19 @@ def register_creators_for_transformers():
 
 def create_transforms_from_transformers(processor):
     """
-    Create image transforms from a transformers processor.
+    Create appropriate image transforms from a given transformers processor.
 
-    This function attempts to create appropriate image transforms by trying
-    each registered creator function until one succeeds.
+    This function attempts to create image transforms by iterating through
+    registered creator functions until one successfully creates transforms
+    for the given processor type.
 
-    :param processor: A transformers processor object
-    :type processor: object
-    :return: Image transforms appropriate for the given processor
-    :rtype: object
-    :raises NotProcessorTypeError: If no suitable creator is found for the processor
+    :param processor: A processor instance from the transformers library
+    :type processor: transformers.ImageProcessor or similar
+
+    :return: A composition of image transforms suitable for the given processor
+    :rtype: PillowCompose or similar transform object
+
+    :raises NotProcessorTypeError: If no registered creator can handle the processor type
 
     :example:
         >>> from transformers import AutoImageProcessor

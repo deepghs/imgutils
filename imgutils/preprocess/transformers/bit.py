@@ -9,7 +9,8 @@ from PIL import Image
 
 from .base import OPENAI_CLIP_MEAN, OPENAI_CLIP_STD, _DEFAULT, register_creators_for_transformers, _check_transformers, \
     NotProcessorTypeError
-from ..pillow import PillowConvertRGB, PillowResize, PillowCenterCrop, PillowToTensor, PillowNormalize, PillowCompose, \
+from .size import _create_resize
+from ..pillow import PillowConvertRGB, PillowCenterCrop, PillowToTensor, PillowNormalize, PillowCompose, \
     PillowRescale
 
 _DEFAULT_SIZE = {"shortest_edge": 224}
@@ -76,12 +77,7 @@ def create_bit_transforms(
 
     # Resize
     if do_resize:
-        if "shortest_edge" in size:
-            transform_list.append(PillowResize(size["shortest_edge"], interpolation=resample))
-        elif "height" in size and "width" in size:
-            transform_list.append(PillowResize((size["height"], size["width"]), interpolation=resample))
-        else:
-            raise ValueError(f'Unknown size configuration - {size!r}.')  # pragma: no cover
+        transform_list.append(_create_resize(size, resample=resample))
 
     # Center crop
     if do_center_crop:

@@ -11,7 +11,8 @@ from PIL import Image
 
 from .base import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD, _DEFAULT, register_creators_for_transformers, \
     _check_transformers, NotProcessorTypeError
-from ..pillow import PillowRescale, PillowResize, PillowToTensor, PillowNormalize, PillowCompose
+from .size import _create_resize
+from ..pillow import PillowRescale, PillowToTensor, PillowNormalize, PillowCompose
 
 _DEFAULT_SIZE = {"height": 224, "width": 224}
 
@@ -62,12 +63,7 @@ def create_vit_transforms(
 
     # Add resize transform if enabled
     if do_resize:
-        transform_list.append(
-            PillowResize(
-                (size["height"], size["width"]),
-                interpolation=resample
-            )
-        )
+        transform_list.append(_create_resize(size, resample=resample))
 
     # Convert to tensor (always needed)
     transform_list.append(PillowToTensor())
