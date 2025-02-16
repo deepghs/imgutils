@@ -1,7 +1,7 @@
 import random
 
 from benchmark import BaseBenchmark, create_plot_cli
-from imgutils.tagging import get_deepdanbooru_tags, get_wd14_tags, get_mldanbooru_tags
+from imgutils.tagging import get_deepdanbooru_tags, get_wd14_tags, get_mldanbooru_tags, get_deepgelbooru_tags
 
 
 class DeepdanbooruBenchmark(BaseBenchmark):
@@ -16,6 +16,24 @@ class DeepdanbooruBenchmark(BaseBenchmark):
     def run(self):
         image_file = random.choice(self.all_images)
         _ = get_deepdanbooru_tags(image_file)
+
+
+class DeepgelbooruBenchmark(BaseBenchmark):
+    def load(self):
+        from imgutils.tagging.deepgelbooru import _open_tags, _open_model, _open_preprocessor
+        _ = _open_tags()
+        _ = _open_model()
+        _ = _open_preprocessor
+
+    def unload(self):
+        from imgutils.tagging.deepgelbooru import _open_tags, _open_model, _open_preprocessor
+        _open_tags.cache_clear()
+        _open_model.cache_clear()
+        _open_preprocessor.cache_clear()
+
+    def run(self):
+        image_file = random.choice(self.all_images)
+        _ = get_deepgelbooru_tags(image_file)
 
 
 class Wd14Benchmark(BaseBenchmark):
@@ -54,6 +72,7 @@ if __name__ == '__main__':
     create_plot_cli(
         [
             ('deepdanbooru', DeepdanbooruBenchmark()),
+            ('deepgelbooru', DeepgelbooruBenchmark()),
             ('wd14-swinv2', Wd14Benchmark("SwinV2")),
             ('wd14-convnext', Wd14Benchmark("ConvNext")),
             ('wd14-convnextv2', Wd14Benchmark("ConvNextV2")),
