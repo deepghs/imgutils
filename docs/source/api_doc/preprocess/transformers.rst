@@ -99,3 +99,17 @@ create_transforms_from_bit_processor
 
 
 
+create_blip_transforms
+--------------------------------------------------------------------
+
+.. autofunction:: create_blip_transforms
+
+
+
+create_transforms_from_blip_processor
+--------------------------------------------------------------------
+
+.. autofunction:: create_transforms_from_blip_processor
+
+
+
