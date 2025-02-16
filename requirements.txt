@@ -4,7 +4,6 @@ numpy<2
 scikit-learn
 huggingface_hub
 tqdm
-opencv-python
 opencv-contrib-python
 pandas
 scipy
