@@ -128,7 +128,7 @@ class SigLIPModel:
         :rtype: ONNXModel
         """
         with self._model_lock:
-            if model_name in self._text_encoders:
+            if model_name not in self._text_encoders:
                 self._text_encoders[model_name] = open_onnx_model(hf_hub_download(
                     repo_id=self.repo_id,
                     repo_type='model',
@@ -147,7 +147,7 @@ class SigLIPModel:
         :rtype: Tokenizer
         """
         with self._model_lock:
-            if model_name in self._text_tokenizers:
+            if model_name not in self._text_tokenizers:
                 self._text_tokenizers[model_name] = Tokenizer.from_file(hf_hub_download(
                     repo_id=self.repo_id,
                     repo_type='model',
@@ -166,7 +166,7 @@ class SigLIPModel:
         :rtype: tuple[float, float]
         """
         with self._model_lock:
-            if model_name in self._logit_scales:
+            if model_name not in self._logit_scales:
                 with open(hf_hub_download(
                         repo_id=self.repo_id,
                         repo_type='model',
