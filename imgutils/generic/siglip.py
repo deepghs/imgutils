@@ -258,7 +258,7 @@ class SigLIPModel:
 
         if not isinstance(texts, np.ndarray):
             text_embeddings, text_encodings = \
-                self.get_siglip_text_embedding(texts, model_name=model_name, fmt='embeddings')
+                self.get_siglip_text_embedding(texts, model_name=model_name, fmt=('embeddings', 'encodings'))
             extra_values['text_embeddings'] = text_embeddings
             extra_values['text_encodings'] = text_encodings
             texts = text_embeddings
