@@ -438,7 +438,8 @@ class SigLIPModel:
             with gr.Column():
                 gr_input_image = gr.Image(type='pil', label='Original Image')
                 with gr.Row():
-                    gr_raw_text = gr.TextArea(value='', lines=5, autoscroll=True, label='Labels')
+                    gr_raw_text = gr.TextArea(value='', lines=5, autoscroll=True, label='Labels',
+                                              placeholder='Enter labels, one per line')
                 with gr.Row():
                     gr_model = gr.Dropdown(model_list, value=default_model_name, label='Model')
 
