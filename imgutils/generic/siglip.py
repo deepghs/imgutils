@@ -1,3 +1,19 @@
+"""
+SigLIP (Sigmoid Loss Image-Paired) model implementation module.
+
+This module provides functionality for working with SigLIP models, which are designed for
+image-text matching and classification tasks. It includes components for:
+
+* Loading and managing SigLIP models from Hugging Face repositories
+* Image and text encoding using ONNX models
+* Prediction and classification of image-text pairs
+* Web interface creation using Gradio
+* Caching and thread-safe model operations
+
+The module supports multiple model variants and provides both high-level and low-level APIs
+for model interaction.
+"""
+
 import json
 import os
 from threading import Lock
@@ -31,7 +47,10 @@ def _check_gradio_env():
     """
     Check if the Gradio library is installed and available.
 
-    :raises EnvironmentError: If Gradio is not installed.
+    This function verifies that Gradio is properly installed before attempting to use
+    web interface features.
+
+    :raises EnvironmentError: If Gradio is not installed, suggesting installation command.
     """
     if gr is None:
         raise EnvironmentError(f'Gradio required for launching webui-based demo.\n'
@@ -39,6 +58,18 @@ def _check_gradio_env():
 
 
 class SigLIPModel:
+    """
+    Main class for managing and using SigLIP models.
+
+    This class handles model loading, caching, and inference operations for SigLIP models.
+    It provides thread-safe access to model components and supports multiple model variants.
+
+    :param repo_id: Hugging Face repository ID containing the SigLIP models
+    :type repo_id: str
+    :param hf_token: Optional Hugging Face authentication token
+    :type hf_token: Optional[str]
+    """
+
     def __init__(self, repo_id: str, hf_token: Optional[str] = None):
         self.repo_id = repo_id
         self._model_names = None
@@ -59,7 +90,7 @@ class SigLIPModel:
 
         Checks both instance variable and environment for token presence.
 
-        :return: Authentication token if available
+        :return: Authentication token if available, None otherwise
         :rtype: Optional[str]
         """
         return self._hf_token or os.environ.get('HF_TOKEN')
@@ -72,9 +103,8 @@ class SigLIPModel:
         This property implements lazy loading and caching of model names.
         Thread-safe access to the model list is ensured via locks.
 
-        :return: List of available model names
+        :return: List of available model names in the repository
         :rtype: List[str]
-
         :raises RuntimeError: If repository access fails
         """
         with self._global_lock:
@@ -97,7 +127,6 @@ class SigLIPModel:
 
         :param model_name: Name of the model to verify
         :type model_name: str
-
         :raises ValueError: If model name is not found in repository
         """
         if model_name not in self.model_names:
@@ -112,6 +141,7 @@ class SigLIPModel:
         :type model_name: str
         :return: Loaded ONNX model for image encoding
         :rtype: ONNXModel
+        :raises ValueError: If model name is invalid
         """
         with self._model_lock:
             if model_name not in self._image_encoders:
@@ -132,6 +162,7 @@ class SigLIPModel:
         :type model_name: str
         :return: Configured image preprocessing transforms
         :rtype: Callable
+        :raises ValueError: If model name is invalid or preprocessor config is missing
         """
         with self._model_lock:
             if model_name not in self._image_preprocessors:
@@ -153,6 +184,7 @@ class SigLIPModel:
         :type model_name: str
         :return: Loaded ONNX model for text encoding
         :rtype: ONNXModel
+        :raises ValueError: If model name is invalid
         """
         with self._model_lock:
             if model_name not in self._text_encoders:
@@ -173,6 +205,7 @@ class SigLIPModel:
         :type model_name: str
         :return: Initialized tokenizer
         :rtype: Tokenizer
+        :raises ValueError: If model name is invalid or tokenizer is missing
         """
         with self._model_lock:
             if model_name not in self._text_tokenizers:
@@ -193,6 +226,7 @@ class SigLIPModel:
         :type model_name: str
         :return: Tuple of logit scale and bias values
         :rtype: tuple[float, float]
+        :raises ValueError: If model name is invalid or metadata is missing
         """
         with self._model_lock:
             if model_name not in self._logit_scales:
@@ -208,6 +242,18 @@ class SigLIPModel:
         return self._logit_scales[model_name]
 
     def _get_siglip_image_embedding(self, images: MultiImagesTyping, model_name: str, fmt: Any = 'embeddings'):
+        """
+        Internal method to generate image embeddings.
+
+        :param images: Input images to process
+        :type images: MultiImagesTyping
+        :param model_name: Name of the model variant to use
+        :type model_name: str
+        :param fmt: Output format specification
+        :type fmt: Any
+        :return: Image embeddings in specified format
+        :raises ValueError: If model name is invalid
+        """
         preprocessor = self._open_image_preprocessor(model_name)
         model = self._open_image_encoder(model_name)
 
@@ -222,14 +268,15 @@ class SigLIPModel:
     def image_encode(self, images: MultiImagesTyping, model_name: str, fmt: Any = 'embeddings'):
         """
         Generate embeddings for input images using the SigLIP model.
-    
+
         :param images: Input images in various supported formats
         :type images: MultiImagesTyping
         :param model_name: Name of the SigLIP model variant to use
         :type model_name: str
         :param fmt: Output format, either 'encodings' or 'embeddings'
-    
+        :type fmt: Any
         :return: Image embeddings or encodings based on fmt parameter
+        :raises ValueError: If model name is invalid
         """
         return self._get_siglip_image_embedding(
             images=images,
@@ -239,15 +286,16 @@ class SigLIPModel:
 
     def _get_siglip_text_embedding(self, texts: Union[str, List[str]], model_name: str, fmt: Any = 'embeddings'):
         """
-        Generate embeddings for input texts using the SigLIP model.
-    
+        Internal method to generate text embeddings.
+
         :param texts: Input text or list of texts
         :type texts: Union[str, List[str]]
         :param model_name: Name of the SigLIP model variant to use
         :type model_name: str
         :param fmt: Output format, either 'encodings' or 'embeddings'
-    
+        :type fmt: Any
         :return: Text embeddings or encodings based on fmt parameter
+        :raises ValueError: If model name is invalid
         """
         tokenizer = self._open_text_tokenizer(model_name)
         model = self._open_text_encoder(model_name)
@@ -273,8 +321,9 @@ class SigLIPModel:
         :param model_name: Name of the SigLIP model variant to use
         :type model_name: str
         :param fmt: Output format, either 'encodings' or 'embeddings'
-
+        :type fmt: Any
         :return: Text embeddings or encodings based on fmt parameter
+        :raises ValueError: If model name is invalid
         """
         return self._get_siglip_text_embedding(
             texts=texts,
@@ -299,8 +348,9 @@ class SigLIPModel:
         :param model_name: Name of the SigLIP model variant to use
         :type model_name: str
         :param fmt: Output format, one of 'similarities', 'logits', or 'predictions'
-
+        :type fmt: Any
         :return: Classification results in specified format
+        :raises ValueError: If model name is invalid
         """
         extra_values = {}
         if not isinstance(images, np.ndarray):
@@ -332,6 +382,13 @@ class SigLIPModel:
         })
 
     def clear(self):
+        """
+        Clear all cached encoders, preprocessors, tokenizers, and scales.
+
+        This method resets the internal state of the SigLIP model by clearing all cached
+        components, including image encoders, image preprocessors, text encoders,
+        text tokenizers, and logit scales.
+        """
         self._image_encoders.clear()
         self._image_preprocessors.clear()
         self._text_encoders.clear()
@@ -339,6 +396,18 @@ class SigLIPModel:
         self._logit_scales.clear()
 
     def make_ui(self, default_model_name: Optional[str] = None):
+        """
+        Create an interactive Gradio UI for the SigLIP model.
+
+        This method creates a user interface with image input, text labels input,
+        model selection, and prediction display. If no default model is specified,
+        it automatically selects the most recently updated model.
+
+        :param default_model_name: Name of the model to select by default
+        :type default_model_name: Optional[str]
+
+        :raises RuntimeError: If Gradio is not properly installed
+        """
         _check_gradio_env()
         model_list = self.model_names
         if not default_model_name:
@@ -390,6 +459,22 @@ class SigLIPModel:
 
     def launch_demo(self, default_model_name: Optional[str] = None,
                     server_name: Optional[str] = None, server_port: Optional[int] = None, **kwargs):
+        """
+        Launch a web demo for the SigLIP model.
+
+        Creates and launches a Gradio web interface for interacting with the model.
+        The demo includes the model UI and descriptive information about the model repository.
+
+        :param default_model_name: Name of the model to select by default
+        :type default_model_name: Optional[str]
+        :param server_name: Server hostname to use for the demo
+        :type server_name: Optional[str]
+        :param server_port: Port number to use for the demo
+        :type server_port: Optional[int]
+        :param kwargs: Additional keyword arguments passed to gr.Blocks.launch()
+
+        :raises RuntimeError: If Gradio is not properly installed
+        """
         _check_gradio_env()
         with gr.Blocks() as demo:
             with gr.Row():
@@ -413,11 +498,39 @@ class SigLIPModel:
 
 @ts_lru_cache()
 def _open_models_for_repo_id(repo_id: str, hf_token: Optional[str] = None) -> SigLIPModel:
+    """
+    Get or create a cached SigLIP model instance for the given repository ID.
+
+    :param repo_id: Hugging Face repository ID for the model
+    :type repo_id: str
+    :param hf_token: Optional Hugging Face API token for private repositories
+    :type hf_token: Optional[str]
+
+    :return: A cached SigLIP model instance
+    :rtype: SigLIPModel
+    """
     return SigLIPModel(repo_id, hf_token=hf_token)
 
 
 def siglip_image_encode(images: MultiImagesTyping, repo_id: str, model_name: str,
                         fmt: Any = 'embeddings', hf_token: Optional[str] = None):
+    """
+    Encode images using a SigLIP model.
+
+    :param images: One or more images to encode
+    :type images: MultiImagesTyping
+    :param repo_id: Hugging Face repository ID for the model
+    :type repo_id: str
+    :param model_name: Name of the specific model to use
+    :type model_name: str
+    :param fmt: Output format ('embeddings' or custom format)
+    :type fmt: Any
+    :param hf_token: Optional Hugging Face API token for private repositories
+    :type hf_token: Optional[str]
+
+    :return: Encoded image features in the specified format
+    :rtype: Any
+    """
     model = _open_models_for_repo_id(repo_id, hf_token=hf_token)
     return model.image_encode(
         images=images,
@@ -428,6 +541,23 @@ def siglip_image_encode(images: MultiImagesTyping, repo_id: str, model_name: str
 
 def siglip_text_encode(texts: Union[str, List[str]], repo_id: str, model_name: str,
                        fmt: Any = 'embeddings', hf_token: Optional[str] = None):
+    """
+    Encode texts using a SigLIP model.
+
+    :param texts: Single text or list of texts to encode
+    :type texts: Union[str, List[str]]
+    :param repo_id: Hugging Face repository ID for the model
+    :type repo_id: str
+    :param model_name: Name of the specific model to use
+    :type model_name: str
+    :param fmt: Output format ('embeddings' or custom format)
+    :type fmt: Any
+    :param hf_token: Optional Hugging Face API token for private repositories
+    :type hf_token: Optional[str]
+
+    :return: Encoded text features in the specified format
+    :rtype: Any
+    """
     model = _open_models_for_repo_id(repo_id, hf_token=hf_token)
     return model.text_encode(
         texts=texts,
@@ -444,6 +574,29 @@ def siglip_predict(
         fmt: Any = 'predictions',
         hf_token: Optional[str] = None,
 ):
+    """
+    Predict similarity scores between images and texts using a SigLIP model.
+
+    This function computes similarity scores between the given images and texts
+    using the specified SigLIP model. It can handle both raw inputs and
+    pre-computed embeddings.
+
+    :param images: Images or image embeddings to compare
+    :type images: Union[MultiImagesTyping, np.ndarray]
+    :param texts: Texts or text embeddings to compare
+    :type texts: Union[List[str], str, np.ndarray]
+    :param repo_id: Hugging Face repository ID for the model
+    :type repo_id: str
+    :param model_name: Name of the specific model to use
+    :type model_name: str
+    :param fmt: Output format ('predictions' or custom format)
+    :type fmt: Any
+    :param hf_token: Optional Hugging Face API token for private repositories
+    :type hf_token: Optional[str]
+
+    :return: Similarity scores in the specified format
+    :rtype: Any
+    """
     model = _open_models_for_repo_id(repo_id, hf_token=hf_token)
     return model.predict(
         images=images,
