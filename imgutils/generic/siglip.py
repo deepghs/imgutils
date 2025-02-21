@@ -241,7 +241,7 @@ class SigLIPModel:
 
         return self._logit_scales[model_name]
 
-    def _get_siglip_image_embedding(self, images: MultiImagesTyping, model_name: str, fmt: Any = 'embeddings'):
+    def _image_encode(self, images: MultiImagesTyping, model_name: str, fmt: Any = 'embeddings'):
         """
         Internal method to generate image embeddings.
 
@@ -278,13 +278,13 @@ class SigLIPModel:
         :return: Image embeddings or encodings based on fmt parameter
         :raises ValueError: If model name is invalid
         """
-        return self._get_siglip_image_embedding(
+        return self._image_encode(
             images=images,
             model_name=model_name,
             fmt=fmt,
         )
 
-    def _get_siglip_text_embedding(self, texts: Union[str, List[str]], model_name: str, fmt: Any = 'embeddings'):
+    def _text_encode(self, texts: Union[str, List[str]], model_name: str, fmt: Any = 'embeddings'):
         """
         Internal method to generate text embeddings.
 
@@ -325,7 +325,7 @@ class SigLIPModel:
         :return: Text embeddings or encodings based on fmt parameter
         :raises ValueError: If model name is invalid
         """
-        return self._get_siglip_text_embedding(
+        return self._text_encode(
             texts=texts,
             model_name=model_name,
             fmt=fmt,
@@ -355,7 +355,7 @@ class SigLIPModel:
         extra_values = {}
         if not isinstance(images, np.ndarray):
             image_embeddings, image_encodings = \
-                self._get_siglip_image_embedding(images, model_name=model_name, fmt=('embeddings', 'encodings'))
+                self._image_encode(images, model_name=model_name, fmt=('embeddings', 'encodings'))
             extra_values['image_embeddings'] = image_embeddings
             extra_values['image_encodings'] = image_encodings
             images = image_embeddings
@@ -363,7 +363,7 @@ class SigLIPModel:
 
         if not isinstance(texts, np.ndarray):
             text_embeddings, text_encodings = \
-                self._get_siglip_text_embedding(texts, model_name=model_name, fmt=('embeddings', 'encodings'))
+                self._text_encode(texts, model_name=model_name, fmt=('embeddings', 'encodings'))
             extra_values['text_embeddings'] = text_embeddings
             extra_values['text_encodings'] = text_encodings
             texts = text_embeddings
