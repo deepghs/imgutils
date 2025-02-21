@@ -11,5 +11,6 @@ imgutils.generic
 
     classify
     enhance
+    clip
     siglip
     yolo

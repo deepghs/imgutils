@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>imgutils.generic &mdash; imgutils 0.10.0 documentation</title>
+  <title>imgutils.generic &mdash; imgutils 0.11.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=fa439637"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=8b96dc6e"></script>
       <script src="../../_static/doctools.js?v=888ff710"></script>
       <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -64,6 +64,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">imgutils.generic</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="classify.html">imgutils.generic.classify</a></li>
 <li class="toctree-l2"><a class="reference internal" href="enhance.html">imgutils.generic.enhance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clip.html">imgutils.generic.clip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="siglip.html">imgutils.generic.siglip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="yolo.html">imgutils.generic.yolo</a></li>
 </ul>
@@ -140,6 +141,25 @@
 <li class="toctree-l1"><a class="reference internal" href="enhance.html">imgutils.generic.enhance</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="enhance.html#imageenhancer">ImageEnhancer</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="enhance.html#imgutils.generic.enhance.ImageEnhancer"><code class="docutils literal notranslate"><span class="pre">ImageEnhancer</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="clip.html">imgutils.generic.clip</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="clip.html#clipmodel">CLIPModel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clip.html#imgutils.generic.clip.CLIPModel"><code class="docutils literal notranslate"><span class="pre">CLIPModel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clip.html#clip-image-encode">clip_image_encode</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clip.html#imgutils.generic.clip.clip_image_encode"><code class="docutils literal notranslate"><span class="pre">clip_image_encode()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clip.html#clip-text-encode">clip_text_encode</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clip.html#imgutils.generic.clip.clip_text_encode"><code class="docutils literal notranslate"><span class="pre">clip_text_encode()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clip.html#clip-predict">clip_predict</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clip.html#imgutils.generic.clip.clip_predict"><code class="docutils literal notranslate"><span class="pre">clip_predict()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -223,10 +243,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/clip/api_doc/generic/index.html">dev/clip</a></dd>
+                        <dd><a href="../../../main/api_doc/generic/index.html">main</a></dd>
                         <dd><a href="index.html">HEAD</a></dd>
                         <dd><a href="../../../dev/denormalize/api_doc/generic/index.html">dev/denormalize</a></dd>
-                        <dd><a href="../../../main/api_doc/generic/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

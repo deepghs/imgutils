@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; imgutils 0.10.0 documentation</title>
+  <title>Index &mdash; imgutils 0.11.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=fa439637"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=8b96dc6e"></script>
       <script src="_static/doctools.js?v=888ff710"></script>
       <script src="_static/sphinx_highlight.js?v=4825356b"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -137,6 +137,8 @@
       <li><a href="api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.__init__">__init__() (imgutils.generic.classify.ClassifyModel method)</a>
 
       <ul>
+        <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.CLIPModel.__init__">(imgutils.generic.clip.CLIPModel method)</a>
+</li>
         <li><a href="api_doc/generic/enhance.html#imgutils.generic.enhance.ImageEnhancer.__init__">(imgutils.generic.enhance.ImageEnhancer method)</a>
 </li>
         <li><a href="api_doc/generic/siglip.html#imgutils.generic.siglip.SigLIPModel.__init__">(imgutils.generic.siglip.SigLIPModel method)</a>
@@ -306,22 +308,32 @@
 </li>
       <li><a href="api_doc/generic/classify.html#imgutils.generic.classify.classify_predict">classify_predict() (in module imgutils.generic.classify)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/generic/classify.html#imgutils.generic.classify.classify_predict_fmt">classify_predict_fmt() (in module imgutils.generic.classify)</a>
 </li>
       <li><a href="api_doc/generic/classify.html#imgutils.generic.classify.classify_predict_score">classify_predict_score() (in module imgutils.generic.classify)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel">ClassifyModel (class in imgutils.generic.classify)</a>
 </li>
       <li><a href="api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.clear">clear() (imgutils.generic.classify.ClassifyModel method)</a>
 
       <ul>
+        <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.CLIPModel.clear">(imgutils.generic.clip.CLIPModel method)</a>
+</li>
         <li><a href="api_doc/generic/siglip.html#imgutils.generic.siglip.SigLIPModel.clear">(imgutils.generic.siglip.SigLIPModel method)</a>
 </li>
         <li><a href="api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.clear">(imgutils.generic.yolo.YOLOModel method)</a>
 </li>
       </ul></li>
+      <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.clip_image_encode">clip_image_encode() (in module imgutils.generic.clip)</a>
+</li>
+      <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.clip_predict">clip_predict() (in module imgutils.generic.clip)</a>
+</li>
+      <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.clip_text_encode">clip_text_encode() (in module imgutils.generic.clip)</a>
+</li>
+      <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.CLIPModel">CLIPModel (class in imgutils.generic.clip)</a>
+</li>
       <li><a href="api_doc/operate/censor.html#imgutils.operate.censor_.ColorCensor">ColorCensor (class in imgutils.operate.censor_)</a>
 </li>
       <li><a href="api_doc/preprocess/transformers.html#imgutils.preprocess.transformers.convert_to_size_dict">convert_to_size_dict() (in module imgutils.preprocess.transformers)</a>
@@ -512,8 +524,12 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api_doc/generic/siglip.html#imgutils.generic.siglip.SigLIPModel.image_encode">image_encode() (imgutils.generic.siglip.SigLIPModel method)</a>
+      <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.CLIPModel.image_encode">image_encode() (imgutils.generic.clip.CLIPModel method)</a>
+
+      <ul>
+        <li><a href="api_doc/generic/siglip.html#imgutils.generic.siglip.SigLIPModel.image_encode">(imgutils.generic.siglip.SigLIPModel method)</a>
 </li>
+      </ul></li>
       <li><a href="api_doc/operate/imgcensor.html#imgutils.operate.imgcensor.ImageBasedCensor">ImageBasedCensor (class in imgutils.operate.imgcensor)</a>
 </li>
       <li><a href="api_doc/generic/enhance.html#imgutils.generic.enhance.ImageEnhancer">ImageEnhancer (class in imgutils.generic.enhance)</a>
@@ -724,6 +740,13 @@
 </li>
       </ul></li>
       <li>
+    imgutils.generic.clip
+
+      <ul>
+        <li><a href="api_doc/generic/clip.html#module-imgutils.generic.clip">module</a>
+</li>
+      </ul></li>
+      <li>
     imgutils.generic.enhance
 
       <ul>
@@ -870,6 +893,8 @@
         <li><a href="api_doc/pose/dwpose.html#module-imgutils.pose.dwpose">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     imgutils.pose.format
 
@@ -877,8 +902,6 @@
         <li><a href="api_doc/pose/format.html#module-imgutils.pose.format">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     imgutils.pose.visual
 
@@ -1248,6 +1271,8 @@
       <li><a href="api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.launch_demo">launch_demo() (imgutils.generic.classify.ClassifyModel method)</a>
 
       <ul>
+        <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.CLIPModel.launch_demo">(imgutils.generic.clip.CLIPModel method)</a>
+</li>
         <li><a href="api_doc/generic/siglip.html#imgutils.generic.siglip.SigLIPModel.launch_demo">(imgutils.generic.siglip.SigLIPModel method)</a>
 </li>
         <li><a href="api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.launch_demo">(imgutils.generic.yolo.YOLOModel method)</a>
@@ -1271,10 +1296,10 @@
 </li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_HIP">LEFT_HIP (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
-      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_KNEE">LEFT_KNEE (imgutils.pose.format.OpenPose18 attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_KNEE">LEFT_KNEE (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_SHOULDER">LEFT_SHOULDER (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_SMALL_TOE">LEFT_SMALL_TOE (imgutils.pose.format.OpenPose18 attribute)</a>
@@ -1312,6 +1337,8 @@
       <li><a href="api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.make_ui">make_ui() (imgutils.generic.classify.ClassifyModel method)</a>
 
       <ul>
+        <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.CLIPModel.make_ui">(imgutils.generic.clip.CLIPModel method)</a>
+</li>
         <li><a href="api_doc/generic/siglip.html#imgutils.generic.siglip.SigLIPModel.make_ui">(imgutils.generic.siglip.SigLIPModel method)</a>
 </li>
         <li><a href="api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.make_ui">(imgutils.generic.yolo.YOLOModel method)</a>
@@ -1378,6 +1405,8 @@
         <li><a href="api_doc/generic/index.html#module-imgutils.generic">imgutils.generic</a>
 </li>
         <li><a href="api_doc/generic/classify.html#module-imgutils.generic.classify">imgutils.generic.classify</a>
+</li>
+        <li><a href="api_doc/generic/clip.html#module-imgutils.generic.clip">imgutils.generic.clip</a>
 </li>
         <li><a href="api_doc/generic/enhance.html#module-imgutils.generic.enhance">imgutils.generic.enhance</a>
 </li>
@@ -1604,16 +1633,18 @@
         <li><a href="api_doc/sd/nai.html#imgutils.sd.nai.NAIMetaData.pnginfo">(imgutils.sd.nai.NAIMetaData property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.predict">predict() (imgutils.generic.classify.ClassifyModel method)</a>
 
       <ul>
+        <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.CLIPModel.predict">(imgutils.generic.clip.CLIPModel method)</a>
+</li>
         <li><a href="api_doc/generic/siglip.html#imgutils.generic.siglip.SigLIPModel.predict">(imgutils.generic.siglip.SigLIPModel method)</a>
 </li>
         <li><a href="api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.predict">(imgutils.generic.yolo.YOLOModel method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.predict_fmt">predict_fmt() (imgutils.generic.classify.ClassifyModel method)</a>
 </li>
       <li><a href="api_doc/generic/classify.html#imgutils.generic.classify.ClassifyModel.predict_score">predict_score() (imgutils.generic.classify.ClassifyModel method)</a>
@@ -1754,14 +1785,18 @@
 </li>
       <li><a href="api_doc/tagging/match.html#imgutils.tagging.match.tag_match_suffix">tag_match_suffix() (in module imgutils.tagging.match)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/tagging/format.html#imgutils.tagging.format.tags_to_text">tags_to_text() (in module imgutils.tagging.format)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/sd/metadata.html#imgutils.sd.metadata.SDMetaData.text">text (imgutils.sd.metadata.SDMetaData property)</a>
 </li>
-      <li><a href="api_doc/generic/siglip.html#imgutils.generic.siglip.SigLIPModel.text_encode">text_encode() (imgutils.generic.siglip.SigLIPModel method)</a>
+      <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.CLIPModel.text_encode">text_encode() (imgutils.generic.clip.CLIPModel method)</a>
+
+      <ul>
+        <li><a href="api_doc/generic/siglip.html#imgutils.generic.siglip.SigLIPModel.text_encode">(imgutils.generic.siglip.SigLIPModel method)</a>
 </li>
+      </ul></li>
       <li><a href="api_doc/utils/cache.html#imgutils.utils.cache.ts_lru_cache">ts_lru_cache() (in module imgutils.utils.cache)</a>
 </li>
   </ul></td>
@@ -1849,10 +1884,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../dev/clip/index.html">dev/clip</a></dd>
+                        <dd><a href="../main/index.html">main</a></dd>
                         <dd><a href="genindex.html">HEAD</a></dd>
                         <dd><a href="../dev/denormalize/index.html">dev/denormalize</a></dd>
-                        <dd><a href="../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
