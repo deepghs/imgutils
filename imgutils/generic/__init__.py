@@ -4,4 +4,5 @@ Overview:
 """
 from .classify import *
 from .enhance import *
+from .siglip import *
 from .yolo import *

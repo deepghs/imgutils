@@ -50,13 +50,14 @@ pdocs:
 dataset:
 	mkdir -p ${DATASET_DIR}
 	if [ ! -d ${DATASET_DIR}/chafen_arknights ]; then \
-		git clone https://huggingface.co/datasets/deepghs/chafen_arknights.git ${DATASET_DIR}/chafen_arknights; \
+		hfutils download -r deepghs/chafen_arknights -t dataset -d . -o ${DATASET_DIR}/chafen_arknights; \
 	fi
 	if [ ! -d ${DATASET_DIR}/monochrome_danbooru ]; then \
-		git clone https://huggingface.co/datasets/deepghs/monochrome_danbooru.git ${DATASET_DIR}/monochrome_danbooru; \
+		hfutils download -r deepghs/monochrome_danbooru -t dataset -d . -o ${DATASET_DIR}/monochrome_danbooru; \
 	fi
 	if [ ! -d ${DATASET_DIR}/images_test_v1 ]; then \
-		mkdir -p ${DATASET_DIR}/images_test_v1 && \
-		curl -L -o ${DATASET_DIR}/images_test_v1/images_test_v1.tar.xz https://huggingface.co/datasets/deepghs/character_similarity/resolve/main/images_test_v1.tar.xz && \
-		cd ${DATASET_DIR}/images_test_v1 && tar -xvf images_test_v1.tar.xz && rm -rf *.tar.xz; \
+		hfutils download -r deepghs/character_similarity -t dataset -a images_test_v1.tar.xz -o ${DATASET_DIR}/images_test_v1; \
+	fi
+	if [ ! -d ${DATASET_DIR}/unsplash_1000 ]; then \
+		hfutils download -r deepghs/realutils_unittest -a unsplash_1000.zip -o ${DATASET_DIR}/unsplash_1000; \
 	fi
