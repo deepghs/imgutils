@@ -1,3 +1,26 @@
+"""
+CLIP model interface for multimodal embeddings and predictions.
+
+This module provides a comprehensive interface for working with CLIP models hosted on Hugging Face Hub.
+
+The main class `CLIPModel` handles model management and provides:
+
+- Automatic discovery of available model variants
+- ONNX runtime integration for efficient inference
+- Preprocessing pipelines for images and text
+- Similarity calculation and prediction methods
+
+Typical usage patterns:
+
+1. Direct API usage through clip_image_encode/clip_text_encode/clip_predict functions
+2. Instance-based control via CLIPModel class
+3. Web demo deployment through launch_demo method
+
+.. note::
+    For optimal performance with multiple models, reuse CLIPModel instances when possible.
+    The module implements LRU caching for model instances based on repository ID.
+"""
+
 import json
 import os
 from threading import Lock
@@ -42,6 +65,22 @@ def _check_gradio_env():
 
 
 class CLIPModel:
+    """
+    Main interface for CLIP model operations.
+
+    This class provides thread-safe access to CLIP model variants stored in a Hugging Face repository.
+    It handles model loading, preprocessing, inference, and provides web interface capabilities.
+
+    :param repo_id: Hugging Face repository ID containing CLIP models
+    :type repo_id: str
+    :param hf_token: Optional authentication token for private repositories
+    :type hf_token: Optional[str]
+
+    .. note::
+        Model components are loaded on-demand and cached for subsequent use.
+        Use clear() method to free memory when working with multiple large models.
+    """
+
     def __init__(self, repo_id: str, hf_token: Optional[str] = None):
         self.repo_id = repo_id
         self._model_names = None
@@ -78,6 +117,10 @@ class CLIPModel:
         :return: List of available model names in the repository
         :rtype: List[str]
         :raises RuntimeError: If repository access fails
+
+        .. note::
+            Model names are discovered by searching for 'image_encode.onnx' files
+            in the repository's directory structure.
         """
         with self._global_lock:
             if self._model_names is None:
@@ -106,7 +149,12 @@ class CLIPModel:
                              f'models {self.model_names!r} are available.')
 
     def _open_image_encoder(self, model_name: str):
+        """
+        Load and cache image encoder ONNX model.
 
+        :param model_name: Target model variant name
+        :return: Loaded ONNX model session
+        """
         with self._model_lock:
             if model_name not in self._image_encoders:
                 self._check_model_name(model_name)
@@ -119,7 +167,12 @@ class CLIPModel:
         return self._image_encoders[model_name]
 
     def _open_image_preprocessor(self, model_name: str):
+        """
+        Load and cache image preprocessing transforms.
 
+        :param model_name: Target model variant name
+        :return: Preprocessing pipeline function
+        """
         with self._model_lock:
             if model_name not in self._image_preprocessors:
                 self._check_model_name(model_name)
@@ -133,7 +186,12 @@ class CLIPModel:
         return self._image_preprocessors[model_name]
 
     def _open_text_encoder(self, model_name: str):
+        """
+        Load and cache text encoder ONNX model.
 
+        :param model_name: Target model variant name
+        :return: Loaded ONNX model session
+        """
         with self._model_lock:
             if model_name not in self._text_encoders:
                 self._check_model_name(model_name)
@@ -146,7 +204,12 @@ class CLIPModel:
         return self._text_encoders[model_name]
 
     def _open_text_tokenizer(self, model_name: str):
+        """
+        Load and cache text tokenizer.
 
+        :param model_name: Target model variant name
+        :return: Configured tokenizer instance
+        """
         with self._model_lock:
             if model_name not in self._text_tokenizers:
                 self._check_model_name(model_name)
@@ -161,10 +224,10 @@ class CLIPModel:
     def _get_logit_scale(self, model_name: str):
         """
         Get and cache the logit scale factor for the model.
-    
+
         :param model_name: Name of the CLIP model variant
         :type model_name: str
-    
+
         :return: Logit scale value
         :rtype: float
         """
@@ -181,6 +244,14 @@ class CLIPModel:
         return self._logit_scales[model_name]
 
     def _image_encode(self, images: MultiImagesTyping, model_name: str, fmt: Any = 'embeddings'):
+        """
+        Internal implementation of image encoding.
+
+        :param images: Input images to encode
+        :param model_name: Target model variant
+        :param fmt: Output format specification
+        :return: Encoded image features in specified format
+        """
         preprocessor = self._open_image_preprocessor(model_name)
         model = self._open_image_encoder(model_name)
 
@@ -193,6 +264,25 @@ class CLIPModel:
         })
 
     def image_encode(self, images: MultiImagesTyping, model_name: str, fmt: Any = 'embeddings'):
+        """
+        Encode images into CLIP embeddings.
+
+        :param images: Input images (paths, URLs, PIL images, or numpy arrays)
+        :type images: MultiImagesTyping
+        :param model_name: Target model variant name
+        :type model_name: str
+        :param fmt: Output format specification. Can be:
+            - 'embeddings' (default): Return normalized embeddings
+            - 'encodings': Return raw model outputs
+            - Tuple of both: Return (embeddings, encodings)
+        :type fmt: Any
+
+        :return: Encoded features in specified format
+        :rtype: Any
+
+        .. note::
+            Input images are automatically converted to RGB format with white background.
+        """
         return self._image_encode(
             images=images,
             model_name=model_name,
@@ -200,6 +290,14 @@ class CLIPModel:
         )
 
     def _text_encode(self, texts: Union[str, List[str]], model_name: str, fmt: Any = 'embeddings'):
+        """
+        Internal implementation of text encoding.
+
+        :param texts: Input texts to encode
+        :param model_name: Target model variant
+        :param fmt: Output format specification
+        :return: Encoded text features in specified format
+        """
         tokenizer = self._open_text_tokenizer(model_name)
         model = self._open_text_encoder(model_name)
 
@@ -218,6 +316,22 @@ class CLIPModel:
         })
 
     def text_encode(self, texts: Union[str, List[str]], model_name: str, fmt: Any = 'embeddings'):
+        """
+        Encode text into CLIP embeddings.
+
+        :param texts: Input text or list of texts
+        :type texts: Union[str, List[str]]
+        :param model_name: Target model variant name
+        :type model_name: str
+        :param fmt: Output format specification. Can be:
+            - 'embeddings' (default): Return normalized embeddings
+            - 'encodings': Return raw model outputs
+            - Tuple of both: Return (embeddings, encodings)
+        :type fmt: Any
+
+        :return: Encoded features in specified format
+        :rtype: Any
+        """
         return self._text_encode(
             texts=texts,
             model_name=model_name,
@@ -231,6 +345,29 @@ class CLIPModel:
             model_name: str,
             fmt='predictions'
     ):
+        """
+        Calculate similarity predictions between images and texts.
+
+        :param images: Input images or precomputed embeddings
+        :type images: Union[MultiImagesTyping, np.ndarray]
+        :param texts: Input texts or precomputed embeddings
+        :type texts: Union[List[str], str, np.ndarray]
+        :param model_name: Target model variant name
+        :type model_name: str
+        :param fmt: Output format specification. Can be:
+            - 'predictions' (default): Normalized probability scores
+            - 'similarities': Cosine similarities
+            - 'logits': Scaled similarity scores
+            - Complex format using dict keys:
+                ('image_embeddings', 'text_embeddings', 'similarities', etc.)
+        :type fmt: Any
+
+        :return: Prediction results in specified format
+        :rtype: Any
+
+        .. note::
+            When passing precomputed embeddings, ensure they are L2-normalized
+        """
         extra_values = {}
         if not isinstance(images, np.ndarray):
             image_embeddings, image_encodings = \
@@ -260,6 +397,11 @@ class CLIPModel:
         })
 
     def clear(self):
+        """
+        Clear all cached models and components.
+
+        Use this to free memory when switching between different model variants.
+        """
         self._image_encoders.clear()
         self._image_preprocessors.clear()
         self._text_encoders.clear()
@@ -267,6 +409,18 @@ class CLIPModel:
         self._logit_scales.clear()
 
     def make_ui(self, default_model_name: Optional[str] = None):
+        """
+        Create Gradio interface components for an interactive CLIP model demo.
+
+        This method sets up a user interface with image input, text input for labels,
+        model selection dropdown, and prediction display. It automatically selects the
+        most recently updated model variant if no default is specified.
+
+        :param default_model_name: Optional name of the model variant to select by default.
+                                 If None, the most recently updated model variant will be selected.
+        :type default_model_name: Optional[str]
+        :return: None
+        """
         _check_gradio_env()
         model_list = self.model_names
         if not default_model_name:
@@ -319,6 +473,26 @@ class CLIPModel:
 
     def launch_demo(self, default_model_name: Optional[str] = None,
                     server_name: Optional[str] = None, server_port: Optional[int] = None, **kwargs):
+        """
+        Launch a Gradio web interface for interactive CLIP model predictions.
+
+        Creates and launches a web demo that allows users to upload images, enter text labels,
+        and get similarity predictions using the CLIP model. The interface includes model
+        information and repository links.
+
+        :param default_model_name: Initial model variant to select in the dropdown
+        :type default_model_name: Optional[str]
+        :param server_name: Host address to bind the server to (e.g., "0.0.0.0" for public access)
+        :type server_name: Optional[str]
+        :param server_port: Port number to run the server on
+        :type server_port: Optional[int]
+        :param kwargs: Additional keyword arguments passed to gradio.launch()
+        :return: None
+
+        Usage:
+            >>> model = CLIPModel("organization/model-name")
+            >>> model.launch_demo(server_name="0.0.0.0", server_port=7860)
+        """
         _check_gradio_env()
         with gr.Blocks() as demo:
             with gr.Row():
@@ -342,11 +516,38 @@ class CLIPModel:
 
 @ts_lru_cache()
 def _open_models_for_repo_id(repo_id: str, hf_token: Optional[str] = None) -> CLIPModel:
+    """
+    Load and cache a CLIP model instance for the given repository ID.
+
+    This function uses a thread-safe LRU cache to avoid repeatedly loading the same model.
+
+    :param repo_id: Hugging Face model repository ID
+    :type repo_id: str
+    :param hf_token: Optional Hugging Face API token for private models
+    :type hf_token: Optional[str]
+    :return: Cached CLIP model instance
+    :rtype: CLIPModel
+    """
     return CLIPModel(repo_id, hf_token=hf_token)
 
 
 def clip_image_encode(images: MultiImagesTyping, repo_id: str, model_name: str,
-                      fmt='embeddings', hf_token: Optional[str] = None):
+                      fmt: Any = 'embeddings', hf_token: Optional[str] = None):
+    """
+    Generate CLIP embeddings or features for the given images.
+
+    :param images: Input images (paths, PIL Images, or numpy arrays)
+    :type images: MultiImagesTyping
+    :param repo_id: Hugging Face model repository ID
+    :type repo_id: str
+    :param model_name: Name of the specific model variant to use
+    :type model_name: str
+    :param fmt: Output format ('embeddings' or 'features')
+    :type fmt: Any
+    :param hf_token: Optional Hugging Face API token
+    :type hf_token: Optional[str]
+    :return: Image embeddings or features
+    """
     model = _open_models_for_repo_id(repo_id, hf_token=hf_token)
     return model.image_encode(
         images=images,
@@ -356,7 +557,22 @@ def clip_image_encode(images: MultiImagesTyping, repo_id: str, model_name: str,
 
 
 def clip_text_encode(texts: Union[str, List[str]], repo_id: str, model_name: str,
-                     fmt='embeddings', hf_token: Optional[str] = None):
+                     fmt: Any = 'embeddings', hf_token: Optional[str] = None):
+    """
+    Generate CLIP embeddings or features for the given texts.
+
+    :param texts: Input text or list of texts
+    :type texts: Union[str, List[str]]
+    :param repo_id: Hugging Face model repository ID
+    :type repo_id: str
+    :param model_name: Name of the specific model variant to use
+    :type model_name: str
+    :param fmt: Output format ('embeddings' or 'features')
+    :type fmt: Any
+    :param hf_token: Optional Hugging Face API token
+    :type hf_token: Optional[str]
+    :return: Text embeddings or features
+    """
     model = _open_models_for_repo_id(repo_id, hf_token=hf_token)
     return model.text_encode(
         texts=texts,
@@ -370,9 +586,30 @@ def clip_predict(
         texts: Union[List[str], str, np.ndarray],
         repo_id: str,
         model_name: str,
-        fmt='predictions',
+        fmt: Any = 'predictions',
         hf_token: Optional[str] = None,
 ):
+    """
+    Calculate similarity scores between images and texts using CLIP.
+
+    This function computes the similarity between the given images and texts
+    using the specified CLIP model. It can accept raw images/texts or
+    pre-computed embeddings as input.
+
+    :param images: Input images or pre-computed image embeddings
+    :type images: Union[MultiImagesTyping, np.ndarray]
+    :param texts: Input texts or pre-computed text embeddings
+    :type texts: Union[List[str], str, np.ndarray]
+    :param repo_id: Hugging Face model repository ID
+    :type repo_id: str
+    :param model_name: Name of the specific model variant to use
+    :type model_name: str
+    :param fmt: Output format ('predictions' for similarity scores or 'logits' for raw logits)
+    :type fmt: Any
+    :param hf_token: Optional Hugging Face API token
+    :type hf_token: Optional[str]
+    :return: Similarity scores or logits between images and texts
+    """
     model = _open_models_for_repo_id(repo_id, hf_token=hf_token)
     return model.predict(
         images=images,
