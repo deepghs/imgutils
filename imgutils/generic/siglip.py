@@ -10,7 +10,14 @@ from tokenizers import Tokenizer
 
 from ..data import MultiImagesTyping, load_images
 from ..preprocess import create_pillow_transforms
-from ..utils import open_onnx_model, vreplace, sigmoid
+from ..utils import open_onnx_model, vreplace, sigmoid, ts_lru_cache
+
+__all__ = [
+    'SigLIPModel',
+    'siglip_image_encode',
+    'siglip_text_encode',
+    'siglip_predict',
+]
 
 
 class SigLIPModel:
@@ -90,6 +97,7 @@ class SigLIPModel:
         """
         with self._model_lock:
             if model_name not in self._image_encoders:
+                self._check_model_name(model_name)
                 self._image_encoders[model_name] = open_onnx_model(hf_hub_download(
                     repo_id=self.repo_id,
                     repo_type='model',
@@ -109,6 +117,7 @@ class SigLIPModel:
         """
         with self._model_lock:
             if model_name not in self._image_preprocessors:
+                self._check_model_name(model_name)
                 with open(hf_hub_download(
                         repo_id=self.repo_id,
                         repo_type='model',
@@ -129,6 +138,7 @@ class SigLIPModel:
         """
         with self._model_lock:
             if model_name not in self._text_encoders:
+                self._check_model_name(model_name)
                 self._text_encoders[model_name] = open_onnx_model(hf_hub_download(
                     repo_id=self.repo_id,
                     repo_type='model',
@@ -148,6 +158,7 @@ class SigLIPModel:
         """
         with self._model_lock:
             if model_name not in self._text_tokenizers:
+                self._check_model_name(model_name)
                 self._text_tokenizers[model_name] = Tokenizer.from_file(hf_hub_download(
                     repo_id=self.repo_id,
                     repo_type='model',
@@ -167,6 +178,7 @@ class SigLIPModel:
         """
         with self._model_lock:
             if model_name not in self._logit_scales:
+                self._check_model_name(model_name)
                 with open(hf_hub_download(
                         repo_id=self.repo_id,
                         repo_type='model',
@@ -177,18 +189,7 @@ class SigLIPModel:
 
         return self._logit_scales[model_name]
 
-    def get_siglip_image_embedding(self, images: MultiImagesTyping, model_name: str, fmt: Any = 'embeddings'):
-        """
-        Generate embeddings for input images using the SigLIP model.
-    
-        :param images: Input images in various supported formats
-        :type images: MultiImagesTyping
-        :param model_name: Name of the SigLIP model variant to use
-        :type model_name: str
-        :param fmt: Output format, either 'encodings' or 'embeddings'
-    
-        :return: Image embeddings or encodings based on fmt parameter
-        """
+    def _get_siglip_image_embedding(self, images: MultiImagesTyping, model_name: str, fmt: Any = 'embeddings'):
         preprocessor = self._open_image_preprocessor(model_name)
         model = self._open_image_encoder(model_name)
 
@@ -200,7 +201,25 @@ class SigLIPModel:
             'embeddings': embeddings,
         })
 
-    def get_siglip_text_embedding(self, texts: Union[str, List[str]], model_name: str, fmt: Any = 'embeddings'):
+    def image_encode(self, images: MultiImagesTyping, model_name: str, fmt: Any = 'embeddings'):
+        """
+        Generate embeddings for input images using the SigLIP model.
+    
+        :param images: Input images in various supported formats
+        :type images: MultiImagesTyping
+        :param model_name: Name of the SigLIP model variant to use
+        :type model_name: str
+        :param fmt: Output format, either 'encodings' or 'embeddings'
+    
+        :return: Image embeddings or encodings based on fmt parameter
+        """
+        return self._get_siglip_image_embedding(
+            images=images,
+            model_name=model_name,
+            fmt=fmt,
+        )
+
+    def _get_siglip_text_embedding(self, texts: Union[str, List[str]], model_name: str, fmt: Any = 'embeddings'):
         """
         Generate embeddings for input texts using the SigLIP model.
     
@@ -227,7 +246,25 @@ class SigLIPModel:
             'embeddings': embeddings,
         })
 
-    def classify_with_siglip(
+    def text_encode(self, texts: Union[str, List[str]], model_name: str, fmt: Any = 'embeddings'):
+        """
+        Generate embeddings for input texts using the SigLIP model.
+
+        :param texts: Input text or list of texts
+        :type texts: Union[str, List[str]]
+        :param model_name: Name of the SigLIP model variant to use
+        :type model_name: str
+        :param fmt: Output format, either 'encodings' or 'embeddings'
+
+        :return: Text embeddings or encodings based on fmt parameter
+        """
+        return self._get_siglip_text_embedding(
+            texts=texts,
+            model_name=model_name,
+            fmt=fmt,
+        )
+
+    def predict(
             self,
             images: Union[MultiImagesTyping, np.ndarray],
             texts: Union[List[str], str, np.ndarray],
@@ -250,7 +287,7 @@ class SigLIPModel:
         extra_values = {}
         if not isinstance(images, np.ndarray):
             image_embeddings, image_encodings = \
-                self.get_siglip_image_embedding(images, model_name=model_name, fmt=('embeddings', 'encodings'))
+                self._get_siglip_image_embedding(images, model_name=model_name, fmt=('embeddings', 'encodings'))
             extra_values['image_embeddings'] = image_embeddings
             extra_values['image_encodings'] = image_encodings
             images = image_embeddings
@@ -258,7 +295,7 @@ class SigLIPModel:
 
         if not isinstance(texts, np.ndarray):
             text_embeddings, text_encodings = \
-                self.get_siglip_text_embedding(texts, model_name=model_name, fmt=('embeddings', 'encodings'))
+                self._get_siglip_text_embedding(texts, model_name=model_name, fmt=('embeddings', 'encodings'))
             extra_values['text_embeddings'] = text_embeddings
             extra_values['text_encodings'] = text_encodings
             texts = text_embeddings
@@ -275,3 +312,52 @@ class SigLIPModel:
             'predictions': predictions,
             **extra_values,
         })
+
+    def clear(self):
+        self._image_encoders.clear()
+        self._image_preprocessors.clear()
+        self._text_encoders.clear()
+        self._text_tokenizers.clear()
+        self._logit_scales.clear()
+
+
+@ts_lru_cache()
+def _open_models_for_repo_id(repo_id: str, hf_token: Optional[str] = None) -> SigLIPModel:
+    return SigLIPModel(repo_id, hf_token=hf_token)
+
+
+def siglip_image_encode(images: MultiImagesTyping, repo_id: str, model_name: str,
+                        fmt: Any = 'embeddings', hf_token: Optional[str] = None):
+    model = _open_models_for_repo_id(repo_id, hf_token=hf_token)
+    return model.image_encode(
+        images=images,
+        model_name=model_name,
+        fmt=fmt,
+    )
+
+
+def siglip_text_encode(texts: Union[str, List[str]], repo_id: str, model_name: str,
+                       fmt: Any = 'embeddings', hf_token: Optional[str] = None):
+    model = _open_models_for_repo_id(repo_id, hf_token=hf_token)
+    return model.text_encode(
+        texts=texts,
+        model_name=model_name,
+        fmt=fmt,
+    )
+
+
+def siglip_predict(
+        images: Union[MultiImagesTyping, np.ndarray],
+        texts: Union[List[str], str, np.ndarray],
+        repo_id: str,
+        model_name: str,
+        fmt: Any = 'predictions',
+        hf_token: Optional[str] = None,
+):
+    model = _open_models_for_repo_id(repo_id, hf_token=hf_token)
+    return model.predict(
+        images=images,
+        texts=texts,
+        model_name=model_name,
+        fmt=fmt
+    )
