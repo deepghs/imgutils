@@ -1,6 +1,11 @@
 """
 Overview:
-    Visualize the detection results.
+    This module provides functionality for visualizing object detection results on images.
+    It includes tools for drawing bounding boxes, labels, and confidence scores on detected objects.
+
+    The main function :func:`detection_visualize` can be used to visualize detection results from
+    various object detection models, with customizable appearance settings like font size, padding,
+    and label visibility.
 
     See :func:`imgutils.detect.head.detect_heads` and :func:`imgutils.detect.person.detect_person` for examples.
 """
@@ -14,6 +19,17 @@ from imgutils.data import ImageTyping, load_image
 
 
 def _try_get_font_from_matplotlib(fp=None, fontsize: int = 12):
+    """
+    Attempt to get a font from matplotlib for text rendering.
+
+    :param fp: Font properties object or None. If None, uses default sans-serif font.
+    :type fp: matplotlib.font_manager.FontProperties or None
+    :param fontsize: Size of the font to be used.
+    :type fontsize: int
+
+    :return: A PIL ImageFont object if matplotlib is available, None otherwise.
+    :rtype: PIL.ImageFont.FreeTypeFont or None
+    """
     try:
         # noinspection PyPackageRequirements
         import matplotlib
@@ -30,23 +46,38 @@ def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, f
                         labels: Optional[List[str]] = None, text_padding: int = 6, fontsize: int = 12,
                         max_short_edge_size: Optional[int] = None, fp=None, no_label: bool = False):
     """
-    Overview:
-        Visualize the results of the object detection.
+    Visualize object detection results by drawing bounding boxes and labels on an image.
 
-    :param image: Image be detected.
-    :param detection: The detection results list, each item includes the detected area `(x0, y0, x1, y1)`,
-        the target type (always `head`) and the target confidence score.
-    :param labels: An array of known labels. If not provided, the labels will be automatically detected
-        from the given ``detection``.
-    :param text_padding: Text padding of the labels. Default is ``6``.
-    :param fontsize: Font size of the labels. At runtime, an attempt will be made to retrieve the font used
-        for rendering from `matplotlib`. Therefore, if `matplotlib` is not installed, only the default pixel font
-        provided with `Pillow` can be used, and the font size cannot be changed.
-    :param no_label: Do not show labels. Default is ``False``.
-    :return: A `PIL` image with the same size as the provided image `image`, which contains the original image
-        content as well as the visualized bounding boxes.
+    :param image: Input image to visualize detections on. Can be a PIL Image, numpy array, or path to image file.
+    :type image: ImageTyping
+    :param detection: List of detection results, each containing ((x0, y0, x1, y1), label, confidence_score).
+        Coordinates should be in pixels, not normalized.
+    :type detection: List[Tuple[Tuple[float, float, float, float], str, float]]
+    :param labels: List of predefined labels. If None, labels will be extracted from detection results.
+    :type labels: Optional[List[str]]
+    :param text_padding: Padding around label text in pixels.
+    :type text_padding: int
+    :param fontsize: Font size for label text.
+    :type fontsize: int
+    :param max_short_edge_size: Maximum size of shortest image edge. If specified, image will be resized
+        while maintaining aspect ratio.
+    :type max_short_edge_size: Optional[int]
+    :param fp: Font properties for matplotlib font. Only used if matplotlib is available.
+    :type fp: matplotlib.font_manager.FontProperties or None
+    :param no_label: If True, suppresses drawing of labels.
+    :type no_label: bool
+
+    :return: PIL Image with visualized detection results.
+    :rtype: PIL.Image.Image
 
     Examples::
+        >>> from imgutils.detect import detect_heads, detection_visualize
+        >>>
+        >>> image = load_image("path/to/image.jpg")
+        >>> detections = detect_heads(image)
+        >>> visualized = detection_visualize(image, detections)
+        >>> visualized.save("output.png")
+
         See :func:`imgutils.detect.head.detect_heads` and :func:`imgutils.detect.person.detect_person` for examples.
     """
     image = load_image(image, force_background=None, mode='RGBA')
