@@ -73,7 +73,10 @@
 <li class="toctree-l2"><a class="reference internal" href="adversarial.html">imgutils.restore.adversarial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nafnet.html">imgutils.restore.nafnet</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.restore.scunet</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#restore-with-scunet">restore_with_scunet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#restore-with-scunet">restore_with_scunet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.restore.scunet.restore_with_scunet"><code class="docutils literal notranslate"><span class="pre">restore_with_scunet()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -113,10 +116,45 @@
              
     
     
-  <section id="imgutils-restore-scunet">
-<h1>imgutils.restore.scunet<a class="headerlink" href="#imgutils-restore-scunet" title="Permalink to this heading"></a></h1>
+  <section id="module-imgutils.restore.scunet">
+<span id="imgutils-restore-scunet"></span><h1>imgutils.restore.scunet<a class="headerlink" href="#module-imgutils.restore.scunet" title="Permalink to this heading"></a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>Restore the images using <a class="reference external" href="https://github.com/cszn/SCUNet">SCUNet</a>.</p>
+<img alt="../../_images/scunet_demo.plot.py.svg" class="align-center" src="../../_images/scunet_demo.plot.py.svg" /><p>This is an overall benchmark of all the SCUNet models:</p>
+<img alt="../../_images/scunet_benchmark.plot.py.svg" class="align-center" src="../../_images/scunet_benchmark.plot.py.svg" /><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>New in version v0.4.4, <strong>images with alpha channel supported</strong>.</p>
+<p>If you use an image with alpha channel (e.g. RGBA images),
+it will return a RGBA image, otherwise return RGG image.</p>
+</div>
+</dd>
+</dl>
 <section id="restore-with-scunet">
 <h2>restore_with_scunet<a class="headerlink" href="#restore-with-scunet" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.restore.scunet.restore_with_scunet">
+<span class="sig-prename descclassname"><span class="pre">imgutils.restore.scunet.</span></span><span class="sig-name descname"><span class="pre">restore_with_scunet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'GAN'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'PSNR'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'GAN'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_overlap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">silent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/restore/scunet.html#restore_with_scunet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.restore.scunet.restore_with_scunet" title="Permalink to this definition"></a></dt>
+<dd><p>Restore an image using the SCUNet model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image.</p></li>
+<li><p><strong>model</strong> (<em>SCUNetModelTyping</em>) – The SCUNet model type (‘GAN’, ‘PSNR’). Default is ‘GAN’.</p></li>
+<li><p><strong>tile_size</strong> (<em>int</em>) – The size of processing tiles. Default is 128.</p></li>
+<li><p><strong>tile_overlap</strong> (<em>int</em>) – The overlap between tiles. Default is 16.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – The batch size of inference. Default is 4.</p></li>
+<li><p><strong>silent</strong> (<em>bool</em>) – If True, the progress will not be displayed. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The restored image.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
@@ -167,10 +205,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/adversarial/api_doc/restore/scunet.html">dev/adversarial</a></dd>
+                        <dd><a href="scunet.html">main</a></dd>
                         <dd><a href="../../../HEAD/api_doc/restore/scunet.html">HEAD</a></dd>
                         <dd><a href="../../../dev/denormalize/api_doc/restore/scunet.html">dev/denormalize</a></dd>
-                        <dd><a href="scunet.html">main</a></dd>
+                        <dd><a href="../../../dev/yolosim/api_doc/restore/scunet.html">dev/yolosim</a></dd>
                 </dl>
         </div>
     </div><script>

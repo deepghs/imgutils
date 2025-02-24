@@ -71,7 +71,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.restore</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.restore.adversarial</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#remove-adversarial-noise">remove_adversarial_noise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-adversarial-noise">remove_adversarial_noise</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.restore.adversarial.remove_adversarial_noise"><code class="docutils literal notranslate"><span class="pre">remove_adversarial_noise()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="nafnet.html">imgutils.restore.nafnet</a></li>
@@ -113,10 +116,67 @@
              
     
     
-  <section id="imgutils-restore-adversarial">
-<h1>imgutils.restore.adversarial<a class="headerlink" href="#imgutils-restore-adversarial" title="Permalink to this heading"></a></h1>
+  <section id="module-imgutils.restore.adversarial">
+<span id="imgutils-restore-adversarial"></span><h1>imgutils.restore.adversarial<a class="headerlink" href="#module-imgutils.restore.adversarial" title="Permalink to this heading"></a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>Useful tools to remove adversarial noises, just using opencv library without any models.</p>
+<img alt="../../_images/adversarial_demo.plot.py.svg" class="align-center" src="../../_images/adversarial_demo.plot.py.svg" /><p>This is an overall benchmark of all the adversarial denoising:</p>
+<img alt="../../_images/adversarial_benchmark.plot.py.svg" class="align-center" src="../../_images/adversarial_benchmark.plot.py.svg" /><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This tool is inspired from <a class="reference external" href="https://huggingface.co/spaces/mf666/mist-fucker">Huggingface - mf666/mist-fucker</a>.</p>
+</div>
+</dd>
+</dl>
 <section id="remove-adversarial-noise">
 <h2>remove_adversarial_noise<a class="headerlink" href="#remove-adversarial-noise" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.restore.adversarial.remove_adversarial_noise">
+<span class="sig-prename descclassname"><span class="pre">imgutils.restore.adversarial.</span></span><span class="sig-name descname"><span class="pre">remove_adversarial_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_color_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_color_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_space_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_space_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">24.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_iters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g_iters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/restore/adversarial.html#remove_adversarial_noise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.restore.adversarial.remove_adversarial_noise" title="Permalink to this definition"></a></dt>
+<dd><p>Remove adversarial noise from an image using random bilateral and guided filtering.</p>
+<p>This function applies a two-stage filtering process:
+1. Random bilateral filtering for b_iters iterations
+2. Random guided filtering for g_iters iterations</p>
+<p>The randomization of filter parameters helps in better noise removal while preserving image details.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>Image.Image</em>) – The input image to be denoised</p></li>
+<li><p><strong>diameter_min</strong> (<em>int</em><em>, </em><em>optional</em>) – Minimum diameter of pixel neighborhood for bilateral filtering</p></li>
+<li><p><strong>diameter_max</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum diameter of pixel neighborhood for bilateral filtering</p></li>
+<li><p><strong>sigma_color_min</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum filter sigma in color space for bilateral filtering</p></li>
+<li><p><strong>sigma_color_max</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum filter sigma in color space for bilateral filtering</p></li>
+<li><p><strong>sigma_space_min</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum filter sigma in coordinate space for bilateral filtering</p></li>
+<li><p><strong>sigma_space_max</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum filter sigma in coordinate space for bilateral filtering</p></li>
+<li><p><strong>radius_min</strong> (<em>int</em><em>, </em><em>optional</em>) – Minimum windows size for guided filtering</p></li>
+<li><p><strong>radius_max</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum windows size for guided filtering</p></li>
+<li><p><strong>eps_min</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum regularization term for guided filtering</p></li>
+<li><p><strong>eps_max</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum regularization term for guided filtering</p></li>
+<li><p><strong>b_iters</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of bilateral filtering iterations</p></li>
+<li><p><strong>g_iters</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of guided filtering iterations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Denoised image</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>EnvironmentError</strong> – If opencv-contrib-python is not installed</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.restore</span><span class="w"> </span><span class="kn">import</span> <span class="n">remove_adversarial_noise</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;noisy_image.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cleaned_img</span> <span class="o">=</span> <span class="n">remove_adversarial_noise</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cleaned_img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;cleaned_image.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
@@ -167,10 +227,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/adversarial/api_doc/restore/adversarial.html">dev/adversarial</a></dd>
+                        <dd><a href="adversarial.html">main</a></dd>
                         <dd><a href="../../../HEAD/api_doc/restore/adversarial.html">HEAD</a></dd>
                         <dd><a href="../../../dev/denormalize/api_doc/restore/adversarial.html">dev/denormalize</a></dd>
-                        <dd><a href="adversarial.html">main</a></dd>
+                        <dd><a href="../../../dev/yolosim/api_doc/restore/adversarial.html">dev/yolosim</a></dd>
                 </dl>
         </div>
     </div><script>
