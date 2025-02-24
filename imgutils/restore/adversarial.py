@@ -18,9 +18,24 @@ import random
 import cv2
 import numpy as np
 from PIL import Image
-from cv2.ximgproc import guidedFilter
 
 from ..data import load_image
+
+try:
+    from cv2.ximgproc import guidedFilter
+except (ImportError, ModuleNotFoundError):
+    guidedFilter = None
+
+
+def _check_environment():
+    """
+    Check if required dependencies are installed.
+
+    :raises EnvironmentError: If opencv-contrib-python is not available.
+    """
+    if guidedFilter is None:
+        raise EnvironmentError('opencv-contrib-python is not available.\n'
+                               'Please install `opencv-contrib-python`.')
 
 
 def remove_adversarial_noise(
@@ -33,51 +48,65 @@ def remove_adversarial_noise(
     """
     Remove adversarial noise from an image using random bilateral and guided filtering.
 
-    This function applies random bilateral filtering and random guided filtering iteratively to reduce adversarial noise
-    in the input image.
+    This function applies a two-stage filtering process:
+    1. Random bilateral filtering for b_iters iterations
+    2. Random guided filtering for g_iters iterations
 
-    :param image: The input image.
+    The randomization of filter parameters helps in better noise removal while preserving image details.
+
+    :param image: The input image to be denoised
     :type image: Image.Image
 
-    :param diameter_min: Minimum diameter for bilateral filtering.
+    :param diameter_min: Minimum diameter of pixel neighborhood for bilateral filtering
     :type diameter_min: int, optional
 
-    :param diameter_max: Maximum diameter for bilateral filtering.
+    :param diameter_max: Maximum diameter of pixel neighborhood for bilateral filtering
     :type diameter_max: int, optional
 
-    :param sigma_color_min: Minimum filter sigma in the color space for bilateral filtering.
+    :param sigma_color_min: Minimum filter sigma in color space for bilateral filtering
     :type sigma_color_min: float, optional
 
-    :param sigma_color_max: Maximum filter sigma in the color space for bilateral filtering.
+    :param sigma_color_max: Maximum filter sigma in color space for bilateral filtering
     :type sigma_color_max: float, optional
 
-    :param sigma_space_min: Minimum filter sigma in the coordinate space for bilateral filtering.
+    :param sigma_space_min: Minimum filter sigma in coordinate space for bilateral filtering
     :type sigma_space_min: float, optional
 
-    :param sigma_space_max: Maximum filter sigma in the coordinate space for bilateral filtering.
+    :param sigma_space_max: Maximum filter sigma in coordinate space for bilateral filtering
     :type sigma_space_max: float, optional
 
-    :param radius_min: Minimum radius for guided filtering.
+    :param radius_min: Minimum windows size for guided filtering
     :type radius_min: int, optional
 
-    :param radius_max: Maximum radius for guided filtering.
+    :param radius_max: Maximum windows size for guided filtering
     :type radius_max: int, optional
 
-    :param eps_min: Minimum guided filter regularization term.
+    :param eps_min: Minimum regularization term for guided filtering
     :type eps_min: float, optional
 
-    :param eps_max: Maximum guided filter regularization term.
+    :param eps_max: Maximum regularization term for guided filtering
     :type eps_max: float, optional
 
-    :param b_iters: Number of iterations for bilateral filtering.
+    :param b_iters: Number of bilateral filtering iterations
     :type b_iters: int, optional
 
-    :param g_iters: Number of iterations for guided filtering.
+    :param g_iters: Number of guided filtering iterations
     :type g_iters: int, optional
 
-    :return: Image with adversarial noise removed.
+    :return: Denoised image
     :rtype: Image.Image
+
+    :raises EnvironmentError: If opencv-contrib-python is not installed
+
+    :example:
+        >>> from imgutils.restore import remove_adversarial_noise
+        >>> from PIL import Image
+        >>>
+        >>> img = Image.open('noisy_image.png')
+        >>> cleaned_img = remove_adversarial_noise(img)
+        >>> cleaned_img.save('cleaned_image.png')
     """
+    _check_environment()
     image = load_image(image, mode='RGB', force_background='white')
     img = np.array(image).astype(np.float32)
     y = img.copy()
