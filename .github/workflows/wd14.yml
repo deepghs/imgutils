@@ -12,8 +12,8 @@ on:
         description: 'Enable Tag Lazy Mode'
         type: boolean
         default: false
-  schedule:
-    - cron: '30 18 * * 0'
+#  schedule:
+#    - cron: '30 18 * * 0'
 
 jobs:
   sync:
