@@ -1,0 +1,263 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.detect.head &mdash; imgutils 0.11.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=1816d21d"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.detect.nudenet" href="nudenet.html" />
+    <link rel="prev" title="imgutils.detect.hand" href="hand.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.detect</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="booru_yolo.html">imgutils.detect.booru_yolo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="censor.html">imgutils.detect.censor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eye.html">imgutils.detect.eye</a></li>
+<li class="toctree-l2"><a class="reference internal" href="face.html">imgutils.detect.face</a></li>
+<li class="toctree-l2"><a class="reference internal" href="halfbody.html">imgutils.detect.halfbody</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hand.html">imgutils.detect.hand</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.detect.head</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#detect-heads">detect_heads</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.detect.head.detect_heads"><code class="docutils literal notranslate"><span class="pre">detect_heads()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nudenet.html">imgutils.detect.nudenet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="person.html">imgutils.detect.person</a></li>
+<li class="toctree-l2"><a class="reference internal" href="similarity.html">imgutils.detect.similarity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text.html">imgutils.detect.text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visual.html">imgutils.detect.visual</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.detect</a></li>
+      <li class="breadcrumb-item active">imgutils.detect.head</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/detect/head.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.detect.head">
+<span id="imgutils-detect-head"></span><h1>imgutils.detect.head<a class="headerlink" href="#module-imgutils.detect.head" title="Permalink to this heading"></a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>This module provides functionality for detecting human heads in anime images using YOLOv8 models.</p>
+<img alt="../../_images/head_detect_demo.plot.py.svg" class="align-center" src="../../_images/head_detect_demo.plot.py.svg" /><p>Key Features:</p>
+<ul class="simple">
+<li><p>Head detection in anime images</p></li>
+<li><p>Support for different model levels (‘s’ for accuracy, ‘n’ for speed)</p></li>
+<li><p>Customizable confidence and IoU thresholds</p></li>
+<li><p>Integration with Hugging Face model repository</p></li>
+</ul>
+<p>The module is based on the <a class="reference external" href="https://huggingface.co/datasets/deepghs/anime_head_detection">deepghs/anime_head_detection</a>
+dataset contributed by our developers and uses YOLOv8/YOLO11 architecture for object detection.</p>
+<p>Example usage and benchmarks are provided in the module overview.</p>
+<p>This is an overall benchmark of all the head detect models:</p>
+<img alt="../../_images/head_detect_benchmark.plot.py.svg" class="align-center" src="../../_images/head_detect_benchmark.plot.py.svg" /></dd>
+</dl>
+<section id="detect-heads">
+<h2>detect_heads<a class="headerlink" href="#detect-heads" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.detect.head.detect_heads">
+<span class="sig-prename descclassname"><span class="pre">imgutils.detect.head.</span></span><span class="sig-name descname"><span class="pre">detect_heads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'head_detect_v2.0_s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iou_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/detect/head.html#detect_heads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.detect.head.detect_heads" title="Permalink to this definition"></a></dt>
+<dd><p>Detect human heads in anime images using YOLOv8 models.</p>
+<p>This function applies a pre-trained YOLOv8 model to detect human heads in the given anime image.
+It supports different model levels and allows customization of detection parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image for head detection. Can be a file path, URL, or image data.</p></li>
+<li><p><strong>level</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The model level to use. ‘s’ for higher accuracy, ‘n’ for faster speed.
+Default is None (actually equals to ‘s’).
+This parameter is deprecated and will be removed in future versions.</p></li>
+<li><p><strong>model_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Name of the specific YOLO model to use. If not provided, uses ‘head_detect_v2.0_s’.</p></li>
+<li><p><strong>conf_threshold</strong> (<em>float</em>) – Confidence threshold for detection results. Only detections with confidence above this value are returned. Default is 0.4.</p></li>
+<li><p><strong>iou_threshold</strong> (<em>float</em>) – IoU (Intersection over Union) threshold for non-maximum suppression. Helps in removing overlapping detections. Default is 0.7.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of detected heads. Each item is a tuple containing:
+- Bounding box coordinates as (x0, y0, x1, y1)
+- Class label (always ‘head’ for this function)
+- Confidence score of the detection</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Tuple[Tuple[int, int, int, int], str, float]]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an invalid level is provided or if there’s an issue with the model loading or prediction.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.detect</span><span class="w"> </span><span class="kn">import</span> <span class="n">detect_heads</span><span class="p">,</span> <span class="n">detection_visualize</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="s1">&#39;mostima_post.jpg&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">detect_heads</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">[((29, 441, 204, 584), &#39;head&#39;, 0.7874319553375244),</span>
+<span class="go"> ((346, 59, 529, 275), &#39;head&#39;, 0.7510495185852051),</span>
+<span class="go"> ((606, 51, 895, 336), &#39;head&#39;, 0.6986488103866577)]</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For visualization of results, you can use the <a class="reference internal" href="visual.html#imgutils.detect.visual.detection_visualize" title="imgutils.detect.visual.detection_visualize"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.detect.visual.detection_visualize()</span></code></a> function.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The ‘level’ parameter is deprecated and will be removed in future versions. Use ‘model_name’ instead.</p>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="hand.html" class="btn btn-neutral float-left" title="imgutils.detect.hand" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="nudenet.html" class="btn btn-neutral float-right" title="imgutils.detect.nudenet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.11.2
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.10.0/api_doc/detect/head.html">v0.10.0</a></dd>
+                        <dd><a href="../../../v0.11.0/api_doc/detect/head.html">v0.11.0</a></dd>
+                        <dd><a href="../../../v0.11.1/api_doc/detect/head.html">v0.11.1</a></dd>
+                        <dd><a href="head.html">v0.11.2</a></dd>
+                        <dd><a href="../../../v0.8.0/api_doc/detect/head.html">v0.8.0</a></dd>
+                        <dd><a href="../../../v0.9.0/api_doc/detect/head.html">v0.9.0</a></dd>
+                        <dd><a href="../../../v0.9.1/api_doc/detect/head.html">v0.9.1</a></dd>
+                        <dd><a href="../../../v0.9.2/api_doc/detect/head.html">v0.9.2</a></dd>
+                        <dd><a href="../../../v0.9.3/api_doc/detect/head.html">v0.9.3</a></dd>
+                        <dd><a href="../../../v0.9.4/api_doc/detect/head.html">v0.9.4</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../HEAD/api_doc/detect/head.html">HEAD</a></dd>
+                        <dd><a href="../../../dev/denormalize/api_doc/detect/head.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../main/api_doc/detect/head.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
