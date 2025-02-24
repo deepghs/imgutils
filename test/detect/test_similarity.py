@@ -48,8 +48,7 @@ class TestBBoxFunctions:
             bboxes_similarity(sample_bboxes, sample_bboxes, mode='invalid')
 
     def test_bboxes_similarity_unequal_length(self, sample_bboxes):
-        with pytest.raises(ValueError, match="Length of bboxes lists not match"):
-            bboxes_similarity(sample_bboxes, sample_bboxes[:-1])
+        assert bboxes_similarity(sample_bboxes, sample_bboxes[:-1]) == pytest.approx(2 / 3)
 
     @pytest.mark.parametrize("bboxes1, bboxes2, mode, expected", [
         ([(0, 0, 2, 2), (3, 3, 5, 5)], [(1, 1, 3, 3), (4, 4, 6, 6)], 'mean', 0.14285714285714285),
@@ -90,8 +89,7 @@ class TestBBoxFunctions:
             detection_similarity(sample_detections, sample_detections, mode='invalid')
 
     def test_detection_similarity_unequal_length(self, sample_detections):
-        with pytest.raises(ValueError, match="Length of bboxes not match on label"):
-            detection_similarity(sample_detections, sample_detections[:-1])
+        assert detection_similarity(sample_detections, sample_detections[:-1]) == pytest.approx(2 / 3)
 
     @pytest.mark.parametrize("detect1, detect2, mode, expected", [
         ([((0, 0, 2, 2), 'car', 0.9), ((3, 3, 5, 5), 'person', 0.8)],

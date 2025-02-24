@@ -70,7 +70,7 @@ def bboxes_similarity(bboxes1: List[BBoxTyping], bboxes2: List[BBoxTyping],
     :type mode: Literal['max', 'mean', 'raw']
     :return: The similarity score or list of scores, depending on the mode.
     :rtype: Union[float, List[float]]
-    :raises ValueError: If the lengths of bboxes1 and bboxes2 do not match, or if an unknown mode is specified.
+    :raises ValueError: If an unknown mode is specified.
 
     This function computes the similarity between two lists of bounding boxes using the Hungarian algorithm
     to find the optimal assignment. It then returns the similarity based on the specified mode:
@@ -86,12 +86,17 @@ def bboxes_similarity(bboxes1: List[BBoxTyping], bboxes2: List[BBoxTyping],
         >>> print(f"Mean similarity: {similarity:.4f}")
         Mean similarity: 0.1429
     """
-    if len(bboxes1) != len(bboxes2):
-        raise ValueError(f'Length of bboxes lists not match - {len(bboxes1)} vs {len(bboxes2)}.')
+    m = len(bboxes1)
+    n = len(bboxes2)
 
-    n = len(bboxes1)
-    iou_matrix = np.zeros((n, n))
-    for i in range(n):
+    if m == 0 and n == 0:
+        if mode == 'raw':
+            return []
+        else:
+            return 1.0
+
+    iou_matrix = np.zeros((m, n))
+    for i in range(m):
         for j in range(n):
             iou_matrix[i, j] = calculate_iou(bboxes1[i], bboxes2[j])
 
@@ -99,12 +104,17 @@ def bboxes_similarity(bboxes1: List[BBoxTyping], bboxes2: List[BBoxTyping],
     from scipy.optimize import linear_sum_assignment
     row_ind, col_ind = linear_sum_assignment(-iou_matrix)
     similarities = iou_matrix[row_ind, col_ind]
+
+    max_len = max(m, n)
+    padded_similarities = np.zeros(max_len)
+    padded_similarities[:len(similarities)] = similarities
+
     if mode == 'max':
-        return float(similarities.max())
+        return float(np.max(padded_similarities))
     elif mode == 'mean':
-        return float(similarities.mean())
+        return float(np.mean(padded_similarities))
     elif mode == 'raw':
-        return similarities.tolist()
+        return padded_similarities.tolist()
     else:
         raise ValueError(f'Unknown similarity mode for bboxes - {mode!r}.')
 
@@ -122,8 +132,7 @@ def detection_similarity(detect1: List[BBoxWithScoreAndLabel], detect2: List[BBo
     :type mode: Literal['max', 'mean', 'raw']
     :return: The similarity score or list of scores, depending on the mode.
     :rtype: Union[float, List[float]]
-    :raises ValueError: If the number of bounding boxes for any label doesn't match between detect1 and detect2,
-                        or if an unknown mode is specified.
+    :raises ValueError: If an unknown mode is specified.
 
     This function compares two lists of detections by:
 
@@ -131,7 +140,8 @@ def detection_similarity(detect1: List[BBoxWithScoreAndLabel], detect2: List[BBo
     2. For each label, calculating the similarity between the corresponding bounding boxes.
     3. Aggregating the similarities based on the specified mode.
 
-    The function ensures that for each label, the number of bounding boxes matches between detect1 and detect2.
+    The function processes detections label by label and combines their similarities.
+    It's particularly useful for evaluating object detection results against ground truth.
 
     Example::
         >>> detect1 = [((0, 0, 2, 2), 'car', 0.9), ((3, 3, 5, 5), 'person', 0.8)]
@@ -145,10 +155,6 @@ def detection_similarity(detect1: List[BBoxWithScoreAndLabel], detect2: List[BBo
     for current_label in labels:
         bboxes1 = [bbox for bbox, label, _ in detect1 if label == current_label]
         bboxes2 = [bbox for bbox, label, _ in detect2 if label == current_label]
-
-        if len(bboxes1) != len(bboxes2):
-            raise ValueError(f'Length of bboxes not match on label {current_label!r}'
-                             f' - {len(bboxes1)} vs {len(bboxes2)}.')
 
         sims.extend(bboxes_similarity(
             bboxes1=bboxes1,
