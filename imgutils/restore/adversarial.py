@@ -18,9 +18,19 @@ import random
 import cv2
 import numpy as np
 from PIL import Image
-from cv2.ximgproc import guidedFilter
 
 from ..data import load_image
+
+try:
+    from cv2.ximgproc import guidedFilter
+except (ImportError, ModuleNotFoundError):
+    guidedFilter = None
+
+
+def _check_environment():
+    if guidedFilter is None:
+        raise EnvironmentError('opencv-contrib-python is not available.\n'
+                               'Please install `opencv-contrib-python`.')
 
 
 def remove_adversarial_noise(
@@ -78,6 +88,7 @@ def remove_adversarial_noise(
     :return: Image with adversarial noise removed.
     :rtype: Image.Image
     """
+    _check_environment()
     image = load_image(image, mode='RGB', force_background='white')
     img = np.array(image).astype(np.float32)
     y = img.copy()
