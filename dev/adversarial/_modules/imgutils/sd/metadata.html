@@ -1,0 +1,630 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.sd.metadata &mdash; imgutils 0.11.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=2fee5877"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.sd.metadata</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.sd.metadata</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    Metadata parser and formatter for a1111&#39;s webui generated images.</span>
+
+<span class="sd">    Here are 2 sample images: :download:`sd_metadata_simple.png &lt;sd_metadata_simple.png&gt;`</span>
+<span class="sd">    and :download:`sd_metadata_complex.png &lt;sd_metadata_complex.png&gt;`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mimetypes</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL.PngImagePlugin</span><span class="w"> </span><span class="kn">import</span> <span class="n">PngInfo</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_geninfo_parameters</span><span class="p">,</span> <span class="n">read_geninfo_exif</span><span class="p">,</span> <span class="n">write_geninfo_exif</span><span class="p">,</span> <span class="n">write_geninfo_gif</span><span class="p">,</span> \
+    <span class="n">read_geninfo_gif</span>
+
+<span class="n">_PARAM_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\s*(?P&lt;key&gt;[\w ]+):\s*(?P&lt;value&gt;&quot;(?:</span><span class="se">\\</span><span class="s1">.|[^</span><span class="se">\\</span><span class="s1">&quot;])+&quot;|[^,]*)(?:,|$)&#39;</span><span class="p">)</span>
+<span class="n">_SIZE_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^(?P&lt;size1&gt;-?\d+)\s*x\s*(?P&lt;size2&gt;-?\d+)$&quot;</span><span class="p">)</span>
+<span class="n">_NEG_LINE_PATTERN</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^Negative prompt:\s*(?P&lt;content&gt;[\S\s]*?)$&#39;</span><span class="p">)</span>
+
+<span class="n">_PRE_KEYS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Steps&quot;</span><span class="p">,</span> <span class="s2">&quot;Sampler&quot;</span><span class="p">,</span> <span class="s2">&quot;CFG scale&quot;</span><span class="p">,</span> <span class="s2">&quot;Image CFG scale&quot;</span><span class="p">,</span> <span class="s2">&quot;Seed&quot;</span><span class="p">,</span> <span class="s2">&quot;Face restoration&quot;</span><span class="p">,</span> <span class="s2">&quot;Size&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Model hash&quot;</span><span class="p">,</span> <span class="s2">&quot;Model&quot;</span><span class="p">,</span> <span class="s2">&quot;VAE hash&quot;</span><span class="p">,</span> <span class="s2">&quot;VAE&quot;</span><span class="p">,</span> <span class="s2">&quot;Variation seed&quot;</span><span class="p">,</span> <span class="s2">&quot;Variation seed strength&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Seed resize from&quot;</span><span class="p">,</span> <span class="s2">&quot;Denoising strength&quot;</span><span class="p">,</span> <span class="s2">&quot;Conditional mask weight&quot;</span><span class="p">,</span> <span class="s2">&quot;Clip skip&quot;</span><span class="p">,</span> <span class="s2">&quot;ENSD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Token merging ratio&quot;</span><span class="p">,</span> <span class="s2">&quot;Token merging ratio hr&quot;</span><span class="p">,</span> <span class="s2">&quot;Init image hash&quot;</span><span class="p">,</span> <span class="s2">&quot;RNG&quot;</span><span class="p">,</span> <span class="s2">&quot;NGMS&quot;</span><span class="p">,</span> <span class="s2">&quot;Tiling&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">_POST_KEYS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Version&quot;</span><span class="p">,</span> <span class="s2">&quot;User&quot;</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_sdmeta_quote</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">x</span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="k">if</span> <span class="s1">&#39;,&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;:&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SDMetaData"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.SDMetaData">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SDMetaData</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Store information parsed from the metadata of a PNG image.</span>
+
+<span class="sd">    :param prompt: The main prompt text.</span>
+<span class="sd">    :type prompt: str</span>
+<span class="sd">    :param neg_prompt: The negative prompt text.</span>
+<span class="sd">    :type neg_prompt: str</span>
+<span class="sd">    :param parameters: A dictionary containing various parameters.</span>
+<span class="sd">    :type parameters: Dict[str, Any]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">neg_prompt</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+
+<div class="viewcode-block" id="SDMetaData.__str__"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.SDMetaData.__str__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a string representation of the metadata.</span>
+
+<span class="sd">        :return: A string representation of the metadata.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        Examples::</span>
+<span class="sd">            &gt;&gt;&gt; from imgutils.sd import get_sdmeta_from_image</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; sd1 = get_sdmeta_from_image(&#39;sd_metadata_simple.png&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; print(sd1)</span>
+<span class="sd">            (extremely delicate and beautiful), best quality, official art, global illumination, soft shadow, super detailed, Japanese light novel cover, 4K, metal_texture, (striped_background), super detailed background, more detailed, rich detailed, extremely detailed CG unity 8k wallpaper, ((unreal)), sci-fi,(fantasy),(masterpiece),(super delicate), (illustration), (extremely delicate and beautiful), anime coloring,</span>
+<span class="sd">            (silver_skin), ((high-cut silver_impossible_bodysuit), ((gem_on_chest)),(high-cut_silver_mechanical_leotard)),headgear,</span>
+<span class="sd">            (focus-on:1.1),(1_girl),((solo)),slim_waist,white hair, long hair, luminous yellow eyes,(medium_breast:1.2), (Indistinct_cameltoe:0.9), (flat_crotch:1.1),(coquettish), (squint:1.4),(evil_smile :1.35),(dark_persona), [open mouth: 0.7], standing,[wet:0.7],</span>
+<span class="sd">            slim_face, tall_girl,(mature),mature_face, (slim_figure), (slim_legs:1.1), (groin:1.1), ((bare_thighs)),</span>
+<span class="sd">            Negative prompt: EasyNegative, sketch, duplicate, ugly, huge eyes, text, logo, monochrome, worst face, (bad and mutated hands:1.3), (worst quality:2.0), (low quality:2.0), (blurry:2.0), horror, geometry, bad_prompt, (bad hands), (missing fingers), multiple limbs, bad anatomy, (interlocked fingers:1.2), Ugly Fingers, (extra digit and hands and fingers and legs and arms:1.4), ((2girl)), (deformed fingers:1.2), (long fingers:1.2),(bad-artist-anime), bad-artist, bad hand, blush, (lipstick),skindentation, tie, ((big_breast)), (nipple), thighhighs, pubic_hair, pussy, black and white,(3d), ((realistic)),blurry,nipple slip, (nipple), blush, head_out_of_frame,curvy,</span>
+<span class="sd">            Steps: 20, Sampler: DDIM, CFG scale: 7, Seed: 3827064803, Size: 512x848, Model hash: eb49192009, Model: AniDosMix, Clip skip: 2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sdmeta_text</span><span class="p">()</span></div>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sdmeta_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a formatted string representation of the metadata.</span>
+
+<span class="sd">        This internal method is used by __str__ and other methods to create a consistent</span>
+<span class="sd">        string representation of the metadata.</span>
+
+<span class="sd">        :return: A formatted string containing the metadata.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span> <span class="k">as</span> <span class="n">sio</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sio</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">neg_prompt</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Negative prompt: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">neg_prompt</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sio</span><span class="p">)</span>
+
+            <span class="n">_ext_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_PRE_KEYS</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_POST_KEYS</span><span class="p">)</span>
+            <span class="n">_params</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_PRE_KEYS</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+                    <span class="n">_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_ext_keys</span><span class="p">:</span>
+                    <span class="n">_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_POST_KEYS</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+                    <span class="n">_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">_params</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+                    <span class="n">k</span> <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">v</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">_sdmeta_quote</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">sio</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">sio</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the metadata as a formatted string.</span>
+
+<span class="sd">        This property provides a convenient way to access the string representation</span>
+<span class="sd">        of the metadata without calling _sdmeta_text() directly.</span>
+
+<span class="sd">        :return: A formatted string containing the metadata.</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; metadata = SDMetaData(</span>
+<span class="sd">            ...     prompt=&quot;A starry night&quot;,</span>
+<span class="sd">            ...     neg_prompt=&quot;Daylight&quot;,</span>
+<span class="sd">            ...     parameters={&quot;Steps&quot;: 40, &quot;Sampler&quot;: &quot;Euler&quot;, &quot;CFG scale&quot;: 8}</span>
+<span class="sd">            ... )</span>
+<span class="sd">            &gt;&gt;&gt; print(metadata.text)</span>
+<span class="sd">            A starry night</span>
+<span class="sd">            Negative prompt: Daylight</span>
+<span class="sd">            Steps: 40, Sampler: Euler, CFG scale: 8</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sdmeta_text</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pnginfo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PngInfo</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a PngInfo object with the metadata.</span>
+
+<span class="sd">        This can be used when saving an image with custom metadata.</span>
+
+<span class="sd">        :return: A PngInfo object containing the metadata.</span>
+<span class="sd">        :rtype: PngInfo</span>
+
+<span class="sd">        Examples::</span>
+<span class="sd">            &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">            &gt;&gt;&gt; from imgutils.sd import get_sdmeta_from_image</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # get metadata</span>
+<span class="sd">            &gt;&gt;&gt; sd1 = get_sdmeta_from_image(&#39;sd_metadata_simple.png&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # create an image</span>
+<span class="sd">            &gt;&gt;&gt; img = Image.new(&#39;RGB&#39;, (256, 256), &#39;white&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # save this image with sd1&#39;s metadata</span>
+<span class="sd">            &gt;&gt;&gt; img.save(&#39;new_image.png&#39;, pnginfo=sd1.pnginfo)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # let&#39;s see what is in &#39;new_image.png&#39;</span>
+<span class="sd">            &gt;&gt;&gt; get_sdmeta_from_image(&#39;new_image.png&#39;)</span>
+<span class="sd">            SDMetaData(prompt=&#39;(extremely delicate and beautiful), best quality, official art, global illumination, soft shadow, super detailed, Japanese light novel cover, 4K, metal_texture, (striped_background), super detailed background, more detailed, rich detailed, extremely detailed CG unity 8k wallpaper, ((unreal)), sci-fi,(fantasy),(masterpiece),(super delicate), (illustration), (extremely delicate and beautiful), anime coloring,\\n(silver_skin), ((high-cut silver_impossible_bodysuit), ((gem_on_chest)),(high-cut_silver_mechanical_leotard)),headgear,\\n(focus-on:1.1),(1_girl),((solo)),slim_waist,white hair, long hair, luminous yellow eyes,(medium_breast:1.2), (Indistinct_cameltoe:0.9), (flat_crotch:1.1),(coquettish), (squint:1.4),(evil_smile :1.35),(dark_persona), [open mouth: 0.7], standing,[wet:0.7],\\nslim_face, tall_girl,(mature),mature_face, (slim_figure), (slim_legs:1.1), (groin:1.1), ((bare_thighs)),&#39;, neg_prompt=&#39;EasyNegative, sketch, duplicate, ugly, huge eyes, text, logo, monochrome, worst face, (bad and mutated hands:1.3), (worst quality:2.0), (low quality:2.0), (blurry:2.0), horror, geometry, bad_prompt, (bad hands), (missing fingers), multiple limbs, bad anatomy, (interlocked fingers:1.2), Ugly Fingers, (extra digit and hands and fingers and legs and arms:1.4), ((2girl)), (deformed fingers:1.2), (long fingers:1.2),(bad-artist-anime), bad-artist, bad hand, blush, (lipstick),skindentation, tie, ((big_breast)), (nipple), thighhighs, pubic_hair, pussy, black and white,(3d), ((realistic)),blurry,nipple slip, (nipple), blush, head_out_of_frame,curvy,&#39;, parameters={&#39;Steps&#39;: 20, &#39;Sampler&#39;: &#39;DDIM&#39;, &#39;CFG scale&#39;: 7, &#39;Seed&#39;: 3827064803, &#39;Size&#39;: (512, 848), &#39;Model hash&#39;: &#39;eb49192009&#39;, &#39;Model&#39;: &#39;AniDosMix&#39;, &#39;Clip skip&#39;: 2})</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">PngInfo</span><span class="p">()</span>
+        <span class="n">info</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="s1">&#39;parameters&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sdmeta_text</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">info</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_parameters</span><span class="p">(</span><span class="n">param_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">_PARAM_PATTERN</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">param_text</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">size_matching</span> <span class="o">=</span> <span class="n">_SIZE_PATTERN</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">size_matching</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">size_matching</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;size1&#39;</span><span class="p">)),</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">size_matching</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;size2&#39;</span><span class="p">))</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">return</span> <span class="n">params</span>
+
+
+<div class="viewcode-block" id="parse_sdmeta_from_text"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.parse_sdmeta_from_text">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">parse_sdmeta_from_text</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SDMetaData</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse metadata information from a string.</span>
+
+<span class="sd">    :param x: The input string containing metadata.</span>
+<span class="sd">    :type x: str</span>
+<span class="sd">    :return: A SDMetaData object containing the parsed metadata.</span>
+<span class="sd">    :rtype: SDMetaData</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.sd import parse_sdmeta_from_text</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; sd1 = parse_sdmeta_from_text(\&quot;\&quot;\&quot;</span>
+<span class="sd">        ... (extremely delicate and beautiful), best quality, official art, global illumination, soft shadow, super detailed, Japanese light novel cover, 4K, metal_texture, (striped_background), super detailed background, more detailed, rich detailed, extremely detailed CG unity 8k wallpaper, ((unreal)), sci-fi,(fantasy),(masterpiece),(super delicate), (illustration), (extremely delicate and beautiful), anime coloring,</span>
+<span class="sd">        ... (silver_skin), ((high-cut silver_impossible_bodysuit), ((gem_on_chest)),(high-cut_silver_mechanical_leotard)),headgear,</span>
+<span class="sd">        ... (focus-on:1.1),(1_girl),((solo)),slim_waist,white hair, long hair, luminous yellow eyes,(medium_breast:1.2), (Indistinct_cameltoe:0.9), (flat_crotch:1.1),(coquettish), (squint:1.4),(evil_smile :1.35),(dark_persona), [open mouth: 0.7], standing,[wet:0.7],</span>
+<span class="sd">        ... slim_face, tall_girl,(mature),mature_face, (slim_figure), (slim_legs:1.1), (groin:1.1), ((bare_thighs)),</span>
+<span class="sd">        ... Negative prompt: EasyNegative, sketch, duplicate, ugly, huge eyes, text, logo, monochrome, worst face, (bad and mutated hands:1.3), (worst quality:2.0), (low quality:2.0), (blurry:2.0), horror, geometry, bad_prompt, (bad hands), (missing fingers), multiple limbs, bad anatomy, (interlocked fingers:1.2), Ugly Fingers, (extra digit and hands and fingers and legs and arms:1.4), ((2girl)), (deformed fingers:1.2), (long fingers:1.2),(bad-artist-anime), bad-artist, bad hand, blush, (lipstick),skindentation, tie, ((big_breast)), (nipple), thighhighs, pubic_hair, pussy, black and white,(3d), ((realistic)),blurry,nipple slip, (nipple), blush, head_out_of_frame,curvy,</span>
+<span class="sd">        ... Steps: 20, Sampler: DDIM, CFG scale: 7, Seed: 3827064803, Size: 512x848, Model hash: eb49192009, Model: AniDosMix, Clip skip: 2</span>
+<span class="sd">        ... \&quot;\&quot;\&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; sd1</span>
+<span class="sd">        SDMetaData(prompt=&#39;(extremely delicate and beautiful), best quality, official art, global illumination, soft shadow, super detailed, Japanese light novel cover, 4K, metal_texture, (striped_background), super detailed background, more detailed, rich detailed, extremely detailed CG unity 8k wallpaper, ((unreal)), sci-fi,(fantasy),(masterpiece),(super delicate), (illustration), (extremely delicate and beautiful), anime coloring,\\n(silver_skin), ((high-cut silver_impossible_bodysuit), ((gem_on_chest)),(high-cut_silver_mechanical_leotard)),headgear,\\n(focus-on:1.1),(1_girl),((solo)),slim_waist,white hair, long hair, luminous yellow eyes,(medium_breast:1.2), (Indistinct_cameltoe:0.9), (flat_crotch:1.1),(coquettish), (squint:1.4),(evil_smile :1.35),(dark_persona), [open mouth: 0.7], standing,[wet:0.7],\\nslim_face, tall_girl,(mature),mature_face, (slim_figure), (slim_legs:1.1), (groin:1.1), ((bare_thighs)),&#39;, neg_prompt=&#39;EasyNegative, sketch, duplicate, ugly, huge eyes, text, logo, monochrome, worst face, (bad and mutated hands:1.3), (worst quality:2.0), (low quality:2.0), (blurry:2.0), horror, geometry, bad_prompt, (bad hands), (missing fingers), multiple limbs, bad anatomy, (interlocked fingers:1.2), Ugly Fingers, (extra digit and hands and fingers and legs and arms:1.4), ((2girl)), (deformed fingers:1.2), (long fingers:1.2),(bad-artist-anime), bad-artist, bad hand, blush, (lipstick),skindentation, tie, ((big_breast)), (nipple), thighhighs, pubic_hair, pussy, black and white,(3d), ((realistic)),blurry,nipple slip, (nipple), blush, head_out_of_frame,curvy,&#39;, parameters={&#39;Steps&#39;: 20, &#39;Sampler&#39;: &#39;DDIM&#39;, &#39;CFG scale&#39;: 7, &#39;Seed&#39;: 3827064803, &#39;Size&#39;: (512, 848), &#39;Model hash&#39;: &#39;eb49192009&#39;, &#39;Model&#39;: &#39;AniDosMix&#39;, &#39;Clip skip&#39;: 2})</span>
+<span class="sd">        &gt;&gt;&gt; type(sd1)</span>
+<span class="sd">        &lt;class &#39;imgutils.sd.metadata.SDMetaData&#39;&gt;</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; sd2 = parse_sdmeta_from_text(\&quot;\&quot;\&quot;</span>
+<span class="sd">        ... 1girl, solo, blue eyes, black footwear, white hair, looking at viewer, shoes, full body, standing, bangs, indoors, wide sleeves, ahoge, dress, closed mouth, blush, long sleeves, potted plant, bag, plant, hair bun, window,&lt;lora:BlueArchive10:1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1&gt;,BlueArchive,</span>
+<span class="sd">        ... Negative prompt: Neg1,Negative,</span>
+<span class="sd">        ... Steps: 20, Sampler: DPM++ 2M SDE Karras, CFG scale: 7, Seed: 2647703743, Size: 768x768, Model hash: 72bd94132e, Model: CuteMix, Denoising strength: 0.7, ControlNet 0: &quot;preprocessor: openpose, model: control_v11p_sd15_openpose [cab727d4], weight: 1, starting/ending: (0, 1), resize mode: Crop and Resize, pixel perfect: False, control mode: Balanced, preprocessor params: (512, 64, 64)&quot;, Hires upscale: 2, Hires upscaler: Latent, TI hashes: &quot;Neg1: 339cc9210f70, Negative: 66a7279a88dd&quot;, Version: v1.5.1</span>
+<span class="sd">        ... \&quot;\&quot;\&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; sd2</span>
+<span class="sd">        SDMetaData(prompt=&#39;1girl, solo, blue eyes, black footwear, white hair, looking at viewer, shoes, full body, standing, bangs, indoors, wide sleeves, ahoge, dress, closed mouth, blush, long sleeves, potted plant, bag, plant, hair bun, window,&lt;lora:BlueArchive10:1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1&gt;,BlueArchive,&#39;, neg_prompt=&#39;Neg1,Negative,&#39;, parameters={&#39;Steps&#39;: 20, &#39;Sampler&#39;: &#39;DPM++ 2M SDE Karras&#39;, &#39;CFG scale&#39;: 7, &#39;Seed&#39;: 2647703743, &#39;Size&#39;: (768, 768), &#39;Model hash&#39;: &#39;72bd94132e&#39;, &#39;Model&#39;: &#39;CuteMix&#39;, &#39;Denoising strength&#39;: 0.7, &#39;ControlNet 0&#39;: &#39;preprocessor: openpose, model: control_v11p_sd15_openpose [cab727d4], weight: 1, starting/ending: (0, 1), resize mode: Crop and Resize, pixel perfect: False, control mode: Balanced, preprocessor params: (512, 64, 64)&#39;, &#39;Hires upscale&#39;: 2, &#39;Hires upscaler&#39;: &#39;Latent&#39;, &#39;TI hashes&#39;: &#39;Neg1: 339cc9210f70, Negative: 66a7279a88dd&#39;, &#39;Version&#39;: &#39;v1.5.1&#39;})</span>
+<span class="sd">        &gt;&gt;&gt; type(sd2)</span>
+<span class="sd">        &lt;class &#39;imgutils.sd.metadata.SDMetaData&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">all_lines</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="n">keepends</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_lines</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">prompt_lines</span> <span class="o">=</span> <span class="n">all_lines</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">argument_line</span> <span class="o">=</span> <span class="n">all_lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">prompt_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">argument_line</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_PARAM_PATTERN</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">argument_line</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">prompt_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">argument_line</span><span class="p">)</span>
+        <span class="n">argument_line</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="c1"># 0x1 means prompt, 0x2 means neg prompt</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="mh">0x1</span>
+    <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span> <span class="k">as</span> <span class="n">i_prompt</span><span class="p">,</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span> <span class="k">as</span> <span class="n">i_neg_prompt</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">prompt_lines</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">neg_matching</span> <span class="o">=</span> <span class="n">_NEG_LINE_PATTERN</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">neg_matching</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">neg_matching</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="mh">0x2</span>
+
+            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mh">0x1</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">i_prompt</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="mh">0x2</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">i_neg_prompt</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># if this line is triggered, this state machine must be buggy</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown parsing status - </span><span class="si">{</span><span class="n">status</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+        <span class="n">prompt</span> <span class="o">=</span> <span class="n">i_prompt</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">neg_prompt</span> <span class="o">=</span> <span class="n">i_neg_prompt</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="n">_parse_parameters</span><span class="p">(</span><span class="n">argument_line</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">SDMetaData</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">neg_prompt</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_InvalidSDMetaError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom exception raised when SD metadata is invalid or not found.</span>
+
+<span class="sd">    This exception is used internally to signal that the metadata</span>
+<span class="sd">    validation or extraction process has failed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_sdtext_validate</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Validate the given text as SD metadata.</span>
+
+<span class="sd">    This function attempts to validate the input text as SD metadata. It first tries</span>
+<span class="sd">    to validate it as NAI (Novel AI) metadata, and if that fails, it checks if the</span>
+<span class="sd">    text is non-empty. If both checks fail, it raises an _InvalidSDMetaError.</span>
+
+<span class="sd">    :param text: The text to validate as SD metadata.</span>
+<span class="sd">    :type text: str</span>
+
+<span class="sd">    :return: The validated text if it passes the checks.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    :raises _InvalidSDMetaError: If the text is invalid or empty.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.nai</span><span class="w"> </span><span class="kn">import</span> <span class="n">_naimeta_text_validate</span><span class="p">,</span> <span class="n">_InvalidNAIMetaError</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_naimeta_text_validate</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">_InvalidNAIMetaError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">_InvalidSDMetaError</span>
+
+    <span class="k">if</span> <span class="n">text</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">text</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">_InvalidSDMetaError</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_raw_sdtext</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract raw SD metadata text from the given image.</span>
+
+<span class="sd">    This function attempts to read SD metadata from various sources within the image,</span>
+<span class="sd">    including PNG info, EXIF data, and GIF metadata. It tries each method in turn</span>
+<span class="sd">    and returns the first valid SD metadata text found.</span>
+
+<span class="sd">    :param image: The input image to extract metadata from.</span>
+<span class="sd">    :type image: ImageTyping</span>
+
+<span class="sd">    :return: The raw SD metadata text if found, otherwise None.</span>
+<span class="sd">    :rtype: Optional[str]</span>
+
+<span class="sd">    :raises _InvalidSDMetaError: If no valid SD metadata is found in the image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_sdtext_validate</span><span class="p">(</span><span class="n">read_geninfo_parameters</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">_InvalidSDMetaError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_sdtext_validate</span><span class="p">(</span><span class="n">read_geninfo_exif</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">_InvalidSDMetaError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_sdtext_validate</span><span class="p">(</span><span class="n">read_geninfo_gif</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">_InvalidSDMetaError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">_InvalidSDMetaError</span>
+
+
+<div class="viewcode-block" id="get_sdmeta_from_image"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.get_sdmeta_from_image">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_sdmeta_from_image</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SDMetaData</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract and parse Stable Diffusion metadata from an image.</span>
+
+<span class="sd">    This function attempts to read SD metadata from various sources within the image,</span>
+<span class="sd">    including PNG info, EXIF data, and GIF metadata. If found, it parses the metadata</span>
+<span class="sd">    into an SDMetaData object.</span>
+
+<span class="sd">    :param image: The input image, which can be a file path, URL, or PIL Image object.</span>
+<span class="sd">    :type image: ImageTyping</span>
+
+<span class="sd">    :return: An SDMetaData object containing the parsed metadata if available, else None.</span>
+<span class="sd">    :rtype: Optional[SDMetaData]</span>
+
+<span class="sd">    :raises: Various exceptions may be raised by the underlying image loading and</span>
+<span class="sd">             metadata reading functions.</span>
+
+<span class="sd">    Example usage:</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.sd import get_sdmeta_from_image</span>
+<span class="sd">        &gt;&gt;&gt; sd_meta = get_sdmeta_from_image(&#39;path/to/image.png&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; if sd_meta:</span>
+<span class="sd">        ...     print(f&quot;Prompt: {sd_meta.prompt}&quot;)</span>
+<span class="sd">        ...     print(f&quot;Negative prompt: {sd_meta.neg_prompt}&quot;)</span>
+<span class="sd">        ...     print(f&quot;Parameters: {sd_meta.parameters}&quot;)</span>
+<span class="sd">        ... else:</span>
+<span class="sd">        ...     print(&quot;No SD metadata found in the image.&quot;)</span>
+
+<span class="sd">    Note: This function depends on the load_image and parse_sdmeta_from_text functions.</span>
+<span class="sd">    Ensure these are properly imported or defined in the current scope.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pnginfo_text</span> <span class="o">=</span> <span class="n">_get_raw_sdtext</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">_InvalidSDMetaError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">parse_sdmeta_from_text</span><span class="p">(</span><span class="n">pnginfo_text</span><span class="p">)</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_png_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Internal function to save a PNG image with SD metadata.</span>
+
+<span class="sd">    :param image: The PIL Image object to save.</span>
+<span class="sd">    :param dst_file: The destination file path.</span>
+<span class="sd">    :param metadata: The SDMetaData object containing the metadata to save.</span>
+<span class="sd">    :param kwargs: Additional keyword arguments to pass to the PIL save function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">dst_file</span><span class="p">,</span> <span class="n">pnginfo</span><span class="o">=</span><span class="n">metadata</span><span class="o">.</span><span class="n">pnginfo</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_exif_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Internal function to save an image with SD metadata in EXIF format.</span>
+
+<span class="sd">    :param image: The PIL Image object to save.</span>
+<span class="sd">    :param dst_file: The destination file path.</span>
+<span class="sd">    :param metadata: The SDMetaData object containing the metadata to save.</span>
+<span class="sd">    :param kwargs: Additional keyword arguments to pass to the write_geninfo_exif function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">write_geninfo_exif</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">,</span> <span class="n">metadata</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_save_gif_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Internal function to save a GIF image with SD metadata.</span>
+
+<span class="sd">    :param image: The PIL Image object to save.</span>
+<span class="sd">    :param dst_file: The destination file path.</span>
+<span class="sd">    :param metadata: The SDMetaData object containing the metadata to save.</span>
+<span class="sd">    :param kwargs: Additional keyword arguments to pass to the write_geninfo_gif function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">write_geninfo_gif</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">,</span> <span class="n">metadata</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="n">_FN_IMG_SAVE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;image/png&#39;</span><span class="p">:</span> <span class="n">_save_png_with_sdmeta</span><span class="p">,</span>
+    <span class="s1">&#39;image/jpeg&#39;</span><span class="p">:</span> <span class="n">_save_exif_with_sdmeta</span><span class="p">,</span>
+    <span class="s1">&#39;image/webp&#39;</span><span class="p">:</span> <span class="n">_save_exif_with_sdmeta</span><span class="p">,</span>
+    <span class="s1">&#39;image/gif&#39;</span><span class="p">:</span> <span class="n">_save_gif_with_sdmeta</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="save_image_with_sdmeta"><a class="viewcode-back" href="../../../api_doc/sd/metadata.html#imgutils.sd.metadata.save_image_with_sdmeta">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">save_image_with_sdmeta</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">],</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">SDMetaData</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Save an image with Stable Diffusion metadata.</span>
+
+<span class="sd">    This function saves the given image to the specified destination file, including</span>
+<span class="sd">    the provided SD metadata. The metadata is saved in a format appropriate for the</span>
+<span class="sd">    output image type (PNG, JPEG, WebP, or GIF).</span>
+
+<span class="sd">    :param image: The input image, which can be a file path, URL, or PIL Image object.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param dst_file: The destination file path where the image will be saved.</span>
+<span class="sd">    :type dst_file: Union[str, os.PathLike]</span>
+<span class="sd">    :param metadata: The SD metadata to include with the image.</span>
+<span class="sd">    :type metadata: SDMetaData</span>
+<span class="sd">    :param kwargs: Additional keyword arguments to pass to the underlying save function.</span>
+
+<span class="sd">    :raises SystemError: If the output file type is not supported for saving with metadata.</span>
+<span class="sd">    :raises: Various exceptions may be raised by the underlying image loading and</span>
+<span class="sd">             saving functions.</span>
+
+<span class="sd">    Example usage:</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.sd import get_sdmeta_from_image, save_image_with_sdmeta</span>
+<span class="sd">        &gt;&gt;&gt; input_image = &#39;path/to/input.png&#39;</span>
+<span class="sd">        &gt;&gt;&gt; output_image = &#39;path/to/output.png&#39;</span>
+<span class="sd">        &gt;&gt;&gt; sd_meta = get_sdmeta_from_image(input_image)</span>
+<span class="sd">        &gt;&gt;&gt; if sd_meta:</span>
+<span class="sd">        ...     save_image_with_sdmeta(input_image, output_image, sd_meta)</span>
+<span class="sd">        ...     print(f&quot;Image saved with SD metadata to {output_image}&quot;)</span>
+<span class="sd">        ... else:</span>
+<span class="sd">        ...     print(&quot;No SD metadata found in the input image.&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mimetype</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dst_file</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">mimetype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_FN_IMG_SAVE</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Not supported to save as a </span><span class="si">{</span><span class="n">mimetype</span><span class="si">!r}</span><span class="s1"> type, &#39;</span>
+                          <span class="sa">f</span><span class="s1">&#39;supported mimetypes are </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_FN_IMG_SAVE</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">_FN_IMG_SAVE</span><span class="p">[</span><span class="n">mimetype</span><span class="p">](</span><span class="n">image</span><span class="p">,</span> <span class="n">dst_file</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/adversarial
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.10.0/index.html">v0.10.0</a></dd>
+                        <dd><a href="../../../../../v0.11.0/index.html">v0.11.0</a></dd>
+                        <dd><a href="../../../../../v0.11.1/index.html">v0.11.1</a></dd>
+                        <dd><a href="../../../../../v0.8.0/index.html">v0.8.0</a></dd>
+                        <dd><a href="../../../../../v0.9.0/index.html">v0.9.0</a></dd>
+                        <dd><a href="../../../../../v0.9.1/index.html">v0.9.1</a></dd>
+                        <dd><a href="../../../../../v0.9.2/index.html">v0.9.2</a></dd>
+                        <dd><a href="../../../../../v0.9.3/index.html">v0.9.3</a></dd>
+                        <dd><a href="../../../../../v0.9.4/index.html">v0.9.4</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="metadata.html">dev/adversarial</a></dd>
+                        <dd><a href="../../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../denormalize/index.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

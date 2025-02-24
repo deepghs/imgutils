@@ -1,0 +1,1139 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.preprocess.pillow &mdash; imgutils 0.11.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=2fee5877"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.preprocess.pillow</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.preprocess.pillow</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides utilities for image processing using the PIL library, allowing for transformations such as resizing,</span>
+<span class="sd">cropping, converting to tensor, normalization, and more. It supports both basic and composite transformations, which can</span>
+<span class="sd">be registered and parsed dynamically. The module also offers functionality to convert images to tensors and normalize them,</span>
+<span class="sd">making it suitable for preprocessing tasks in machine learning applications.</span>
+
+<span class="sd">Transforms can be applied individually or composed into sequences using the PillowCompose class, which applies a list of</span>
+<span class="sd">transforms sequentially to an image. Each transformation can be registered with decorators to facilitate dynamic creation</span>
+<span class="sd">and parsing based on configuration dictionaries or lists, supporting flexible and configurable preprocessing pipelines.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">textwrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">indent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotParseTarget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_image</span>
+
+<span class="c1"># noinspection PyUnresolvedReferences</span>
+<span class="n">_INT_TO_PILLOW</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">NEAREST</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">BOX</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">HAMMING</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">LANCZOS</span>
+<span class="p">}</span>
+
+<span class="c1"># noinspection PyUnresolvedReferences</span>
+<span class="n">_STR_TO_PILLOW</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;nearest&#39;</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">NEAREST</span><span class="p">,</span>
+    <span class="s1">&#39;bilinear&#39;</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">,</span>
+    <span class="s1">&#39;bicubic&#39;</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">,</span>
+    <span class="s1">&#39;box&#39;</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">BOX</span><span class="p">,</span>
+    <span class="s1">&#39;hamming&#39;</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">HAMMING</span><span class="p">,</span>
+    <span class="s1">&#39;lanczos&#39;</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">LANCZOS</span>
+<span class="p">}</span>
+<span class="n">_PILLOW_TO_STR</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">key</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">_STR_TO_PILLOW</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_pillow_resample</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a resampling filter name or code to a Pillow resampling filter.</span>
+
+<span class="sd">    :param value: The resampling filter name (str) or code (int).</span>
+<span class="sd">    :type value: Union[int, str]</span>
+<span class="sd">    :return: The corresponding Pillow resampling filter.</span>
+<span class="sd">    :rtype: int</span>
+<span class="sd">    :raises ValueError: If the provided value is not a recognized resampling filter.</span>
+<span class="sd">    :raises TypeError: If the type of `value` is neither int nor str.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_INT_TO_PILLOW</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid interpolation value - </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_INT_TO_PILLOW</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_STR_TO_PILLOW</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid interpolation value - </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_STR_TO_PILLOW</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input type must be int or str, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="n">_PTRANS_CREATORS</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="register_pillow_transform"><a class="viewcode-back" href="../../../api_doc/preprocess/pillow.html#imgutils.preprocess.pillow.register_pillow_transform">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">register_pillow_transform</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator to register a function as a creator for a specific type of Pillow transform.</span>
+
+<span class="sd">    :param name: The name of the transform.</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fn</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">_PTRANS_CREATORS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="k">return</span> <span class="n">func</span>
+
+    <span class="k">return</span> <span class="n">_fn</span></div>
+
+
+<span class="n">_PTRANS_PARSERS</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="register_pillow_parse"><a class="viewcode-back" href="../../../api_doc/preprocess/pillow.html#imgutils.preprocess.pillow.register_pillow_parse">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">register_pillow_parse</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator to register a function as a parser for a specific type of Pillow transform.</span>
+
+<span class="sd">    :param name: The name of the transform.</span>
+<span class="sd">    :type name: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fn</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_new_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="p">}</span>
+
+        <span class="n">_PTRANS_PARSERS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_new_func</span>
+        <span class="k">return</span> <span class="n">_new_func</span>
+
+    <span class="k">return</span> <span class="n">_fn</span></div>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PillowResize</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to resize an image to a specified size using Pillow.</span>
+
+<span class="sd">    :param size: Target size. If an int, the smallest side is matched to this number maintaining aspect ratio.</span>
+<span class="sd">                 If a tuple or list of two ints, size is matched to these dimensions (width, height).</span>
+<span class="sd">    :type size: Union[int, List[int], Tuple[int, ...]]</span>
+<span class="sd">    :param interpolation: Resampling filter for resizing.</span>
+<span class="sd">    :type interpolation: int</span>
+<span class="sd">    :param max_size: If provided, resizes the image such that the maximum size does not exceed this value.</span>
+<span class="sd">    :type max_size: Optional[int]</span>
+<span class="sd">    :param antialias: Whether to apply an anti-aliasing filter.</span>
+<span class="sd">    :type antialias: bool</span>
+<span class="sd">    :raises TypeError: If `size` is not int, list, or tuple.</span>
+<span class="sd">    :raises ValueError: If `size` is a list or tuple but does not contain 1 or 2 elements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># noinspection PyUnresolvedReferences</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+            <span class="n">interpolation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">,</span>
+            <span class="n">max_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">antialias</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Size should be int or sequence. Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">size</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If size is a sequence, it should have 1 or 2 values&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;max_size is only supported for single int size or sequence of length 1&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="n">interpolation</span>
+        <span class="c1"># noinspection PyTypeChecker</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="n">max_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">antialias</span> <span class="o">=</span> <span class="n">antialias</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_resize_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the target resize dimensions for the image.</span>
+
+<span class="sd">        :param img: The image to resize.</span>
+<span class="sd">        :type img: Image.Image</span>
+<span class="sd">        :return: The calculated dimensions to resize to.</span>
+<span class="sd">        :rtype: Tuple[int, int]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="n">h</span><span class="p">:</span>
+                <span class="n">ow</span> <span class="o">=</span> <span class="n">size</span>
+                <span class="n">oh</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">h</span> <span class="o">/</span> <span class="n">w</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">oh</span> <span class="o">=</span> <span class="n">size</span>
+                <span class="n">ow</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">w</span> <span class="o">/</span> <span class="n">h</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">max_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_size</span>
+                <span class="c1"># noinspection PyTypeChecker</span>
+                <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">oh</span><span class="p">,</span> <span class="n">ow</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_size</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">oh</span> <span class="o">&gt;</span> <span class="n">ow</span><span class="p">:</span>
+                        <span class="c1"># noinspection PyTypeChecker</span>
+                        <span class="n">ow</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_size</span> <span class="o">*</span> <span class="n">ow</span> <span class="o">/</span> <span class="n">oh</span><span class="p">)</span>
+                        <span class="n">oh</span> <span class="o">=</span> <span class="n">max_size</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># noinspection PyTypeChecker</span>
+                        <span class="n">oh</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_size</span> <span class="o">*</span> <span class="n">oh</span> <span class="o">/</span> <span class="n">ow</span><span class="p">)</span>
+                        <span class="n">ow</span> <span class="o">=</span> <span class="n">max_size</span>
+
+            <span class="k">return</span> <span class="n">ow</span><span class="p">,</span> <span class="n">oh</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># noinspection PyUnresolvedReferences</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resize the image according to the specified parameters.</span>
+
+<span class="sd">        :param img: The image to resize.</span>
+<span class="sd">        :type img: Image.Image</span>
+<span class="sd">        :return: The resized image.</span>
+<span class="sd">        :rtype: Image.Image</span>
+<span class="sd">        :raises TypeError: If the input is not an image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Input must be a PIL Image&#39;</span><span class="p">)</span>
+
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_resize_size</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="k">if</span> <span class="n">width</span> <span class="o">!=</span> <span class="n">img</span><span class="o">.</span><span class="n">width</span> <span class="ow">or</span> <span class="n">height</span> <span class="o">!=</span> <span class="n">img</span><span class="o">.</span><span class="n">height</span><span class="p">:</span>
+            <span class="c1"># noinspection PyUnresolvedReferences</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span> <span class="ow">in</span> <span class="p">{</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">}:</span>
+                <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">,</span> <span class="n">reducing_gap</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">antialias</span> <span class="k">else</span> <span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">img</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Represent the PillowResize instance as a string.</span>
+
+<span class="sd">        :return: String representation of the instance.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">interpolate_str</span> <span class="o">=</span> <span class="n">_PILLOW_TO_STR</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">]</span>
+        <span class="n">detail</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(size=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">, interpolation=</span><span class="si">{</span><span class="n">interpolate_str</span><span class="si">}</span><span class="s2">, max_size=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_size</span><span class="si">}</span><span class="s2">, antialias=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">antialias</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">detail</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="nd">@register_pillow_transform</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">max_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">antialias</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a PillowResize transformation.</span>
+
+<span class="sd">    :param size: Target size for resizing, either an int or a tuple/list of two ints.</span>
+<span class="sd">    :type size: Union[int, Tuple[int, int], List[int]]</span>
+<span class="sd">    :param interpolation: The interpolation method to use.</span>
+<span class="sd">    :type interpolation: str</span>
+<span class="sd">    :param max_size: Optional maximum size to ensure the image does not exceed.</span>
+<span class="sd">    :type max_size: Optional[int]</span>
+<span class="sd">    :param antialias: Whether to apply anti-aliasing.</span>
+<span class="sd">    :type antialias: bool</span>
+<span class="sd">    :return: An instance of PillowResize.</span>
+<span class="sd">    :rtype: PillowResize</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># noinspection PyTypeChecker</span>
+    <span class="k">return</span> <span class="n">PillowResize</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+        <span class="n">interpolation</span><span class="o">=</span><span class="n">_get_pillow_resample</span><span class="p">(</span><span class="n">interpolation</span><span class="p">),</span>
+        <span class="n">max_size</span><span class="o">=</span><span class="n">max_size</span><span class="p">,</span>
+        <span class="n">antialias</span><span class="o">=</span><span class="n">antialias</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="nd">@register_pillow_parse</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_resize</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">PillowResize</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a PillowResize object to a dictionary representing its configuration.</span>
+
+<span class="sd">    :param obj: The PillowResize object to parse.</span>
+<span class="sd">    :type obj: PillowResize</span>
+<span class="sd">    :return: A dictionary containing the configuration of the PillowResize object.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If the object is not an instance of PillowResize.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PillowResize</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NotParseTarget</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+        <span class="s1">&#39;interpolation&#39;</span><span class="p">:</span> <span class="n">_PILLOW_TO_STR</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">interpolation</span><span class="p">],</span>
+        <span class="s1">&#39;max_size&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">max_size</span><span class="p">,</span>
+        <span class="s1">&#39;antialias&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">antialias</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PillowCenterCrop</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for center cropping an image using Pillow.</span>
+
+<span class="sd">    :param size: Desired output size of the crop. If an int is provided, the crop will be a square of that size.</span>
+<span class="sd">                 If a tuple or list of two ints is provided, it specifies the size as (height, width).</span>
+<span class="sd">    :type size: Union[int, Tuple[int, int], List[int]]</span>
+<span class="sd">    :raises ValueError: If `size` is neither an int nor a tuple/list of two ints.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the PillowCenterCrop instance.</span>
+
+<span class="sd">        :param size: The target size for cropping.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="c1"># noinspection PyTypeChecker</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># noinspection PyTypeChecker</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># noinspection PyTypeChecker</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please provide only two dimensions (h, w) for size.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply a center crop to the image.</span>
+
+<span class="sd">        :param img: The image to crop.</span>
+<span class="sd">        :type img: Image.Image</span>
+<span class="sd">        :return: The cropped image.</span>
+<span class="sd">        :rtype: Image.Image</span>
+<span class="sd">        :raises TypeError: If the input is not an image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;img should be PIL Image&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_center_crop</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_center_crop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform the actual center cropping operation on the image.</span>
+
+<span class="sd">        :param img: The image to crop.</span>
+<span class="sd">        :type img: Image.Image</span>
+<span class="sd">        :return: The cropped image.</span>
+<span class="sd">        :rtype: Image.Image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">crop_height</span><span class="p">,</span> <span class="n">crop_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+
+        <span class="k">if</span> <span class="n">width</span> <span class="o">&lt;</span> <span class="n">crop_width</span> <span class="ow">or</span> <span class="n">height</span> <span class="o">&lt;</span> <span class="n">crop_height</span><span class="p">:</span>
+            <span class="n">pad_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">crop_width</span> <span class="o">-</span> <span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">pad_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">crop_height</span> <span class="o">-</span> <span class="n">height</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">left</span> <span class="o">=</span> <span class="n">pad_width</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">top</span> <span class="o">=</span> <span class="n">pad_height</span> <span class="o">//</span> <span class="mi">2</span>
+
+            <span class="n">new_width</span> <span class="o">=</span> <span class="n">width</span> <span class="o">+</span> <span class="n">pad_width</span>
+            <span class="n">new_height</span> <span class="o">=</span> <span class="n">height</span> <span class="o">+</span> <span class="n">pad_height</span>
+            <span class="n">new_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="p">(</span><span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">new_img</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">))</span>
+
+            <span class="n">img</span> <span class="o">=</span> <span class="n">new_img</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span>
+
+        <span class="n">left</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">crop_width</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="n">crop_height</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="n">crop_width</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">top</span> <span class="o">+</span> <span class="n">crop_height</span>
+
+        <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Represent the PillowCenterCrop instance as a string.</span>
+
+<span class="sd">        :return: String representation of the instance.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(size=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="nd">@register_pillow_transform</span><span class="p">(</span><span class="s1">&#39;center_crop&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_center_crop</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a PillowCenterCrop transformation.</span>
+
+<span class="sd">    :param size: Target size for cropping, either an int or a tuple/list of two ints.</span>
+<span class="sd">    :type size: Union[int, Tuple[int, int], List[int]]</span>
+<span class="sd">    :return: An instance of PillowCenterCrop.</span>
+<span class="sd">    :rtype: PillowCenterCrop</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">PillowCenterCrop</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">size</span>
+    <span class="p">)</span>
+
+
+<span class="nd">@register_pillow_parse</span><span class="p">(</span><span class="s1">&#39;center_crop&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_center_crop</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">PillowCenterCrop</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a PillowCenterCrop object to a dictionary representing its configuration.</span>
+
+<span class="sd">    :param obj: The PillowCenterCrop object to parse.</span>
+<span class="sd">    :type obj: PillowCenterCrop</span>
+<span class="sd">    :return: A dictionary containing the configuration of the PillowCenterCrop object.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If the object is not an instance of PillowCenterCrop.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PillowCenterCrop</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NotParseTarget</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">size</span><span class="p">),</span>
+    <span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PillowToTensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to convert a PIL Image to a tensor, handling different image modes appropriately.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a PIL Image to a tensor.</span>
+
+<span class="sd">        :param pic: The picture to convert.</span>
+<span class="sd">        :type pic: Image.Image</span>
+<span class="sd">        :return: The picture as a numpy array with dimensions depending on the image mode.</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        :raises TypeError: If the input is not a PIL Image.</span>
+<span class="sd">        :raises ValueError: If the image mode is not supported.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;pic should be PIL Image. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">pic</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span>
+            <span class="c1"># 32-bit signed integer pixels</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;I;16&#39;</span><span class="p">:</span>
+            <span class="c1"># 16-bit signed integer pixels</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span>
+            <span class="c1"># 32-bit floating point pixels</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+        <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,)</span> <span class="o">+</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+        <span class="k">elif</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;LA&#39;</span><span class="p">:</span>
+            <span class="n">img_l</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,)</span> <span class="o">+</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">img_a</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,)</span> <span class="o">+</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">img_l</span><span class="p">,</span> <span class="n">img_a</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+        <span class="k">elif</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+        <span class="k">elif</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="s1">&#39;YCbCr&#39;</span><span class="p">):</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+        <span class="k">elif</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;RGBA&#39;</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+        <span class="k">elif</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;CMYK&#39;</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported PIL image mode: </span><span class="si">{</span><span class="n">pic</span><span class="o">.</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Represent the PillowToTensor instance as a string.</span>
+
+<span class="sd">        :return: String representation of the instance.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">()&quot;</span>
+
+
+<span class="nd">@register_pillow_transform</span><span class="p">(</span><span class="s1">&#39;to_tensor&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_to_tensor</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a PillowToTensor transformation.</span>
+
+<span class="sd">    :return: An instance of PillowToTensor.</span>
+<span class="sd">    :rtype: PillowToTensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">PillowToTensor</span><span class="p">()</span>
+
+
+<span class="nd">@register_pillow_parse</span><span class="p">(</span><span class="s1">&#39;to_tensor&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_to_tensor</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">PillowToTensor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a PillowToTensor object to a dictionary representing its configuration.</span>
+
+<span class="sd">    :param obj: The PillowToTensor object to parse.</span>
+<span class="sd">    :type obj: PillowToTensor</span>
+<span class="sd">    :return: A dictionary representing the configuration of the PillowToTensor object.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If the object is not an instance of PillowToTensor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PillowToTensor</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NotParseTarget</span>
+
+    <span class="k">return</span> <span class="p">{}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PillowMaybeToTensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to conditionally convert an image or numpy array to a tensor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert an image to a tensor if it is not already a numpy array.</span>
+
+<span class="sd">        :param image: The image to potentially convert.</span>
+<span class="sd">        :type image: Union[Image.Image, np.ndarray]</span>
+<span class="sd">        :return: The image as a numpy array.</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">image</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">PillowToTensor</span><span class="p">()(</span><span class="n">image</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Represent the PillowMaybeToTensor instance as a string.</span>
+
+<span class="sd">        :return: String representation of the instance.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">()&#39;</span>
+
+
+<span class="nd">@register_pillow_transform</span><span class="p">(</span><span class="s1">&#39;maybe_to_tensor&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_maybe_to_tensor</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a PillowMaybeToTensor transformation.</span>
+
+<span class="sd">    :return: An instance of PillowMaybeToTensor.</span>
+<span class="sd">    :rtype: PillowMaybeToTensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">PillowMaybeToTensor</span><span class="p">()</span>
+
+
+<span class="nd">@register_pillow_parse</span><span class="p">(</span><span class="s1">&#39;maybe_to_tensor&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_maybe_to_tensor</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">PillowMaybeToTensor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a PillowMaybeToTensor object to a dictionary representing its configuration.</span>
+
+<span class="sd">    :param obj: The PillowMaybeToTensor object to parse.</span>
+<span class="sd">    :type obj: PillowMaybeToTensor</span>
+<span class="sd">    :return: A dictionary representing the configuration of the PillowMaybeToTensor object.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If the object is not an instance of PillowMaybeToTensor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PillowMaybeToTensor</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NotParseTarget</span>
+
+    <span class="k">return</span> <span class="p">{}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PillowNormalize</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Normalizes an image by subtracting the mean and dividing by the standard deviation.</span>
+
+<span class="sd">    :param mean: The mean value(s) for normalization.</span>
+<span class="sd">    :param std: The standard deviation value(s) for normalization.</span>
+<span class="sd">    :param inplace: If True, perform normalization in-place.</span>
+<span class="sd">    :type inplace: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">mean</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">std</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inplace</span> <span class="o">=</span> <span class="n">inplace</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply normalization to the input array.</span>
+
+<span class="sd">        :param array: The input image array.</span>
+<span class="sd">        :type array: np.ndarray</span>
+<span class="sd">        :return: The normalized image array.</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        :raises TypeError: If the input is not a numpy.ndarray or is not a float array.</span>
+<span class="sd">        :raises ValueError: If the input array does not have the expected dimensions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Input should be a numpy.ndarray&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Input tensor should ba a float array, but </span><span class="si">{</span><span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="si">!r}</span><span class="s1"> given.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Expected array to be an array image of size (..., C, H, W). &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;Got array.shape == </span><span class="si">{</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inplace</span><span class="p">:</span>
+                <span class="n">array</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalize_multi</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_normalize_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper function to normalize each channel of the image.</span>
+
+<span class="sd">        :param array: The input image array.</span>
+<span class="sd">        :type array: np.ndarray</span>
+<span class="sd">        :return: The normalized image array.</span>
+<span class="sd">        :rtype: np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">array</span> <span class="o">-=</span> <span class="n">mean</span>
+        <span class="n">array</span> <span class="o">/=</span> <span class="n">std</span>
+        <span class="k">return</span> <span class="n">array</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        String representation of the PillowNormalize instance.</span>
+
+<span class="sd">        :return: String representation.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(mean=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="si">}</span><span class="s2">, std=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">std</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="nd">@register_pillow_transform</span><span class="p">(</span><span class="s1">&#39;normalize&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_normalize</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory function to create a PillowNormalize instance.</span>
+
+<span class="sd">    :param mean: Mean value(s) for normalization.</span>
+<span class="sd">    :type mean: np.ndarray</span>
+<span class="sd">    :param std: Standard deviation value(s) for normalization.</span>
+<span class="sd">    :type std: np.ndarray</span>
+<span class="sd">    :param inplace: Perform normalization in-place.</span>
+<span class="sd">    :type inplace: bool</span>
+<span class="sd">    :return: An instance of PillowNormalize.</span>
+<span class="sd">    :rtype: PillowNormalize</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">PillowNormalize</span><span class="p">(</span>
+        <span class="n">mean</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span>
+        <span class="n">std</span><span class="o">=</span><span class="n">std</span><span class="p">,</span>
+        <span class="n">inplace</span><span class="o">=</span><span class="n">inplace</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="nd">@register_pillow_parse</span><span class="p">(</span><span class="s1">&#39;normalize&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_normalize</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">PillowNormalize</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a PillowNormalize instance into a serializable dictionary.</span>
+
+<span class="sd">    :param obj: The PillowNormalize instance to parse.</span>
+<span class="sd">    :type obj: PillowNormalize</span>
+<span class="sd">    :return: A dictionary with mean and std values.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If the object is not a PillowNormalize instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PillowNormalize</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NotParseTarget</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+        <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+    <span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PillowConvertRGB</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for converting images to RGB format.</span>
+
+<span class="sd">    This class provides functionality to convert PIL Images to RGB format,</span>
+<span class="sd">    with an option to specify background color for images with transparency.</span>
+
+<span class="sd">    :param force_background: Background color to use when converting images with alpha channel.</span>
+<span class="sd">                           Default is &#39;white&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_background</span> <span class="o">=</span> <span class="n">force_background</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the input image to RGB format.</span>
+
+<span class="sd">        :param pic: Input image to be converted</span>
+<span class="sd">        :type pic: PIL.Image.Image</span>
+
+<span class="sd">        :return: RGB converted image</span>
+<span class="sd">        :rtype: PIL.Image.Image</span>
+<span class="sd">        :raises TypeError: If input is not a PIL Image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;pic should be PIL Image. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">pic</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">load_image</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">force_background</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return string representation of the class.</span>
+
+<span class="sd">        :return: String representation</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(force_background=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">force_background</span><span class="si">!r}</span><span class="s1">)&#39;</span>
+
+
+<span class="nd">@register_pillow_transform</span><span class="p">(</span><span class="s1">&#39;convert_rgb&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_convert_rgb</span><span class="p">(</span><span class="n">force_background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory function to create PillowConvertRGB instance.</span>
+
+<span class="sd">    :param force_background: Background color for transparency conversion</span>
+<span class="sd">    :type force_background: Optional[str]</span>
+
+<span class="sd">    :return: PillowConvertRGB instance</span>
+<span class="sd">    :rtype: PillowConvertRGB</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">PillowConvertRGB</span><span class="p">(</span><span class="n">force_background</span><span class="o">=</span><span class="n">force_background</span><span class="p">)</span>
+
+
+<span class="nd">@register_pillow_parse</span><span class="p">(</span><span class="s1">&#39;convert_rgb&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_convert_rgb</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse PillowConvertRGB object to dictionary configuration.</span>
+
+<span class="sd">    :param obj: Object to parse</span>
+<span class="sd">    :type obj: Any</span>
+
+<span class="sd">    :return: Configuration dictionary</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If object is not PillowConvertRGB instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PillowConvertRGB</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NotParseTarget</span>
+
+    <span class="n">obj</span><span class="p">:</span> <span class="n">PillowConvertRGB</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;force_background&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">force_background</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PillowRescale</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for rescaling image pixel values.</span>
+
+<span class="sd">    This class provides functionality to rescale numpy array values by a given factor,</span>
+<span class="sd">    commonly used to normalize image pixel values (e.g., from [0-255] to [0-1]).</span>
+
+<span class="sd">    :param rescale_factor: Factor to multiply pixel values by. Default is 1/255.</span>
+<span class="sd">    :type rescale_factor: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rescale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">255</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rescale_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">rescale_factor</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Rescale the input array values.</span>
+
+<span class="sd">        :param array: Input array to be rescaled</span>
+<span class="sd">        :type array: numpy.ndarray</span>
+
+<span class="sd">        :return: Rescaled array</span>
+<span class="sd">        :rtype: numpy.ndarray</span>
+<span class="sd">        :raises TypeError: If input is not a numpy array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Input should be a numpy.ndarray&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">array</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">rescale_factor</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return string representation of the class.</span>
+
+<span class="sd">        :return: String representation</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(rescale_factor=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rescale_factor</span><span class="si">!r}</span><span class="s1">)&#39;</span>
+
+
+<span class="nd">@register_pillow_transform</span><span class="p">(</span><span class="s1">&#39;rescale&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_rescale</span><span class="p">(</span><span class="n">rescale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">255</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory function to create PillowRescale instance.</span>
+
+<span class="sd">    :param rescale_factor: Factor for rescaling pixel values</span>
+<span class="sd">    :type rescale_factor: float</span>
+
+<span class="sd">    :return: PillowRescale instance</span>
+<span class="sd">    :rtype: PillowRescale</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">PillowRescale</span><span class="p">(</span><span class="n">rescale_factor</span><span class="o">=</span><span class="n">rescale_factor</span><span class="p">)</span>
+
+
+<span class="nd">@register_pillow_parse</span><span class="p">(</span><span class="s1">&#39;rescale&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_rescale</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse PillowRescale object to dictionary configuration.</span>
+
+<span class="sd">    :param obj: Object to parse</span>
+<span class="sd">    :type obj: Any</span>
+
+<span class="sd">    :return: Configuration dictionary</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If object is not PillowRescale instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PillowRescale</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NotParseTarget</span>
+
+    <span class="n">obj</span><span class="p">:</span> <span class="n">PillowRescale</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;rescale_factor&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">rescale_factor</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+    <span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PillowCompose</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Composes several transforms together into a single transform.</span>
+
+<span class="sd">    :param transforms: A list of transformations to compose.</span>
+<span class="sd">    :type transforms: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transforms</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span> <span class="o">=</span> <span class="n">transforms</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply the composed transformations to an image.</span>
+
+<span class="sd">        :param image: The input image.</span>
+<span class="sd">        :type image: Any</span>
+<span class="sd">        :return: The transformed image.</span>
+<span class="sd">        :rtype: Any</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">image</span>
+        <span class="k">for</span> <span class="n">trans</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">trans</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        String representation of the PillowCompose instance.</span>
+
+<span class="sd">        :return: String representation.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span> <span class="k">as</span> <span class="n">sf</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sf</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">trans</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">indent</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">trans</span><span class="p">),</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;    &#39;</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sf</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sf</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="create_pillow_transforms"><a class="viewcode-back" href="../../../api_doc/preprocess/pillow.html#imgutils.preprocess.pillow.create_pillow_transforms">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">create_pillow_transforms</span><span class="p">(</span><span class="n">tvalue</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a transformation or a composition of transformations based on the input value.</span>
+
+<span class="sd">    :param tvalue: A list or dictionary describing the transformation(s).</span>
+<span class="sd">    :type tvalue: Union[list, dict]</span>
+<span class="sd">    :return: A transformation or a composition of transformations.</span>
+<span class="sd">    :rtype: Union[PillowCompose, Any]</span>
+<span class="sd">    :raises TypeError: If the input value is not a list or dictionary.</span>
+
+<span class="sd">    :example:</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.preprocess import create_pillow_transforms</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; create_pillow_transforms({</span>
+<span class="sd">        ...     &#39;type&#39;: &#39;resize&#39;,</span>
+<span class="sd">        ...     &#39;size&#39;: 384,</span>
+<span class="sd">        ...     &#39;interpolation&#39;: &#39;bicubic&#39;,</span>
+<span class="sd">        ... })</span>
+<span class="sd">        PillowResize(size=384, interpolation=bicubic, max_size=None, antialias=True)</span>
+<span class="sd">        &gt;&gt;&gt; create_pillow_transforms({</span>
+<span class="sd">        ...     &#39;type&#39;: &#39;resize&#39;,</span>
+<span class="sd">        ...     &#39;size&#39;: (224, 256),</span>
+<span class="sd">        ...     &#39;interpolation&#39;: &#39;bilinear&#39;,</span>
+<span class="sd">        ... })</span>
+<span class="sd">        PillowResize(size=(224, 256), interpolation=bilinear, max_size=None, antialias=True)</span>
+<span class="sd">        &gt;&gt;&gt; create_pillow_transforms({&#39;type&#39;: &#39;center_crop&#39;, &#39;size&#39;: 224})</span>
+<span class="sd">        PillowCenterCrop(size=(224, 224))</span>
+<span class="sd">        &gt;&gt;&gt; create_pillow_transforms({&#39;type&#39;: &#39;to_tensor&#39;})</span>
+<span class="sd">        PillowToTensor()</span>
+<span class="sd">        &gt;&gt;&gt; create_pillow_transforms({&#39;type&#39;: &#39;maybe_to_tensor&#39;})</span>
+<span class="sd">        PillowMaybeToTensor()</span>
+<span class="sd">        &gt;&gt;&gt; create_pillow_transforms({&#39;type&#39;: &#39;normalize&#39;, &#39;mean&#39;: 0.5, &#39;std&#39;: 0.5})</span>
+<span class="sd">        PillowNormalize(mean=[0.5], std=[0.5])</span>
+<span class="sd">        &gt;&gt;&gt; create_pillow_transforms({</span>
+<span class="sd">        ...     &#39;type&#39;: &#39;normalize&#39;,</span>
+<span class="sd">        ...     &#39;mean&#39;: [0.485, 0.456, 0.406],</span>
+<span class="sd">        ...     &#39;std&#39;: [0.229, 0.224, 0.225],</span>
+<span class="sd">        ... })</span>
+<span class="sd">        PillowNormalize(mean=[0.485 0.456 0.406], std=[0.229 0.224 0.225])</span>
+<span class="sd">        &gt;&gt;&gt; create_pillow_transforms([</span>
+<span class="sd">        ...     {&#39;antialias&#39;: True,</span>
+<span class="sd">        ...      &#39;interpolation&#39;: &#39;bicubic&#39;,</span>
+<span class="sd">        ...      &#39;max_size&#39;: None,</span>
+<span class="sd">        ...      &#39;size&#39;: 384,</span>
+<span class="sd">        ...      &#39;type&#39;: &#39;resize&#39;},</span>
+<span class="sd">        ...     {&#39;size&#39;: (224, 224), &#39;type&#39;: &#39;center_crop&#39;},</span>
+<span class="sd">        ...     {&#39;type&#39;: &#39;maybe_to_tensor&#39;},</span>
+<span class="sd">        ...     {&#39;mean&#39;: 0.5, &#39;std&#39;: 0.5, &#39;type&#39;: &#39;normalize&#39;}</span>
+<span class="sd">        ... ])</span>
+<span class="sd">        PillowCompose(</span>
+<span class="sd">            PillowResize(size=384, interpolation=bicubic, max_size=None, antialias=True)</span>
+<span class="sd">            PillowCenterCrop(size=(224, 224))</span>
+<span class="sd">            PillowMaybeToTensor()</span>
+<span class="sd">            PillowNormalize(mean=[0.5], std=[0.5])</span>
+<span class="sd">        )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tvalue</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PillowCompose</span><span class="p">([</span><span class="n">create_pillow_transforms</span><span class="p">(</span><span class="n">titem</span><span class="p">)</span> <span class="k">for</span> <span class="n">titem</span> <span class="ow">in</span> <span class="n">tvalue</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tvalue</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">tvalue</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">tvalue</span><span class="p">)</span>
+        <span class="n">ttype</span> <span class="o">=</span> <span class="n">tvalue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_PTRANS_CREATORS</span><span class="p">[</span><span class="n">ttype</span><span class="p">](</span><span class="o">**</span><span class="n">tvalue</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown type of transforms - </span><span class="si">{</span><span class="n">tvalue</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="parse_pillow_transforms"><a class="viewcode-back" href="../../../api_doc/preprocess/pillow.html#imgutils.preprocess.pillow.parse_pillow_transforms">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">parse_pillow_transforms</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse transformations into a serializable format.</span>
+
+<span class="sd">    :param value: The transformation or composition to parse.</span>
+<span class="sd">    :type value: Any</span>
+<span class="sd">    :return: A serializable representation of the transformation.</span>
+<span class="sd">    :rtype: Union[list, dict]</span>
+<span class="sd">    :raises TypeError: If the transformation cannot be parsed.</span>
+
+<span class="sd">    :example:</span>
+<span class="sd">        &gt;&gt;&gt; from PIL import Image</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.preprocess import parse_pillow_transforms</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.preprocess.pillow import PillowResize, PillowCenterCrop, PillowMaybeToTensor, PillowToTensor, \</span>
+<span class="sd">        ...     PillowNormalize</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; parse_pillow_transforms(PillowResize(</span>
+<span class="sd">        ...     size=384,</span>
+<span class="sd">        ...     interpolation=Image.BICUBIC,</span>
+<span class="sd">        ... ))</span>
+<span class="sd">        {&#39;type&#39;: &#39;resize&#39;, &#39;size&#39;: 384, &#39;interpolation&#39;: &#39;bicubic&#39;, &#39;max_size&#39;: None, &#39;antialias&#39;: True}</span>
+<span class="sd">        &gt;&gt;&gt; parse_pillow_transforms(PillowResize(</span>
+<span class="sd">        ...     size=(224, 256),</span>
+<span class="sd">        ...     interpolation=Image.BILINEAR,</span>
+<span class="sd">        ... ))</span>
+<span class="sd">        {&#39;type&#39;: &#39;resize&#39;, &#39;size&#39;: (224, 256), &#39;interpolation&#39;: &#39;bilinear&#39;, &#39;max_size&#39;: None, &#39;antialias&#39;: True}</span>
+<span class="sd">        &gt;&gt;&gt; parse_pillow_transforms(PillowCenterCrop(size=224))</span>
+<span class="sd">        {&#39;type&#39;: &#39;center_crop&#39;, &#39;size&#39;: [224, 224]}</span>
+<span class="sd">        &gt;&gt;&gt; parse_pillow_transforms(PillowToTensor())</span>
+<span class="sd">        {&#39;type&#39;: &#39;to_tensor&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_pillow_transforms(PillowMaybeToTensor())</span>
+<span class="sd">        {&#39;type&#39;: &#39;maybe_to_tensor&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; parse_pillow_transforms(PillowNormalize(mean=0.5, std=0.5))</span>
+<span class="sd">        {&#39;type&#39;: &#39;normalize&#39;, &#39;mean&#39;: [0.5], &#39;std&#39;: [0.5]}</span>
+<span class="sd">        &gt;&gt;&gt; parse_pillow_transforms(PillowNormalize(</span>
+<span class="sd">        ...     mean=[0.485, 0.456, 0.406],</span>
+<span class="sd">        ...     std=[0.229, 0.224, 0.225],</span>
+<span class="sd">        ... ))</span>
+<span class="sd">        {&#39;type&#39;: &#39;normalize&#39;, &#39;mean&#39;: [0.48500001430511475, 0.4560000002384186, 0.4059999883174896], &#39;std&#39;: [0.2290000021457672, 0.2240000069141388, 0.22499999403953552]}</span>
+<span class="sd">        &gt;&gt;&gt; parse_pillow_transforms(PillowCompose([</span>
+<span class="sd">        ...     PillowResize(</span>
+<span class="sd">        ...         size=384,</span>
+<span class="sd">        ...         interpolation=Image.BICUBIC,</span>
+<span class="sd">        ...     ),</span>
+<span class="sd">        ...     PillowCenterCrop(size=224),</span>
+<span class="sd">        ...     PillowMaybeToTensor(),</span>
+<span class="sd">        ...     PillowNormalize(mean=0.5, std=0.5),</span>
+<span class="sd">        ... ]))</span>
+<span class="sd">        [{&#39;antialias&#39;: True,</span>
+<span class="sd">          &#39;interpolation&#39;: &#39;bicubic&#39;,</span>
+<span class="sd">          &#39;max_size&#39;: None,</span>
+<span class="sd">          &#39;size&#39;: 384,</span>
+<span class="sd">          &#39;type&#39;: &#39;resize&#39;},</span>
+<span class="sd">         {&#39;size&#39;: [224, 224], &#39;type&#39;: &#39;center_crop&#39;},</span>
+<span class="sd">         {&#39;type&#39;: &#39;maybe_to_tensor&#39;},</span>
+<span class="sd">         {&#39;mean&#39;: [0.5], &#39;std&#39;: [0.5], &#39;type&#39;: &#39;normalize&#39;}]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">PillowCompose</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">parse_pillow_transforms</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span> <span class="k">for</span> <span class="n">trans</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">transforms</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">parser</span> <span class="ow">in</span> <span class="n">_PTRANS_PARSERS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">parser</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NotParseTarget</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown parse transform - </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/adversarial
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.10.0/index.html">v0.10.0</a></dd>
+                        <dd><a href="../../../../../v0.11.0/index.html">v0.11.0</a></dd>
+                        <dd><a href="../../../../../v0.11.1/index.html">v0.11.1</a></dd>
+                        <dd><a href="../../../../../v0.8.0/index.html">v0.8.0</a></dd>
+                        <dd><a href="../../../../../v0.9.0/index.html">v0.9.0</a></dd>
+                        <dd><a href="../../../../../v0.9.1/index.html">v0.9.1</a></dd>
+                        <dd><a href="../../../../../v0.9.2/index.html">v0.9.2</a></dd>
+                        <dd><a href="../../../../../v0.9.3/index.html">v0.9.3</a></dd>
+                        <dd><a href="../../../../../v0.9.4/index.html">v0.9.4</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="pillow.html">dev/adversarial</a></dd>
+                        <dd><a href="../../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../denormalize/index.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
