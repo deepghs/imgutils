@@ -166,7 +166,7 @@ def detection_similarity(detect1: List[BBoxWithScoreAndLabel], detect2: List[BBo
     if mode == 'max':
         return float(sims.max())
     elif mode == 'mean':
-        return float(sims.mean())
+        return float(sims.mean()) if sims.shape[0] > 0 else 1.0
     elif mode == 'raw':
         return sims.tolist()
     else:
