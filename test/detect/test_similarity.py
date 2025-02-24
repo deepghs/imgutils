@@ -47,9 +47,14 @@ class TestBBoxFunctions:
         with pytest.raises(ValueError, match="Unknown similarity mode for bboxes - 'invalid'"):
             bboxes_similarity(sample_bboxes, sample_bboxes, mode='invalid')
 
+    def test_bboxes_similarity_empty(self, sample_bboxes):
+        assert bboxes_similarity([], [], mode='raw') == []
+        assert bboxes_similarity([], [], mode='mean') == 1.0
+        assert bboxes_similarity([], sample_bboxes, mode='raw') == pytest.approx([0.0, 0.0, 0.0])
+        assert bboxes_similarity([], sample_bboxes, mode='mean') == pytest.approx(0.0)
+
     def test_bboxes_similarity_unequal_length(self, sample_bboxes):
-        with pytest.raises(ValueError, match="Length of bboxes lists not match"):
-            bboxes_similarity(sample_bboxes, sample_bboxes[:-1])
+        assert bboxes_similarity(sample_bboxes, sample_bboxes[:-1]) == pytest.approx(2 / 3)
 
     @pytest.mark.parametrize("bboxes1, bboxes2, mode, expected", [
         ([(0, 0, 2, 2), (3, 3, 5, 5)], [(1, 1, 3, 3), (4, 4, 6, 6)], 'mean', 0.14285714285714285),
@@ -85,13 +90,18 @@ class TestBBoxFunctions:
         assert isinstance(result, list)
         assert result == pytest.approx([1.0, 1.0, 1.0])
 
+    def test_detection_similarity_empty(self, sample_detections):
+        assert detection_similarity([], [], mode='raw') == []
+        assert detection_similarity([], [], mode='mean') == 1.0
+        assert detection_similarity([], sample_detections, mode='raw') == pytest.approx([0.0, 0.0, 0.0])
+        assert detection_similarity([], sample_detections, mode='mean') == pytest.approx(0.0)
+
     def test_detection_similarity_invalid_mode(self, sample_detections):
         with pytest.raises(ValueError, match="Unknown similarity mode for bboxes - 'invalid'"):
             detection_similarity(sample_detections, sample_detections, mode='invalid')
 
     def test_detection_similarity_unequal_length(self, sample_detections):
-        with pytest.raises(ValueError, match="Length of bboxes not match on label"):
-            detection_similarity(sample_detections, sample_detections[:-1])
+        assert detection_similarity(sample_detections, sample_detections[:-1]) == pytest.approx(2 / 3)
 
     @pytest.mark.parametrize("detect1, detect2, mode, expected", [
         ([((0, 0, 2, 2), 'car', 0.9), ((3, 3, 5, 5), 'person', 0.8)],
