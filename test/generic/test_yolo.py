@@ -14,7 +14,7 @@ def _release_model_after_run():
     try:
         yield
     finally:
-        pass
+        _open_models_for_repo_id.cache_clear()
 
 
 @pytest.fixture(scope='function', autouse=True)

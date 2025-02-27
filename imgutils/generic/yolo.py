@@ -509,7 +509,12 @@ class YOLOModel:
         """
         Get the list of available model names in the repository.
 
-        :return: List of model names.
+        This property performs a glob search in the Hugging Face repository to find all ONNX models.
+        The search is thread-safe and implements caching to avoid repeated filesystem operations.
+        Results are normalized to provide consistent path formats.
+
+        :return: List of available model names in the repository. Returns _OFFLINE list if offline mode is enabled
+                or connection errors occur.
         :rtype: List[str]
         """
         with self._global_lock:
@@ -537,9 +542,14 @@ class YOLOModel:
         """
         Check if the given model name is valid for this repository.
 
-        :param model_name: Name of the model to check.
+        This method validates model names against the available models in the repository.
+        Validation is skipped in offline mode to allow for local operations.
+
+        :param model_name: Name of the model to check against the repository's available models.
         :type model_name: str
-        :raises ValueError: If the model name is not found in the repository.
+        :raises ValueError: If the model name is not found in the repository and not in offline mode.
+                           The error message includes available model names for reference.
+        :note: This method is a helper function primarily used internally for model validation.
         """
         model_list = self.model_names
         if model_list is _OFFLINE:
@@ -660,6 +670,12 @@ class YOLOModel:
         """
         Clear cached model and metadata.
 
+        This method performs a complete cleanup by:
+
+        1. Removing stored model names
+        2. Clearing the model cache
+        3. Clearing model type information
+
         This method removes all cached models and their associated metadata from memory.
         It's useful for freeing up memory or ensuring that the latest versions of models are loaded.
         """
@@ -685,6 +701,7 @@ class YOLOModel:
         :type default_iou_threshold: float
 
         :raises ImportError: If Gradio is not installed in the environment.
+        :raises EnvironmentError: If in OFFLINE mode and no default_model_name is provided.
 
         :Example:
 
@@ -786,7 +803,8 @@ class YOLOModel:
         :type server_port: Optional[int]
         :param kwargs: Additional keyword arguments to pass to gr.Blocks.launch().
 
-        :raises EnvironmentError: If Gradio is not installed in the environment.
+        :raises EnvironmentError: If Gradio is not installed in the environment,
+                                  or if in OFFLINE mode and no default_model_name is provided.
 
         Example:
             >>> model = YOLOModel("username/repo_name")
