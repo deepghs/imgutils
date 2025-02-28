@@ -17,17 +17,15 @@ def _release_model_after_run():
         _open_models_for_repo_id.cache_clear()
 
 
-@pytest.fixture(scope='function', autouse=True)
-def _clean_session():
+@pytest.fixture()
+def clean_session():
     reset_sessions()
     _open_models_for_repo_id.cache_clear()
-    print('clean session')
     try:
         yield
     finally:
         reset_sessions()
         _open_models_for_repo_id.cache_clear()
-        print('clean session')
 
 
 @pytest.mark.unittest
@@ -54,7 +52,7 @@ class TestGenericYOLO:
         ) == []
 
     @patch("huggingface_hub.constants.HF_HUB_OFFLINE", True)
-    def test_detect_faces_with_offline_mode(self):
+    def test_detect_faces_with_offline_mode(self, clean_session):
         configure_http_backend()
         detection = yolo_predict(
             get_testfile('genshin_post.jpg'),
