@@ -17,12 +17,13 @@ from threading import Lock
 from typing import Tuple, Optional, List, Dict, Callable
 
 import numpy as np
+import requests
 from PIL import Image
 from hfutils.operate import get_hf_client
 from hfutils.repository import hf_hub_repo_url
 from hfutils.utils import hf_fs_path, hf_normpath
 from huggingface_hub import hf_hub_download, HfFileSystem
-from huggingface_hub.errors import EntryNotFoundError
+from huggingface_hub.errors import EntryNotFoundError, OfflineModeIsEnabled
 
 from ..data import rgb_encode, ImageTyping, load_image
 from ..preprocess import create_pillow_transforms
@@ -108,6 +109,7 @@ def _labels_scores_to_topk(labels: np.ndarray, scores: np.ndarray, topk: Optiona
 
 
 ImagePreprocessFunc = Callable[[Image.Image], Image.Image]
+_OFFLINE = object()
 
 
 class ClassifyModel:
@@ -181,15 +183,22 @@ class ClassifyModel:
         """
         with self._global_lock:
             if self._model_names is None:
-                hf_fs = HfFileSystem(token=self._get_hf_token())
-                self._model_names = [
-                    hf_normpath(os.path.dirname(os.path.relpath(item, self.repo_id)))
-                    for item in hf_fs.glob(hf_fs_path(
-                        repo_id=self.repo_id,
-                        repo_type='model',
-                        filename='*/model.onnx',
-                    ))
-                ]
+                try:
+                    hf_fs = HfFileSystem(token=self._get_hf_token())
+                    self._model_names = [
+                        hf_normpath(os.path.dirname(os.path.relpath(item, self.repo_id)))
+                        for item in hf_fs.glob(hf_fs_path(
+                            repo_id=self.repo_id,
+                            repo_type='model',
+                            filename='*/model.onnx',
+                        ))
+                    ]
+                except (
+                        requests.exceptions.ConnectionError,
+                        requests.exceptions.Timeout,
+                        OfflineModeIsEnabled,
+                ):
+                    self._model_names = _OFFLINE
 
         return self._model_names
 
@@ -202,7 +211,10 @@ class ClassifyModel:
 
         :raises ValueError: If model name is not found in repository
         """
-        if model_name not in self.model_names:
+        model_list = self.model_names
+        if model_list is _OFFLINE:
+            return  # do not check when in offline mode
+        if model_name not in model_list:
             raise ValueError(f'Unknown model {model_name!r} in model repository {self.repo_id!r}, '
                              f'models {self.model_names!r} are available.')
 
@@ -462,6 +474,10 @@ class ClassifyModel:
         # demo for classifier model
         _check_gradio_env()
         model_list = self.model_names
+        if model_list is _OFFLINE and not default_model_name:
+            raise EnvironmentError('You are in OFFLINE mode, '
+                                   'you must assign a default model name to make this ui usable.')
+
         if not default_model_name:
             hf_client = get_hf_client(hf_token=self._get_hf_token())
             selected_model_name, selected_time = None, None
@@ -481,7 +497,11 @@ class ClassifyModel:
                 with gr.Row():
                     gr_input_image = gr.Image(type='pil', label='Original Image')
                 with gr.Row():
-                    gr_model = gr.Dropdown(model_list, value=default_model_name, label='Model')
+                    if model_list is not _OFFLINE:
+                        gr_model = gr.Dropdown(model_list, value=default_model_name, label='Model')
+                    else:
+                        gr_model = gr.Dropdown([default_model_name], value=default_model_name, label='Model',
+                                               interactive=False)
                     gr_label_group = gr.Dropdown(list(self._open_label(default_model_name).keys()),
                                                  value='default', label='Label Group')
                 with gr.Row():

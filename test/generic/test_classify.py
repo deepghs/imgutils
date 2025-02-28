@@ -1,6 +1,9 @@
+from unittest.mock import patch
+
 import numpy as np
 import pytest
 from PIL import Image
+from huggingface_hub.utils import reset_sessions
 
 from imgutils.generic import classify_predict_score
 from imgutils.generic.classify import _open_models_for_repo_id, classify_predict_fmt
@@ -12,7 +15,18 @@ def _release_model_after_run():
     try:
         yield
     finally:
-        _open_models_for_repo_id('deepghs/timms_mobilenet').clear()
+        _open_models_for_repo_id.cache_clear()
+
+
+@pytest.fixture()
+def clean_session():
+    reset_sessions()
+    _open_models_for_repo_id.cache_clear()
+    try:
+        yield
+    finally:
+        reset_sessions()
+        _open_models_for_repo_id.cache_clear()
 
 
 @pytest.mark.unittest
@@ -216,3 +230,20 @@ class TestGenericClassify:
         emb_sims = (emb_1 * emb_2).sum()
         assert emb_sims >= 0.99, 'Direction not match with expected embedding.'
         assert np.linalg.norm(results['embedding']) == pytest.approx(np.linalg.norm(expected_embedding))
+
+    @patch("huggingface_hub.constants.HF_HUB_OFFLINE", True)
+    def test_classify_predict_score_top5_offline_mode(self, clean_session):
+        image = Image.open(get_testfile('png_640.png'))
+        scores = classify_predict_score(
+            image,
+            repo_id='deepghs/timms_mobilenet',
+            model_name='mobilenetv4_hybrid_medium.ix_e550_r384_in1k',
+            topk=5,
+        )
+        assert scores == pytest.approx({
+            'n02966687': 0.48493319749832153,
+            'n03481172': 0.1228410005569458,
+            'n04482393': 0.07170269638299942,
+            'n04154565': 0.029927952215075493,
+            'n03000684': 0.02070867270231247,
+        }, abs=1e-3)
