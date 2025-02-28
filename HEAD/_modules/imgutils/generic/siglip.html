@@ -124,10 +124,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.operate</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_hf_client</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.operate</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_hf_client</span><span class="p">,</span> <span class="n">get_hf_fs</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_repo_url</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_normpath</span><span class="p">,</span> <span class="n">hf_fs_path</span><span class="p">,</span> <span class="n">parse_hf_fs_path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span><span class="p">,</span> <span class="n">HfFileSystem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">OfflineModeIsEnabled</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tokenizers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tokenizer</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiImagesTyping</span><span class="p">,</span> <span class="n">load_images</span><span class="p">,</span> <span class="n">ImageTyping</span>
@@ -159,6 +161,9 @@
     <span class="k">if</span> <span class="n">gr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gradio required for launching webui-based demo.</span><span class="se">\n</span><span class="s1">&#39;</span>
                                <span class="sa">f</span><span class="s1">&#39;Please install it with `pip install dghs-imgutils[demo]`.&#39;</span><span class="p">)</span>
+
+
+<span class="n">_OFFLINE</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="SigLIPModel"><a class="viewcode-back" href="../../../api_doc/generic/siglip.html#imgutils.generic.siglip.SigLIPModel">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">SigLIPModel</span><span class="p">:</span>
@@ -213,15 +218,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_global_lock</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">HfFileSystem</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">hf_normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parse_hf_fs_path</span><span class="p">(</span><span class="n">fspath</span><span class="p">)</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
-                    <span class="k">for</span> <span class="n">fspath</span> <span class="ow">in</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">hf_fs_path</span><span class="p">(</span>
-                        <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
-                        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
-                        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;**/image_encode.onnx&#39;</span><span class="p">,</span>
-                    <span class="p">))</span>
-                <span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">hf_fs</span> <span class="o">=</span> <span class="n">get_hf_fs</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">hf_normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parse_hf_fs_path</span><span class="p">(</span><span class="n">fspath</span><span class="p">)</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
+                        <span class="k">for</span> <span class="n">fspath</span> <span class="ow">in</span> <span class="n">hf_fs</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">hf_fs_path</span><span class="p">(</span>
+                            <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                            <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                            <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;**/image_encode.onnx&#39;</span><span class="p">,</span>
+                        <span class="p">))</span>
+                    <span class="p">]</span>
+                <span class="k">except</span> <span class="p">(</span>
+                        <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">,</span>
+                        <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">Timeout</span><span class="p">,</span>
+                        <span class="n">OfflineModeIsEnabled</span><span class="p">,</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="n">_OFFLINE</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span>
 
@@ -233,7 +245,10 @@
 <span class="sd">        :type model_name: str</span>
 <span class="sd">        :raises ValueError: If model name is not found in repository</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_names</span><span class="p">:</span>
+        <span class="n">model_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_names</span>
+        <span class="k">if</span> <span class="n">model_list</span> <span class="ow">is</span> <span class="n">_OFFLINE</span><span class="p">:</span>
+            <span class="k">return</span>  <span class="c1"># do not check when in offline mode</span>
+        <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model_list</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown model </span><span class="si">{</span><span class="n">model_name</span><span class="si">!r}</span><span class="s1"> in model repository </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">!r}</span><span class="s1">, &#39;</span>
                              <span class="sa">f</span><span class="s1">&#39;models </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_names</span><span class="si">!r}</span><span class="s1"> are available.&#39;</span><span class="p">)</span>
 
@@ -514,6 +529,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_check_gradio_env</span><span class="p">()</span>
         <span class="n">model_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_names</span>
+        <span class="k">if</span> <span class="n">model_list</span> <span class="ow">is</span> <span class="n">_OFFLINE</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">default_model_name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s1">&#39;You are in OFFLINE mode, &#39;</span>
+                                   <span class="s1">&#39;you must assign a default model name to make this ui usable.&#39;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">default_model_name</span><span class="p">:</span>
             <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
             <span class="n">selected_model_name</span><span class="p">,</span> <span class="n">selected_time</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
@@ -545,7 +564,11 @@
                     <span class="n">gr_raw_text</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">TextArea</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">autoscroll</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Labels&#39;</span><span class="p">,</span>
                                               <span class="n">placeholder</span><span class="o">=</span><span class="s1">&#39;Enter labels, one per line&#39;</span><span class="p">)</span>
                 <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
-                    <span class="n">gr_model</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">model_list</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">model_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_OFFLINE</span><span class="p">:</span>
+                        <span class="n">gr_model</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">model_list</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">gr_model</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">([</span><span class="n">default_model_name</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span>
+                                               <span class="n">interactive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
                 <span class="n">gr_submit</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;Submit&#39;</span><span class="p">,</span> <span class="n">variant</span><span class="o">=</span><span class="s1">&#39;primary&#39;</span><span class="p">)</span>
 
@@ -749,10 +772,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/offline/index.html">dev/offline</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
                         <dd><a href="siglip.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
-                        <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

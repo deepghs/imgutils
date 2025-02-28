@@ -173,6 +173,12 @@ the results. The main components are:</p>
 <dt class="sig sig-object py" id="imgutils.generic.yolo.YOLOModel.clear">
 <span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/yolo.html#YOLOModel.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.yolo.YOLOModel.clear" title="Permalink to this definition"></a></dt>
 <dd><p>Clear cached model and metadata.</p>
+<p>This method performs a complete cleanup by:</p>
+<ol class="arabic simple">
+<li><p>Removing stored model names</p></li>
+<li><p>Clearing the model cache</p></li>
+<li><p>Clearing model type information</p></li>
+</ol>
 <p>This method removes all cached models and their associated metadata from memory.
 It’s useful for freeing up memory or ensuring that the latest versions of models are loaded.</p>
 </dd></dl>
@@ -196,7 +202,8 @@ If None, the most recently updated model is selected.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>EnvironmentError</strong> – If Gradio is not installed in the environment.</p>
+<dd class="field-even"><p><strong>EnvironmentError</strong> – If Gradio is not installed in the environment,
+or if in OFFLINE mode and no default_model_name is provided.</p>
 </dd>
 </dl>
 <dl>
@@ -225,7 +232,10 @@ If None, the most recently updated model is selected.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ImportError</strong> – If Gradio is not installed in the environment.</p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ImportError</strong> – If Gradio is not installed in the environment.</p></li>
+<li><p><strong>EnvironmentError</strong> – If in OFFLINE mode and no default_model_name is provided.</p></li>
+</ul>
 </dd>
 <dt class="field-odd">Example<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p></dd>
@@ -354,10 +364,9 @@ interface for object detection without needing to explicitly manage model instan
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/offline/api_doc/generic/yolo.html">dev/offline</a></dd>
+                        <dd><a href="../../../main/api_doc/generic/yolo.html">main</a></dd>
                         <dd><a href="yolo.html">HEAD</a></dd>
                         <dd><a href="../../../dev/denormalize/api_doc/generic/yolo.html">dev/denormalize</a></dd>
-                        <dd><a href="../../../main/api_doc/generic/yolo.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
