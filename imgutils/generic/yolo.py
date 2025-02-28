@@ -23,10 +23,10 @@ import requests
 from PIL import Image
 from hbutils.color import rnd_colors
 from hbutils.design import SingletonMark
-from hfutils.operate import get_hf_client
+from hfutils.operate import get_hf_client, get_hf_fs
 from hfutils.repository import hf_hub_repo_url
 from hfutils.utils import hf_fs_path, hf_normpath
-from huggingface_hub import HfFileSystem, hf_hub_download
+from huggingface_hub import hf_hub_download
 from huggingface_hub.errors import OfflineModeIsEnabled, EntryNotFoundError
 
 from ..data import load_image, rgb_encode, ImageTyping
@@ -520,7 +520,7 @@ class YOLOModel:
         with self._global_lock:
             if self._model_names is None:
                 try:
-                    hf_fs = HfFileSystem(token=self._get_hf_token())
+                    hf_fs = get_hf_fs(hf_token=self._get_hf_token())
                     self._model_names = [
                         hf_normpath(os.path.dirname(os.path.relpath(item, self.repo_id)))
                         for item in hf_fs.glob(hf_fs_path(
