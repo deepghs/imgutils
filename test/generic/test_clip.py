@@ -1,7 +1,9 @@
 import re
+from unittest.mock import patch
 
 import numpy as np
 import pytest
+from huggingface_hub.utils import reset_sessions
 
 from imgutils.generic.clip import _open_models_for_repo_id, clip_image_encode, clip_text_encode, clip_predict
 from test.testings import get_testfile
@@ -22,7 +24,18 @@ def _release_model_after_run(clip_repo_id):
     try:
         yield
     finally:
-        _open_models_for_repo_id(clip_repo_id).clear()
+        _open_models_for_repo_id.cache_clear()
+
+
+@pytest.fixture()
+def clean_session():
+    reset_sessions()
+    _open_models_for_repo_id.cache_clear()
+    try:
+        yield
+    finally:
+        reset_sessions()
+        _open_models_for_repo_id.cache_clear()
 
 
 @pytest.mark.unittest
@@ -65,6 +78,25 @@ class TestGenericCLIP:
         np.testing.assert_allclose(embedding, expected_embedding, rtol=1e-03, atol=1e-05)
 
     def test_clip_predict(self, clip_repo_id, clip_model_name):
+        result = clip_predict(
+            images=[
+                get_testfile('clip_cats.jpg'),
+                get_testfile('idolsankaku', '3.jpg'),
+            ],
+            texts=[
+                'a photo of a cat',
+                'a photo of a dog',
+                'a photo of a human',
+            ],
+            repo_id=clip_repo_id,
+            model_name=clip_model_name,
+        )
+        expected_result = np.array([[0.9803991317749023, 0.005067288409918547, 0.01453354675322771],
+                                    [0.21404513716697693, 0.049479320645332336, 0.7364755272865295]])
+        np.testing.assert_allclose(result, expected_result, atol=3e-4)
+
+    @patch("huggingface_hub.constants.HF_HUB_OFFLINE", True)
+    def test_clip_predict_with_offline_mode(self, clip_repo_id, clip_model_name, clean_session):
         result = clip_predict(
             images=[
                 get_testfile('clip_cats.jpg'),

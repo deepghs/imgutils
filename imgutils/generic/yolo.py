@@ -19,12 +19,15 @@ from threading import Lock
 from typing import List, Optional, Tuple, Union
 
 import numpy as np
+import requests
 from PIL import Image
 from hbutils.color import rnd_colors
+from hbutils.design import SingletonMark
 from hfutils.operate import get_hf_client, get_hf_fs
 from hfutils.repository import hf_hub_repo_url
 from hfutils.utils import hf_fs_path, hf_normpath
-from huggingface_hub import HfFileSystem, hf_hub_download
+from huggingface_hub import hf_hub_download
+from huggingface_hub.errors import OfflineModeIsEnabled, EntryNotFoundError
 
 from ..data import load_image, rgb_encode, ImageTyping
 from ..utils import open_onnx_model, ts_lru_cache
@@ -454,6 +457,9 @@ def _safe_eval_names_str(names_str):
     return result
 
 
+_OFFLINE = SingletonMark('OFFLINE')
+
+
 class YOLOModel:
     """
     A class to manage YOLO models from a Hugging Face repository.
@@ -503,20 +509,32 @@ class YOLOModel:
         """
         Get the list of available model names in the repository.
 
-        :return: List of model names.
+        This property performs a glob search in the Hugging Face repository to find all ONNX models.
+        The search is thread-safe and implements caching to avoid repeated filesystem operations.
+        Results are normalized to provide consistent path formats.
+
+        :return: List of available model names in the repository. Returns _OFFLINE list if offline mode is enabled
+                or connection errors occur.
         :rtype: List[str]
         """
         with self._global_lock:
             if self._model_names is None:
-                hf_fs = HfFileSystem(token=self._get_hf_token())
-                self._model_names = [
-                    hf_normpath(os.path.dirname(os.path.relpath(item, self.repo_id)))
-                    for item in hf_fs.glob(hf_fs_path(
-                        repo_id=self.repo_id,
-                        repo_type='model',
-                        filename='*/model.onnx',
-                    ))
-                ]
+                try:
+                    hf_fs = get_hf_fs(hf_token=self._get_hf_token())
+                    self._model_names = [
+                        hf_normpath(os.path.dirname(os.path.relpath(item, self.repo_id)))
+                        for item in hf_fs.glob(hf_fs_path(
+                            repo_id=self.repo_id,
+                            repo_type='model',
+                            filename='*/model.onnx',
+                        ))
+                    ]
+                except (
+                        requests.exceptions.ConnectionError,
+                        requests.exceptions.Timeout,
+                        OfflineModeIsEnabled,
+                ):
+                    self._model_names = _OFFLINE
 
         return self._model_names
 
@@ -524,11 +542,19 @@ class YOLOModel:
         """
         Check if the given model name is valid for this repository.
 
-        :param model_name: Name of the model to check.
+        This method validates model names against the available models in the repository.
+        Validation is skipped in offline mode to allow for local operations.
+
+        :param model_name: Name of the model to check against the repository's available models.
         :type model_name: str
-        :raises ValueError: If the model name is not found in the repository.
+        :raises ValueError: If the model name is not found in the repository and not in offline mode.
+                           The error message includes available model names for reference.
+        :note: This method is a helper function primarily used internally for model validation.
         """
-        if model_name not in self.model_names:
+        model_list = self.model_names
+        if model_list is _OFFLINE:
+            return  # do not check when in offline mode
+        if model_name not in model_list:
             raise ValueError(f'Unknown model {model_name!r} in model repository {self.repo_id!r}, '
                              f'models {self.model_names!r} are available.')
 
@@ -545,8 +571,9 @@ class YOLOModel:
             if model_name not in self._models:
                 self._check_model_name(model_name)
                 model = open_onnx_model(hf_hub_download(
-                    self.repo_id,
-                    f'{model_name}/model.onnx',
+                    repo_id=self.repo_id,
+                    repo_type='model',
+                    filename=f'{model_name}/model.onnx',
                     token=self._get_hf_token(),
                 ))
                 model_metadata = model.get_modelmeta()
@@ -564,17 +591,20 @@ class YOLOModel:
     def _get_model_type(self, model_name: str):
         with self._model_lock:
             if model_name not in self._model_types:
-                hf_fs = get_hf_fs(hf_token=self._get_hf_token())
-                fs_path = hf_fs_path(
-                    repo_id=self.repo_id,
-                    repo_type='model',
-                    filename=f'{model_name}/model_type.json',
-                    revision='main',
-                )
-                if hf_fs.exists(fs_path):
-                    model_type = json.loads(hf_fs.read_text(fs_path))['model_type']
-                else:
+                try:
+                    model_type_file = hf_hub_download(
+                        repo_id=self.repo_id,
+                        repo_type='model',
+                        filename=f'{model_name}/model_type.json',
+                        revision='main',
+                        token=self._get_hf_token()
+                    )
+                except (EntryNotFoundError,):
                     model_type = 'yolo'
+                else:
+                    with open(model_type_file, 'r') as f:
+                        model_type = json.load(f)['model_type']
+
                 self._model_types[model_name] = model_type
 
         return self._model_types[model_name]
@@ -640,10 +670,18 @@ class YOLOModel:
         """
         Clear cached model and metadata.
 
+        This method performs a complete cleanup by:
+
+        1. Removing stored model names
+        2. Clearing the model cache
+        3. Clearing model type information
+
         This method removes all cached models and their associated metadata from memory.
         It's useful for freeing up memory or ensuring that the latest versions of models are loaded.
         """
+        self._model_names = None
         self._models.clear()
+        self._model_types.clear()
 
     def make_ui(self, default_model_name: Optional[str] = None,
                 default_conf_threshold: float = 0.25, default_iou_threshold: float = 0.7):
@@ -663,6 +701,7 @@ class YOLOModel:
         :type default_iou_threshold: float
 
         :raises ImportError: If Gradio is not installed in the environment.
+        :raises EnvironmentError: If in OFFLINE mode and no default_model_name is provided.
 
         :Example:
 
@@ -671,6 +710,10 @@ class YOLOModel:
         """
         _check_gradio_env()
         model_list = self.model_names
+        if model_list is _OFFLINE and not default_model_name:
+            raise EnvironmentError('You are in OFFLINE mode, '
+                                   'you must assign a default model name to make this ui usable.')
+
         if not default_model_name:
             hf_client = get_hf_client(hf_token=self._get_hf_token())
             selected_model_name, selected_time = None, None
@@ -711,7 +754,11 @@ class YOLOModel:
             with gr.Column():
                 gr_input_image = gr.Image(type='pil', label='Original Image')
                 with gr.Row():
-                    gr_model = gr.Dropdown(model_list, value=default_model_name, label='Model')
+                    if model_list is not _OFFLINE:
+                        gr_model = gr.Dropdown(model_list, value=default_model_name, label='Model')
+                    else:
+                        gr_model = gr.Dropdown([default_model_name], value=default_model_name, label='Model',
+                                               interactive=False)
                     gr_allow_dynamic = gr.Checkbox(value=False, label='Allow Dynamic Size')
                 with gr.Row():
                     gr_iou_threshold = gr.Slider(0.0, 1.0, default_iou_threshold, label='IOU Threshold')
@@ -756,7 +803,8 @@ class YOLOModel:
         :type server_port: Optional[int]
         :param kwargs: Additional keyword arguments to pass to gr.Blocks.launch().
 
-        :raises EnvironmentError: If Gradio is not installed in the environment.
+        :raises EnvironmentError: If Gradio is not installed in the environment,
+                                  or if in OFFLINE mode and no default_model_name is provided.
 
         Example:
             >>> model = YOLOModel("username/repo_name")
