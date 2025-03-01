@@ -1,0 +1,88 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": false,
+    "pycharm": {
+     "name": "#%% md\n"
+    }
+   },
+   "source": [
+    "# Run Environment Information"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": false,
+    "pycharm": {
+     "name": "#%% md\n"
+    }
+   },
+   "source": [
+    "Here is the information from the running environment."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "pycharm": {
+     "name": "#%%\n"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import os\n",
+    "import platform\n",
+    "import shutil\n",
+    "\n",
+    "import cpuinfo\n",
+    "import psutil\n",
+    "from hbutils.scale import size_to_bytes_str\n",
+    "\n",
+    "print('OS:', platform.platform())\n",
+    "print('Python:', platform.python_implementation(), platform.python_version())\n",
+    "print('CPU Brand:', cpuinfo.get_cpu_info()[\"brand_raw\"])\n",
+    "print('CPU Count:', os.cpu_count())\n",
+    "print('CPU Freq:', psutil.cpu_freq().current, 'MHz')\n",
+    "print('Memory Size:', size_to_bytes_str(psutil.virtual_memory().total, precision=3))\n",
+    "print('Has CUDA:', 'Yes' if shutil.which('nvidia-smi') else 'No')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "collapsed": false,
+    "pycharm": {
+     "name": "#%% md\n"
+    }
+   },
+   "source": [
+    "Please note that, this information in deployed documentation is automatically executed on Github Action. Therefore, some performance data may be different with your local environment"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 2
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython2",
+   "version": "2.7.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 0
+}

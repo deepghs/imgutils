@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.preprocess.transformers.convnext &mdash; imgutils 0.12.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=19e90285"></script>
+      <script src="../../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.preprocess.transformers.convnext</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.preprocess.transformers.convnext</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functionality for creating image transformation pipelines specifically designed for ConvNext models.</span>
+<span class="sd">It includes utilities for resizing, rescaling, normalizing and converting images to tensors, with special handling for</span>
+<span class="sd">ConvNext&#39;s image processing requirements.</span>
+
+<span class="sd">The module integrates with the Hugging Face Transformers library and provides compatibility with ConvNextImageProcessor.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">IMAGENET_STANDARD_MEAN</span><span class="p">,</span> <span class="n">IMAGENET_STANDARD_STD</span><span class="p">,</span> <span class="n">_DEFAULT</span><span class="p">,</span> <span class="n">register_creators_for_transformers</span><span class="p">,</span> \
+    <span class="n">_check_transformers</span><span class="p">,</span> <span class="n">NotProcessorTypeError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..pillow</span><span class="w"> </span><span class="kn">import</span> <span class="n">PillowRescale</span><span class="p">,</span> <span class="n">PillowResize</span><span class="p">,</span> <span class="n">PillowCenterCrop</span><span class="p">,</span> <span class="n">PillowToTensor</span><span class="p">,</span> <span class="n">PillowNormalize</span><span class="p">,</span> <span class="n">PillowCompose</span>
+
+<span class="n">_DEFAULT_SIZE</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;shortest_edge&quot;</span><span class="p">:</span> <span class="mi">384</span><span class="p">}</span>
+<span class="n">_DEFAULT_CROP_PCT</span> <span class="o">=</span> <span class="mi">224</span> <span class="o">/</span> <span class="mi">256</span>
+
+
+<div class="viewcode-block" id="create_convnext_transforms"><a class="viewcode-back" href="../../../../api_doc/preprocess/transformers.html#imgutils.preprocess.transformers.create_convnext_transforms">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">create_convnext_transforms</span><span class="p">(</span>
+        <span class="n">do_resize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">_DEFAULT</span><span class="p">,</span>
+        <span class="n">crop_pct</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">_DEFAULT</span><span class="p">,</span>
+        <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">,</span>
+        <span class="n">do_rescale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">rescale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span>
+        <span class="n">do_normalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">image_mean</span><span class="o">=</span><span class="n">_DEFAULT</span><span class="p">,</span>
+        <span class="n">image_std</span><span class="o">=</span><span class="n">_DEFAULT</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a composition of image transforms specifically tailored for ConvNext models.</span>
+
+<span class="sd">    This function creates a transformation pipeline that can include resizing, rescaling,</span>
+<span class="sd">    and normalization operations. The transforms are applied in the following order:</span>
+
+<span class="sd">    1. Resize (optional)</span>
+<span class="sd">    2. Convert to tensor</span>
+<span class="sd">    3. Rescale (optional)</span>
+<span class="sd">    4. Normalize (optional)</span>
+
+<span class="sd">    :param do_resize: Whether to resize the image</span>
+<span class="sd">    :type do_resize: bool</span>
+<span class="sd">    :param size: Target size dictionary with &#39;shortest_edge&#39; key</span>
+<span class="sd">    :type size: dict</span>
+<span class="sd">    :param crop_pct: Center crop percentage, used to compute resize size</span>
+<span class="sd">    :type crop_pct: float</span>
+<span class="sd">    :param resample: PIL resampling filter to use for resizing</span>
+<span class="sd">    :type resample: int</span>
+<span class="sd">    :param do_rescale: Whether to rescale pixel values</span>
+<span class="sd">    :type do_rescale: bool</span>
+<span class="sd">    :param rescale_factor: Factor to use for rescaling pixels</span>
+<span class="sd">    :type rescale_factor: float</span>
+<span class="sd">    :param do_normalize: Whether to normalize the image</span>
+<span class="sd">    :type do_normalize: bool</span>
+<span class="sd">    :param image_mean: Mean values for normalization</span>
+<span class="sd">    :type image_mean: tuple or list</span>
+<span class="sd">    :param image_std: Standard deviation values for normalization</span>
+<span class="sd">    :type image_std: tuple or list</span>
+
+<span class="sd">    :return: A composed transformation pipeline</span>
+<span class="sd">    :rtype: PillowCompose</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_DEFAULT</span> <span class="k">else</span> <span class="n">_DEFAULT_SIZE</span>
+    <span class="n">crop_pct</span> <span class="o">=</span> <span class="n">crop_pct</span> <span class="k">if</span> <span class="n">crop_pct</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_DEFAULT</span> <span class="k">else</span> <span class="n">_DEFAULT_CROP_PCT</span>
+    <span class="n">image_mean</span> <span class="o">=</span> <span class="n">image_mean</span> <span class="k">if</span> <span class="n">image_mean</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_DEFAULT</span> <span class="k">else</span> <span class="n">IMAGENET_STANDARD_MEAN</span>
+    <span class="n">image_std</span> <span class="o">=</span> <span class="n">image_std</span> <span class="k">if</span> <span class="n">image_std</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_DEFAULT</span> <span class="k">else</span> <span class="n">IMAGENET_STANDARD_STD</span>
+
+    <span class="n">transform_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">do_resize</span><span class="p">:</span>
+        <span class="n">shortest_edge</span> <span class="o">=</span> <span class="n">size</span><span class="p">[</span><span class="s2">&quot;shortest_edge&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">shortest_edge</span> <span class="o">&lt;</span> <span class="mi">384</span><span class="p">:</span>
+            <span class="n">resize_shortest_edge</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">shortest_edge</span> <span class="o">/</span> <span class="n">crop_pct</span><span class="p">)</span>
+            <span class="n">transform_list</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+                <span class="n">PillowResize</span><span class="p">(</span><span class="n">resize_shortest_edge</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">resample</span><span class="p">),</span>
+                <span class="n">PillowCenterCrop</span><span class="p">(</span><span class="n">shortest_edge</span><span class="p">)</span>
+            <span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">transform_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PillowResize</span><span class="p">((</span><span class="n">shortest_edge</span><span class="p">,</span> <span class="n">shortest_edge</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">resample</span><span class="p">))</span>
+
+    <span class="n">transform_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PillowToTensor</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">do_rescale</span> <span class="ow">and</span> <span class="n">rescale_factor</span> <span class="o">!=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">255</span><span class="p">:</span>
+        <span class="n">transform_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PillowRescale</span><span class="p">(</span><span class="n">rescale_factor</span> <span class="o">*</span> <span class="mi">255</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">do_normalize</span><span class="p">:</span>
+        <span class="n">transform_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PillowNormalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">image_mean</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">image_std</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">PillowCompose</span><span class="p">(</span><span class="n">transform_list</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_transforms_from_convnext_processor"><a class="viewcode-back" href="../../../../api_doc/preprocess/transformers.html#imgutils.preprocess.transformers.create_transforms_from_convnext_processor">[docs]</a><span class="nd">@register_creators_for_transformers</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_transforms_from_convnext_processor</span><span class="p">(</span><span class="n">processor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create image transforms from a ConvNext processor configuration.</span>
+
+<span class="sd">    This function takes a Hugging Face ConvNextImageProcessor and creates a corresponding</span>
+<span class="sd">    transformation pipeline that matches its configuration settings.</span>
+
+<span class="sd">    :param processor: The ConvNext image processor to create transforms from</span>
+<span class="sd">    :type processor: ConvNextImageProcessor</span>
+
+<span class="sd">    :return: A composed transformation pipeline matching the processor&#39;s configuration</span>
+<span class="sd">    :rtype: PillowCompose</span>
+<span class="sd">    :raises NotProcessorTypeError: If the provided processor is not a ConvNextImageProcessor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_check_transformers</span><span class="p">()</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConvNextImageProcessor</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="n">ConvNextImageProcessor</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NotProcessorTypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown ConvNext processor - </span><span class="si">{</span><span class="n">processor</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+    <span class="n">processor</span><span class="p">:</span> <span class="n">ConvNextImageProcessor</span>
+
+    <span class="k">return</span> <span class="n">create_convnext_transforms</span><span class="p">(</span>
+        <span class="n">do_resize</span><span class="o">=</span><span class="n">processor</span><span class="o">.</span><span class="n">do_resize</span><span class="p">,</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">processor</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+        <span class="n">crop_pct</span><span class="o">=</span><span class="n">processor</span><span class="o">.</span><span class="n">crop_pct</span><span class="p">,</span>
+        <span class="n">resample</span><span class="o">=</span><span class="n">processor</span><span class="o">.</span><span class="n">resample</span><span class="p">,</span>
+        <span class="n">do_rescale</span><span class="o">=</span><span class="n">processor</span><span class="o">.</span><span class="n">do_rescale</span><span class="p">,</span>
+        <span class="n">rescale_factor</span><span class="o">=</span><span class="n">processor</span><span class="o">.</span><span class="n">rescale_factor</span><span class="p">,</span>
+        <span class="n">do_normalize</span><span class="o">=</span><span class="n">processor</span><span class="o">.</span><span class="n">do_normalize</span><span class="p">,</span>
+        <span class="n">image_mean</span><span class="o">=</span><span class="n">processor</span><span class="o">.</span><span class="n">image_mean</span><span class="p">,</span>
+        <span class="n">image_std</span><span class="o">=</span><span class="n">processor</span><span class="o">.</span><span class="n">image_std</span><span class="p">,</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.12.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.10.0/index.html">v0.10.0</a></dd>
+                        <dd><a href="../../../../../v0.11.0/index.html">v0.11.0</a></dd>
+                        <dd><a href="../../../../../v0.11.1/index.html">v0.11.1</a></dd>
+                        <dd><a href="../../../../../v0.11.2/index.html">v0.11.2</a></dd>
+                        <dd><a href="convnext.html">v0.12.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../../dev/denormalize/index.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
