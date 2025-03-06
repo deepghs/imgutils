@@ -7,7 +7,7 @@ Overview:
     project on Hugging Face.
 
 """
-from typing import List, Tuple
+from typing import List, Tuple, Any
 
 import numpy as np
 import onnxruntime
@@ -188,7 +188,7 @@ def _postprocess_embedding(
         character_mcut_enabled: bool = False,
         no_underline: bool = False,
         drop_overlap: bool = False,
-        fmt=('rating', 'general', 'character'),
+        fmt: Any = ('rating', 'general', 'character'),
 ):
     """
     Post-process the embedding and prediction results.
@@ -261,7 +261,7 @@ def get_wd14_tags(
         character_mcut_enabled: bool = False,
         no_underline: bool = False,
         drop_overlap: bool = False,
-        fmt=('rating', 'general', 'character'),
+        fmt: Any = ('rating', 'general', 'character'),
 ):
     """
     Get tags for an image using WD14 taggers.
@@ -371,7 +371,7 @@ def convert_wd14_emb_to_prediction(
         character_mcut_enabled: bool = False,
         no_underline: bool = False,
         drop_overlap: bool = False,
-        fmt=('rating', 'general', 'character'),
+        fmt: Any = ('rating', 'general', 'character'),
         denormalize: bool = False,
         denormalizer_name: str = _DEFAULT_DENORMALIZER_NAME,
 ):
