@@ -1,0 +1,539 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.metadata.lsb &mdash; imgutils 0.12.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=19e90285"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.metrics" href="../metrics/index.html" />
+    <link rel="prev" title="imgutils.metadata.geninfo" href="geninfo.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.metadata</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="geninfo.html">imgutils.metadata.geninfo</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.metadata.lsb</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#read-lsb-raw-bytes">read_lsb_raw_bytes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.lsb.read_lsb_raw_bytes"><code class="docutils literal notranslate"><span class="pre">read_lsb_raw_bytes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#read-lsb-metadata">read_lsb_metadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.lsb.read_lsb_metadata"><code class="docutils literal notranslate"><span class="pre">read_lsb_metadata()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#write-lsb-raw-bytes">write_lsb_raw_bytes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.lsb.write_lsb_raw_bytes"><code class="docutils literal notranslate"><span class="pre">write_lsb_raw_bytes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#write-lsb-metadata">write_lsb_metadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.lsb.write_lsb_metadata"><code class="docutils literal notranslate"><span class="pre">write_lsb_metadata()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lsbreaderror">LSBReadError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.lsb.LSBReadError"><code class="docutils literal notranslate"><span class="pre">LSBReadError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lsbextractor">LSBExtractor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.lsb.LSBExtractor"><code class="docutils literal notranslate"><span class="pre">LSBExtractor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#imagelsbdataextractor">ImageLsbDataExtractor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.lsb.ImageLsbDataExtractor"><code class="docutils literal notranslate"><span class="pre">ImageLsbDataExtractor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#serialize-pnginfo">serialize_pnginfo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.lsb.serialize_pnginfo"><code class="docutils literal notranslate"><span class="pre">serialize_pnginfo()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#serialize-json">serialize_json</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.lsb.serialize_json"><code class="docutils literal notranslate"><span class="pre">serialize_json()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#inject-data">inject_data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.metadata.lsb.inject_data"><code class="docutils literal notranslate"><span class="pre">inject_data()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.metadata</a></li>
+      <li class="breadcrumb-item active">imgutils.metadata.lsb</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/metadata/lsb.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.metadata.lsb">
+<span id="imgutils-metadata-lsb"></span><h1>imgutils.metadata.lsb<a class="headerlink" href="#module-imgutils.metadata.lsb" title="Permalink to this heading"></a></h1>
+<p>This module provides functionality for reading and writing metadata and data using
+LSB (Least Significant Bit) steganography in images.</p>
+<p>Imported from .read:</p>
+<ul class="simple">
+<li><p>ImageLsbDataExtractor: Class for extracting LSB data from images.</p></li>
+<li><p>LSBExtractor: Class for extracting LSB data from byte arrays.</p></li>
+<li><p>LSBReadError: Exception raised when there’s an error reading LSB data.</p></li>
+<li><p>read_lsb_metadata: Function to read metadata embedded in an image using LSB.</p></li>
+<li><p>read_lsb_raw_bytes: Function to read raw bytes embedded in an image using LSB.</p></li>
+</ul>
+<p>Imported from .write:</p>
+<ul class="simple">
+<li><p>serialize_pnginfo: Function to serialize PNG metadata.</p></li>
+<li><p>serialize_json: Function to serialize JSON-compatible data.</p></li>
+<li><p>inject_data: Function to inject data into an image using LSB.</p></li>
+<li><p>write_lsb_metadata: Function to write metadata into an image using LSB.</p></li>
+<li><p>write_lsb_raw_bytes: Function to write raw bytes into an image using LSB.</p></li>
+</ul>
+<p>This module combines reading and writing capabilities for LSB steganography,
+allowing users to embed and extract data or metadata from images seamlessly.</p>
+<section id="read-lsb-raw-bytes">
+<h2>read_lsb_raw_bytes<a class="headerlink" href="#read-lsb-raw-bytes" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.read_lsb_raw_bytes">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.lsb.</span></span><span class="sig-name descname"><span class="pre">read_lsb_raw_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/read.html#read_lsb_raw_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.read_lsb_raw_bytes" title="Permalink to this definition"></a></dt>
+<dd><p>Read raw bytes of LSB-encoded data from an image.</p>
+<p>This function loads the image and uses ImageLsbDataExtractor to extract the hidden data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>ImageTyping</em>) – The image to extract data from. Can be a file path, URL, or Image object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The extracted raw data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#imgutils.metadata.lsb.LSBReadError" title="imgutils.metadata.lsb.LSBReadError"><strong>LSBReadError</strong></a> – If there’s an error during the extraction process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="read-lsb-metadata">
+<h2>read_lsb_metadata<a class="headerlink" href="#read-lsb-metadata" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.read_lsb_metadata">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.lsb.</span></span><span class="sig-name descname"><span class="pre">read_lsb_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/read.html#read_lsb_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.read_lsb_metadata" title="Permalink to this definition"></a></dt>
+<dd><p>Read and decode LSB-encoded metadata from an image.</p>
+<p>This function extracts the raw bytes, decompresses them using gzip,
+and then decodes the result as a JSON object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>ImageTyping</em>) – The image to extract metadata from. Can be a file path, URL, or Image object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The decoded metadata as a Python object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#imgutils.metadata.lsb.LSBReadError" title="imgutils.metadata.lsb.LSBReadError"><strong>LSBReadError</strong></a> – If there’s an error during the extraction or decoding process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="write-lsb-raw-bytes">
+<h2>write_lsb_raw_bytes<a class="headerlink" href="#write-lsb-raw-bytes" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.write_lsb_raw_bytes">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.lsb.</span></span><span class="sig-name descname"><span class="pre">write_lsb_raw_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/write.html#write_lsb_raw_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.write_lsb_raw_bytes" title="Permalink to this definition"></a></dt>
+<dd><p>Write raw bytes into an image using LSB steganography.</p>
+<p>This function is a wrapper around inject_data that handles image loading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – Input image or path to image</p></li>
+<li><p><strong>data</strong> (<em>Union</em><em>[</em><em>bytes</em><em>, </em><em>bytearray</em><em>]</em>) – Raw data to be written</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Image with injected data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="write-lsb-metadata">
+<h2>write_lsb_metadata<a class="headerlink" href="#write-lsb-metadata" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.write_lsb_metadata">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.lsb.</span></span><span class="sig-name descname"><span class="pre">write_lsb_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/write.html#write_lsb_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.write_lsb_metadata" title="Permalink to this definition"></a></dt>
+<dd><p>Write metadata into an image using LSB steganography.</p>
+<p>This function handles different types of metadata, serializing them appropriately
+before injection into the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – Input image or path to image</p></li>
+<li><p><strong>data</strong> (<em>Any</em>) – Metadata to be written (can be raw bytes, PngInfo, or JSON-serializable data)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Image with injected metadata</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="lsbreaderror">
+<h2>LSBReadError<a class="headerlink" href="#lsbreaderror" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.LSBReadError">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.metadata.lsb.</span></span><span class="sig-name descname"><span class="pre">LSBReadError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">err</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Exception</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/read.html#LSBReadError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.LSBReadError" title="Permalink to this definition"></a></dt>
+<dd><p>Custom exception class for LSB reading errors.</p>
+<p>This exception is raised when there’s an error during the LSB data extraction process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>err</strong> (<em>Exception</em>) – The original exception that caused the LSB read error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="lsbextractor">
+<h2>LSBExtractor<a class="headerlink" href="#lsbextractor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.LSBExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.metadata.lsb.</span></span><span class="sig-name descname"><span class="pre">LSBExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/read.html#LSBExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.LSBExtractor" title="Permalink to this definition"></a></dt>
+<dd><p>A class for extracting data hidden in the least significant bits of image pixels.</p>
+<p>This class provides methods to extract individual bits, bytes, and multi-byte values
+from image data using LSB steganography techniques.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>np.ndarray</em>) – The image data as a numpy array.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.LSBExtractor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/read.html#LSBExtractor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.LSBExtractor.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the LSBExtractor with image data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>np.ndarray</em>) – The image data as a numpy array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.LSBExtractor.get_next_n_bytes">
+<span class="sig-name descname"><span class="pre">get_next_n_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/read.html#LSBExtractor.get_next_n_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.LSBExtractor.get_next_n_bytes" title="Permalink to this definition"></a></dt>
+<dd><p>Extract and return the next n bytes of data.</p>
+<p>This method extracts multiple bytes from the image data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – The number of bytes to extract.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The extracted bytes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytearray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.LSBExtractor.get_one_byte">
+<span class="sig-name descname"><span class="pre">get_one_byte</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/read.html#LSBExtractor.get_one_byte"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.LSBExtractor.get_one_byte" title="Permalink to this definition"></a></dt>
+<dd><p>Extract and return one byte of data.</p>
+<p>This method extracts 8 bits from the image data to form a single byte.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A single byte of extracted data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytearray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.LSBExtractor.read_32bit_integer">
+<span class="sig-name descname"><span class="pre">read_32bit_integer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/read.html#LSBExtractor.read_32bit_integer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.LSBExtractor.read_32bit_integer" title="Permalink to this definition"></a></dt>
+<dd><p>Extract and return a 32-bit integer from the image data.</p>
+<p>This method reads 4 bytes and interprets them as a big-endian 32-bit integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The extracted 32-bit integer, or None if not enough data is available.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="imagelsbdataextractor">
+<h2>ImageLsbDataExtractor<a class="headerlink" href="#imagelsbdataextractor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.ImageLsbDataExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.metadata.lsb.</span></span><span class="sig-name descname"><span class="pre">ImageLsbDataExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">magic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'stealth_pngcomp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/read.html#ImageLsbDataExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.ImageLsbDataExtractor" title="Permalink to this definition"></a></dt>
+<dd><p>A class for extracting hidden JSON data from images using LSB steganography.</p>
+<p>This class uses the LSBExtractor to read hidden data from an image,
+expecting a specific magic number and format for the hidden data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>magic</strong> (<em>str</em>) – The magic string used to identify the start of the hidden data.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.ImageLsbDataExtractor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">magic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'stealth_pngcomp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/read.html#ImageLsbDataExtractor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.ImageLsbDataExtractor.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the ImageLsbDataExtractor with a magic string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>magic</strong> (<em>str</em>) – The magic string used to identify the start of the hidden data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.ImageLsbDataExtractor.extract_data">
+<span class="sig-name descname"><span class="pre">extract_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/read.html#ImageLsbDataExtractor.extract_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.ImageLsbDataExtractor.extract_data" title="Permalink to this definition"></a></dt>
+<dd><p>Extract hidden data from the given image.</p>
+<p>This method checks for the magic number, reads the length of the hidden data,
+and then extracts the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>Image.Image</em>) – The image to extract data from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The extracted raw data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the image is not in RGBA mode or if the magic number doesn’t match.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="serialize-pnginfo">
+<h2>serialize_pnginfo<a class="headerlink" href="#serialize-pnginfo" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.serialize_pnginfo">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.lsb.</span></span><span class="sig-name descname"><span class="pre">serialize_pnginfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PngInfo</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/write.html#serialize_pnginfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.serialize_pnginfo" title="Permalink to this definition"></a></dt>
+<dd><p>Serialize PNG metadata into a compressed byte string.</p>
+<p>This function extracts metadata from a PngInfo object, converts it to JSON,
+and then compresses it using gzip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metadata</strong> (<em>PngInfo</em>) – PNG metadata</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Compressed serialized metadata</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="serialize-json">
+<h2>serialize_json<a class="headerlink" href="#serialize-json" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.serialize_json">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.lsb.</span></span><span class="sig-name descname"><span class="pre">serialize_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/write.html#serialize_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.serialize_json" title="Permalink to this definition"></a></dt>
+<dd><p>Serialize any JSON-serializable metadata into a compressed byte string.</p>
+<p>This function converts the input metadata to JSON and then compresses it using gzip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metadata</strong> (<em>Any</em>) – Metadata to be serialized</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Compressed serialized metadata</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="inject-data">
+<h2>inject_data<a class="headerlink" href="#inject-data" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.metadata.lsb.inject_data">
+<span class="sig-prename descclassname"><span class="pre">imgutils.metadata.lsb.</span></span><span class="sig-name descname"><span class="pre">inject_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/metadata/lsb/write.html#inject_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.metadata.lsb.inject_data" title="Permalink to this definition"></a></dt>
+<dd><p>Inject data into an image using LSB steganography and error correction.</p>
+<p>This function embeds the given data into the least significant bits of the image pixels,
+along with error correction information for robustness.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>Image.Image</em>) – Input image</p></li>
+<li><p><strong>data</strong> (<em>Union</em><em>[</em><em>bytes</em><em>, </em><em>bytearray</em><em>]</em>) – Data to be injected</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Image with injected data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="geninfo.html" class="btn btn-neutral float-left" title="imgutils.metadata.geninfo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../metrics/index.html" class="btn btn-neutral float-right" title="imgutils.metrics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/attachments
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.10.0/api_doc/metadata/lsb.html">v0.10.0</a></dd>
+                        <dd><a href="../../../../v0.11.0/api_doc/metadata/lsb.html">v0.11.0</a></dd>
+                        <dd><a href="../../../../v0.11.1/api_doc/metadata/lsb.html">v0.11.1</a></dd>
+                        <dd><a href="../../../../v0.11.2/api_doc/metadata/lsb.html">v0.11.2</a></dd>
+                        <dd><a href="../../../../v0.12.0/api_doc/metadata/lsb.html">v0.12.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="lsb.html">dev/attachments</a></dd>
+                        <dd><a href="../../../../HEAD/api_doc/metadata/lsb.html">HEAD</a></dd>
+                        <dd><a href="../../../denormalize/api_doc/metadata/lsb.html">dev/denormalize</a></dd>
+                        <dd><a href="../../../../main/api_doc/metadata/lsb.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
