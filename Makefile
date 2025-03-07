@@ -50,10 +50,10 @@ pdocs:
 dataset:
 	mkdir -p ${DATASET_DIR}
 	if [ ! -d ${DATASET_DIR}/chafen_arknights ]; then \
-		hfutils download -r deepghs/chafen_arknights -t dataset -d . -o ${DATASET_DIR}/chafen_arknights; \
+		hfutils download -r deepghs/chafen_arknights -t dataset -a dataset.zip -o ${DATASET_DIR}/chafen_arknights; \
 	fi
 	if [ ! -d ${DATASET_DIR}/monochrome_danbooru ]; then \
-		hfutils download -r deepghs/monochrome_danbooru -t dataset -d . -o ${DATASET_DIR}/monochrome_danbooru; \
+		hfutils download -r deepghs/monochrome_danbooru -t dataset -a dataset.zip -o ${DATASET_DIR}/monochrome_danbooru; \
 	fi
 	if [ ! -d ${DATASET_DIR}/images_test_v1 ]; then \
 		hfutils download -r deepghs/character_similarity -t dataset -a images_test_v1.tar.xz -o ${DATASET_DIR}/images_test_v1; \
