@@ -106,7 +106,10 @@ def load_image(image: ImageTyping, mode=None, force_background: Optional[str] = 
     >>> img.mode
     'RGB'
     """
-    if isinstance(image, (str, PathLike, bytes, bytearray, BinaryIO)) or _is_readable(image):
+    from .blob import is_valid_image_blob_url, load_image_from_blob_url
+    if isinstance(image, str) and is_valid_image_blob_url(image):
+        image = load_image_from_blob_url(image)
+    elif isinstance(image, (str, PathLike, bytes, bytearray, BinaryIO)) or _is_readable(image):
         image = Image.open(image)
     elif isinstance(image, Image.Image):
         pass  # just do nothing
@@ -127,9 +130,10 @@ def load_images(images: MultiImagesTyping, mode=None, force_background: Optional
     Loads a list of images from the provided sources and applies necessary transformations.
 
     The function takes a single image or a list/tuple of multiple images and calls :func:`load_image` function
-    on each item to load and transform the images. The images are returned as a list of PIL Image objects.
+    on each item to load and transform the images. This is particularly useful for batch processing multiple
+    images with the same transformation parameters.
 
-    :param images: The sources of the images to be loaded.
+    :param images: The sources of the images to be loaded. Can be a single image source or an iterable of image sources.
     :type images: MultiImagesTyping
 
     :param mode: The mode to convert the images to. If None, the original modes will be retained. (default: ``None``)
