@@ -9,6 +9,7 @@ imgutils.generic
 .. toctree::
     :maxdepth: 3
 
+    attachment
     classify
     enhance
     clip

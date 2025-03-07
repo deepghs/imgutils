@@ -111,7 +111,8 @@
 <span class="sd">    project on Hugging Face.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span>
@@ -123,7 +124,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.format</span><span class="w"> </span><span class="kn">import</span> <span class="n">remove_underline</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.overlap</span><span class="w"> </span><span class="kn">import</span> <span class="n">drop_overlap_tags</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">vreplace</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..generic.attachment</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_attachment</span><span class="p">,</span> <span class="n">Attachment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">vreplace</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">,</span> <span class="n">ts_lru_cache</span><span class="p">,</span> <span class="n">vnames</span>
 
 <span class="n">SWIN_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-swinv2-tagger-v2&quot;</span>
 <span class="n">CONV_MODEL_REPO</span> <span class="o">=</span> <span class="s2">&quot;SmilingWolf/wd-v1-4-convnext-tagger-v2&quot;</span>
@@ -293,6 +295,7 @@
         <span class="n">no_underline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">drop_overlap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">fmt</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;character&#39;</span><span class="p">),</span>
+        <span class="n">attachments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Post-process the embedding and prediction results.</span>
@@ -315,9 +318,36 @@
 <span class="sd">    :type no_underline: bool</span>
 <span class="sd">    :param drop_overlap: Whether to drop overlapping tags.</span>
 <span class="sd">    :type drop_overlap: bool</span>
-<span class="sd">    :param fmt: The format of the output.</span>
-<span class="sd">    :return: The post-processed results.</span>
+<span class="sd">    :param fmt: Output format specification defining which components to include</span>
+<span class="sd">    :type fmt: Any</span>
+<span class="sd">    :param attachments: Additional model attachments for extended tagging capabilities</span>
+<span class="sd">    :type attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]]</span>
+
+<span class="sd">    :return: Processed tagging results in the specified format</span>
+<span class="sd">    :rtype: Any</span>
+<span class="sd">    :raises ValueError: If attachment configuration is invalid or incompatible</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">attachments</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">attachments</span> <span class="ow">or</span> <span class="p">{})</span>
+    <span class="n">d_attachments</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Attachment</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">attach_name</span><span class="p">,</span> <span class="n">attach_tpl</span> <span class="ow">in</span> <span class="n">attachments</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">attach_name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid attachment register name, no </span><span class="se">\&#39;</span><span class="s1">/</span><span class="se">\&#39;</span><span class="s1"> required - </span><span class="si">{</span><span class="n">attach_name</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">attach_tpl</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">attach_repo_id</span><span class="p">,</span> <span class="n">attach_model_name</span><span class="p">),</span> <span class="n">attach_kwargs</span> <span class="o">=</span> <span class="n">attach_tpl</span><span class="p">,</span> <span class="p">{}</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">attach_tpl</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">attach_repo_id</span><span class="p">,</span> <span class="n">attach_model_name</span><span class="p">,</span> <span class="n">attach_kwargs</span> <span class="o">=</span> <span class="n">attach_tpl</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid attachment tuple for </span><span class="si">{</span><span class="n">attach_name</span><span class="si">!r}</span><span class="s1">, &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;2 or 3 elements expected but </span><span class="si">{</span><span class="n">attach_tpl</span><span class="si">!r}</span><span class="s1"> found.&#39;</span><span class="p">)</span>
+        <span class="n">attachment</span> <span class="o">=</span> <span class="n">open_attachment</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="n">attach_repo_id</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">attach_model_name</span><span class="p">)</span>
+        <span class="n">expected_encoder_model</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;wdtagger:</span><span class="si">{</span><span class="n">MODEL_NAMES</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="n">attachment</span><span class="o">.</span><span class="n">encoder_model</span> <span class="o">!=</span> <span class="n">expected_encoder_model</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Attachment encoder model not match, &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">expected_encoder_model</span><span class="si">!r}</span><span class="s1"> expected but </span><span class="si">{</span><span class="n">attachment</span><span class="o">.</span><span class="n">encoder_model</span><span class="si">!r}</span><span class="s1"> found &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;for </span><span class="si">{</span><span class="n">attach_name</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="n">d_attachments</span><span class="p">[</span><span class="n">attach_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">attachment</span><span class="p">,</span> <span class="n">attach_kwargs</span><span class="p">)</span>
+
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> \
         <span class="sa">f</span><span class="s1">&#39;Both pred and embeddings shapes should be 1-dim, &#39;</span> \
         <span class="sa">f</span><span class="s1">&#39;but pred: </span><span class="si">{</span><span class="n">pred</span><span class="o">.</span><span class="n">shape</span><span class="si">!r}</span><span class="s1">, embedding: </span><span class="si">{</span><span class="n">embedding</span><span class="o">.</span><span class="n">shape</span><span class="si">!r}</span><span class="s1"> actually found.&#39;</span>
@@ -343,17 +373,27 @@
 
     <span class="n">character_res</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">character_names</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">character_threshold</span><span class="p">}</span>
 
-    <span class="k">return</span> <span class="n">vreplace</span><span class="p">(</span>
-        <span class="n">fmt</span><span class="p">,</span>
-        <span class="p">{</span>
-            <span class="s1">&#39;rating&#39;</span><span class="p">:</span> <span class="n">rating</span><span class="p">,</span>
-            <span class="s1">&#39;general&#39;</span><span class="p">:</span> <span class="n">general_res</span><span class="p">,</span>
-            <span class="s1">&#39;character&#39;</span><span class="p">:</span> <span class="n">character_res</span><span class="p">,</span>
-            <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="p">{</span><span class="o">**</span><span class="n">general_res</span><span class="p">,</span> <span class="o">**</span><span class="n">character_res</span><span class="p">},</span>
-            <span class="s1">&#39;embedding&#39;</span><span class="p">:</span> <span class="n">embedding</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
-            <span class="s1">&#39;prediction&#39;</span><span class="p">:</span> <span class="n">pred</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
+    <span class="n">mapping_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;rating&#39;</span><span class="p">:</span> <span class="n">rating</span><span class="p">,</span>
+        <span class="s1">&#39;general&#39;</span><span class="p">:</span> <span class="n">general_res</span><span class="p">,</span>
+        <span class="s1">&#39;character&#39;</span><span class="p">:</span> <span class="n">character_res</span><span class="p">,</span>
+        <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="p">{</span><span class="o">**</span><span class="n">general_res</span><span class="p">,</span> <span class="o">**</span><span class="n">character_res</span><span class="p">},</span>
+        <span class="s1">&#39;embedding&#39;</span><span class="p">:</span> <span class="n">embedding</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+        <span class="s1">&#39;prediction&#39;</span><span class="p">:</span> <span class="n">pred</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">d_attach_infers</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">vname</span> <span class="ow">in</span> <span class="n">vnames</span><span class="p">(</span><span class="n">fmt</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">vname</span> <span class="ow">and</span> <span class="n">vname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">d_attachments</span><span class="p">:</span>
+            <span class="n">attach_name</span><span class="p">,</span> <span class="n">attach_fmt_name</span> <span class="o">=</span> <span class="n">vname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">d_attach_infers</span><span class="p">[</span><span class="n">attach_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attach_fmt_name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">attach_name</span><span class="p">,</span> <span class="n">attach_infer_names</span> <span class="ow">in</span> <span class="n">d_attach_infers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">attachment</span><span class="p">,</span> <span class="n">attach_kwargs</span> <span class="o">=</span> <span class="n">d_attachments</span><span class="p">[</span><span class="n">attach_name</span><span class="p">]</span>
+        <span class="n">attach_infer_values</span> <span class="o">=</span> <span class="n">attachment</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">embedding</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">attach_infer_names</span><span class="p">,</span> <span class="o">**</span><span class="n">attach_kwargs</span><span class="p">)</span>
+        <span class="n">attach_mapping_names</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">attach_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">attach_infer_names</span><span class="p">]</span>
+        <span class="n">mapping_values</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">attach_mapping_names</span><span class="p">,</span> <span class="n">attach_infer_values</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">vreplace</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">mapping_values</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="get_wd14_tags"><a class="viewcode-back" href="../../../api_doc/tagging/wd14.html#imgutils.tagging.wd14.get_wd14_tags">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_wd14_tags</span><span class="p">(</span>
@@ -366,6 +406,7 @@
         <span class="n">no_underline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">drop_overlap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">fmt</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;character&#39;</span><span class="p">),</span>
+        <span class="n">attachments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get tags for an image using WD14 taggers.</span>
@@ -391,7 +432,13 @@
 <span class="sd">    :type drop_overlap: bool</span>
 <span class="sd">    :param fmt: Return format, default is ``(&#39;rating&#39;, &#39;general&#39;, &#39;character&#39;)``.</span>
 <span class="sd">        ``embedding`` is also supported for feature extraction.</span>
+<span class="sd">    :type fmt: Any</span>
+<span class="sd">    :param attachments: Additional model attachments for extended tagging capabilities</span>
+<span class="sd">    :type attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]]</span>
+
 <span class="sd">    :return: Prediction result based on the provided fmt.</span>
+<span class="sd">    :rtype: Any</span>
+<span class="sd">    :raises ValueError: If attachment configuration is invalid or incompatible</span>
 
 <span class="sd">    .. note::</span>
 <span class="sd">        The fmt argument can include the following keys:</span>
@@ -413,6 +460,44 @@
 
 <span class="sd">        This embedding is valuable for constructing indices that enable rapid querying of images based on</span>
 <span class="sd">        visual features within large-scale datasets.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The attachment system allows integration of additional tagging models to extend the base WD14 tagger&#39;s capabilities.</span>
+<span class="sd">        Attachments are specified using a dictionary with the following format:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            attachments = {</span>
+<span class="sd">                &#39;name&#39;: (&#39;repo_id&#39;, &#39;model_name&#39;),  # Basic format</span>
+<span class="sd">                &#39;name&#39;: (&#39;repo_id&#39;, &#39;model_name&#39;, {&#39;threshold&#39;: 0.35})  # With additional parameters when predicting</span>
+<span class="sd">            }</span>
+
+<span class="sd">        The ``fmt`` argument can include attachment results using the format &#39;name/key&#39;, where:</span>
+
+<span class="sd">        - ``name``: The name specified in the attachments dictionary</span>
+<span class="sd">        - ``key``: The specific output type requested from the attachment</span>
+
+<span class="sd">        For example:</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging import get_wd14_tags</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Using an attachment for additional style tagging</span>
+<span class="sd">        &gt;&gt;&gt; results = get_wd14_tags(</span>
+<span class="sd">        ...     &#39;image.jpg&#39;,</span>
+<span class="sd">        ...     attachments={&#39;monochrome&#39;: (&#39;deepghs/eattach_monochrome_experiments&#39;, &#39;mlp_layer1_seed1&#39;)},</span>
+<span class="sd">        ...     fmt=(&#39;general&#39;, &#39;monochrome/scores&#39;)</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Results will include both base tags and attachment outputs</span>
+<span class="sd">        &gt;&gt;&gt; print(results)</span>
+<span class="sd">        (</span>
+<span class="sd">            {&#39;1girl&#39;: 0.99, ...},</span>
+<span class="sd">            {&#39;monochrome&#39;: 0.999, &#39;normal&#39;: 0.001},</span>
+<span class="sd">        )</span>
+
+<span class="sd">        Multiple attachments can be used simultaneously, and each attachment can provide multiple output types</span>
+<span class="sd">        through its fmt specification. Ensure that attachment models are compatible with the base WD14 model&#39;s</span>
+<span class="sd">        embedding format.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        Here are some images for example</span>
@@ -460,6 +545,7 @@
         <span class="n">no_underline</span><span class="o">=</span><span class="n">no_underline</span><span class="p">,</span>
         <span class="n">drop_overlap</span><span class="o">=</span><span class="n">drop_overlap</span><span class="p">,</span>
         <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
+        <span class="n">attachments</span><span class="o">=</span><span class="n">attachments</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 
@@ -476,6 +562,7 @@
         <span class="n">no_underline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">drop_overlap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">fmt</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;character&#39;</span><span class="p">),</span>
+        <span class="n">attachments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">denormalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">denormalizer_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_DENORMALIZER_NAME</span><span class="p">,</span>
 <span class="p">):</span>
@@ -501,12 +588,16 @@
 <span class="sd">    :param drop_overlap: Remove overlapping tags to reduce redundancy</span>
 <span class="sd">    :type drop_overlap: bool</span>
 <span class="sd">    :param fmt: Specify return format structure for predictions, default is ``(&#39;rating&#39;, &#39;general&#39;, &#39;character&#39;)``.</span>
-<span class="sd">    :type fmt: tuple</span>
+<span class="sd">    :type fmt: Any</span>
+<span class="sd">    :param attachments: Additional model attachments for extended tagging capabilities</span>
+<span class="sd">    :type attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]]</span>
 <span class="sd">    :param denormalize: Whether to denormalize the embedding before prediction</span>
 <span class="sd">    :type denormalize: bool</span>
 <span class="sd">    :param denormalizer_name: Name of the denormalizer to use if denormalization is enabled</span>
 <span class="sd">    :type denormalizer_name: str</span>
 <span class="sd">    :return: For single embeddings: prediction result based on fmt. For batches: list of prediction results.</span>
+<span class="sd">    :rtype: Any</span>
+<span class="sd">    :raises ValueError: If attachment configuration is invalid or incompatible</span>
 
 <span class="sd">    .. note::</span>
 <span class="sd">        Only the embeddings not get normalized can be converted to understandable prediction result.</span>
@@ -557,6 +648,7 @@
             <span class="n">no_underline</span><span class="o">=</span><span class="n">no_underline</span><span class="p">,</span>
             <span class="n">drop_overlap</span><span class="o">=</span><span class="n">drop_overlap</span><span class="p">,</span>
             <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
+            <span class="n">attachments</span><span class="o">=</span><span class="n">attachments</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span>
@@ -571,6 +663,7 @@
                 <span class="n">no_underline</span><span class="o">=</span><span class="n">no_underline</span><span class="p">,</span>
                 <span class="n">drop_overlap</span><span class="o">=</span><span class="n">drop_overlap</span><span class="p">,</span>
                 <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
+                <span class="n">attachments</span><span class="o">=</span><span class="n">attachments</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">pred_item</span><span class="p">,</span> <span class="n">emb_item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">emb</span><span class="p">)</span>
         <span class="p">]</span></div>
