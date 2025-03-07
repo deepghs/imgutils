@@ -214,8 +214,14 @@ def _postprocess_embedding(
     :type no_underline: bool
     :param drop_overlap: Whether to drop overlapping tags.
     :type drop_overlap: bool
-    :param fmt: The format of the output.
-    :return: The post-processed results.
+    :param fmt: Output format specification defining which components to include
+    :type fmt: Any
+    :param attachments: Additional model attachments for extended tagging capabilities
+    :type attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]]
+
+    :return: Processed tagging results in the specified format
+    :rtype: Any
+    :raises ValueError: If attachment configuration is invalid or incompatible
     """
     attachments = dict(attachments or {})
     d_attachments: Dict[str, Tuple[Attachment, dict]] = {}
@@ -322,7 +328,13 @@ def get_wd14_tags(
     :type drop_overlap: bool
     :param fmt: Return format, default is ``('rating', 'general', 'character')``.
         ``embedding`` is also supported for feature extraction.
+    :type fmt: Any
+    :param attachments: Additional model attachments for extended tagging capabilities
+    :type attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]]
+
     :return: Prediction result based on the provided fmt.
+    :rtype: Any
+    :raises ValueError: If attachment configuration is invalid or incompatible
 
     .. note::
         The fmt argument can include the following keys:
@@ -344,6 +356,44 @@ def get_wd14_tags(
 
         This embedding is valuable for constructing indices that enable rapid querying of images based on
         visual features within large-scale datasets.
+
+    .. note::
+        The attachment system allows integration of additional tagging models to extend the base WD14 tagger's capabilities.
+        Attachments are specified using a dictionary with the following format:
+
+        .. code-block:: python
+
+            attachments = {
+                'name': ('repo_id', 'model_name'),  # Basic format
+                'name': ('repo_id', 'model_name', {'threshold': 0.35})  # With additional parameters when predicting
+            }
+
+        The ``fmt`` argument can include attachment results using the format 'name/key', where:
+
+        - ``name``: The name specified in the attachments dictionary
+        - ``key``: The specific output type requested from the attachment
+
+        For example:
+
+        >>> from imgutils.tagging import get_wd14_tags
+        >>>
+        >>> # Using an attachment for additional style tagging
+        >>> results = get_wd14_tags(
+        ...     'image.jpg',
+        ...     attachments={'monochrome': ('deepghs/eattach_monochrome_experiments', 'mlp_layer1_seed1')},
+        ...     fmt=('general', 'monochrome/scores')
+        ... )
+        >>>
+        >>> # Results will include both base tags and attachment outputs
+        >>> print(results)
+        (
+            {'1girl': 0.99, ...},
+            {'monochrome': 0.999, 'normal': 0.001},
+        )
+
+        Multiple attachments can be used simultaneously, and each attachment can provide multiple output types
+        through its fmt specification. Ensure that attachment models are compatible with the base WD14 model's
+        embedding format.
 
     Example:
         Here are some images for example
@@ -434,12 +484,16 @@ def convert_wd14_emb_to_prediction(
     :param drop_overlap: Remove overlapping tags to reduce redundancy
     :type drop_overlap: bool
     :param fmt: Specify return format structure for predictions, default is ``('rating', 'general', 'character')``.
-    :type fmt: tuple
+    :type fmt: Any
+    :param attachments: Additional model attachments for extended tagging capabilities
+    :type attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]]
     :param denormalize: Whether to denormalize the embedding before prediction
     :type denormalize: bool
     :param denormalizer_name: Name of the denormalizer to use if denormalization is enabled
     :type denormalizer_name: str
     :return: For single embeddings: prediction result based on fmt. For batches: list of prediction results.
+    :rtype: Any
+    :raises ValueError: If attachment configuration is invalid or incompatible
 
     .. note::
         Only the embeddings not get normalized can be converted to understandable prediction result.
