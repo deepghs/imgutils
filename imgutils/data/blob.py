@@ -71,7 +71,7 @@ def load_image_from_blob_url(blob_url: str) -> Image.Image:
         >>> img = load_image_from_blob_url(blob_url)
         >>> img.show()
     """
-    header, data = blob_url.split(",", 1)
+    header, data = blob_url.split(",", maxsplit=1)
     meta_parts = header.split(";")
     mimetype = meta_parts[0][5:]
     encoding = meta_parts[1] if len(meta_parts) > 1 else ""
