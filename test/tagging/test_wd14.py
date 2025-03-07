@@ -1,6 +1,8 @@
 import numpy as np
 import pytest
+from hbutils.testing import tmatrix
 
+from imgutils.generic.attachment import open_attachment
 from imgutils.tagging import get_wd14_tags, convert_wd14_emb_to_prediction
 from imgutils.tagging.wd14 import _get_wd14_model, denormalize_wd14_emb, _open_denormalize_model
 from test.testings import get_testfile
@@ -13,6 +15,7 @@ def _release_model_after_run():
     finally:
         _get_wd14_model.cache_clear()
         _open_denormalize_model.cache_clear()
+        open_attachment.cache_clear()
 
 
 @pytest.mark.unittest
@@ -229,3 +232,91 @@ class TestTaggingWd14:
             assert rating == pytest.approx(expected_rating, abs=1e-2)
             assert general == pytest.approx(expected_general, abs=1e-2)
             assert character == pytest.approx(expected_character, abs=1e-2)
+
+    @pytest.mark.parametrize(*tmatrix({
+        ('type_', 'file'): [
+            ('monochrome', '6130053.jpg'),
+            ('monochrome', '6125854（第 3 个复件）.jpg'),
+            ('monochrome', '5221834.jpg'),
+            ('monochrome', '1951253.jpg'),
+            ('monochrome', '4879658.jpg'),
+            ('monochrome', '80750471_p3_master1200.jpg'),
+
+            ('normal', '54566940_p0_master1200.jpg'),
+            ('normal', '60817155_p18_master1200.jpg'),
+            ('normal', '4945494.jpg'),
+            ('normal', '4008375.jpg'),
+            ('normal', '2416278.jpg'),
+            ('normal', '842709.jpg')
+        ],
+    }, mode='matrix'))
+    def test_get_wd14_tags_with_attachments(self, type_, file):
+        filename = get_testfile('dataset', 'monochrome_danbooru', type_, file)
+        scores, (top_label, top_score) = get_wd14_tags(
+            filename,
+            fmt=('monochrome/scores', 'monochrome/top'),
+            attachments={'monochrome': ('deepghs/eattach_monochrome_experiments', 'mlp_layer1_seed1')},
+        )
+        assert scores[type_] >= 0.5
+        assert top_label == type_
+        assert top_score >= 0.5
+
+    @pytest.mark.parametrize(*tmatrix({
+        ('type_', 'file'): [
+            ('monochrome', '6130053.jpg'),
+            ('monochrome', '6125854（第 3 个复件）.jpg'),
+            ('monochrome', '5221834.jpg'),
+            ('monochrome', '1951253.jpg'),
+            ('monochrome', '4879658.jpg'),
+            ('monochrome', '80750471_p3_master1200.jpg'),
+
+            ('normal', '54566940_p0_master1200.jpg'),
+            ('normal', '60817155_p18_master1200.jpg'),
+            ('normal', '4945494.jpg'),
+            ('normal', '4008375.jpg'),
+            ('normal', '2416278.jpg'),
+            ('normal', '842709.jpg')
+        ],
+    }, mode='matrix'))
+    def test_get_wd14_tags_with_attachments_extra_cfg(self, type_, file):
+        filename = get_testfile('dataset', 'monochrome_danbooru', type_, file)
+        scores, (top_label, top_score) = get_wd14_tags(
+            filename,
+            fmt=('monochrome/scores', 'monochrome/top'),
+            attachments={'monochrome': ('deepghs/eattach_monochrome_experiments', 'mlp_layer1_seed1', {})},
+        )
+        assert scores[type_] >= 0.5
+        assert top_label == type_
+        assert top_score >= 0.5
+
+    @pytest.mark.parametrize(*tmatrix({
+        ('type_', 'file'): [
+            ('monochrome', '6130053.jpg'),
+            ('normal', '54566940_p0_master1200.jpg'),
+        ],
+    }, mode='matrix'))
+    def test_get_wd14_tags_with_attachments_invalid_attachment_name(self, type_, file):
+        filename = get_testfile('dataset', 'monochrome_danbooru', type_, file)
+        with pytest.raises(ValueError):
+            scores, (top_label, top_score) = get_wd14_tags(
+                filename,
+                fmt=('monochrome/t/scores', 'monochrome/t/top'),
+                attachments={'monochrome/t': ('deepghs/eattach_monochrome_experiments', 'mlp_layer1_seed1')},
+            )
+            _ = top_label, top_score
+
+    @pytest.mark.parametrize(*tmatrix({
+        ('type_', 'file'): [
+            ('monochrome', '6130053.jpg'),
+            ('normal', '54566940_p0_master1200.jpg'),
+        ],
+    }, mode='matrix'))
+    def test_get_wd14_tags_with_attachments_invalid_attachment_config(self, type_, file):
+        filename = get_testfile('dataset', 'monochrome_danbooru', type_, file)
+        with pytest.raises(ValueError):
+            scores, (top_label, top_score) = get_wd14_tags(
+                filename,
+                fmt=('monochrome/scores', 'monochrome/top'),
+                attachments={'monochrome': ('deepghs/eattach_monochrome_experiments',)},
+            )
+            _ = top_label, top_score
