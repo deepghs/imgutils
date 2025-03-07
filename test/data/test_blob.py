@@ -13,8 +13,27 @@ class TestDataBlob:
             'soldiers.jpg',
             'nian.png',
         ],
+        ('format', 'mimetype'): [
+            ('jpg', 'image/jpeg'),
+            ('jpeg', 'image/jpeg'),
+            ('png', 'image/png'),
+            ('webp', 'image/webp'),
+        ]
+    }, mode='matrix'))
+    def test_to_blob_url_format_check(self, filename, format, mimetype):
+        original_image = load_image(get_testfile(filename), mode='RGB', force_background='white')
+        blob_url = to_blob_url(original_image, format=format)
+        assert blob_url.startswith(f'data:{mimetype};base64,')
+
+    @pytest.mark.parametrize(*tmatrix({
+        'filename': [
+            'mostima_post.jpg',
+            'soldiers.jpg',
+            'nian.png',
+        ],
         'format': [
             'jpg',
+            'jpeg',
             'png',
             'webp',
         ]
@@ -26,6 +45,10 @@ class TestDataBlob:
             load_image_from_blob_url(to_blob_url(original_image, format=format)),
             throw_exception=False,
         ) < 1.5e-2
+
+    def test_load_image_from_blob_url_invalid_encode_method(self):
+        with pytest.raises(ValueError):
+            load_image_from_blob_url('data:image/webp;xxxxxx,abcde12345')
 
     @pytest.mark.parametrize(['blob_url', 'expected_result'], [
         ("data:image/png;base64,ABC", True),
