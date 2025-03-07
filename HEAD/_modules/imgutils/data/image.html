@@ -210,7 +210,10 @@
 <span class="sd">    &gt;&gt;&gt; img.mode</span>
 <span class="sd">    &#39;RGB&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">PathLike</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">))</span> <span class="ow">or</span> <span class="n">_is_readable</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.blob</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_valid_image_blob_url</span><span class="p">,</span> <span class="n">load_image_from_blob_url</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_valid_image_blob_url</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">load_image_from_blob_url</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">PathLike</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">))</span> <span class="ow">or</span> <span class="n">_is_readable</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
         <span class="k">pass</span>  <span class="c1"># just do nothing</span>
@@ -231,9 +234,10 @@
 <span class="sd">    Loads a list of images from the provided sources and applies necessary transformations.</span>
 
 <span class="sd">    The function takes a single image or a list/tuple of multiple images and calls :func:`load_image` function</span>
-<span class="sd">    on each item to load and transform the images. The images are returned as a list of PIL Image objects.</span>
+<span class="sd">    on each item to load and transform the images. This is particularly useful for batch processing multiple</span>
+<span class="sd">    images with the same transformation parameters.</span>
 
-<span class="sd">    :param images: The sources of the images to be loaded.</span>
+<span class="sd">    :param images: The sources of the images to be loaded. Can be a single image source or an iterable of image sources.</span>
 <span class="sd">    :type images: MultiImagesTyping</span>
 
 <span class="sd">    :param mode: The mode to convert the images to. If None, the original modes will be retained. (default: ``None``)</span>
@@ -334,10 +338,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/blob/index.html">dev/blob</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
                         <dd><a href="image.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/attachments/index.html">dev/attachments</a></dd>
-                        <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
