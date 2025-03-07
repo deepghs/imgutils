@@ -10,6 +10,7 @@ imgutils.data
     :maxdepth: 3
 
     background
+    blob
     encode
     decode
     image
