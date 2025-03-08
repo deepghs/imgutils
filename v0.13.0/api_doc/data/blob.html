@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.data.blob &mdash; imgutils 0.13.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=683c48dc"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.data.encode" href="encode.html" />
+    <link rel="prev" title="imgutils.data.background" href="background.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.data</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="background.html">imgutils.data.background</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.data.blob</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#to-blob-url">to_blob_url</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.data.blob.to_blob_url"><code class="docutils literal notranslate"><span class="pre">to_blob_url()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#load-image-from-blob-url">load_image_from_blob_url</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.data.blob.load_image_from_blob_url"><code class="docutils literal notranslate"><span class="pre">load_image_from_blob_url()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#is-valid-image-blob-url">is_valid_image_blob_url</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.data.blob.is_valid_image_blob_url"><code class="docutils literal notranslate"><span class="pre">is_valid_image_blob_url()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="encode.html">imgutils.data.encode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decode.html">imgutils.data.decode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">imgutils.data.image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layer.html">imgutils.data.layer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.data</a></li>
+      <li class="breadcrumb-item active">imgutils.data.blob</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/data/blob.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.data.blob">
+<span id="imgutils-data-blob"></span><h1>imgutils.data.blob<a class="headerlink" href="#module-imgutils.data.blob" title="Permalink to this heading"></a></h1>
+<p>This module provides utilities for handling image blob URLs, including conversion between images and blob URLs,
+and validation of blob URL format.</p>
+<p>The module supports:</p>
+<ul class="simple">
+<li><p>Converting images to blob URLs with specified formats</p></li>
+<li><p>Loading images from blob URLs</p></li>
+<li><p>Validating image blob URL format</p></li>
+<li><p>Handling various image formats and MIME types</p></li>
+</ul>
+<section id="to-blob-url">
+<h2>to_blob_url<a class="headerlink" href="#to-blob-url" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.data.blob.to_blob_url">
+<span class="sig-prename descclassname"><span class="pre">imgutils.data.blob.</span></span><span class="sig-name descname"><span class="pre">to_blob_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'jpg'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">save_kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/imgutils/data/blob.html#to_blob_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.data.blob.to_blob_url" title="Permalink to this definition"></a></dt>
+<dd><p>Convert an image to a blob URL string.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image, can be PIL Image, numpy array, or file path</p></li>
+<li><p><strong>format</strong> (<em>str</em>) – The desired image format for the blob URL, defaults to ‘jpg’</p></li>
+<li><p><strong>save_kwargs</strong> – Additional keyword arguments passed to PIL Image.save()</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A blob URL string containing the encoded image data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;test.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob_url</span> <span class="o">=</span> <span class="n">to_blob_url</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="mi">95</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">blob_url</span><span class="p">)</span>  <span class="c1"># data:image/png;base64,...&lt;/pre&gt;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="load-image-from-blob-url">
+<h2>load_image_from_blob_url<a class="headerlink" href="#load-image-from-blob-url" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.data.blob.load_image_from_blob_url">
+<span class="sig-prename descclassname"><span class="pre">imgutils.data.blob.</span></span><span class="sig-name descname"><span class="pre">load_image_from_blob_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blob_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/data/blob.html#load_image_from_blob_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.data.blob.load_image_from_blob_url" title="Permalink to this definition"></a></dt>
+<dd><p>Load an image from a blob URL string.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>blob_url</strong> (<em>str</em>) – The blob URL string containing encoded image data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A PIL Image object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PIL.Image.Image</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the blob URL uses an unsupported encoding method</p>
+</dd>
+<dt class="field-odd">Warns UserWarning<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If MIME type doesn’t match the actual image format or is invalid</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blob_url</span> <span class="o">=</span> <span class="s2">&quot;data:image/png;base64,...&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">load_image_from_blob_url</span><span class="p">(</span><span class="n">blob_url</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="is-valid-image-blob-url">
+<h2>is_valid_image_blob_url<a class="headerlink" href="#is-valid-image-blob-url" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.data.blob.is_valid_image_blob_url">
+<span class="sig-prename descclassname"><span class="pre">imgutils.data.blob.</span></span><span class="sig-name descname"><span class="pre">is_valid_image_blob_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blob_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/imgutils/data/blob.html#is_valid_image_blob_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.data.blob.is_valid_image_blob_url" title="Permalink to this definition"></a></dt>
+<dd><p>Efficiently validate the format of an image blob URL (without validating data content).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>blob_url</strong> (<em>str</em>) – The URL string to validate</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the string is a valid image blob URL, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p>Valid formats:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid_image_blob_url</span><span class="p">(</span><span class="s1">&#39;data:image/png;base64,ABC&#39;</span><span class="p">)</span>  <span class="c1"># True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid_image_blob_url</span><span class="p">(</span><span class="s1">&#39;data:image/svg+xml,&lt;svg/&gt;&#39;</span><span class="p">)</span>  <span class="c1"># True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid_image_blob_url</span><span class="p">(</span><span class="s1">&#39;DATA:IMAGE/JPEG;quality=95,...&#39;</span><span class="p">)</span>  <span class="c1"># True</span>
+</pre></div>
+</div>
+<p>Invalid formats:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid_image_blob_url</span><span class="p">(</span><span class="s1">&#39;data:text/plain,hello&#39;</span><span class="p">)</span>  <span class="c1"># False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid_image_blob_url</span><span class="p">(</span><span class="s1">&#39;data:image/png&#39;</span><span class="p">)</span>  <span class="c1"># False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_valid_image_blob_url</span><span class="p">(</span><span class="s1">&#39;data:image/;base64,ABC&#39;</span><span class="p">)</span>  <span class="c1"># False</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="background.html" class="btn btn-neutral float-left" title="imgutils.data.background" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="encode.html" class="btn btn-neutral float-right" title="imgutils.data.encode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.13.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.10.0/index.html">v0.10.0</a></dd>
+                        <dd><a href="../../../v0.11.0/index.html">v0.11.0</a></dd>
+                        <dd><a href="../../../v0.11.1/index.html">v0.11.1</a></dd>
+                        <dd><a href="../../../v0.11.2/index.html">v0.11.2</a></dd>
+                        <dd><a href="../../../v0.12.0/index.html">v0.12.0</a></dd>
+                        <dd><a href="blob.html">v0.13.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../HEAD/api_doc/data/blob.html">HEAD</a></dd>
+                        <dd><a href="../../../dev/attachments/api_doc/data/blob.html">dev/attachments</a></dd>
+                        <dd><a href="../../../main/api_doc/data/blob.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
