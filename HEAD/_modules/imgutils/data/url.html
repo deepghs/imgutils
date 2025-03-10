@@ -234,7 +234,7 @@
 <span class="sd">    :return: Processed URL for downloading</span>
 <span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">URLObject</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">with_query</span><span class="p">(</span><span class="s1">&#39;raw=True&#39;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">URLObject</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">add_query_param</span><span class="p">(</span><span class="s1">&#39;raw&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">))</span>
 
 
 <span class="n">_HF_SUFFIX</span> <span class="o">=</span> <span class="p">{(</span><span class="s1">&#39;hf&#39;</span><span class="p">,</span> <span class="s1">&#39;co&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;huggingface&#39;</span><span class="p">,</span> <span class="s1">&#39;co&#39;</span><span class="p">)}</span>
@@ -321,10 +321,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/url/index.html">dev/url</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
                         <dd><a href="url.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/attachments/index.html">dev/attachments</a></dd>
-                        <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
