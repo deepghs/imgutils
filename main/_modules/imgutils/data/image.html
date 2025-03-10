@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>imgutils.data.image &mdash; imgutils 0.13.0 documentation</title>
+  <title>imgutils.data.image &mdash; imgutils 0.14.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=683c48dc"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=e667b912"></script>
       <script src="../../../_static/doctools.js?v=888ff710"></script>
       <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -211,8 +211,12 @@
 <span class="sd">    &#39;RGB&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.blob</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_valid_image_blob_url</span><span class="p">,</span> <span class="n">load_image_from_blob_url</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.url</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_http_url</span><span class="p">,</span> <span class="n">download_image_from_url</span>
+
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_valid_image_blob_url</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">load_image_from_blob_url</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_http_url</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">download_image_from_url</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">PathLike</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">,</span> <span class="n">BinaryIO</span><span class="p">))</span> <span class="ow">or</span> <span class="n">_is_readable</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
@@ -339,10 +343,9 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/download/index.html">dev/download</a></dd>
+                        <dd><a href="image.html">main</a></dd>
                         <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/attachments/index.html">dev/attachments</a></dd>
-                        <dd><a href="image.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

@@ -15,3 +15,4 @@ imgutils.data
     decode
     image
     layer
+    url
