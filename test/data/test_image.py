@@ -1,3 +1,5 @@
+import pathlib
+
 import pytest
 from PIL import Image
 
@@ -161,4 +163,20 @@ class TestHasAlphaChannel:
         local_image_file = get_testfile(*local_image)
         actual_image = load_image(url, mode='RGB', force_background='white')
         expected_image = load_image(local_image_file, mode='RGB', force_background='white')
+        assert image_diff(actual_image, expected_image, throw_exception=False) < 1e-2
+
+    @pytest.mark.parametrize(['filename'], [
+        ('mostima_post.jpg',),
+        ('genshin_post.jpg',),
+        ('nian_640.png',),
+    ])
+    def test_load_image_from_blob_url(self, filename, image_diff):
+        actual_image = load_image(
+            pathlib.Path(get_testfile(f'{filename}_blob.txt')).read_text().strip(),
+            mode='RGB', force_background='white'
+        )
+        expected_image = load_image(
+            get_testfile(filename),
+            mode='RGB', force_background='white'
+        )
         assert image_diff(actual_image, expected_image, throw_exception=False) < 1e-2
