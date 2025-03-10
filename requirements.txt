@@ -18,3 +18,5 @@ bchlib>=1.0.0,!=2.0.0,!=2.0.1,!=2.1.0,!=2.1.1,!=2.1.2
 piexif
 tokenizers>=0.20.0; python_version >= '3.9'
 tokenizers>=0.20.0,<0.21; python_version < '3.9'
+pyrfc6266>=1
+urlobject>=2
