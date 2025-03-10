@@ -46,7 +46,7 @@ setup(
     long_description_content_type='text/markdown',
     author=meta['__AUTHOR__'],
     author_email=meta['__AUTHOR_EMAIL__'],
-    license='Apache License, Version 2.0',
+    license='MIT',
     keywords=meta['__DESCRIPTION__'],
     url='https://github.com/deepghs/imgutils',
 
@@ -57,14 +57,40 @@ setup(
     extras_require=group_requirements,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
+
+        # Intended Audience
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
+        'Intended Audience :: Science/Research',
+        'Intended Audience :: Information Technology',
+
+        # License
+        'License :: OSI Approved :: MIT License',
+
+        # Programming Language
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
+
+        # Operating System
+        'Operating System :: OS Independent',
+        'Operating System :: POSIX',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: MacOS',
+
+        # Technical Topics
+        'Topic :: Scientific/Engineering',
+        'Topic :: Scientific/Engineering :: Image Processing',  # Core category
+        'Topic :: Multimedia :: Graphics',  # Related to graphics processing
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+
+        # Data Processing Features
+        'Typing :: Typed',  # If there are type annotations
+        'Natural Language :: English'  # Documentation language
     ],
 )
