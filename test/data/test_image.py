@@ -146,3 +146,19 @@ class TestHasAlphaChannel:
     def test_pa_image(self):
         pa_image = Image.new('PA', (10, 10))
         assert has_alpha_channel(pa_image)
+
+    @pytest.mark.parametrize(['url', 'local_image'], [
+        (
+                'https://github.com/deepghs/imgutils/blob/main/test/testfile/nian_640.png',
+                ('nian_640.png',)
+        ),
+        (
+                'https://huggingface.co/deepghs/eattach_monochrome_experiments/blob/main/mlp_layer1_seed1/plot_confusion.png',
+                ('plot_confusion.png',)
+        )
+    ])
+    def test_load_image_from_url(self, url, local_image, image_diff):
+        local_image_file = get_testfile(*local_image)
+        actual_image = load_image(url, mode='RGB', force_background='white')
+        expected_image = load_image(local_image_file, mode='RGB', force_background='white')
+        assert image_diff(actual_image, expected_image, throw_exception=False) < 1e-2
