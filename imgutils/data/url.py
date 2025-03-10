@@ -130,7 +130,7 @@ def _process_github_url_for_downloading(url: str) -> str:
     :return: Processed URL for downloading
     :rtype: str
     """
-    return str(URLObject(url).with_query('raw=True'))
+    return str(URLObject(url).add_query_param('raw', 'True'))
 
 
 _HF_SUFFIX = {('hf', 'co'), ('huggingface', 'co')}
