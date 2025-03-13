@@ -107,8 +107,12 @@ def load_image(image: ImageTyping, mode=None, force_background: Optional[str] = 
     'RGB'
     """
     from .blob import is_valid_image_blob_url, load_image_from_blob_url
+    from .url import is_http_url, download_image_from_url
+
     if isinstance(image, str) and is_valid_image_blob_url(image):
         image = load_image_from_blob_url(image)
+    elif isinstance(image, str) and is_http_url(image):
+        image = download_image_from_url(image, silent=True)
     elif isinstance(image, (str, PathLike, bytes, bytearray, BinaryIO)) or _is_readable(image):
         image = Image.open(image)
     elif isinstance(image, Image.Image):
