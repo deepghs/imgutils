@@ -182,31 +182,6 @@ class Attachment:
 
         return retval
 
-    def _predict_regression(self, embedding: np.ndarray, fmt: Any = 'full'):
-        """
-        Make regression predictions.
-
-        :param embedding: Input embedding array
-        :type embedding: np.ndarray
-        :param fmt: Format specification for output
-        :type fmt: Any
-        :return: List of formatted prediction results
-        :rtype: list
-        """
-        field_names = [name for name, _, _ in self._meta['problem']['fields']]
-        logits, prediction = self._predict_raw(embedding)
-        retval = []
-        for logit, pred in zip(logits, prediction):
-            result = dict(zip(field_names, pred.tolist()))
-            retval.append(vreplace(fmt, {
-                'full': result,
-                'logit': logit,
-                'prediction': pred,
-                **{f'field/{key}': value for key, value in result.items()},
-            }))
-
-        return retval
-
     def predict(self, embedding: np.ndarray, **kwargs):
         """
         Make predictions based on the problem type (classification, tagging, or regression).
@@ -231,8 +206,6 @@ class Attachment:
             result = self._predict_classification(embedding, **kwargs)
         elif problem_type == 'tagging':
             result = self._predict_tagging(embedding, **kwargs)
-        elif problem_type == 'regression':
-            result = self._predict_regression(embedding, **kwargs)
         else:
             raise ValueError(f'Unknown problem type - {problem_type!r}.')
 
