@@ -69,7 +69,7 @@ def load_model(model_name: str = "tagger_v_2_2_7"):
             expand=True
         )[0].last_commit.date.timestamp()
 
-    except KeyError:
+    except (KeyError, ValueError):
         logging.info('Cannot directly load it, load from head weights ...')
         model: PixAITaggerInference = get_model("pixai_tagger", model_version='tagger_v_2_2_7', device='cpu')
         state_dicts = torch.load(hf_client.hf_hub_download(
