@@ -283,7 +283,7 @@ def sync(repository: str = 'onopix/pixai-tagger-onnx'):
                 print('---', file=f)
                 print('', file=f)
 
-                print('ONNX export version from [TIMM](https://huggingface.co/timm).', file=f)
+                print('PixAI Tagger ONNX Exported Version.', file=f)
                 print('', file=f)
 
                 print(f'# Models', file=f)
