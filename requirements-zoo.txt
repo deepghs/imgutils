@@ -1,4 +1,4 @@
-torch<2
+torch
 lpips
 matplotlib
 torchvision
