@@ -167,7 +167,7 @@ def extract(export_dir: str, model_name: str = "tagger_v_2_2_7", no_optimize: bo
     logging.info('Exporting model weights ...')
     save_for_hf(
         model,
-        expected_logits,
+        export_dir,
         safe_serialization='both',
     )
 
