@@ -19,6 +19,7 @@ from natsort import natsorted
 from procslib import get_model
 from procslib.models.pixai_tagger import PixAITaggerInference
 from thop import profile, clever_format
+from timm.models._hub import save_for_hf
 from torch import nn
 
 from imgutils.preprocess import parse_torchvision_transforms
@@ -162,6 +163,13 @@ def extract(export_dir: str, model_name: str = "tagger_v_2_2_7", no_optimize: bo
     macs, params = profile(model, inputs=(dummy_input,))
     s_macs, s_params = clever_format([macs, params], "%.1f")
     logging.info(f'Params: {s_params}, FLOPs: {s_macs}')
+
+    logging.info('Exporting model weights ...')
+    save_for_hf(
+        model,
+        expected_logits,
+        safe_serialization='both',
+    )
 
     with open(os.path.join(export_dir, 'meta.json'), 'w') as f:
         json.dump({
