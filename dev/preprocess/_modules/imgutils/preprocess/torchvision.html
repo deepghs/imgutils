@@ -182,9 +182,28 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_int_from_interpolation_mode</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a torchvision.transforms.InterpolationMode enum value to its corresponding integer representation.</span>
+
+<span class="sd">    This function performs the reverse operation of _get_interpolation_mode, converting</span>
+<span class="sd">    InterpolationMode enum values back to their integer representations.</span>
+
+<span class="sd">    :param value: The InterpolationMode enum value to convert</span>
+<span class="sd">    :type value: InterpolationMode</span>
+
+<span class="sd">    :return: The integer representation of the interpolation mode</span>
+<span class="sd">    :rtype: int</span>
+
+<span class="sd">    :raises TypeError: If the input value is not an InterpolationMode enum value</span>
+
+<span class="sd">    :examples:</span>
+<span class="sd">        &gt;&gt;&gt; mode = InterpolationMode.BILINEAR</span>
+<span class="sd">        &gt;&gt;&gt; _get_int_from_interpolation_mode(mode)  # Returns 2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">torchvision.transforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterpolationMode</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">InterpolationMode</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown type of interpolation mode, cannot be transformed to int - </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Unknown type of interpolation mode, cannot be transformed to int - </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
 
     <span class="n">_INTERMODE_TO_INT</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">NEAREST</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
@@ -461,6 +480,14 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Resize and center-pad PIL image to target size with background color.</span>
 <span class="sd">        TorchVision-compatible transform that can be composed.</span>
+
+<span class="sd">        :param size: Target size as (height, width) tuple or single int for square output</span>
+<span class="sd">        :type size: Union[Tuple[int, int], int]</span>
+<span class="sd">        :param background_color: Color to use for padding. Can be string name, RGB/RGBA tuple, or single int</span>
+<span class="sd">        :param interpolation: Interpolation mode for resizing, defaults to BILINEAR</span>
+<span class="sd">        :type interpolation: InterpolationMode</span>
+
+<span class="sd">        :raises ValueError: If size or background_color format is invalid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
@@ -474,6 +501,16 @@
             <span class="n">_parse_color_to_rgba</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">background_color</span><span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Apply padding transform to input image.</span>
+
+<span class="sd">            :param pic: Input PIL Image</span>
+<span class="sd">            :type pic: PIL.Image.Image</span>
+
+<span class="sd">            :return: Padded image with target size</span>
+<span class="sd">            :rtype: PIL.Image.Image</span>
+<span class="sd">            :raises TypeError: If input is not a PIL Image</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;pic should be PIL Image. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">pic</span><span class="p">)))</span>
 
@@ -496,6 +533,20 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_create_pad_to_size</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
                         <span class="n">background_color</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>
                         <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory function to create PadToSize transform instance.</span>
+
+<span class="sd">    :param size: Target size as (height, width) tuple or single int</span>
+<span class="sd">    :type size: Union[Tuple[int, int], int]</span>
+<span class="sd">    :param background_color: Color for padding</span>
+<span class="sd">    :type background_color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]]</span>
+<span class="sd">    :param interpolation: Interpolation mode name</span>
+<span class="sd">    :type interpolation: str</span>
+
+<span class="sd">    :return: PadToSize transform instance</span>
+<span class="sd">    :rtype: PadToSize</span>
+<span class="sd">    :raises AssertionError: If torchvision is not available</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">PadToSize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">PadToSize</span><span class="p">(</span>
         <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
@@ -506,6 +557,17 @@
 
 <span class="nd">@_register_parse</span><span class="p">(</span><span class="s1">&#39;pad_to_size&#39;</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">_parse_pad_to_size</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse PadToSize transform object for serialization.</span>
+
+<span class="sd">    :param obj: Transform object to parse</span>
+<span class="sd">    :type obj: Any</span>
+
+<span class="sd">    :return: Dictionary containing transform parameters</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If object is not a PadToSize instance</span>
+<span class="sd">    :raises AssertionError: If torchvision is not available</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">PadToSize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PadToSize</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">NotParseTarget</span>

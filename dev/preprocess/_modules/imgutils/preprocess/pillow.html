@@ -905,6 +905,18 @@
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">PillowPadToSize</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for padding images to a specified size.</span>
+
+<span class="sd">    This class provides functionality to pad images to a target size while maintaining</span>
+<span class="sd">    the original image content. It supports various padding colors and interpolation methods.</span>
+
+<span class="sd">    :param size: Target size as (width, height) tuple or single integer for square</span>
+<span class="sd">    :param background_color: Color for padding area (RGB, RGBA, string color name, or integer)</span>
+<span class="sd">    :param interpolation: PIL interpolation method for resizing</span>
+<span class="sd">    :type interpolation: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
                  <span class="n">background_color</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>
                  <span class="n">interpolation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">):</span>
@@ -916,6 +928,16 @@
         <span class="n">_parse_color_to_rgba</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">background_color</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply padding transformation to the input image.</span>
+
+<span class="sd">        :param pic: Input PIL Image</span>
+<span class="sd">        :type pic: PIL.Image.Image</span>
+
+<span class="sd">        :return: Padded image</span>
+<span class="sd">        :rtype: PIL.Image.Image</span>
+<span class="sd">        :raises TypeError: If input is not a PIL Image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;pic should be PIL Image. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">pic</span><span class="p">)))</span>
 
@@ -927,6 +949,12 @@
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return string representation of the class.</span>
+
+<span class="sd">        :return: String representation</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">interpolate_str</span> <span class="o">=</span> <span class="n">_PILLOW_TO_STR</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">]</span>
         <span class="n">detail</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(size=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">, interpolation=</span><span class="si">{</span><span class="n">interpolate_str</span><span class="si">}</span><span class="s2">, background_color=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">background_color</span><span class="si">}</span><span class="s2">)&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">detail</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -936,6 +964,19 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_create_pad_to_size</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
                         <span class="n">background_color</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>
                         <span class="n">interpolation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;bilinear&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory function to create PillowPadToSize instance.</span>
+
+<span class="sd">    :param size: Target size for padding</span>
+<span class="sd">    :type size: Union[Tuple[int, int], int]</span>
+<span class="sd">    :param background_color: Color for padding area</span>
+<span class="sd">    :type background_color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]]</span>
+<span class="sd">    :param interpolation: Interpolation method name</span>
+<span class="sd">    :type interpolation: str</span>
+
+<span class="sd">    :return: PillowPadToSize instance</span>
+<span class="sd">    :rtype: PillowPadToSize</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">PillowPadToSize</span><span class="p">(</span>
         <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
         <span class="n">background_color</span><span class="o">=</span><span class="n">background_color</span><span class="p">,</span>
@@ -945,6 +986,16 @@
 
 <span class="nd">@register_pillow_parse</span><span class="p">(</span><span class="s1">&#39;pad_to_size&#39;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">_parse_pad_to_size</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse PillowPadToSize object to dictionary configuration.</span>
+
+<span class="sd">    :param obj: Object to parse</span>
+<span class="sd">    :type obj: Any</span>
+
+<span class="sd">    :return: Configuration dictionary</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If object is not PillowPadToSize instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PillowPadToSize</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">NotParseTarget</span>
 
