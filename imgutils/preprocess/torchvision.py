@@ -80,7 +80,8 @@ def _get_interpolation_mode(value):
 def _get_int_from_interpolation_mode(value):
     from torchvision.transforms import InterpolationMode
     if not isinstance(value, InterpolationMode):
-        raise TypeError(f'Unknown type of interpolation mode, cannot be transformed to int - {value!r}')
+        raise TypeError(
+            f'Unknown type of interpolation mode, cannot be transformed to int - {value!r}')  # pragma: no cover
 
     _INTERMODE_TO_INT = {
         InterpolationMode.NEAREST: 0,

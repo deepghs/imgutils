@@ -1552,3 +1552,7 @@ class TestPreprocessPillow:
             grid_transparent(expected_image),
             throw_exception=False
         ) < 1e-2
+
+    def test_pad_to_size_error(self):
+        with pytest.raises(TypeError):
+            PillowPadToSize((512, 512))(np.random.randn(1, 3, 384, 384))

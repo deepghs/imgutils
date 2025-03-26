@@ -1,6 +1,7 @@
 from typing import Union, Tuple
 from unittest import skipUnless
 
+import numpy as np
 import pytest
 from PIL import Image
 from hbutils.testing import tmatrix
@@ -8,7 +9,7 @@ from hbutils.testing import tmatrix
 from imgutils.data import load_image, grid_transparent
 from imgutils.preprocess import NotParseTarget, create_pillow_transforms
 from imgutils.preprocess.torchvision import _get_interpolation_mode, create_torchvision_transforms, \
-    parse_torchvision_transforms, register_torchvision_transform, register_torchvision_parse
+    parse_torchvision_transforms, register_torchvision_transform, register_torchvision_parse, PadToSize
 from test.testings import get_testfile
 
 try:
@@ -353,3 +354,7 @@ class TestPreprocessPillow:
     ])
     def test_pad_to_size_repr_text(self, json_, repr_text):
         assert repr(create_torchvision_transforms(json_)) == repr_text
+
+    def test_pad_to_size_error(self):
+        with pytest.raises(TypeError):
+            PadToSize((512, 512))(np.random.randn(1, 3, 384, 384))
