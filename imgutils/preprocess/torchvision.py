@@ -409,7 +409,8 @@ def _parse_pad_to_size(obj):
     obj: PadToSize
     return {
         'size': list(obj.size),
-        'background_color': obj.background_color,
+        'background_color': (list(obj.background_color)
+                             if isinstance(obj.background_color, (list, tuple)) else obj.background_color),
         'interpolation': obj.interpolation.value,
     }
 

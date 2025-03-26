@@ -5,7 +5,8 @@ import pytest
 from PIL import Image
 from hbutils.testing import tmatrix
 
-from imgutils.preprocess import NotParseTarget
+from imgutils.data import load_image, grid_transparent
+from imgutils.preprocess import NotParseTarget, create_pillow_transforms
 from imgutils.preprocess.torchvision import _get_interpolation_mode, create_torchvision_transforms, \
     parse_torchvision_transforms, register_torchvision_transform, register_torchvision_parse
 from test.testings import get_testfile
@@ -235,3 +236,120 @@ class TestPreprocessPillow:
             'saturation': (0.0, 0.8),
             'type': 'color_jitter'
         })
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'json_': [
+            {'type': 'pad_to_size', 'size': [512, 768], 'background_color': 'white', 'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'gray', 'interpolation': 'lanczos'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255), 'interpolation': 'bicubic'},
+            {'type': 'pad_to_size', 'size': [384, 512], 'background_color': 'blue', 'interpolation': 'box'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 255, 255),
+             'interpolation': 'bilinear'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'blue', 'interpolation': 'lanczos'},
+            {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'red', 'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'gray', 'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 0, 0, 128), 'interpolation': 'box'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255, 128),
+             'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255, 128),
+             'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255), 'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 255, 255),
+             'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 0, 0, 128),
+             'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'white', 'interpolation': 'bilinear'},
+        ],
+        'filename': [
+            'nian_640_L.png',
+            'nian_640_LA.png',
+            'nian_640_RGB.png',
+            'nian_640_RGBA.png',
+            'png_640_m90.png',
+            'png_640.png',
+            'dori_640.png',
+        ]
+    }, mode='matrix'))
+    def test_align_pad_to_size(self, json_, filename, image_diff):
+        src_image = load_image(get_testfile(filename), mode=None, force_background=None)
+        tprocess = create_torchvision_transforms(json_)
+        pprocess = create_pillow_transforms(json_)
+        assert image_diff(
+            grid_transparent(tprocess(src_image)),
+            grid_transparent(pprocess(src_image)),
+            throw_exception=False
+        ) < 1e-3
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(['json_from', 'json_to'], [
+        ({'type': 'pad_to_size', 'size': [512, 768], 'background_color': 'white', 'interpolation': 'nearest'},
+         {'type': 'pad_to_size', 'size': [512, 768], 'background_color': 'white', 'interpolation': 'nearest'}),
+        ({'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'gray', 'interpolation': 'lanczos'},
+         {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'gray', 'interpolation': 'lanczos'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255), 'interpolation': 'bicubic'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': [0, 0, 255], 'interpolation': 'bicubic'}),
+        ({'type': 'pad_to_size', 'size': [384, 512], 'background_color': 'blue', 'interpolation': 'box'},
+         {'type': 'pad_to_size', 'size': [384, 512], 'background_color': 'blue', 'interpolation': 'box'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 255, 255), 'interpolation': 'bilinear'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': [255, 255, 255], 'interpolation': 'bilinear'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'blue', 'interpolation': 'lanczos'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'blue', 'interpolation': 'lanczos'}),
+        ({'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'red', 'interpolation': 'nearest'},
+         {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'red', 'interpolation': 'nearest'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'gray', 'interpolation': 'hamming'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'gray', 'interpolation': 'hamming'}),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 0, 0, 128), 'interpolation': 'box'},
+         {'type': 'pad_to_size', 'size': [384, 384], 'background_color': [255, 0, 0, 128], 'interpolation': 'box'}),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255, 128), 'interpolation': 'hamming'},
+         {'type': 'pad_to_size', 'size': [384, 384], 'background_color': [0, 0, 255, 128], 'interpolation': 'hamming'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255, 128), 'interpolation': 'nearest'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': [0, 0, 255, 128], 'interpolation': 'nearest'}),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255), 'interpolation': 'hamming'},
+         {'type': 'pad_to_size', 'size': [384, 384], 'background_color': [0, 0, 255], 'interpolation': 'hamming'}),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 255, 255), 'interpolation': 'hamming'},
+         {'type': 'pad_to_size', 'size': [384, 384], 'background_color': [255, 255, 255], 'interpolation': 'hamming'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 0, 0, 128), 'interpolation': 'hamming'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': [255, 0, 0, 128], 'interpolation': 'hamming'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'white', 'interpolation': 'bilinear'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'white', 'interpolation': 'bilinear'}),
+
+    ])
+    def test_pad_to_size_to_json(self, json_from, json_to):
+        assert parse_torchvision_transforms(create_torchvision_transforms(json_from)) == json_to
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(['json_', 'repr_text'], [
+        ({'type': 'pad_to_size', 'size': [512, 768], 'background_color': 'white', 'interpolation': 'nearest'},
+         'PadToSize(size=(512, 768), interpolation=nearest, background_color=white)'),
+        ({'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'gray', 'interpolation': 'lanczos'},
+         'PadToSize(size=(768, 512), interpolation=lanczos, background_color=gray)'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255), 'interpolation': 'bicubic'},
+         'PadToSize(size=(512, 512), interpolation=bicubic, background_color=(0, 0, 255))'),
+        ({'type': 'pad_to_size', 'size': [384, 512], 'background_color': 'blue', 'interpolation': 'box'},
+         'PadToSize(size=(384, 512), interpolation=box, background_color=blue)'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 255, 255), 'interpolation': 'bilinear'},
+         'PadToSize(size=(512, 512), interpolation=bilinear, background_color=(255, 255, 255))'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'blue', 'interpolation': 'lanczos'},
+         'PadToSize(size=(512, 512), interpolation=lanczos, background_color=blue)'),
+        ({'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'red', 'interpolation': 'nearest'},
+         'PadToSize(size=(768, 512), interpolation=nearest, background_color=red)'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'gray', 'interpolation': 'hamming'},
+         'PadToSize(size=(512, 512), interpolation=hamming, background_color=gray)'),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 0, 0, 128), 'interpolation': 'box'},
+         'PadToSize(size=(384, 384), interpolation=box, background_color=(255, 0, 0, 128))'),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255, 128), 'interpolation': 'hamming'},
+         'PadToSize(size=(384, 384), interpolation=hamming, background_color=(0, 0, 255, 128))'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255, 128), 'interpolation': 'nearest'},
+         'PadToSize(size=(512, 512), interpolation=nearest, background_color=(0, 0, 255, 128))'),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255), 'interpolation': 'hamming'},
+         'PadToSize(size=(384, 384), interpolation=hamming, background_color=(0, 0, 255))'),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 255, 255), 'interpolation': 'hamming'},
+         'PadToSize(size=(384, 384), interpolation=hamming, background_color=(255, 255, 255))'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 0, 0, 128), 'interpolation': 'hamming'},
+         'PadToSize(size=(512, 512), interpolation=hamming, background_color=(255, 0, 0, 128))'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'white', 'interpolation': 'bilinear'},
+         'PadToSize(size=(512, 512), interpolation=bilinear, background_color=white)'),
+    ])
+    def test_pad_to_size_repr_text(self, json_, repr_text):
+        assert repr(create_torchvision_transforms(json_)) == repr_text
