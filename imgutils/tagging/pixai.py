@@ -15,7 +15,7 @@ EXP_REPO = 'onopix/pixai-tagger-onnx'
 MODEL_FILENAME = "model.onnx"
 LABEL_FILENAME = "selected_tags.csv"
 
-_DEFAULT_MODEL_NAME = 'tagger_v_2_2_7'
+_DEFAULT_MODEL_NAME = 'tagger_v_2_3_2'
 
 
 @ts_lru_cache()
