@@ -21,11 +21,10 @@ def _parse_size(size):
 def _parse_color_to_rgba(color):
     if isinstance(color, str):
         rgba = ImageColor.getrgb(color) + (255,)
-        if len(rgba) < 4:
-            rgba = rgba[:3] + (255,)
+        rgba = tuple([*rgba, *((255,) * (4 - len(rgba)))])
     elif isinstance(color, int):
         rgba = (color, color, color, 255)
-    elif isinstance(color, tuple):
+    elif isinstance(color, (list, tuple)):
         rgba = color + (255,) * (4 - len(color))
     else:
         raise TypeError(f"Invalid color type: {type(color)}")
@@ -33,9 +32,9 @@ def _parse_color_to_rgba(color):
     return rgba
 
 
-def _parse_color_to_mode(color, mode: Literal['RGB', 'RGBA', 'P', 'L', 'LA']):
+def _parse_color_to_mode(color, mode: Literal['RGB', 'RGBA', 'L', 'LA']):
     rgba = _parse_color_to_rgba(color)
-    if mode == 'L' or mode == 'P':
+    if mode == 'L':
         return int(0.299 * rgba[0] + 0.587 * rgba[1] + 0.114 * rgba[2])
     elif mode == "LA":
         gray = int(0.299 * rgba[0] + 0.587 * rgba[1] + 0.114 * rgba[2])
@@ -45,7 +44,7 @@ def _parse_color_to_mode(color, mode: Literal['RGB', 'RGBA', 'P', 'L', 'LA']):
     elif mode == "RGBA":
         return rgba
     else:
-        raise ValueError(f"Unsupported mode: {mode}")
+        raise ValueError(f"Unsupported image mode: {mode!r}")
 
 
 def pad_image_to_size(pic: ImageTyping, size: Union[int, Tuple[int, int]],
