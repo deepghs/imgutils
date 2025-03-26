@@ -9,14 +9,20 @@ and normalization. It provides a flexible framework for extending with additiona
 
 import copy
 from functools import wraps
-from typing import Union
+from typing import Union, Tuple
+
+from PIL import Image
 
 from .base import NotParseTarget
+from ..data import pad_image_to_size
 
 try:
     import torchvision
+    import torch
 except (ImportError, ModuleNotFoundError):
     _HAS_TORCHVISION = False
+    torchvision = None
+    torch = None
 else:
     _HAS_TORCHVISION = True
 
@@ -69,6 +75,22 @@ def _get_interpolation_mode(value):
         return _STR_TO_INTERMODE[value]
     else:
         raise TypeError(f'Unknown type of interpolation mode - {value!r}.')
+
+
+def _get_int_from_interpolation_mode(value):
+    from torchvision.transforms import InterpolationMode
+    if not isinstance(value, InterpolationMode):
+        raise TypeError(f'Unknown type of interpolation mode, cannot be transformed to int - {value!r}')
+
+    _INTERMODE_TO_INT = {
+        InterpolationMode.NEAREST: 0,
+        InterpolationMode.BILINEAR: 2,
+        InterpolationMode.BICUBIC: 3,
+        InterpolationMode.BOX: 4,
+        InterpolationMode.HAMMING: 5,
+        InterpolationMode.LANCZOS: 1,
+    }
+    return _INTERMODE_TO_INT[value]
 
 
 _TRANS_CREATORS = {}
@@ -324,6 +346,71 @@ def _parse_normalize(obj):
     return {
         'mean': obj.mean.tolist() if hasattr(obj.mean, 'tolist') else obj.mean,
         'std': obj.std.tolist() if hasattr(obj.std, 'tolist') else obj.std,
+    }
+
+
+if _HAS_TORCHVISION:
+    from torchvision.transforms import InterpolationMode
+
+
+    class PadToSize(torch.nn.Module):
+        """
+        Resize and center-pad PIL image to target size with background color.
+        TorchVision-compatible transform that can be composed.
+        """
+
+        def __init__(self, size: Union[Tuple[int, int], int],
+                     background_color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]] = 'white',
+                     interpolation: InterpolationMode = InterpolationMode.BILINEAR):
+            super().__init__()
+            from ..data.pad import _parse_size, _parse_color_to_rgba
+            self.size: Tuple[int, int] = _parse_size(size)
+            self.background_color = background_color
+            self.interpolation: InterpolationMode = interpolation
+            _parse_color_to_rgba(self.background_color)
+
+        def forward(self, pic):
+            if not isinstance(pic, Image.Image):
+                raise TypeError('pic should be PIL Image. Got {}'.format(type(pic)))
+
+            return pad_image_to_size(
+                pic=pic,
+                size=self.size,
+                background_color=self.background_color,
+                interpolation=_get_int_from_interpolation_mode(self.interpolation),
+            )
+
+        def __repr__(self) -> str:
+            detail = f"(size={self.size}, interpolation={self.interpolation.value}, background_color={self.background_color})"
+            return f"{self.__class__.__name__}{detail}"
+
+else:
+    PadToSize = None
+
+
+@_register_transform('pad_to_size', safe=False)
+def _create_pad_to_size(size: Union[Tuple[int, int], int],
+                        background_color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]] = 'white',
+                        interpolation='bilinear'):
+    assert PadToSize is not None
+    return PadToSize(
+        size=size,
+        background_color=background_color,
+        interpolation=_get_interpolation_mode(interpolation),
+    )
+
+
+@_register_parse('pad_to_size', safe=False)
+def _parse_pad_to_size(obj):
+    assert PadToSize is not None
+    if not isinstance(obj, PadToSize):
+        raise NotParseTarget
+
+    obj: PadToSize
+    return {
+        'size': list(obj.size),
+        'background_color': obj.background_color,
+        'interpolation': obj.interpolation.value,
     }
 
 
