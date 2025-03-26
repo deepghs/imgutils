@@ -121,12 +121,12 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_parse_size</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_size</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse size parameter into a tuple of width and height.</span>
 
 <span class="sd">    :param size: Size specification as an integer or tuple of two integers</span>
-<span class="sd">    :type size: Union[int, Tuple[int, int], list]</span>
+<span class="sd">    :type size: Union[Tuple[int, int], int]</span>
 
 <span class="sd">    :return: Tuple containing width and height</span>
 <span class="sd">    :rtype: Tuple[int, int]</span>
@@ -141,12 +141,12 @@
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Size must be int or tuple of two ints&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_parse_color_to_rgba</span><span class="p">(</span><span class="n">color</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_color_to_rgba</span><span class="p">(</span><span class="n">color</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert various color formats to RGBA tuple.</span>
 
 <span class="sd">    :param color: Color specification (string, integer, or tuple/list)</span>
-<span class="sd">    :type color: Union[str, int, Tuple, list]</span>
+<span class="sd">    :type color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]]</span>
 
 <span class="sd">    :return: RGBA color tuple</span>
 <span class="sd">    :rtype: Tuple[int, int, int, int]</span>
@@ -159,7 +159,7 @@
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">rgba</span> <span class="o">=</span> <span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
-        <span class="n">rgba</span> <span class="o">=</span> <span class="n">color</span> <span class="o">+</span> <span class="p">(</span><span class="mi">255</span><span class="p">,)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
+        <span class="n">rgba</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="o">*</span><span class="n">color</span><span class="p">,</span> <span class="o">*</span><span class="p">((</span><span class="mi">255</span><span class="p">,)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">color</span><span class="p">)))])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid color type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">color</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
