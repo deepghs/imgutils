@@ -78,6 +78,24 @@ def _get_interpolation_mode(value):
 
 
 def _get_int_from_interpolation_mode(value):
+    """
+    Convert a torchvision.transforms.InterpolationMode enum value to its corresponding integer representation.
+
+    This function performs the reverse operation of _get_interpolation_mode, converting
+    InterpolationMode enum values back to their integer representations.
+
+    :param value: The InterpolationMode enum value to convert
+    :type value: InterpolationMode
+
+    :return: The integer representation of the interpolation mode
+    :rtype: int
+
+    :raises TypeError: If the input value is not an InterpolationMode enum value
+
+    :examples:
+        >>> mode = InterpolationMode.BILINEAR
+        >>> _get_int_from_interpolation_mode(mode)  # Returns 2
+    """
     from torchvision.transforms import InterpolationMode
     if not isinstance(value, InterpolationMode):
         raise TypeError(
@@ -358,6 +376,14 @@ if _HAS_TORCHVISION:
         """
         Resize and center-pad PIL image to target size with background color.
         TorchVision-compatible transform that can be composed.
+
+        :param size: Target size as (height, width) tuple or single int for square output
+        :type size: Union[Tuple[int, int], int]
+        :param background_color: Color to use for padding. Can be string name, RGB/RGBA tuple, or single int
+        :param interpolation: Interpolation mode for resizing, defaults to BILINEAR
+        :type interpolation: InterpolationMode
+
+        :raises ValueError: If size or background_color format is invalid
         """
 
         def __init__(self, size: Union[Tuple[int, int], int],
@@ -371,6 +397,16 @@ if _HAS_TORCHVISION:
             _parse_color_to_rgba(self.background_color)
 
         def forward(self, pic):
+            """
+            Apply padding transform to input image.
+
+            :param pic: Input PIL Image
+            :type pic: PIL.Image.Image
+
+            :return: Padded image with target size
+            :rtype: PIL.Image.Image
+            :raises TypeError: If input is not a PIL Image
+            """
             if not isinstance(pic, Image.Image):
                 raise TypeError('pic should be PIL Image. Got {}'.format(type(pic)))
 
@@ -393,6 +429,20 @@ else:
 def _create_pad_to_size(size: Union[Tuple[int, int], int],
                         background_color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]] = 'white',
                         interpolation='bilinear'):
+    """
+    Factory function to create PadToSize transform instance.
+
+    :param size: Target size as (height, width) tuple or single int
+    :type size: Union[Tuple[int, int], int]
+    :param background_color: Color for padding
+    :type background_color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]]
+    :param interpolation: Interpolation mode name
+    :type interpolation: str
+
+    :return: PadToSize transform instance
+    :rtype: PadToSize
+    :raises AssertionError: If torchvision is not available
+    """
     assert PadToSize is not None
     return PadToSize(
         size=size,
@@ -403,6 +453,17 @@ def _create_pad_to_size(size: Union[Tuple[int, int], int],
 
 @_register_parse('pad_to_size', safe=False)
 def _parse_pad_to_size(obj):
+    """
+    Parse PadToSize transform object for serialization.
+
+    :param obj: Transform object to parse
+    :type obj: Any
+
+    :return: Dictionary containing transform parameters
+    :rtype: dict
+    :raises NotParseTarget: If object is not a PadToSize instance
+    :raises AssertionError: If torchvision is not available
+    """
     assert PadToSize is not None
     if not isinstance(obj, PadToSize):
         raise NotParseTarget
