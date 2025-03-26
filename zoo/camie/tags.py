@@ -91,6 +91,10 @@ def load_tags():
                     logging.info(f'Tag info found from danbooru - {tag_info!r}.')
                     tag_id = tag_info['id']
                     count = tag_info['post_count']
+                    if category != tag_info['category']:
+                        logging.warning(f'Category not match for tag {tag_name!r}, '
+                                        f'replace category {category!r} --> {tag_info["category"]!r}')
+                        category = tag_info['category']
             elif category == 9:
                 tag_name = tag_name.split('_', maxsplit=1)[-1]
                 tag_id = _RATING_TAG_IDS[tag_name]
