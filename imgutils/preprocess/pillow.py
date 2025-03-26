@@ -806,7 +806,8 @@ class PillowPadToSize:
                  interpolation: int = Image.BILINEAR):
         from ..data.pad import _parse_size, _parse_color_to_rgba
         self.size = _parse_size(size)
-        self.background_color = background_color
+        self.background_color = (tuple(background_color)
+                                 if isinstance(background_color, (list, tuple)) else background_color)
         self.interpolation = interpolation
         _parse_color_to_rgba(self.background_color)
 
@@ -846,7 +847,8 @@ def _parse_pad_to_size(obj):
     obj: PillowPadToSize
     return {
         'size': list(obj.size),
-        'background_color': obj.background_color,
+        'background_color': (list(obj.background_color)
+                             if isinstance(obj.background_color, (list, tuple)) else obj.background_color),
         'interpolation': _PILLOW_TO_STR[obj.interpolation],
     }
 

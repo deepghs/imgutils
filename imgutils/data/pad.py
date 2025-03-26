@@ -17,12 +17,12 @@ __all__ = [
 ]
 
 
-def _parse_size(size):
+def _parse_size(size: Union[Tuple[int, int], int]):
     """
     Parse size parameter into a tuple of width and height.
 
     :param size: Size specification as an integer or tuple of two integers
-    :type size: Union[int, Tuple[int, int], list]
+    :type size: Union[Tuple[int, int], int]
 
     :return: Tuple containing width and height
     :rtype: Tuple[int, int]
@@ -37,12 +37,12 @@ def _parse_size(size):
         raise TypeError("Size must be int or tuple of two ints")
 
 
-def _parse_color_to_rgba(color):
+def _parse_color_to_rgba(color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]]):
     """
     Convert various color formats to RGBA tuple.
 
     :param color: Color specification (string, integer, or tuple/list)
-    :type color: Union[str, int, Tuple, list]
+    :type color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]]
 
     :return: RGBA color tuple
     :rtype: Tuple[int, int, int, int]
@@ -55,7 +55,7 @@ def _parse_color_to_rgba(color):
     elif isinstance(color, int):
         rgba = (color, color, color, 255)
     elif isinstance(color, (list, tuple)):
-        rgba = color + (255,) * (4 - len(color))
+        rgba = tuple([*color, *((255,) * (4 - len(color)))])
     else:
         raise TypeError(f"Invalid color type: {type(color)}")
 
