@@ -123,4 +123,5 @@ def load_tags():
 
 if __name__ == '__main__':
     logging.try_init_root(level=logging.INFO)
-    load_tags()
+    df = load_tags()
+    df.to_csv('test_df.csv', index=False)
