@@ -113,14 +113,20 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotParseTarget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">pad_image_to_size</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">torchvision</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
     <span class="n">_HAS_TORCHVISION</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">torchvision</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">torch</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">_HAS_TORCHVISION</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -173,6 +179,60 @@
         <span class="k">return</span> <span class="n">_STR_TO_INTERMODE</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown type of interpolation mode - </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_int_from_interpolation_mode</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a torchvision.transforms.InterpolationMode enum value to its corresponding integer representation.</span>
+
+<span class="sd">    This function performs the reverse operation of _get_interpolation_mode, converting</span>
+<span class="sd">    InterpolationMode enum values back to their integer representations.</span>
+
+<span class="sd">    :param value: The InterpolationMode enum value to convert</span>
+<span class="sd">    :type value: InterpolationMode</span>
+
+<span class="sd">    :return: The integer representation of the interpolation mode</span>
+<span class="sd">    :rtype: int</span>
+
+<span class="sd">    :raises TypeError: If the input value is not an InterpolationMode enum value</span>
+
+<span class="sd">    :examples:</span>
+<span class="sd">        &gt;&gt;&gt; mode = InterpolationMode.BILINEAR</span>
+<span class="sd">        &gt;&gt;&gt; _get_int_from_interpolation_mode(mode)  # Returns 2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">torchvision.transforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterpolationMode</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">InterpolationMode</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Unknown type of interpolation mode, cannot be transformed to int - </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+    <span class="n">_INTERMODE_TO_INT</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">NEAREST</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">BOX</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">HAMMING</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">LANCZOS</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">_INTERMODE_TO_INT</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_interpolation_str_from_mode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert InterpolationMode to string for F.interpolate&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">torchvision.transforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterpolationMode</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">InterpolationMode</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Unknown type of interpolation mode, cannot be transformed to int - </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+    <span class="n">_INTERMODE_TO_STR</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">NEAREST</span><span class="p">:</span> <span class="s1">&#39;nearest&#39;</span><span class="p">,</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">:</span> <span class="s1">&#39;bilinear&#39;</span><span class="p">,</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">BICUBIC</span><span class="p">:</span> <span class="s1">&#39;bicubic&#39;</span><span class="p">,</span>
+        <span class="c1"># For modes not directly supported by F.interpolate, we map to the closest equivalent</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">BOX</span><span class="p">:</span> <span class="s1">&#39;area&#39;</span><span class="p">,</span>  <span class="c1"># BOX is similar to area interpolation</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">HAMMING</span><span class="p">:</span> <span class="s1">&#39;bilinear&#39;</span><span class="p">,</span>  <span class="c1"># No direct equivalent, use bilinear</span>
+        <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">LANCZOS</span><span class="p">:</span> <span class="s1">&#39;bicubic&#39;</span><span class="p">,</span>  <span class="c1"># No direct equivalent, use bicubic</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">_INTERMODE_TO_STR</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
 
 
 <span class="n">_TRANS_CREATORS</span> <span class="o">=</span> <span class="p">{}</span>
@@ -431,6 +491,214 @@
     <span class="p">}</span>
 
 
+<span class="k">if</span> <span class="n">_HAS_TORCHVISION</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">torchvision.transforms</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterpolationMode</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">PadToSize</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resize and center-pad PIL image to target size with background color.</span>
+<span class="sd">        TorchVision-compatible transform that can be composed.</span>
+
+<span class="sd">        This transform first resizes the input image to fit within the target size</span>
+<span class="sd">        while preserving its aspect ratio, then pads the result with the specified</span>
+<span class="sd">        background color to reach the exact target dimensions.</span>
+
+<span class="sd">        :param size: Target size as (height, width) tuple or single int for square output</span>
+<span class="sd">        :param background_color: Color to use for padding. Can be string name, RGB/RGBA tuple, or single int</span>
+<span class="sd">        :param interpolation: Interpolation mode for resizing, defaults to BILINEAR</span>
+<span class="sd">        :type interpolation: InterpolationMode</span>
+
+<span class="sd">        :raises ValueError: If size or background_color format is invalid</span>
+
+<span class="sd">        :example:</span>
+
+<span class="sd">        &gt;&gt;&gt; transform = PadToSize(size=(300, 300), background_color=&#39;black&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; padded_image = transform(input_image)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
+                     <span class="n">background_color</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>
+                     <span class="n">interpolation</span><span class="p">:</span> <span class="n">InterpolationMode</span> <span class="o">=</span> <span class="n">InterpolationMode</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">..data.pad</span><span class="w"> </span><span class="kn">import</span> <span class="n">_parse_size</span><span class="p">,</span> <span class="n">_parse_color_to_rgba</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">_parse_size</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">background_color</span> <span class="o">=</span> <span class="n">background_color</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">:</span> <span class="n">InterpolationMode</span> <span class="o">=</span> <span class="n">interpolation</span>
+            <span class="n">_parse_color_to_rgba</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">background_color</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_pad_pil_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Pad a PIL image to the target size.</span>
+
+<span class="sd">            :param pic: Input PIL Image</span>
+<span class="sd">            :type pic: PIL.Image.Image</span>
+
+<span class="sd">            :return: Padded PIL Image</span>
+<span class="sd">            :rtype: PIL.Image.Image</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">pad_image_to_size</span><span class="p">(</span>
+                <span class="n">pic</span><span class="o">=</span><span class="n">pic</span><span class="p">,</span>
+                <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+                <span class="n">background_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">background_color</span><span class="p">,</span>
+                <span class="n">interpolation</span><span class="o">=</span><span class="n">_get_int_from_interpolation_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_pad_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Pad a tensor to the target size.</span>
+
+<span class="sd">            :param tensor: Input tensor image</span>
+<span class="sd">            :type tensor: torch.Tensor</span>
+
+<span class="sd">            :return: Padded tensor</span>
+<span class="sd">            :rtype: torch.Tensor</span>
+<span class="sd">            :raises ValueError: If tensor dimensions are not 3 or 4</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">..data.pad</span><span class="w"> </span><span class="kn">import</span> <span class="n">_parse_color_to_mode</span>
+
+            <span class="k">if</span> <span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tensor should have 3 or 4 dimensions, got </span><span class="si">{</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Handle batched and unbatched tensors</span>
+            <span class="n">is_batched</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">4</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_batched</span><span class="p">:</span>
+                <span class="n">tensor</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="c1"># Get tensor properties</span>
+            <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">target_w</span><span class="p">,</span> <span class="n">target_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+
+            <span class="c1"># Calculate new dimensions preserving aspect ratio</span>
+            <span class="n">ratio</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">target_w</span> <span class="o">/</span> <span class="n">w</span><span class="p">,</span> <span class="n">target_h</span> <span class="o">/</span> <span class="n">h</span><span class="p">)</span>
+            <span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">h</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">)</span>
+
+            <span class="c1"># Resize tensor</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">_get_interpolation_str_from_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">)</span>
+            <span class="n">resized</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span>
+                <span class="n">tensor</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+                <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span><span class="p">),</span>
+                <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
+                <span class="n">align_corners</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">}</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="n">antialias</span><span class="o">=</span><span class="kc">True</span> <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;bicubic&#39;</span><span class="p">,</span> <span class="s1">&#39;bilinear&#39;</span><span class="p">}</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">tensor</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">is_floating_point</span><span class="p">:</span>
+                <span class="n">resized</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">resized</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">resized</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">resized</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+            <span class="n">resized</span> <span class="o">=</span> <span class="n">resized</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+            <span class="c1"># Create padded tensor with background color</span>
+            <span class="c1"># noinspection PyTypeChecker</span>
+            <span class="n">bg_color</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">_parse_color_to_mode</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">background_color</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;LA&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;RGBA&#39;</span><span class="p">}[</span><span class="n">c</span><span class="p">]</span>
+            <span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tensor</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">is_floating_point</span><span class="p">:</span>
+                <span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="n">bg_color</span> <span class="o">/</span> <span class="mf">255.0</span><span class="p">)</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bg_color</span> <span class="o">=</span> <span class="n">bg_color</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+            <span class="n">result</span> <span class="o">=</span> <span class="n">bg_color</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">target_h</span><span class="p">,</span> <span class="n">target_w</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+            <span class="c1"># Calculate padding positions</span>
+            <span class="n">pad_left</span> <span class="o">=</span> <span class="p">(</span><span class="n">target_w</span> <span class="o">-</span> <span class="n">new_w</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">pad_top</span> <span class="o">=</span> <span class="p">(</span><span class="n">target_h</span> <span class="o">-</span> <span class="n">new_h</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+            <span class="c1"># Paste resized image onto padded background</span>
+            <span class="n">result</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">pad_top</span><span class="p">:</span><span class="n">pad_top</span> <span class="o">+</span> <span class="n">new_h</span><span class="p">,</span> <span class="n">pad_left</span><span class="p">:</span><span class="n">pad_left</span> <span class="o">+</span> <span class="n">new_w</span><span class="p">]</span> <span class="o">=</span> <span class="n">resized</span>
+
+            <span class="c1"># Return to original batch dimension if needed</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_batched</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Apply padding transform to input image.</span>
+
+<span class="sd">            :param pic: Input image (PIL Image or torch.Tensor)</span>
+<span class="sd">            :type pic: Union[PIL.Image.Image, torch.Tensor]</span>
+
+<span class="sd">            :return: Padded image with target size</span>
+<span class="sd">            :rtype: Union[PIL.Image.Image, torch.Tensor]</span>
+<span class="sd">            :raises TypeError: If input is not a PIL Image or torch.Tensor</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pad_pil_image</span><span class="p">(</span><span class="n">pic</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pad_tensor</span><span class="p">(</span><span class="n">pic</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;pic should be PIL Image or a tensor. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">pic</span><span class="p">)))</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return string representation of the transform.</span>
+
+<span class="sd">            :return: String representation</span>
+<span class="sd">            :rtype: str</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">detail</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(size=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">, interpolation=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">, background_color=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">background_color</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">detail</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">PadToSize</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="nd">@_register_transform</span><span class="p">(</span><span class="s1">&#39;pad_to_size&#39;</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_pad_to_size</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
+                        <span class="n">background_color</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>
+                        <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory function to create PadToSize transform instance.</span>
+
+<span class="sd">    :param size: Target size as (height, width) tuple or single int</span>
+<span class="sd">    :type size: Union[Tuple[int, int], int]</span>
+<span class="sd">    :param background_color: Color for padding</span>
+<span class="sd">    :type background_color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]]</span>
+<span class="sd">    :param interpolation: Interpolation mode name</span>
+<span class="sd">    :type interpolation: str</span>
+
+<span class="sd">    :return: PadToSize transform instance</span>
+<span class="sd">    :rtype: PadToSize</span>
+<span class="sd">    :raises AssertionError: If torchvision is not available</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">PadToSize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">PadToSize</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+        <span class="n">background_color</span><span class="o">=</span><span class="n">background_color</span><span class="p">,</span>
+        <span class="n">interpolation</span><span class="o">=</span><span class="n">_get_interpolation_mode</span><span class="p">(</span><span class="n">interpolation</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+<span class="nd">@_register_parse</span><span class="p">(</span><span class="s1">&#39;pad_to_size&#39;</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_parse_pad_to_size</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse PadToSize transform object for serialization.</span>
+
+<span class="sd">    :param obj: Transform object to parse</span>
+<span class="sd">    :type obj: Any</span>
+
+<span class="sd">    :return: Dictionary containing transform parameters</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :raises NotParseTarget: If object is not a PadToSize instance</span>
+<span class="sd">    :raises AssertionError: If torchvision is not available</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">PadToSize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PadToSize</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">NotParseTarget</span>
+
+    <span class="n">obj</span><span class="p">:</span> <span class="n">PadToSize</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">size</span><span class="p">),</span>
+        <span class="s1">&#39;background_color&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">background_color</span><span class="p">)</span>
+                             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">background_color</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="k">else</span> <span class="n">obj</span><span class="o">.</span><span class="n">background_color</span><span class="p">),</span>
+        <span class="s1">&#39;interpolation&#39;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">interpolation</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
 <div class="viewcode-block" id="create_torchvision_transforms"><a class="viewcode-back" href="../../../api_doc/preprocess/torchvision.html#imgutils.preprocess.torchvision.create_torchvision_transforms">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">create_torchvision_transforms</span><span class="p">(</span><span class="n">tvalue</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create torchvision transforms from config.</span>
@@ -618,12 +886,11 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../preprocess/index.html">dev/preprocess</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
                         <dd><a href="../../../../../HEAD/index.html">HEAD</a></dd>
                         <dd><a href="../../../../attachments/index.html">dev/attachments</a></dd>
                         <dd><a href="torchvision.html">dev/camie</a></dd>
                         <dd><a href="../../../../pt/index.html">dev/pt</a></dd>
-                        <dd><a href="../../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
