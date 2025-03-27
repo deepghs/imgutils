@@ -501,13 +501,21 @@
 <span class="sd">        Resize and center-pad PIL image to target size with background color.</span>
 <span class="sd">        TorchVision-compatible transform that can be composed.</span>
 
+<span class="sd">        This transform first resizes the input image to fit within the target size</span>
+<span class="sd">        while preserving its aspect ratio, then pads the result with the specified</span>
+<span class="sd">        background color to reach the exact target dimensions.</span>
+
 <span class="sd">        :param size: Target size as (height, width) tuple or single int for square output</span>
-<span class="sd">        :type size: Union[Tuple[int, int], int]</span>
 <span class="sd">        :param background_color: Color to use for padding. Can be string name, RGB/RGBA tuple, or single int</span>
 <span class="sd">        :param interpolation: Interpolation mode for resizing, defaults to BILINEAR</span>
 <span class="sd">        :type interpolation: InterpolationMode</span>
 
 <span class="sd">        :raises ValueError: If size or background_color format is invalid</span>
+
+<span class="sd">        :example:</span>
+
+<span class="sd">        &gt;&gt;&gt; transform = PadToSize(size=(300, 300), background_color=&#39;black&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; padded_image = transform(input_image)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">],</span>
@@ -521,6 +529,15 @@
             <span class="n">_parse_color_to_rgba</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">background_color</span><span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_pad_pil_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Pad a PIL image to the target size.</span>
+
+<span class="sd">            :param pic: Input PIL Image</span>
+<span class="sd">            :type pic: PIL.Image.Image</span>
+
+<span class="sd">            :return: Padded PIL Image</span>
+<span class="sd">            :rtype: PIL.Image.Image</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="n">pad_image_to_size</span><span class="p">(</span>
                 <span class="n">pic</span><span class="o">=</span><span class="n">pic</span><span class="p">,</span>
                 <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
@@ -529,12 +546,22 @@
             <span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_pad_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Pad a tensor to the target size.</span>
+
+<span class="sd">            :param tensor: Input tensor image</span>
+<span class="sd">            :type tensor: torch.Tensor</span>
+
+<span class="sd">            :return: Padded tensor</span>
+<span class="sd">            :rtype: torch.Tensor</span>
+<span class="sd">            :raises ValueError: If tensor dimensions are not 3 or 4</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">..data.pad</span><span class="w"> </span><span class="kn">import</span> <span class="n">_parse_color_to_mode</span>
 
             <span class="k">if</span> <span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tensor should have 3 or 4 dimensions, got </span><span class="si">{</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-                <span class="c1"># Handle batched and unbatched tensors</span>
+            <span class="c1"># Handle batched and unbatched tensors</span>
             <span class="n">is_batched</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">4</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">is_batched</span><span class="p">:</span>
                 <span class="n">tensor</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -550,12 +577,17 @@
             <span class="c1"># Resize tensor</span>
             <span class="n">mode</span> <span class="o">=</span> <span class="n">_get_interpolation_str_from_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">)</span>
             <span class="n">resized</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span>
-                <span class="n">tensor</span><span class="p">,</span>
+                <span class="n">tensor</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
                 <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span><span class="p">),</span>
                 <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
-                <span class="n">align_corners</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;nearest&#39;</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;area&#39;</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="n">align_corners</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">}</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
                 <span class="n">antialias</span><span class="o">=</span><span class="kc">True</span> <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;bicubic&#39;</span><span class="p">,</span> <span class="s1">&#39;bilinear&#39;</span><span class="p">}</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="n">tensor</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">is_floating_point</span><span class="p">:</span>
+                <span class="n">resized</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">resized</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">resized</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">resized</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+            <span class="n">resized</span> <span class="o">=</span> <span class="n">resized</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 
             <span class="c1"># Create padded tensor with background color</span>
             <span class="c1"># noinspection PyTypeChecker</span>
@@ -587,12 +619,12 @@
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Apply padding transform to input image.</span>
 
-<span class="sd">            :param pic: Input PIL Image</span>
-<span class="sd">            :type pic: PIL.Image.Image</span>
+<span class="sd">            :param pic: Input image (PIL Image or torch.Tensor)</span>
+<span class="sd">            :type pic: Union[PIL.Image.Image, torch.Tensor]</span>
 
 <span class="sd">            :return: Padded image with target size</span>
-<span class="sd">            :rtype: PIL.Image.Image</span>
-<span class="sd">            :raises TypeError: If input is not a PIL Image</span>
+<span class="sd">            :rtype: Union[PIL.Image.Image, torch.Tensor]</span>
+<span class="sd">            :raises TypeError: If input is not a PIL Image or torch.Tensor</span>
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pad_pil_image</span><span class="p">(</span><span class="n">pic</span><span class="p">)</span>
@@ -602,6 +634,12 @@
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;pic should be PIL Image or a tensor. Got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">pic</span><span class="p">)))</span>
 
         <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return string representation of the transform.</span>
+
+<span class="sd">            :return: String representation</span>
+<span class="sd">            :rtype: str</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">detail</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(size=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">, interpolation=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">, background_color=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">background_color</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}{</span><span class="n">detail</span><span class="si">}</span><span class="s2">&quot;</span>
 
