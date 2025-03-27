@@ -397,13 +397,21 @@ if _HAS_TORCHVISION:
         Resize and center-pad PIL image to target size with background color.
         TorchVision-compatible transform that can be composed.
 
+        This transform first resizes the input image to fit within the target size
+        while preserving its aspect ratio, then pads the result with the specified
+        background color to reach the exact target dimensions.
+
         :param size: Target size as (height, width) tuple or single int for square output
-        :type size: Union[Tuple[int, int], int]
         :param background_color: Color to use for padding. Can be string name, RGB/RGBA tuple, or single int
         :param interpolation: Interpolation mode for resizing, defaults to BILINEAR
         :type interpolation: InterpolationMode
 
         :raises ValueError: If size or background_color format is invalid
+
+        :example:
+
+        >>> transform = PadToSize(size=(300, 300), background_color='black')
+        >>> padded_image = transform(input_image)
         """
 
         def __init__(self, size: Union[Tuple[int, int], int],
@@ -417,6 +425,15 @@ if _HAS_TORCHVISION:
             _parse_color_to_rgba(self.background_color)
 
         def _pad_pil_image(self, pic):
+            """
+            Pad a PIL image to the target size.
+
+            :param pic: Input PIL Image
+            :type pic: PIL.Image.Image
+
+            :return: Padded PIL Image
+            :rtype: PIL.Image.Image
+            """
             return pad_image_to_size(
                 pic=pic,
                 size=self.size,
@@ -425,6 +442,16 @@ if _HAS_TORCHVISION:
             )
 
         def _pad_tensor(self, tensor):
+            """
+            Pad a tensor to the target size.
+
+            :param tensor: Input tensor image
+            :type tensor: torch.Tensor
+
+            :return: Padded tensor
+            :rtype: torch.Tensor
+            :raises ValueError: If tensor dimensions are not 3 or 4
+            """
             from ..data.pad import _parse_color_to_mode
 
             if tensor.ndim < 3 or tensor.ndim > 4:
@@ -488,12 +515,12 @@ if _HAS_TORCHVISION:
             """
             Apply padding transform to input image.
 
-            :param pic: Input PIL Image
-            :type pic: PIL.Image.Image
+            :param pic: Input image (PIL Image or torch.Tensor)
+            :type pic: Union[PIL.Image.Image, torch.Tensor]
 
             :return: Padded image with target size
-            :rtype: PIL.Image.Image
-            :raises TypeError: If input is not a PIL Image
+            :rtype: Union[PIL.Image.Image, torch.Tensor]
+            :raises TypeError: If input is not a PIL Image or torch.Tensor
             """
             if isinstance(pic, Image.Image):
                 return self._pad_pil_image(pic)
@@ -503,6 +530,12 @@ if _HAS_TORCHVISION:
                 raise TypeError('pic should be PIL Image or a tensor. Got {}'.format(type(pic)))
 
         def __repr__(self) -> str:
+            """
+            Return string representation of the transform.
+
+            :return: String representation
+            :rtype: str
+            """
             detail = f"(size={self.size}, interpolation={self.interpolation.value}, background_color={self.background_color})"
             return f"{self.__class__.__name__}{detail}"
 
