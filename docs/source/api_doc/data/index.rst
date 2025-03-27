@@ -15,4 +15,5 @@ imgutils.data
     decode
     image
     layer
+    pad
     url
