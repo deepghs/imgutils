@@ -430,7 +430,7 @@ if _HAS_TORCHVISION:
             if tensor.ndim < 3 or tensor.ndim > 4:
                 raise ValueError(f"Tensor should have 3 or 4 dimensions, got {tensor.ndim}")
 
-                # Handle batched and unbatched tensors
+            # Handle batched and unbatched tensors
             is_batched = tensor.ndim == 4
             if not is_batched:
                 tensor = tensor.unsqueeze(0)
@@ -446,12 +446,17 @@ if _HAS_TORCHVISION:
             # Resize tensor
             mode = _get_interpolation_str_from_mode(self.interpolation)
             resized = F.interpolate(
-                tensor,
+                tensor.type(torch.float32),
                 size=(new_h, new_w),
                 mode=mode,
-                align_corners=None if mode == 'nearest' or mode == 'area' else False,
+                align_corners=None if mode in {'nearest', 'area'} else False,
                 antialias=True if mode in {'bicubic', 'bilinear'} else False,
             )
+            if tensor.dtype.is_floating_point:
+                resized = torch.clip(resized, min=0.0, max=1.0)
+            else:
+                resized = torch.clip(resized, min=0, max=255)
+            resized = resized.to(tensor.device).type(tensor.dtype)
 
             # Create padded tensor with background color
             # noinspection PyTypeChecker
