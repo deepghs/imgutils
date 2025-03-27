@@ -1,16 +1,19 @@
 from typing import Union, Tuple
 from unittest import skipUnless
 
+import numpy as np
 import pytest
 from PIL import Image
 from hbutils.testing import tmatrix
 
-from imgutils.preprocess import NotParseTarget
+from imgutils.data import load_image, grid_transparent
+from imgutils.preprocess import NotParseTarget, create_pillow_transforms
 from imgutils.preprocess.torchvision import _get_interpolation_mode, create_torchvision_transforms, \
-    parse_torchvision_transforms, register_torchvision_transform, register_torchvision_parse
+    parse_torchvision_transforms, register_torchvision_transform, register_torchvision_parse, PadToSize
 from test.testings import get_testfile
 
 try:
+    import torch
     import torchvision
 except (ImportError, ModuleNotFoundError):
     _TORCHVISION_AVAILABLE = False
@@ -235,3 +238,263 @@ class TestPreprocessPillow:
             'saturation': (0.0, 0.8),
             'type': 'color_jitter'
         })
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'json_': [
+            {'type': 'pad_to_size', 'size': [512, 768], 'background_color': 'white', 'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'gray', 'interpolation': 'lanczos'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255), 'interpolation': 'bicubic'},
+            {'type': 'pad_to_size', 'size': [384, 512], 'background_color': 'blue', 'interpolation': 'box'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 255, 255),
+             'interpolation': 'bilinear'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'blue', 'interpolation': 'lanczos'},
+            {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'red', 'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'gray', 'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 0, 0, 128), 'interpolation': 'box'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255, 128),
+             'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255, 128),
+             'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255), 'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 255, 255),
+             'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 0, 0, 128),
+             'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'white', 'interpolation': 'bilinear'},
+        ],
+        'filename': [
+            'nian_640_L.png',
+            'nian_640_LA.png',
+            'nian_640_RGB.png',
+            'nian_640_RGBA.png',
+            'png_640_m90.png',
+            'png_640.png',
+            'dori_640.png',
+        ]
+    }, mode='matrix'))
+    def test_align_pad_to_size(self, json_, filename, image_diff):
+        src_image = load_image(get_testfile(filename), mode=None, force_background=None)
+        tprocess = create_torchvision_transforms(json_)
+        pprocess = create_pillow_transforms(json_)
+        assert image_diff(
+            grid_transparent(tprocess(src_image)),
+            grid_transparent(pprocess(src_image)),
+            throw_exception=False
+        ) < 1e-3
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(['json_from', 'json_to'], [
+        ({'type': 'pad_to_size', 'size': [512, 768], 'background_color': 'white', 'interpolation': 'nearest'},
+         {'type': 'pad_to_size', 'size': [512, 768], 'background_color': 'white', 'interpolation': 'nearest'}),
+        ({'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'gray', 'interpolation': 'lanczos'},
+         {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'gray', 'interpolation': 'lanczos'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255), 'interpolation': 'bicubic'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': [0, 0, 255], 'interpolation': 'bicubic'}),
+        ({'type': 'pad_to_size', 'size': [384, 512], 'background_color': 'blue', 'interpolation': 'box'},
+         {'type': 'pad_to_size', 'size': [384, 512], 'background_color': 'blue', 'interpolation': 'box'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 255, 255), 'interpolation': 'bilinear'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': [255, 255, 255], 'interpolation': 'bilinear'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'blue', 'interpolation': 'lanczos'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'blue', 'interpolation': 'lanczos'}),
+        ({'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'red', 'interpolation': 'nearest'},
+         {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'red', 'interpolation': 'nearest'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'gray', 'interpolation': 'hamming'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'gray', 'interpolation': 'hamming'}),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 0, 0, 128), 'interpolation': 'box'},
+         {'type': 'pad_to_size', 'size': [384, 384], 'background_color': [255, 0, 0, 128], 'interpolation': 'box'}),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255, 128), 'interpolation': 'hamming'},
+         {'type': 'pad_to_size', 'size': [384, 384], 'background_color': [0, 0, 255, 128], 'interpolation': 'hamming'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255, 128), 'interpolation': 'nearest'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': [0, 0, 255, 128], 'interpolation': 'nearest'}),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255), 'interpolation': 'hamming'},
+         {'type': 'pad_to_size', 'size': [384, 384], 'background_color': [0, 0, 255], 'interpolation': 'hamming'}),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 255, 255), 'interpolation': 'hamming'},
+         {'type': 'pad_to_size', 'size': [384, 384], 'background_color': [255, 255, 255], 'interpolation': 'hamming'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 0, 0, 128), 'interpolation': 'hamming'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': [255, 0, 0, 128], 'interpolation': 'hamming'}),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'white', 'interpolation': 'bilinear'},
+         {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'white', 'interpolation': 'bilinear'}),
+
+    ])
+    def test_pad_to_size_to_json(self, json_from, json_to):
+        assert parse_torchvision_transforms(create_torchvision_transforms(json_from)) == json_to
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(['json_', 'repr_text'], [
+        ({'type': 'pad_to_size', 'size': [512, 768], 'background_color': 'white', 'interpolation': 'nearest'},
+         'PadToSize(size=(512, 768), interpolation=nearest, background_color=white)'),
+        ({'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'gray', 'interpolation': 'lanczos'},
+         'PadToSize(size=(768, 512), interpolation=lanczos, background_color=gray)'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255), 'interpolation': 'bicubic'},
+         'PadToSize(size=(512, 512), interpolation=bicubic, background_color=(0, 0, 255))'),
+        ({'type': 'pad_to_size', 'size': [384, 512], 'background_color': 'blue', 'interpolation': 'box'},
+         'PadToSize(size=(384, 512), interpolation=box, background_color=blue)'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 255, 255), 'interpolation': 'bilinear'},
+         'PadToSize(size=(512, 512), interpolation=bilinear, background_color=(255, 255, 255))'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'blue', 'interpolation': 'lanczos'},
+         'PadToSize(size=(512, 512), interpolation=lanczos, background_color=blue)'),
+        ({'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'red', 'interpolation': 'nearest'},
+         'PadToSize(size=(768, 512), interpolation=nearest, background_color=red)'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'gray', 'interpolation': 'hamming'},
+         'PadToSize(size=(512, 512), interpolation=hamming, background_color=gray)'),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 0, 0, 128), 'interpolation': 'box'},
+         'PadToSize(size=(384, 384), interpolation=box, background_color=(255, 0, 0, 128))'),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255, 128), 'interpolation': 'hamming'},
+         'PadToSize(size=(384, 384), interpolation=hamming, background_color=(0, 0, 255, 128))'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255, 128), 'interpolation': 'nearest'},
+         'PadToSize(size=(512, 512), interpolation=nearest, background_color=(0, 0, 255, 128))'),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255), 'interpolation': 'hamming'},
+         'PadToSize(size=(384, 384), interpolation=hamming, background_color=(0, 0, 255))'),
+        ({'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 255, 255), 'interpolation': 'hamming'},
+         'PadToSize(size=(384, 384), interpolation=hamming, background_color=(255, 255, 255))'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 0, 0, 128), 'interpolation': 'hamming'},
+         'PadToSize(size=(512, 512), interpolation=hamming, background_color=(255, 0, 0, 128))'),
+        ({'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'white', 'interpolation': 'bilinear'},
+         'PadToSize(size=(512, 512), interpolation=bilinear, background_color=white)'),
+    ])
+    def test_pad_to_size_repr_text(self, json_, repr_text):
+        assert repr(create_torchvision_transforms(json_)) == repr_text
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    def test_pad_to_size_error(self):
+        with pytest.raises(TypeError):
+            PadToSize((512, 512))(np.random.randn(1, 3, 384, 384))
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'json_': [
+            # {'type': 'pad_to_size', 'size': [512, 768], 'background_color': 'white', 'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'gray', 'interpolation': 'lanczos'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255), 'interpolation': 'bicubic'},
+            {'type': 'pad_to_size', 'size': [384, 512], 'background_color': 'blue', 'interpolation': 'box'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 255, 255),
+             'interpolation': 'bilinear'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'blue', 'interpolation': 'lanczos'},
+            # {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'red', 'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'gray', 'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 0, 0, 128), 'interpolation': 'box'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255, 128),
+             'interpolation': 'hamming'},
+            # {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255, 128),
+            #  'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255), 'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 255, 255),
+             'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 0, 0, 128),
+             'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'white', 'interpolation': 'bilinear'},
+        ],
+        'filename': [
+            'nian_640_L.png',
+            'nian_640_LA.png',
+            'nian_640_RGB.png',
+            'nian_640_RGBA.png',
+            'png_640_m90.png',
+            'png_640.png',
+            'dori_640.png',
+        ]
+    }, mode='matrix'))
+    def test_pad_to_size_tensor_and_image_float(self, json_, filename, image_diff):
+        import torch
+        p = create_torchvision_transforms(json_)
+        image = load_image(get_testfile(filename), force_background=None, mode=None)
+
+        expected_image = p(image)
+        if image.mode == 'L':
+            tensor = torch.tensor(np.array(image)[np.newaxis, ...] / 255.0).type(torch.float32)
+        else:
+            tensor = torch.tensor(np.array(image).transpose(2, 0, 1) / 255.0).type(torch.float32)
+        actual_tensor = p(tensor)
+        if image.mode == 'L':
+            actual_image = Image.fromarray(
+                (actual_tensor.numpy()[0] * 255.0).astype(np.uint8),
+                mode=image.mode
+            )
+        else:
+            actual_image = Image.fromarray(
+                (actual_tensor.numpy().transpose((1, 2, 0)) * 255.0).astype(np.uint8),
+                mode=image.mode
+            )
+
+        assert tensor.dtype == actual_tensor.dtype
+        assert tensor.device == actual_tensor.device
+
+        assert image_diff(
+            grid_transparent(expected_image),
+            grid_transparent(actual_image),
+            throw_exception=False,
+        ) < 1.5e-2
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    @pytest.mark.parametrize(*tmatrix({
+        'json_': [
+            # {'type': 'pad_to_size', 'size': [512, 768], 'background_color': 'white', 'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'gray', 'interpolation': 'lanczos'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255), 'interpolation': 'bicubic'},
+            {'type': 'pad_to_size', 'size': [384, 512], 'background_color': 'blue', 'interpolation': 'box'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 255, 255),
+             'interpolation': 'bilinear'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'blue', 'interpolation': 'lanczos'},
+            # {'type': 'pad_to_size', 'size': [768, 512], 'background_color': 'red', 'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'gray', 'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 0, 0, 128), 'interpolation': 'box'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255, 128),
+             'interpolation': 'hamming'},
+            # {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (0, 0, 255, 128),
+            #  'interpolation': 'nearest'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (0, 0, 255), 'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [384, 384], 'background_color': (255, 255, 255),
+             'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': (255, 0, 0, 128),
+             'interpolation': 'hamming'},
+            {'type': 'pad_to_size', 'size': [512, 512], 'background_color': 'white', 'interpolation': 'bilinear'},
+        ],
+        'filename': [
+            'nian_640_L.png',
+            'nian_640_LA.png',
+            'nian_640_RGB.png',
+            'nian_640_RGBA.png',
+            'png_640_m90.png',
+            'png_640.png',
+            'dori_640.png',
+        ]
+    }, mode='matrix'))
+    def test_pad_to_size_tensor_and_image_int8(self, json_, filename, image_diff):
+        import torch
+        p = create_torchvision_transforms(json_)
+        image = load_image(get_testfile(filename), force_background=None, mode=None)
+
+        expected_image = p(image)
+        if image.mode == 'L':
+            tensor = torch.tensor(np.array(image)[np.newaxis, ...]).type(torch.uint8)
+        else:
+            tensor = torch.tensor(np.array(image).transpose(2, 0, 1)).type(torch.uint8)
+        actual_tensor = p(tensor)
+        if image.mode == 'L':
+            actual_image = Image.fromarray(
+                (actual_tensor.numpy()[0]).astype(np.uint8),
+                mode=image.mode
+            )
+        else:
+            actual_image = Image.fromarray(
+                (actual_tensor.numpy().transpose((1, 2, 0))).astype(np.uint8),
+                mode=image.mode
+            )
+
+        assert tensor.dtype == actual_tensor.dtype
+        assert tensor.device == actual_tensor.device
+
+        assert image_diff(
+            grid_transparent(expected_image),
+            grid_transparent(actual_image),
+            throw_exception=False,
+        ) < 1.5e-2
+
+    @skipUnless(_TORCHVISION_AVAILABLE, 'Torchvision required.')
+    def test_pad_to_size_dim_error(self):
+        import torch
+        with pytest.raises(ValueError):
+            PadToSize((512, 512))(torch.randn(384, 384))
+        with pytest.raises(ValueError):
+            PadToSize((512, 512))(torch.randn(1, 1, 1, 384, 384))

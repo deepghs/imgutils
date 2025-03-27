@@ -19,7 +19,7 @@ import numpy as np
 from PIL import Image
 
 from .base import NotParseTarget
-from ..data import load_image
+from ..data import load_image, pad_image_to_size
 
 # noinspection PyUnresolvedReferences
 _INT_TO_PILLOW = {
@@ -797,6 +797,110 @@ def _parse_rescale(obj):
     obj: PillowRescale
     return {
         'rescale_factor': obj.rescale_factor.item(),
+    }
+
+
+class PillowPadToSize:
+    """
+    A class for padding images to a specified size.
+
+    This class provides functionality to pad images to a target size while maintaining
+    the original image content. It supports various padding colors and interpolation methods.
+
+    :param size: Target size as (width, height) tuple or single integer for square
+    :param background_color: Color for padding area (RGB, RGBA, string color name, or integer)
+    :param interpolation: PIL interpolation method for resizing
+    :type interpolation: int
+    """
+
+    def __init__(self, size: Union[Tuple[int, int], int],
+                 background_color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]] = 'white',
+                 interpolation: int = Image.BILINEAR):
+        from ..data.pad import _parse_size, _parse_color_to_rgba
+        self.size = _parse_size(size)
+        self.background_color = (tuple(background_color)
+                                 if isinstance(background_color, (list, tuple)) else background_color)
+        self.interpolation = interpolation
+        _parse_color_to_rgba(self.background_color)
+
+    def __call__(self, pic):
+        """
+        Apply padding transformation to the input image.
+
+        :param pic: Input PIL Image
+        :type pic: PIL.Image.Image
+
+        :return: Padded image
+        :rtype: PIL.Image.Image
+        :raises TypeError: If input is not a PIL Image
+        """
+        if not isinstance(pic, Image.Image):
+            raise TypeError('pic should be PIL Image. Got {}'.format(type(pic)))
+
+        return pad_image_to_size(
+            pic=pic,
+            size=self.size,
+            background_color=self.background_color,
+            interpolation=self.interpolation,
+        )
+
+    def __repr__(self) -> str:
+        """
+        Return string representation of the class.
+
+        :return: String representation
+        :rtype: str
+        """
+        interpolate_str = _PILLOW_TO_STR[self.interpolation]
+        detail = f"(size={self.size}, interpolation={interpolate_str}, background_color={self.background_color})"
+        return f"{self.__class__.__name__}{detail}"
+
+
+@register_pillow_transform('pad_to_size')
+def _create_pad_to_size(size: Union[Tuple[int, int], int],
+                        background_color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]] = 'white',
+                        interpolation: str = 'bilinear'):
+    """
+    Factory function to create PillowPadToSize instance.
+
+    :param size: Target size for padding
+    :type size: Union[Tuple[int, int], int]
+    :param background_color: Color for padding area
+    :type background_color: Union[str, int, Tuple[int, int, int], Tuple[int, int, int, int]]
+    :param interpolation: Interpolation method name
+    :type interpolation: str
+
+    :return: PillowPadToSize instance
+    :rtype: PillowPadToSize
+    """
+    return PillowPadToSize(
+        size=size,
+        background_color=background_color,
+        interpolation=_STR_TO_PILLOW[interpolation],
+    )
+
+
+@register_pillow_parse('pad_to_size')
+def _parse_pad_to_size(obj):
+    """
+    Parse PillowPadToSize object to dictionary configuration.
+
+    :param obj: Object to parse
+    :type obj: Any
+
+    :return: Configuration dictionary
+    :rtype: dict
+    :raises NotParseTarget: If object is not PillowPadToSize instance
+    """
+    if not isinstance(obj, PillowPadToSize):
+        raise NotParseTarget
+
+    obj: PillowPadToSize
+    return {
+        'size': list(obj.size),
+        'background_color': (list(obj.background_color)
+                             if isinstance(obj.background_color, (list, tuple)) else obj.background_color),
+        'interpolation': _PILLOW_TO_STR[obj.interpolation],
     }
 
 
