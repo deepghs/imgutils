@@ -5,6 +5,8 @@ from huggingface_hub import hf_hub_download
 from safetensors.torch import load_file
 from torchvision.models import efficientnet_v2_l, EfficientNet_V2_L_Weights
 
+from zoo.camie.model.time import get_file_timestamp
+
 
 class MultiheadAttentionNoFlash(nn.Module):
     """Custom multi-head attention module (replaces FlashAttention) using ONNX-friendly ops."""
@@ -168,13 +170,16 @@ class CamieTaggerRefined(nn.Module):
         return feats, initial_preds, fused_feature, refined_preds
 
 
-if __name__ == '__main__':
+def create_refined_model():
+    repo_id = 'Camais03/camie-tagger'
+    filename = 'model_refined.safetensors'
+
     # --- Load the pretrained refined model weights ---
     total_tags = 70527  # total number of tags in the dataset (Danbooru 2024)
     safetensors_path = hf_hub_download(
-        repo_id='Camais03/camie-tagger',
+        repo_id=repo_id,
         repo_type='model',
-        filename='model_refined.safetensors',
+        filename=filename,
     )
     state_dict = load_file(safetensors_path, device='cpu')  # Load the saved weights (should be an OrderedDict)
     # state_dict = torch.load("model_refined.pt", map_location="cpu")  # Load the saved weights (should be an OrderedDict)
@@ -182,6 +187,18 @@ if __name__ == '__main__':
     # Initialize our model and load weights
     model = CamieTaggerRefined(total_tags=total_tags)
     model.load_state_dict(state_dict)
+
+    created_at = get_file_timestamp(
+        repo_id=repo_id,
+        repo_type='model',
+        filename=filename,
+    )
+
+    return model, created_at, (repo_id, filename)
+
+
+if __name__ == '__main__':
+    model, created_at, _ = create_refined_model()
     model.eval()  # set to evaluation mode (disable dropout)
     print(model)
 

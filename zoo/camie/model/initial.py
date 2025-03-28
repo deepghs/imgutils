@@ -4,6 +4,8 @@ from huggingface_hub import hf_hub_download
 from safetensors.torch import load_file
 from torchvision.models import efficientnet_v2_l, EfficientNet_V2_L_Weights
 
+from zoo.camie.model.time import get_file_timestamp
+
 
 class CamieTaggerInitial(nn.Module):
     """
@@ -53,19 +55,32 @@ class CamieTaggerInitial(nn.Module):
         return features, initial_preds, features, initial_preds
 
 
-if __name__ == '__main__':
+def create_initial_model():
+    repo_id = 'Camais03/camie-tagger'
+    filename = 'model_initial.safetensors'
     safetensors_path = hf_hub_download(
-        repo_id='Camais03/camie-tagger',
+        repo_id=repo_id,
         repo_type='model',
-        filename='model_initial.safetensors'
+        filename=filename
     )
     state_dict = load_file(safetensors_path, device='cpu')
     # state_dict = torch.load(weights_path, map_location="cpu")
     # Instantiate the model with the same parameters as training
     model = CamieTaggerInitial(total_tags=70527, pretrained=True)  # dataset not needed for forward
     model.load_state_dict(state_dict)
-    model.eval()  # set to evaluation mode
 
+    created_at = get_file_timestamp(
+        repo_id=repo_id,
+        repo_type='model',
+        filename=filename
+    )
+
+    return model, created_at, (repo_id, filename)
+
+
+if __name__ == '__main__':
+    model, created_at, _ = create_initial_model()
+    model.eval()  # set to evaluation mode
     print(model)
 
     # Define example input – a dummy image tensor of the expected input shape (1, 3, 512, 512)
