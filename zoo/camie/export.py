@@ -165,7 +165,7 @@ def extract(export_dir: str, model_name: str = "initial", no_optimize: bool = Fa
     )
 
     initial_model_onnx_file = os.path.join(export_dir, 'model_initial_only.onnx')
-    logging.info(f'Exporting initial-only model to {model_onnx_file!r} ...')
+    logging.info(f'Exporting initial-only model to {initial_model_onnx_file!r} ...')
     export_onnx_model(
         model=model,
         dummy_input=dummy_input,
