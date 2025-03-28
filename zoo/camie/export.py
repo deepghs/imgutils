@@ -3,7 +3,7 @@ import datetime
 import json
 import os
 import tempfile
-from pprint import pprint, pformat
+from pprint import pformat
 
 import onnx
 import pandas as pd
@@ -237,6 +237,7 @@ def sync(repository: str = 'deepghs/camie_tagger_onnx'):
                 print('- image', file=f)
                 print('- dghs-imgutils', file=f)
                 print('library_name: dghs-imgutils', file=f)
+                print('license: gpl-3.0', file=f)
                 print('---', file=f)
                 print('', file=f)
 
@@ -254,7 +255,7 @@ def sync(repository: str = 'deepghs/camie_tagger_onnx'):
                         'Input Size': item['input_size'],
                         "Features": item['refined_num_features'],
                         "Classes": item['refined_num_classes'],
-                        'Threshold': f'{item["threshold"]}:.4f',
+                        'Threshold': f'{item["threshold"]:.4f}',
                         'F1 (MI/MA)': f'{item["micro_f1"]:.3f} / {item["macro_f1"]:.3f}',
                         'Precision (MI/MA)': f'{item["micro_precision"]:.3f} / {item["macro_precision"]:.3f}',
                         'Recall (MI/MA)': f'{item["micro_recall"]:.3f} / {item["macro_recall"]:.3f}',
