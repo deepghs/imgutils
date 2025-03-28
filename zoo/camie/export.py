@@ -24,6 +24,7 @@ from imgutils.data import load_image
 from imgutils.preprocess import parse_pillow_transforms, create_torchvision_transforms, parse_torchvision_transforms
 from imgutils.preprocess.pillow import PillowPadToSize, PillowToTensor, PillowCompose
 from .model import create_initial_model, create_refined_model, InitialOnlyWrapper, FullWrapper
+from .tags import load_tags
 from ..utils import onnx_optimize
 
 _P_TRANSFORM = parse_pillow_transforms(PillowCompose([
@@ -175,6 +176,12 @@ def extract(export_dir: str, model_name: str = "initial", no_optimize: bool = Fa
         is_full=False,
         no_optimize=no_optimize,
     )
+
+    df_tags = load_tags()
+    tags_file = os.path.join(export_dir, 'selected_tags.csv')
+    logging.info(f'Tags List:\n{df_tags}\n'
+                 f'Saving to {tags_file!r} ...')
+    df_tags.to_csv(tags_file, index=False)
 
     return meta_info
 
