@@ -1,4 +1,4 @@
-torch<2
+torch
 lpips
 matplotlib
 torchvision
@@ -13,7 +13,7 @@ tensorboard
 einops
 thop
 accelerate
-timm~=0.6.13
+timm
 ftfy
 regex
 git+https://github.com/openai/CLIP.git
@@ -28,3 +28,5 @@ git+https://github.com/deepghs/waifuc.git@main#egg=waifuc
 pyquery
 httpx
 onnxslim==0.1.32
+procslib
+unibox
