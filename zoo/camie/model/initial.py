@@ -981,9 +981,13 @@ if __name__ == '__main__':
 
     print(model)
 
-    # # Define example input – a dummy image tensor of the expected input shape (1, 3, 512, 512)
-    # dummy_input = torch.randn(1, 3, 512, 512, dtype=torch.float32)
-    #
+    # Define example input – a dummy image tensor of the expected input shape (1, 3, 512, 512)
+    dummy_input = torch.randn(1, 3, 512, 512, dtype=torch.float32)
+    with torch.no_grad():
+        dummy_init_logits, dummy_refined_logits = model(dummy_input)
+    print(dummy_init_logits.shape, dummy_init_logits.dtype)
+    print(dummy_refined_logits.shape, dummy_refined_logits.dtype)
+
     # # Export to ONNX
     # onnx_path = "camie_tagger_initial_v15.onnx"
     # torch.onnx.export(
