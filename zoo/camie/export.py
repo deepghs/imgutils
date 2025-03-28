@@ -162,6 +162,7 @@ def extract(export_dir: str, model_name: str = "initial", no_optimize: bool = Fa
         dummy_input=dummy_input,
         onnx_filename=model_onnx_file,
         is_full=True,
+        no_optimize=no_optimize,
     )
 
     initial_model_onnx_file = os.path.join(export_dir, 'model_initial_only.onnx')
@@ -171,6 +172,7 @@ def extract(export_dir: str, model_name: str = "initial", no_optimize: bool = Fa
         dummy_input=dummy_input,
         onnx_filename=initial_model_onnx_file,
         is_full=False,
+        no_optimize=no_optimize,
     )
 
     return meta_info
@@ -183,8 +185,8 @@ def sync(repository: str = 'deepghs/camie_tagger_onnx'):
     if not hf_client.repo_exists(repo_id=repository, repo_type='model'):
         hf_client.create_repo(repo_id=repository, repo_type='model', private=True)
         attr_lines = hf_fs.read_text(f'{repository}/.gitattributes').splitlines(keepends=False)
-        attr_lines.append('*.json filter=lfs diff=lfs merge=lfs -text')
-        attr_lines.append('*.csv filter=lfs diff=lfs merge=lfs -text')
+        # attr_lines.append('*.json filter=lfs diff=lfs merge=lfs -text')
+        # attr_lines.append('*.csv filter=lfs diff=lfs merge=lfs -text')
         hf_fs.write_text(f'{repository}/.gitattributes', os.linesep.join(attr_lines))
 
     if hf_client.file_exists(
