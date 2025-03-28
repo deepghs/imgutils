@@ -98,6 +98,7 @@ def extract(export_dir: str, model_name: str = "initial", no_optimize: bool = Fa
     tp, model_fn = _MODEL_MAP[model_name]
     tprocess = create_torchvision_transforms(tp)
     model, created_at, (model_repo_id, model_filename) = model_fn()
+    model = model.eval()
 
     sample_image = load_image(os.path.join('zoo', 'testfile', '6125785.jpg'), mode='RGB', force_background='white')
     dummy_input = tprocess(sample_image).unsqueeze(0)
