@@ -41,6 +41,12 @@ class CamieTaggerInitial(nn.Module):
         # Temperature scaling
         self.temperature = nn.Parameter(torch.ones(1) * 1.5)
 
+    def emb_to_pred(self, features):
+        # Initial Tag Predictions
+        initial_logits = self.initial_classifier(features)
+        initial_preds = torch.clamp(initial_logits / self.temperature, min=-15.0, max=15.0)
+        return initial_preds
+
     def forward(self, x):
         """Forward pass with only the initial predictions"""
         # Image Feature Extraction
@@ -48,11 +54,19 @@ class CamieTaggerInitial(nn.Module):
         features = self.spatial_pool(features).squeeze(-1).squeeze(-1)
 
         # Initial Tag Predictions
-        initial_logits = self.initial_classifier(features)
-        initial_preds = torch.clamp(initial_logits / self.temperature, min=-15.0, max=15.0)
+        initial_preds = self.emb_to_pred(features)
 
         # For API compatibility with the full model, return the same predictions twice
         return features, initial_preds, features, initial_preds
+
+
+class InitialEmbToPred(nn.Module):
+    def __init__(self, model):
+        super().__init__()
+        self.model: CamieTaggerInitial = model
+
+    def forward(self, features):
+        return self.model.emb_to_pred(features)
 
 
 def create_initial_model():
@@ -75,11 +89,12 @@ def create_initial_model():
         filename=filename
     )
 
-    return model, created_at, (repo_id, filename)
+    return model, created_at, (repo_id, filename), \
+        (InitialEmbToPred(model), InitialEmbToPred(model))
 
 
 if __name__ == '__main__':
-    model, created_at, _ = create_initial_model()
+    model, created_at, _, _ = create_initial_model()
     model.eval()  # set to evaluation mode
     print(model)
 

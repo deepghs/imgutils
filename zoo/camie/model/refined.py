@@ -129,15 +129,24 @@ class CamieTaggerRefined(nn.Module):
         # Temperature parameter for scaling logits (to calibrate confidence)
         self.temperature = nn.Parameter(torch.ones(1) * 1.5)
 
+    def initial_emb_to_pred(self, features):
+        initial_logits = self.initial_classifier(features)  # [B, total_tags]
+        # Scale by temperature and clamp (to stabilize extreme values, as in original)
+        initial_preds = torch.clamp(initial_logits / self.temperature, min=-15.0, max=15.0)
+        return initial_preds
+
+    def refined_emb_to_pred(self, features):
+        refined_logits = self.refined_classifier(features)  # [B, total_tags]
+        refined_preds = torch.clamp(refined_logits / self.temperature, min=-15.0, max=15.0)
+        return refined_preds
+
     def forward(self, images):
         # 1. Feature extraction
         feats = self.backbone.features(images)  # [B, 1280, H/32, W/32] features
         feats = self.spatial_pool(feats).squeeze(-1).squeeze(-1)  # [B, 1280] global feature vector per image
 
         # 2. Initial tag prediction
-        initial_logits = self.initial_classifier(feats)  # [B, total_tags]
-        # Scale by temperature and clamp (to stabilize extreme values, as in original)
-        initial_preds = torch.clamp(initial_logits / self.temperature, min=-15.0, max=15.0)
+        initial_preds = self.initial_emb_to_pred(feats)
 
         # 3. Select top-k predicted tags for context (tag_context_size)
         probs = torch.sigmoid(initial_preds)  # convert logits to probabilities
@@ -164,10 +173,27 @@ class CamieTaggerRefined(nn.Module):
         combined_feature = torch.cat([feats, fused_feature], dim=1)  # [B, embedding_dim*2]
 
         # 8. Refined tag prediction
-        refined_logits = self.refined_classifier(combined_feature)  # [B, total_tags]
-        refined_preds = torch.clamp(refined_logits / self.temperature, min=-15.0, max=15.0)
+        refined_preds = self.refined_emb_to_pred(combined_feature)
 
         return feats, initial_preds, combined_feature, refined_preds
+
+
+class RefinedInitialEmbToPred(nn.Module):
+    def __init__(self, model):
+        super().__init__()
+        self.model: CamieTaggerRefined = model
+
+    def forward(self, features):
+        return self.model.initial_emb_to_pred(features)
+
+
+class RefinedRefinedEmbToPred(nn.Module):
+    def __init__(self, model):
+        super().__init__()
+        self.model: CamieTaggerRefined = model
+
+    def forward(self, features):
+        return self.model.refined_emb_to_pred(features)
 
 
 def create_refined_model():
@@ -194,11 +220,12 @@ def create_refined_model():
         filename=filename,
     )
 
-    return model, created_at, (repo_id, filename)
+    return model, created_at, (repo_id, filename), \
+        (RefinedInitialEmbToPred(model), RefinedRefinedEmbToPred(model))
 
 
 if __name__ == '__main__':
-    model, created_at, _ = create_refined_model()
+    model, created_at, _, _ = create_refined_model()
     model.eval()  # set to evaluation mode (disable dropout)
     print(model)
 

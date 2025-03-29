@@ -24,3 +24,14 @@ class FullWrapper(nn.Module):
         refined_prediction = torch.sigmoid(refined_logits)
         return init_embeddings, init_logits, init_prediction, \
             refined_embeddings, refined_logits, refined_prediction
+
+
+class EmbToPredWrapper(nn.Module):
+    def __init__(self, model):
+        super().__init__()
+        self.model = model
+
+    def forward(self, features):
+        logits = self.model(features)
+        prediction = torch.sigmoid(logits)
+        return logits, prediction

@@ -30,7 +30,7 @@ _CATEGORY_MAPS = {
 
 
 @ts_lru_cache()
-def _get_camie_model(model_name, is_full: bool):
+def _get_camie_model(model_name, is_full: bool = True):
     """
     Load and cache a Camie ONNX model from the Hugging Face Hub.
 

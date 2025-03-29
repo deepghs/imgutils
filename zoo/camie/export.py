@@ -23,7 +23,7 @@ from thop import profile, clever_format
 from imgutils.data import load_image
 from imgutils.preprocess import parse_pillow_transforms, create_torchvision_transforms, parse_torchvision_transforms
 from imgutils.preprocess.pillow import PillowPadToSize, PillowToTensor, PillowCompose
-from .model import create_initial_model, create_refined_model, InitialOnlyWrapper, FullWrapper
+from .model import create_initial_model, create_refined_model, InitialOnlyWrapper, FullWrapper, EmbToPredWrapper
 from .tags import load_tags
 from ..utils import onnx_optimize
 
@@ -39,7 +39,7 @@ _MODEL_MAP = {
 
 
 def export_onnx_model(model, dummy_input, onnx_filename: str, is_full: bool = True,
-                      opset_version: int = 17, verbose: bool = True, no_optimize: bool = False):
+                      opset_version: int = 14, verbose: bool = True, no_optimize: bool = False):
     if not is_full:
         wrapped_model = InitialOnlyWrapper(model)
     else:
@@ -85,6 +85,40 @@ def export_onnx_model(model, dummy_input, onnx_filename: str, is_full: bool = Tr
         onnx.save(model, onnx_filename)
 
 
+def export_emb_to_pred_onnx_model(model, dummy_input, onnx_filename: str,
+                                  opset_version: int = 14, verbose: bool = True, no_optimize: bool = False):
+    wrapped_model = EmbToPredWrapper(model)
+
+    with torch.no_grad(), tempfile.TemporaryDirectory() as td:
+        onnx_model_file = os.path.join(td, 'model.onnx')
+        torch.onnx.export(
+            wrapped_model,
+            dummy_input,
+            onnx_model_file,
+            verbose=verbose,
+            input_names=["embedding"],
+            output_names=(
+                ["logits", "output"]
+            ),
+
+            opset_version=opset_version,
+            dynamic_axes={
+                "embedding": {0: "batch"},
+                "logits": {0: "batch"},
+                "output": {0: "batch"},
+            }
+        )
+
+        model = onnx.load(onnx_model_file)
+        if not no_optimize:
+            model = onnx_optimize(model)
+
+        output_model_dir, _ = os.path.split(onnx_filename)
+        if output_model_dir:
+            os.makedirs(output_model_dir, exist_ok=True)
+        onnx.save(model, onnx_filename)
+
+
 def get_threshold(model_name: str = 'initial'):
     with open(hf_hub_download(
             repo_id='Camais03/camie-tagger',
@@ -98,8 +132,10 @@ def extract(export_dir: str, model_name: str = "initial", no_optimize: bool = Fa
     os.makedirs(export_dir, exist_ok=True)
     tp, model_fn = _MODEL_MAP[model_name]
     tprocess = create_torchvision_transforms(tp)
-    model, created_at, (model_repo_id, model_filename) = model_fn()
+    model, created_at, (model_repo_id, model_filename), (initial_emb_to_pred, refined_emb_to_pred) = model_fn()
     model = model.eval()
+    initial_emb_to_pred.eval()
+    refined_emb_to_pred.eval()
 
     sample_image = load_image(os.path.join('zoo', 'testfile', '6125785.jpg'), mode='RGB', force_background='white')
     dummy_input = tprocess(sample_image).unsqueeze(0)
@@ -155,6 +191,24 @@ def extract(export_dir: str, model_name: str = "initial", no_optimize: bool = Fa
     save_model(
         model=model,
         filename=model_weights_file,
+    )
+
+    model_initial_emb_to_pred_onnx_file = os.path.join(export_dir, 'initial_emb_to_pred.onnx')
+    logging.info(f'Exporting initial emb to pred model tp {model_initial_emb_to_pred_onnx_file!r} ...')
+    export_emb_to_pred_onnx_model(
+        model=initial_emb_to_pred,
+        dummy_input=dummy_init_embeddings,
+        onnx_filename=model_initial_emb_to_pred_onnx_file,
+        no_optimize=no_optimize,
+    )
+
+    model_refined_emb_to_pred_onnx_file = os.path.join(export_dir, 'refined_emb_to_pred.onnx')
+    logging.info(f'Exporting refined emb to pred model to {model_refined_emb_to_pred_onnx_file!r} ...')
+    export_emb_to_pred_onnx_model(
+        model=refined_emb_to_pred,
+        dummy_input=dummy_refined_embeddings,
+        onnx_filename=model_refined_emb_to_pred_onnx_file,
+        no_optimize=no_optimize,
     )
 
     model_onnx_file = os.path.join(export_dir, 'model.onnx')
