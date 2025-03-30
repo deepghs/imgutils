@@ -9,6 +9,7 @@ Overview:
 
 """
 from .blacklist import is_blacklisted, drop_blacklisted_tags
+from .camie import get_camie_tags, convert_camie_emb_to_prediction
 from .character import is_basic_character_tag, drop_basic_character_tags
 from .deepdanbooru import get_deepdanbooru_tags
 from .deepgelbooru import get_deepgelbooru_tags
