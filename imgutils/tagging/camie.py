@@ -1,7 +1,14 @@
 """
-This module provides functionality for image tagging using the Camie model from Hugging Face Hub.
-It includes tools for loading models, processing images, and extracting tags across different categories 
-like rating, general tags, characters, artists, and more.
+Overview:
+    This module provides functionality for image tagging using the Camie Tagger model,
+    which can identify over 70,000 tags in images.
+    The implementation is based on the `Camais03/camie-tagger <https://huggingface.co/Camais03/camie-tagger>`_ project,
+    with ONNX optimizations available at `deepghs/camie_tagger_onnx <https://huggingface.co/deepghs/camie_tagger_onnx>`_.
+
+.. note::
+    The tagger categorizes tags into multiple types including rating, general, characters, year, meta, artist,
+    and copyright. While rating, general, and character tags tend to be accurate, other tag types
+    (year, meta, artist, copyright) have shown limited accuracy in testing and are not included in default outputs.
 """
 import json
 from typing import List, Tuple, Dict, Optional, Union, Literal, Any
