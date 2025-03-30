@@ -229,8 +229,8 @@ def get_camie_tags(
     :type drop_overlap: bool
     :param fmt: Format specification for output. Default is ``('rating', 'general', 'character')``.
     :type fmt: Any
-    :return: Dictionary of extracted tags and embeddings
-    :rtype: Dict[str, Any]
+    :return: Extracted tags and embeddings, follow the format from ``fmt``.
+    :rtype: Any
 
     .. note::
         The fmt argument can include the following keys:
@@ -345,3 +345,52 @@ def get_camie_tags(
         }
 
     return vreplace(fmt, values)
+
+
+@ts_lru_cache()
+def _get_camie_emb_to_pred_model(model_name: str, is_refined: bool = False):
+    return open_onnx_model(hf_hub_download(
+        repo_id=_REPO_ID,
+        repo_type='model',
+        filename=f'{model_name}/{"refined" if is_refined else "initial"}_emb_to_pred.onnx',
+    ))
+
+
+def convert_camie_emb_to_prediction(
+        emb: np.ndarray,
+        model_name: str = _DEFAULT_MODEL_NAME,
+        is_refined: bool = True,
+        mode: CamieModeTyping = 'balanced',
+        thresholds: Optional[Union[float, Dict[str, float]]] = None,
+        no_underline: bool = False,
+        drop_overlap: bool = False,
+        fmt: Any = ('rating', 'general', 'character'),
+):
+    model = _get_camie_emb_to_pred_model(model_name=model_name, is_refined=is_refined)
+    if len(emb.shape) == 1:
+        logits, pred = model.run(["logits", "output"], {'embedding': emb[np.newaxis]})
+        return vreplace(fmt, _postprocess_embedding_values(
+            pred=pred[0],
+            logits=logits[0],
+            embedding=emb,
+            model_name=model_name,
+            mode=mode,
+            thresholds=thresholds,
+            no_underline=no_underline,
+            drop_overlap=drop_overlap,
+        ))
+    else:
+        retval = []
+        for emb_item in emb:
+            logits, pred = model.run(["logits", "output"], {'embedding': emb_item[np.newaxis]})
+            retval.append(vreplace(fmt, _postprocess_embedding_values(
+                pred=pred[0],
+                logits=logits[0],
+                embedding=emb_item,
+                model_name=model_name,
+                mode=mode,
+                thresholds=thresholds,
+                no_underline=no_underline,
+                drop_overlap=drop_overlap,
+            )))
+        return retval
