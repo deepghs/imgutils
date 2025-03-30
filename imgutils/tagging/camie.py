@@ -418,6 +418,27 @@ def convert_camie_emb_to_prediction(
         - ``micro_opt``: Micro-optimized thresholds
         - ``macro_opt``: Macro-optimized thresholds
 
+    For batch processing (2-dim input), returns a list where each element corresponds
+    to one embedding's predictions in the same format as single embedding output.
+
+    Example:
+        >>> import numpy as np
+        >>> from imgutils.tagging import get_camie_tags, convert_camie_emb_to_prediction
+        >>>
+        >>> # extract the feature embedding, shape: (W, )
+        >>> embedding = get_camie_tags('skadi.jpg', fmt='embedding')
+        >>>
+        >>> # convert to understandable result
+        >>> rating, general, character = convert_camie_emb_to_prediction(embedding)
+        >>> # these 3 dicts will be the same as that returned by `get_camie_tags('skadi.jpg')`
+        >>>
+        >>> # Batch processing, shape: (B, W)
+        >>> embeddings = np.stack([
+        ...     get_camie_tags('img1.jpg', fmt='embedding'),
+        ...     get_camie_tags('img2.jpg', fmt='embedding'),
+        ... ])
+        >>> # results will be a list of (rating, general, character) tuples
+        >>> results = convert_camie_emb_to_prediction(embeddings)
     """
     model = _get_camie_emb_to_pred_model(model_name=model_name, is_refined=is_refined)
     if len(emb.shape) == 1:

@@ -412,7 +412,6 @@ def convert_wd14_emb_to_prediction(
     to one embedding's predictions in the same format as single embedding output.
 
     Example:
-        >>> import os
         >>> import numpy as np
         >>> from imgutils.tagging import get_wd14_tags, convert_wd14_emb_to_prediction
         >>>
