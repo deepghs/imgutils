@@ -11,6 +11,7 @@ imgutils.tagging
 
     mldanbooru
     wd14
+    camie
     deepdanbooru
     deepgelbooru
     format
