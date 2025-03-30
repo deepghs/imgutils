@@ -308,6 +308,22 @@ def sync(repository: str = 'deepghs/camie_tagger_onnx'):
                 print('Camie Tagger ONNX Exported Version.', file=f)
                 print('', file=f)
 
+                print(f'# How To Use', file=f)
+                print(f'', file=f)
+                print(f'```shell', file=f)
+                print(f'pip install -U dghs-imgutils', file=f)
+                print(f'```', file=f)
+                print(f'', file=f)
+                print(f'```python', file=f)
+                print(f'from imgutils.tagging import get_camie_tags', file=f)
+                print(f'', file=f)
+                print(f'rating, tags, chars = get_camie_tags(\'image.png\')', file=f)
+                print(f'print(rating)', file=f)
+                print(f'print(tags)', file=f)
+                print(f'print(chars)', file=f)
+                print(f'```', file=f)
+                print(f'', file=f)
+
                 print(f'# Models', file=f)
                 print(f'', file=f)
 
