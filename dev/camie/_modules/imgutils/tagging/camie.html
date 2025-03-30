@@ -103,9 +103,16 @@
     
   <h1>Source code for imgutils.tagging.camie</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module provides functionality for image tagging using the Camie model from Hugging Face Hub.</span>
-<span class="sd">It includes tools for loading models, processing images, and extracting tags across different categories </span>
-<span class="sd">like rating, general tags, characters, artists, and more.</span>
+<span class="sd">Overview:</span>
+<span class="sd">    This module provides functionality for image tagging using the Camie Tagger model,</span>
+<span class="sd">    which can identify over 70,000 tags in images.</span>
+<span class="sd">    The implementation is based on the `Camais03/camie-tagger &lt;https://huggingface.co/Camais03/camie-tagger&gt;`_ project,</span>
+<span class="sd">    with ONNX optimizations available at `deepghs/camie_tagger_onnx &lt;https://huggingface.co/deepghs/camie_tagger_onnx&gt;`_.</span>
+
+<span class="sd">.. note::</span>
+<span class="sd">    The tagger categorizes tags into multiple types including rating, general, characters, year, meta, artist,</span>
+<span class="sd">    and copyright. While rating, general, and character tags tend to be accurate, other tag types</span>
+<span class="sd">    (year, meta, artist, copyright) have shown limited accuracy in testing and are not included in default outputs.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Any</span>
@@ -312,22 +319,74 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract tags from an image using the Camie model.</span>
 
-<span class="sd">    :param image: Input image (can be path, URL, or image data)</span>
+<span class="sd">    :param image: Input image (can be path, URL, or image data).</span>
 <span class="sd">    :type image: ImageTyping</span>
-<span class="sd">    :param model_name: Name of the Camie model to use</span>
+<span class="sd">    :param model_name: Name of the Camie model to use.</span>
 <span class="sd">    :type model_name: str</span>
-<span class="sd">    :param mode: Prediction mode affecting threshold values</span>
+<span class="sd">    :param mode: Prediction mode affecting threshold values.</span>
 <span class="sd">    :type mode: CamieModeTyping</span>
-<span class="sd">    :param thresholds: Custom thresholds for tag selection</span>
+<span class="sd">    :param thresholds: Custom thresholds for tag selection.</span>
 <span class="sd">    :type thresholds: Optional[Union[float, Dict[str, float]]]</span>
-<span class="sd">    :param no_underline: Whether to remove underscores from tag names</span>
+<span class="sd">    :param no_underline: Whether to remove underscores from tag names. Default is ``False``.</span>
 <span class="sd">    :type no_underline: bool</span>
-<span class="sd">    :param drop_overlap: Whether to remove overlapping tags</span>
+<span class="sd">    :param drop_overlap: Whether to remove overlapping tags. Default is ``False``.</span>
 <span class="sd">    :type drop_overlap: bool</span>
-<span class="sd">    :param fmt: Format specification for output</span>
+<span class="sd">    :param fmt: Format specification for output. Default is ``(&#39;rating&#39;, &#39;general&#39;, &#39;character&#39;)``.</span>
 <span class="sd">    :type fmt: Any</span>
 <span class="sd">    :return: Dictionary of extracted tags and embeddings</span>
 <span class="sd">    :rtype: Dict[str, Any]</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The fmt argument can include the following keys:</span>
+
+<span class="sd">        - ``rating``: a dict containing ratings and their confidences</span>
+<span class="sd">        - ``general``: a dict containing general tags and their confidences</span>
+<span class="sd">        - ``character``: a dict containing character tags and their confidences</span>
+<span class="sd">        - ``copyright``: a dict containing copyright tags and their confidences</span>
+<span class="sd">        - ``artist``: a dict containing artist tags and their confidences</span>
+<span class="sd">        - ``meta``: a dict containing meta tags and their confidences</span>
+<span class="sd">        - ``year``: a dict containing year tags and their confidences</span>
+<span class="sd">        - ``tag``: a dict containing all tags (including general, character, copyright, artist, meta, year, not including rating) and their confidences</span>
+<span class="sd">        - ``embedding``: a 1-dim embedding of image, recommended for index building after L2 normalization</span>
+<span class="sd">        - ``prediction``: a 1-dim prediction result of image</span>
+
+<span class="sd">        You can extract embedding of the given image with the following code</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging import get_camie_tags</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; embedding = get_camie_tags(&#39;skadi.jpg&#39;, fmt=&#39;embedding&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; embedding.shape</span>
+<span class="sd">        (1280, )</span>
+
+<span class="sd">        This embedding is valuable for constructing indices that enable rapid querying of images based on</span>
+<span class="sd">        visual features within large-scale datasets.</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        From our testings, other tag types (year, meta, artist, copyright) have shown limited accuracy.</span>
+<span class="sd">        Especially for artist tags, just a bit better than ``np.random.randn``. So these tag types are</span>
+<span class="sd">        not included in default ``fmt``.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Here are some images for example</span>
+
+<span class="sd">        .. image:: tagging_demo.plot.py.svg</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">        &gt;&gt;&gt; rating, features, chars = get_camie_tags(&#39;skadi.jpg&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;general&#39;: 0.04246556758880615, &#39;sensitive&#39;: 0.6936423778533936, &#39;questionable&#39;: 0.23721203207969666, &#39;explicit&#39;: 0.033293724060058594}</span>
+<span class="sd">        &gt;&gt;&gt; features</span>
+<span class="sd">        {&#39;1girl&#39;: 0.8412569165229797, &#39;blush&#39;: 0.38029077649116516, &#39;breasts&#39;: 0.618192195892334, &#39;cowboy_shot&#39;: 0.37446439266204834, &#39;large_breasts&#39;: 0.5698797702789307, &#39;long_hair&#39;: 0.7119565010070801, &#39;looking_at_viewer&#39;: 0.5252856612205505, &#39;shirt&#39;: 0.46417444944381714, &#39;solo&#39;: 0.5428758859634399, &#39;standing&#39;: 0.34731733798980713, &#39;tail&#39;: 0.3911612927913666, &#39;thigh_gap&#39;: 0.2932726740837097, &#39;thighs&#39;: 0.4544200003147125, &#39;very_long_hair&#39;: 0.44711941480636597, &#39;ass&#39;: 0.2854885458946228, &#39;outdoors&#39;: 0.6344638466835022, &#39;red_eyes&#39;: 0.611354410648346, &#39;day&#39;: 0.564970850944519, &#39;hair_between_eyes&#39;: 0.4444340467453003, &#39;holding&#39;: 0.35846662521362305, &#39;parted_lips&#39;: 0.3867686092853546, &#39;blue_sky&#39;: 0.3723931908607483, &#39;cloud&#39;: 0.31086698174476624, &#39;short_sleeves&#39;: 0.43279752135276794, &#39;sky&#39;: 0.3896197974681854, &#39;gloves&#39;: 0.6638736724853516, &#39;grey_hair&#39;: 0.5094802975654602, &#39;sweat&#39;: 0.4867050349712372, &#39;navel&#39;: 0.6593714952468872, &#39;crop_top&#39;: 0.5243107676506042, &#39;shorts&#39;: 0.4374789893627167, &#39;artist_name&#39;: 0.3754707872867584, &#39;midriff&#39;: 0.6238733530044556, &#39;ass_visible_through_thighs&#39;: 0.31088054180145264, &#39;gym_uniform&#39;: 0.37657681107521057, &#39;black_shirt&#39;: 0.3012588620185852, &#39;watermark&#39;: 0.5147127509117126, &#39;web_address&#39;: 0.6296812295913696, &#39;short_shorts&#39;: 0.29214906692504883, &#39;black_shorts&#39;: 0.37801358103752136, &#39;buruma&#39;: 0.536261260509491, &#39;bike_shorts&#39;: 0.35828399658203125, &#39;black_gloves&#39;: 0.4156728982925415, &#39;sportswear&#39;: 0.44427722692489624, &#39;baseball_bat&#39;: 0.2838006019592285, &#39;crop_top_overhang&#39;: 0.49192047119140625, &#39;stomach&#39;: 0.36012423038482666, &#39;black_buruma&#39;: 0.3422132134437561, &#39;official_alternate_costume&#39;: 0.2783987522125244, &#39;baseball&#39;: 0.38377970457077026, &#39;baseball_mitt&#39;: 0.32592540979385376, &#39;cropped_shirt&#39;: 0.35402947664260864, &#39;holding_baseball_bat&#39;: 0.2758416533470154, &#39;black_sports_bra&#39;: 0.3463800549507141, &#39;sports_bra&#39;: 0.28466159105300903, &#39;exercising&#39;: 0.2603980302810669, &#39;bike_jersey&#39;: 0.2661605477333069, &#39;patreon_username&#39;: 0.7087235450744629, &#39;patreon_logo&#39;: 0.560276210308075}</span>
+<span class="sd">        &gt;&gt;&gt; chars</span>
+<span class="sd">        {&#39;skadi_(arknights)&#39;: 0.5921452641487122}</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; rating, features, chars = get_camie_tags(&#39;hutao.jpg&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;general&#39;: 0.41121846437454224, &#39;sensitive&#39;: 0.4002530574798584, &#39;questionable&#39;: 0.03438958525657654, &#39;explicit&#39;: 0.04617959260940552}</span>
+<span class="sd">        &gt;&gt;&gt; features</span>
+<span class="sd">        {&#39;1girl&#39;: 0.8312125205993652, &#39;blush&#39;: 0.3996567726135254, &#39;cowboy_shot&#39;: 0.28660568594932556, &#39;long_hair&#39;: 0.7184156775474548, &#39;long_sleeves&#39;: 0.4706878066062927, &#39;looking_at_viewer&#39;: 0.5503140687942505, &#39;school_uniform&#39;: 0.365602970123291, &#39;shirt&#39;: 0.41183334589004517, &#39;sidelocks&#39;: 0.28638553619384766, &#39;smile&#39;: 0.3707748055458069, &#39;solo&#39;: 0.520854115486145, &#39;standing&#39;: 0.2960333526134491, &#39;tongue&#39;: 0.6556028127670288, &#39;tongue_out&#39;: 0.6966925859451294, &#39;very_long_hair&#39;: 0.5526134371757507, &#39;skirt&#39;: 0.6872812509536743, &#39;brown_hair&#39;: 0.5945607423782349, &#39;hair_ornament&#39;: 0.4464661478996277, &#39;hair_ribbon&#39;: 0.3646523952484131, &#39;outdoors&#39;: 0.37938451766967773, &#39;red_eyes&#39;: 0.5426545143127441, &#39;ribbon&#39;: 0.3027467727661133, &#39;bag&#39;: 0.8986430168151855, &#39;hair_between_eyes&#39;: 0.337802529335022, &#39;holding&#39;: 0.38589367270469666, &#39;pleated_skirt&#39;: 0.6475872993469238, &#39;school_bag&#39;: 0.666648805141449, &#39;ahoge&#39;: 0.4749193489551544, &#39;white_shirt&#39;: 0.27104783058166504, &#39;closed_mouth&#39;: 0.28101325035095215, &#39;collared_shirt&#39;: 0.37030768394470215, &#39;miniskirt&#39;: 0.32576680183410645, &#39;:p&#39;: 0.4337637424468994, &#39;alternate_costume&#39;: 0.42441293597221375, &#39;black_skirt&#39;: 0.34694597125053406, &#39;twintails&#39;: 0.5711237192153931, &#39;open_clothes&#39;: 0.31017544865608215, &#39;nail_polish&#39;: 0.534726083278656, &#39;jacket&#39;: 0.4544385075569153, &#39;open_jacket&#39;: 0.27831193804740906, &#39;flower&#39;: 0.45064714550971985, &#39;plaid_clothes&#39;: 0.5494365096092224, &#39;plaid_skirt&#39;: 0.610480546951294, &#39;red_flower&#39;: 0.35928308963775635, &#39;contemporary&#39;: 0.37732189893722534, &#39;backpack&#39;: 0.5575172305107117, &#39;fingernails&#39;: 0.27776333689689636, &#39;cardigan&#39;: 0.3264558017253876, &#39;blue_jacket&#39;: 0.31882336735725403, &#39;ghost&#39;: 0.5534622073173523, &#39;red_nails&#39;: 0.38771501183509827, &#39;:q&#39;: 0.3758758008480072, &#39;hair_flower&#39;: 0.39574217796325684, &#39;charm_(object)&#39;: 0.5394986271858215, &#39;handbag&#39;: 0.37014907598495483, &#39;black_bag&#39;: 0.44918346405029297, &#39;shoulder_bag&#39;: 0.5881174802780151, &#39;symbol-shaped_pupils&#39;: 0.5163478255271912, &#39;blue_cardigan&#39;: 0.28089386224746704, &#39;black_nails&#39;: 0.42480990290641785, &#39;bag_charm&#39;: 0.5010414123535156, &#39;plum_blossoms&#39;: 0.27618563175201416, &#39;flower-shaped_pupils&#39;: 0.5317837595939636}</span>
+<span class="sd">        &gt;&gt;&gt; chars</span>
+<span class="sd">        {&#39;hu_tao_(genshin_impact)&#39;: 0.8859397172927856, &#39;boo_tao_(genshin_impact)&#39;: 0.7348971366882324}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">names</span> <span class="o">=</span> <span class="n">vnames</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
     <span class="n">need_full</span> <span class="o">=</span> <span class="kc">False</span>
