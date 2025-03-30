@@ -254,7 +254,7 @@
 <span class="sd">    :type embedding: numpy.ndarray</span>
 <span class="sd">    :param model_name: Name of the model used</span>
 <span class="sd">    :type model_name: str</span>
-<span class="sd">    :param mode: Prediction mode for threshold selection</span>
+<span class="sd">    :param mode: Prediction mode affecting threshold values</span>
 <span class="sd">    :type mode: CamieModeTyping</span>
 <span class="sd">    :param thresholds: Custom thresholds for tag selection</span>
 <span class="sd">    :type thresholds: Optional[Union[float, Dict[str, float]]]</span>
@@ -333,8 +333,17 @@
 <span class="sd">    :type drop_overlap: bool</span>
 <span class="sd">    :param fmt: Format specification for output. Default is ``(&#39;rating&#39;, &#39;general&#39;, &#39;character&#39;)``.</span>
 <span class="sd">    :type fmt: Any</span>
-<span class="sd">    :return: Dictionary of extracted tags and embeddings</span>
-<span class="sd">    :rtype: Dict[str, Any]</span>
+<span class="sd">    :return: Extracted tags and embeddings, follow the format from ``fmt``.</span>
+<span class="sd">    :rtype: Any</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Modes for selection:</span>
+
+<span class="sd">        - ``balanced``: Balanced precision/recall</span>
+<span class="sd">        - ``high_precision``: Higher precision thresholds</span>
+<span class="sd">        - ``high_recall``: Higher recall thresholds</span>
+<span class="sd">        - ``micro_opt``: Micro-optimized thresholds</span>
+<span class="sd">        - ``macro_opt``: Macro-optimized thresholds</span>
 
 <span class="sd">    .. note::</span>
 <span class="sd">        The fmt argument can include the following keys:</span>
@@ -449,6 +458,120 @@
         <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">vreplace</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_camie_emb_to_pred_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_refined</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load embedding-to-prediction conversion model.</span>
+
+<span class="sd">    :param model_name: Model variant name</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :param is_refined: Use refined embeddings (True) or initial embeddings (False)</span>
+<span class="sd">    :type is_refined: bool</span>
+<span class="sd">    :return: ONNX model session for embedding conversion</span>
+<span class="sd">    :rtype: onnxruntime.InferenceSession</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">_REPO_ID</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="s2">&quot;refined&quot;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">is_refined</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s2">&quot;initial&quot;</span><span class="si">}</span><span class="s1">_emb_to_pred.onnx&#39;</span><span class="p">,</span>
+    <span class="p">))</span>
+
+
+<div class="viewcode-block" id="convert_camie_emb_to_prediction"><a class="viewcode-back" href="../../../api_doc/tagging/camie.html#imgutils.tagging.camie.convert_camie_emb_to_prediction">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">convert_camie_emb_to_prediction</span><span class="p">(</span>
+        <span class="n">emb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
+        <span class="n">is_refined</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">mode</span><span class="p">:</span> <span class="n">CamieModeTyping</span> <span class="o">=</span> <span class="s1">&#39;balanced&#39;</span><span class="p">,</span>
+        <span class="n">thresholds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">no_underline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">drop_overlap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;character&#39;</span><span class="p">),</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert stored embeddings back to tag predictions.</span>
+
+<span class="sd">    Useful for reprocessing existing embeddings with new thresholds or formats.</span>
+
+<span class="sd">    :param emb: Embedding vector(s) from previous inference</span>
+<span class="sd">    :type emb: np.ndarray</span>
+<span class="sd">    :param model_name: Original model variant name</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :param is_refined: Whether embeddings come from refined stage, otherwise from initial stage</span>
+<span class="sd">    :type is_refined: bool</span>
+<span class="sd">    :param mode: Threshold selection strategy</span>
+<span class="sd">    :type mode: CamieModeTyping</span>
+<span class="sd">    :param thresholds: Custom threshold values</span>
+<span class="sd">    :type thresholds: Optional[Union[float, Dict[str, float]]]</span>
+<span class="sd">    :param no_underline: Remove underscores from tag names</span>
+<span class="sd">    :type no_underline: bool</span>
+<span class="sd">    :param drop_overlap: Remove overlapping tags in general category</span>
+<span class="sd">    :type drop_overlap: bool</span>
+<span class="sd">    :param fmt: Output format specification</span>
+<span class="sd">    :type fmt: Any</span>
+<span class="sd">    :return: Formatted results matching original prediction format</span>
+<span class="sd">    :rtype: Any</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Modes for selection:</span>
+
+<span class="sd">        - ``balanced``: Balanced precision/recall</span>
+<span class="sd">        - ``high_precision``: Higher precision thresholds</span>
+<span class="sd">        - ``high_recall``: Higher recall thresholds</span>
+<span class="sd">        - ``micro_opt``: Micro-optimized thresholds</span>
+<span class="sd">        - ``macro_opt``: Macro-optimized thresholds</span>
+
+<span class="sd">    For batch processing (2-dim input), returns a list where each element corresponds</span>
+<span class="sd">    to one embedding&#39;s predictions in the same format as single embedding output.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging import get_camie_tags, convert_camie_emb_to_prediction</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # extract the feature embedding, shape: (W, )</span>
+<span class="sd">        &gt;&gt;&gt; embedding = get_camie_tags(&#39;skadi.jpg&#39;, fmt=&#39;embedding&#39;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # convert to understandable result</span>
+<span class="sd">        &gt;&gt;&gt; rating, general, character = convert_camie_emb_to_prediction(embedding)</span>
+<span class="sd">        &gt;&gt;&gt; # these 3 dicts will be the same as that returned by `get_camie_tags(&#39;skadi.jpg&#39;)`</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Batch processing, shape: (B, W)</span>
+<span class="sd">        &gt;&gt;&gt; embeddings = np.stack([</span>
+<span class="sd">        ...     get_camie_tags(&#39;img1.jpg&#39;, fmt=&#39;embedding&#39;),</span>
+<span class="sd">        ...     get_camie_tags(&#39;img2.jpg&#39;, fmt=&#39;embedding&#39;),</span>
+<span class="sd">        ... ])</span>
+<span class="sd">        &gt;&gt;&gt; # results will be a list of (rating, general, character) tuples</span>
+<span class="sd">        &gt;&gt;&gt; results = convert_camie_emb_to_prediction(embeddings)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">_get_camie_emb_to_pred_model</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span> <span class="n">is_refined</span><span class="o">=</span><span class="n">is_refined</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">emb</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">logits</span><span class="p">,</span> <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;logits&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;embedding&#39;</span><span class="p">:</span> <span class="n">emb</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]})</span>
+        <span class="k">return</span> <span class="n">vreplace</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">_postprocess_embedding_values</span><span class="p">(</span>
+            <span class="n">pred</span><span class="o">=</span><span class="n">pred</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">embedding</span><span class="o">=</span><span class="n">emb</span><span class="p">,</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
+            <span class="n">thresholds</span><span class="o">=</span><span class="n">thresholds</span><span class="p">,</span>
+            <span class="n">no_underline</span><span class="o">=</span><span class="n">no_underline</span><span class="p">,</span>
+            <span class="n">drop_overlap</span><span class="o">=</span><span class="n">drop_overlap</span><span class="p">,</span>
+        <span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">emb_item</span> <span class="ow">in</span> <span class="n">emb</span><span class="p">:</span>
+            <span class="n">logits</span><span class="p">,</span> <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;logits&quot;</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;embedding&#39;</span><span class="p">:</span> <span class="n">emb_item</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]})</span>
+            <span class="n">retval</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vreplace</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">_postprocess_embedding_values</span><span class="p">(</span>
+                <span class="n">pred</span><span class="o">=</span><span class="n">pred</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">embedding</span><span class="o">=</span><span class="n">emb_item</span><span class="p">,</span>
+                <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
+                <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
+                <span class="n">thresholds</span><span class="o">=</span><span class="n">thresholds</span><span class="p">,</span>
+                <span class="n">no_underline</span><span class="o">=</span><span class="n">no_underline</span><span class="p">,</span>
+                <span class="n">drop_overlap</span><span class="o">=</span><span class="n">drop_overlap</span><span class="p">,</span>
+            <span class="p">)))</span>
+        <span class="k">return</span> <span class="n">retval</span></div>
 </pre></div>
 
 

@@ -80,6 +80,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.camie.get_camie_tags"><code class="docutils literal notranslate"><span class="pre">get_camie_tags()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#convert-camie-emb-to-prediction">convert_camie_emb_to_prediction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.tagging.camie.convert_camie_emb_to_prediction"><code class="docutils literal notranslate"><span class="pre">convert_camie_emb_to_prediction()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="deepdanbooru.html">imgutils.tagging.deepdanbooru</a></li>
@@ -158,12 +162,23 @@ and copyright. While rating, general, and character tags tend to be accurate, ot
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary of extracted tags and embeddings</p>
+<dd class="field-even"><p>Extracted tags and embeddings, follow the format from <code class="docutils literal notranslate"><span class="pre">fmt</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dict[str, Any]</p>
+<dd class="field-odd"><p>Any</p>
 </dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Modes for selection:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">balanced</span></code>: Balanced precision/recall</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">high_precision</span></code>: Higher precision thresholds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">high_recall</span></code>: Higher recall thresholds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">micro_opt</span></code>: Micro-optimized thresholds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">macro_opt</span></code>: Macro-optimized thresholds</p></li>
+</ul>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The fmt argument can include the following keys:</p>
@@ -213,6 +228,71 @@ not included in default <code class="docutils literal notranslate"><span class="
 <span class="go">{&#39;1girl&#39;: 0.8312125205993652, &#39;blush&#39;: 0.3996567726135254, &#39;cowboy_shot&#39;: 0.28660568594932556, &#39;long_hair&#39;: 0.7184156775474548, &#39;long_sleeves&#39;: 0.4706878066062927, &#39;looking_at_viewer&#39;: 0.5503140687942505, &#39;school_uniform&#39;: 0.365602970123291, &#39;shirt&#39;: 0.41183334589004517, &#39;sidelocks&#39;: 0.28638553619384766, &#39;smile&#39;: 0.3707748055458069, &#39;solo&#39;: 0.520854115486145, &#39;standing&#39;: 0.2960333526134491, &#39;tongue&#39;: 0.6556028127670288, &#39;tongue_out&#39;: 0.6966925859451294, &#39;very_long_hair&#39;: 0.5526134371757507, &#39;skirt&#39;: 0.6872812509536743, &#39;brown_hair&#39;: 0.5945607423782349, &#39;hair_ornament&#39;: 0.4464661478996277, &#39;hair_ribbon&#39;: 0.3646523952484131, &#39;outdoors&#39;: 0.37938451766967773, &#39;red_eyes&#39;: 0.5426545143127441, &#39;ribbon&#39;: 0.3027467727661133, &#39;bag&#39;: 0.8986430168151855, &#39;hair_between_eyes&#39;: 0.337802529335022, &#39;holding&#39;: 0.38589367270469666, &#39;pleated_skirt&#39;: 0.6475872993469238, &#39;school_bag&#39;: 0.666648805141449, &#39;ahoge&#39;: 0.4749193489551544, &#39;white_shirt&#39;: 0.27104783058166504, &#39;closed_mouth&#39;: 0.28101325035095215, &#39;collared_shirt&#39;: 0.37030768394470215, &#39;miniskirt&#39;: 0.32576680183410645, &#39;:p&#39;: 0.4337637424468994, &#39;alternate_costume&#39;: 0.42441293597221375, &#39;black_skirt&#39;: 0.34694597125053406, &#39;twintails&#39;: 0.5711237192153931, &#39;open_clothes&#39;: 0.31017544865608215, &#39;nail_polish&#39;: 0.534726083278656, &#39;jacket&#39;: 0.4544385075569153, &#39;open_jacket&#39;: 0.27831193804740906, &#39;flower&#39;: 0.45064714550971985, &#39;plaid_clothes&#39;: 0.5494365096092224, &#39;plaid_skirt&#39;: 0.610480546951294, &#39;red_flower&#39;: 0.35928308963775635, &#39;contemporary&#39;: 0.37732189893722534, &#39;backpack&#39;: 0.5575172305107117, &#39;fingernails&#39;: 0.27776333689689636, &#39;cardigan&#39;: 0.3264558017253876, &#39;blue_jacket&#39;: 0.31882336735725403, &#39;ghost&#39;: 0.5534622073173523, &#39;red_nails&#39;: 0.38771501183509827, &#39;:q&#39;: 0.3758758008480072, &#39;hair_flower&#39;: 0.39574217796325684, &#39;charm_(object)&#39;: 0.5394986271858215, &#39;handbag&#39;: 0.37014907598495483, &#39;black_bag&#39;: 0.44918346405029297, &#39;shoulder_bag&#39;: 0.5881174802780151, &#39;symbol-shaped_pupils&#39;: 0.5163478255271912, &#39;blue_cardigan&#39;: 0.28089386224746704, &#39;black_nails&#39;: 0.42480990290641785, &#39;bag_charm&#39;: 0.5010414123535156, &#39;plum_blossoms&#39;: 0.27618563175201416, &#39;flower-shaped_pupils&#39;: 0.5317837595939636}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">chars</span>
 <span class="go">{&#39;hu_tao_(genshin_impact)&#39;: 0.8859397172927856, &#39;boo_tao_(genshin_impact)&#39;: 0.7348971366882324}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="convert-camie-emb-to-prediction">
+<h2>convert_camie_emb_to_prediction<a class="headerlink" href="#convert-camie-emb-to-prediction" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.tagging.camie.convert_camie_emb_to_prediction">
+<span class="sig-prename descclassname"><span class="pre">imgutils.tagging.camie.</span></span><span class="sig-name descname"><span class="pre">convert_camie_emb_to_prediction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'initial'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_refined</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'balanced'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'high_precision'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'high_recall'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'micro_opt'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'macro_opt'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'balanced'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_underline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_overlap</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('rating',</span> <span class="pre">'general',</span> <span class="pre">'character')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/tagging/camie.html#convert_camie_emb_to_prediction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.tagging.camie.convert_camie_emb_to_prediction" title="Permalink to this definition"></a></dt>
+<dd><p>Convert stored embeddings back to tag predictions.</p>
+<p>Useful for reprocessing existing embeddings with new thresholds or formats.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>emb</strong> (<em>np.ndarray</em>) – Embedding vector(s) from previous inference</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – Original model variant name</p></li>
+<li><p><strong>is_refined</strong> (<em>bool</em>) – Whether embeddings come from refined stage, otherwise from initial stage</p></li>
+<li><p><strong>mode</strong> (<em>CamieModeTyping</em>) – Threshold selection strategy</p></li>
+<li><p><strong>thresholds</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>float</em><em>, </em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em><em>]</em><em>]</em>) – Custom threshold values</p></li>
+<li><p><strong>no_underline</strong> (<em>bool</em>) – Remove underscores from tag names</p></li>
+<li><p><strong>drop_overlap</strong> (<em>bool</em>) – Remove overlapping tags in general category</p></li>
+<li><p><strong>fmt</strong> (<em>Any</em>) – Output format specification</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted results matching original prediction format</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Modes for selection:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">balanced</span></code>: Balanced precision/recall</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">high_precision</span></code>: Higher precision thresholds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">high_recall</span></code>: Higher recall thresholds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">micro_opt</span></code>: Micro-optimized thresholds</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">macro_opt</span></code>: Macro-optimized thresholds</p></li>
+</ul>
+</div>
+<p>For batch processing (2-dim input), returns a list where each element corresponds
+to one embedding’s predictions in the same format as single embedding output.</p>
+<dl>
+<dt>Example:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.tagging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_camie_tags</span><span class="p">,</span> <span class="n">convert_camie_emb_to_prediction</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># extract the feature embedding, shape: (W, )</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span> <span class="o">=</span> <span class="n">get_camie_tags</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;embedding&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># convert to understandable result</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span><span class="p">,</span> <span class="n">general</span><span class="p">,</span> <span class="n">character</span> <span class="o">=</span> <span class="n">convert_camie_emb_to_prediction</span><span class="p">(</span><span class="n">embedding</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># these 3 dicts will be the same as that returned by `get_camie_tags(&#39;skadi.jpg&#39;)`</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Batch processing, shape: (B, W)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embeddings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="n">get_camie_tags</span><span class="p">(</span><span class="s1">&#39;img1.jpg&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;embedding&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">get_camie_tags</span><span class="p">(</span><span class="s1">&#39;img2.jpg&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;embedding&#39;</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># results will be a list of (rating, general, character) tuples</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">convert_camie_emb_to_prediction</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd>

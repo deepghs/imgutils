@@ -13,3 +13,9 @@ get_camie_tags
 
 
 
+convert_camie_emb_to_prediction
+----------------------------------------------------
+
+.. autofunction:: convert_camie_emb_to_prediction
+
+
