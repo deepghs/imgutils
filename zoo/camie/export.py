@@ -324,7 +324,8 @@ def sync(repository: str = 'deepghs/camie_tagger_onnx'):
                 print(f'```', file=f)
                 print(f'', file=f)
                 print(f'For further details, see '
-                      f'[our documentation](https://dghs-imgutils.deepghs.org/main/api_doc/tagging/camie.html).', file=f)
+                      f'[our documentation](https://dghs-imgutils.deepghs.org/main/api_doc/tagging/camie.html).',
+                      file=f)
                 print(f'', file=f)
 
                 print(f'# Models', file=f)
