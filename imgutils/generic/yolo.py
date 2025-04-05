@@ -495,7 +495,7 @@ class YOLOModel:
         self._model_types = {}
         self._hf_token = hf_token
         self._global_lock = Lock()
-        self._model_locks = defaultdict(Lock)
+        self._model_load_locks = defaultdict(Lock)
         self._model_meta_lock = Lock()
 
     def _get_hf_token(self) -> Optional[str]:
@@ -571,7 +571,7 @@ class YOLOModel:
         :rtype: tuple
         """
         cache_key = os.getpid(), threading.get_ident(), model_name
-        with self._model_locks[cache_key]:
+        with self._model_load_locks[os.getpid()]:
             if cache_key not in self._models:
                 self._check_model_name(model_name)
                 model = open_onnx_model(hf_hub_download(
