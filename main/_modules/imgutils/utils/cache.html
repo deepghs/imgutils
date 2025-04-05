@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>imgutils.utils.cache &mdash; imgutils 0.15.0 documentation</title>
+  <title>imgutils.utils.cache &mdash; imgutils 0.16.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=97b2f34b"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=05cd2da0"></script>
       <script src="../../../_static/doctools.js?v=888ff710"></script>
       <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -117,14 +117,49 @@
 <span class="sd">    ...     # Some expensive computation</span>
 <span class="sd">    ...     return x + y</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span><span class="p">,</span> <span class="n">wraps</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ts_lru_cache&#39;</span><span class="p">]</span>
 
+<span class="n">LevelTyping</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;global&#39;</span><span class="p">,</span> <span class="s1">&#39;process&#39;</span><span class="p">,</span> <span class="s1">&#39;thread&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="ts_lru_cache"><a class="viewcode-back" href="../../../api_doc/utils/cache.html#imgutils.utils.cache.ts_lru_cache">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ts_lru_cache</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">):</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_context_key</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="n">LevelTyping</span> <span class="o">=</span> <span class="s1">&#39;global&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a context key based on the specified caching level.</span>
+
+<span class="sd">    :param level: The caching level to use. Can be &#39;global&#39;, &#39;process&#39;, or &#39;thread&#39;.</span>
+<span class="sd">    :type level: LevelTyping</span>
+
+<span class="sd">    :return: A context key appropriate for the specified level.</span>
+<span class="sd">    :rtype: tuple or None</span>
+
+<span class="sd">    :raises ValueError: If an invalid cache level is specified.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The function returns:</span>
+
+<span class="sd">        - None for &#39;global&#39; level</span>
+<span class="sd">        - Process ID for &#39;process&#39; level</span>
+<span class="sd">        - (Process ID, Thread ID) tuple for &#39;thread&#39; level</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s1">&#39;global&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s1">&#39;process&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s1">&#39;thread&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">(),</span> <span class="n">threading</span><span class="o">.</span><span class="n">get_ident</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid cache level, &#39;</span>
+                         <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">global</span><span class="se">\&#39;</span><span class="s1">, </span><span class="se">\&#39;</span><span class="s1">process</span><span class="se">\&#39;</span><span class="s1"> or </span><span class="se">\&#39;</span><span class="s1">thread</span><span class="se">\&#39;</span><span class="s1"> expected but </span><span class="si">{</span><span class="n">level</span><span class="si">!r}</span><span class="s1"> found.&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ts_lru_cache"><a class="viewcode-back" href="../../../api_doc/utils/cache.html#imgutils.utils.cache.ts_lru_cache">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ts_lru_cache</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="n">LevelTyping</span> <span class="o">=</span> <span class="s1">&#39;global&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A thread-safe version of the lru_cache decorator.</span>
 
@@ -132,23 +167,37 @@
 <span class="sd">    thread-safety in multithreaded environments. It maintains the same interface</span>
 <span class="sd">    as the built-in lru_cache, allowing you to specify options like maxsize.</span>
 
+<span class="sd">    :param level: The caching level (&#39;global&#39;, &#39;process&#39;, or &#39;thread&#39;).</span>
+<span class="sd">    :type level: LevelTyping</span>
 <span class="sd">    :param options: Keyword arguments to be passed to the underlying lru_cache.</span>
 <span class="sd">    :type options: dict</span>
 
 <span class="sd">    :return: A thread-safe cached version of the decorated function.</span>
 <span class="sd">    :rtype: function</span>
 
-<span class="sd">    :Example:</span>
-<span class="sd">        &gt;&gt;&gt; @ts_lru_cache(maxsize=100)</span>
+<span class="sd">    :example:</span>
+<span class="sd">        &gt;&gt;&gt; @ts_lru_cache(level=&#39;thread&#39;, maxsize=100)</span>
 <span class="sd">        &gt;&gt;&gt; def my_function(x, y):</span>
 <span class="sd">        ...     # Function implementation</span>
 <span class="sd">        ...     return x + y</span>
 
 <span class="sd">    .. note::</span>
+<span class="sd">        The decorator provides three levels of caching:</span>
+
+<span class="sd">        - global: Single cache shared across all processes and threads</span>
+<span class="sd">        - process: Separate cache for each process</span>
+<span class="sd">        - thread: Separate cache for each thread</span>
+
+<span class="sd">    .. note::</span>
 <span class="sd">        While this decorator ensures thread-safety, it may introduce some overhead</span>
 <span class="sd">        due to lock acquisition. Use it when thread-safety is more critical than</span>
 <span class="sd">        maximum performance in multithreaded scenarios.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The decorator preserves the cache_info() and cache_clear() methods</span>
+<span class="sd">        from the original lru_cache implementation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">_get_context_key</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -160,19 +209,22 @@
 <span class="sd">        :return: The wrapped function with thread-safe caching.</span>
 <span class="sd">        :rtype: function</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="nd">@lru_cache</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
         <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-        <span class="k">def</span><span class="w"> </span><span class="nf">_cached_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_cached_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">__context_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Cached version of the original function.</span>
 
 <span class="sd">            :param args: Positional arguments to be passed to the original function.</span>
+<span class="sd">            :param __context_key: Internal context key for cache separation.</span>
 <span class="sd">            :param kwargs: Keyword arguments to be passed to the original function.</span>
 
 <span class="sd">            :return: The result of the original function call.</span>
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
+        <span class="n">lock_pool</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">)</span>
         <span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
         <span class="nd">@wraps</span><span class="p">(</span><span class="n">_cached_func</span><span class="p">)</span>
@@ -188,8 +240,11 @@
 
 <span class="sd">            :return: The result of the cached function call.</span>
 <span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">context_key</span> <span class="o">=</span> <span class="n">_get_context_key</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">)</span>
             <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">_cached_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">_context_lock</span> <span class="o">=</span> <span class="n">lock_pool</span><span class="p">[</span><span class="n">context_key</span><span class="p">]</span>
+            <span class="k">with</span> <span class="n">_context_lock</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">_cached_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">__context_key</span><span class="o">=</span><span class="n">context_key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Preserve cache_info and cache_clear methods if they exist</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_cached_func</span><span class="p">,</span> <span class="s1">&#39;cache_info&#39;</span><span class="p">):</span>
@@ -241,11 +296,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/pyolo/index.html">dev/pyolo</a></dd>
+                        <dd><a href="cache.html">main</a></dd>
                         <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/attachments/index.html">dev/attachments</a></dd>
                         <dd><a href="../../../../dev/pt/index.html">dev/pt</a></dd>
-                        <dd><a href="cache.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
