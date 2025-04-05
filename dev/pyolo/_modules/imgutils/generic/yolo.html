@@ -120,6 +120,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lock</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
@@ -158,6 +159,27 @@
     <span class="k">if</span> <span class="n">gr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gradio required for launching webui-based demo.</span><span class="se">\n</span><span class="s1">&#39;</span>
                                <span class="sa">f</span><span class="s1">&#39;Please install it with `pip install dghs-imgutils[demo]`.&#39;</span><span class="p">)</span>
+
+
+<span class="n">_MODEL_LOAD_LOCKS</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">Lock</span><span class="p">)</span>
+<span class="n">_G_ML_LOCK</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_model_load_lock</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Context manager for thread-safe model loading operations.</span>
+
+<span class="sd">    This context manager ensures that model loading operations are thread-safe by using</span>
+<span class="sd">    process-specific locks. It prevents concurrent model loading operations which could</span>
+<span class="sd">    lead to race conditions.</span>
+
+<span class="sd">    :yields: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">_G_ML_LOCK</span><span class="p">:</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="n">_MODEL_LOAD_LOCKS</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()]</span>
+    <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
+        <span class="k">yield</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_v_fix</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
@@ -599,9 +621,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="o">=</span> <span class="n">hf_token</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_global_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model_load_locks</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">Lock</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model_meta_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model_exec_locks</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">Lock</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_meta_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span></div>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_hf_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -676,7 +696,7 @@
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cache_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">(),</span> <span class="n">threading</span><span class="o">.</span><span class="n">get_ident</span><span class="p">(),</span> <span class="n">model_name</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_load_locks</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()]:</span>
+        <span class="k">with</span> <span class="n">_model_load_lock</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_check_model_name</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
                 <span class="n">model</span> <span class="o">=</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
@@ -693,7 +713,7 @@
                     <span class="n">max_infer_size</span> <span class="o">=</span> <span class="mi">640</span>
                 <span class="n">names_map</span> <span class="o">=</span> <span class="n">_safe_eval_names_str</span><span class="p">(</span><span class="n">model_metadata</span><span class="o">.</span><span class="n">custom_metadata_map</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">])</span>
                 <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">names_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names_map</span><span class="p">))]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_exec_locks</span><span class="p">[</span><span class="n">cache_key</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">Lock</span><span class="p">())</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
 
