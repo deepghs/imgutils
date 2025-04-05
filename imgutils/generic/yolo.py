@@ -13,11 +13,13 @@ The module supports various image input types and allows customization of confid
 
 import ast
 import json
-import math
 import os
+import threading
+from collections import defaultdict
 from threading import Lock
 from typing import List, Optional, Tuple, Union
 
+import math
 import numpy as np
 import requests
 from PIL import Image
@@ -493,7 +495,8 @@ class YOLOModel:
         self._model_types = {}
         self._hf_token = hf_token
         self._global_lock = Lock()
-        self._model_lock = Lock()
+        self._model_locks = defaultdict(Lock)
+        self._model_meta_lock = Lock()
 
     def _get_hf_token(self) -> Optional[str]:
         """
@@ -567,8 +570,9 @@ class YOLOModel:
         :return: Tuple containing the ONNX model, maximum inference size, and labels.
         :rtype: tuple
         """
-        with self._model_lock:
-            if model_name not in self._models:
+        cache_key = os.getpid(), threading.get_ident(), model_name
+        with self._model_locks[cache_key]:
+            if cache_key not in self._models:
                 self._check_model_name(model_name)
                 model = open_onnx_model(hf_hub_download(
                     repo_id=self.repo_id,
@@ -584,12 +588,12 @@ class YOLOModel:
                     max_infer_size = 640
                 names_map = _safe_eval_names_str(model_metadata.custom_metadata_map['names'])
                 labels = [names_map[i] for i in range(len(names_map))]
-                self._models[model_name] = (model, max_infer_size, labels)
+                self._models[cache_key] = (model, max_infer_size, labels)
 
-        return self._models[model_name]
+        return self._models[cache_key]
 
     def _get_model_type(self, model_name: str):
-        with self._model_lock:
+        with self._model_meta_lock:
             if model_name not in self._model_types:
                 try:
                     model_type_file = hf_hub_download(
