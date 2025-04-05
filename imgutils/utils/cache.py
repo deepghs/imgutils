@@ -26,6 +26,24 @@ LevelTyping = Literal['global', 'process', 'thread']
 
 
 def _get_context_key(level: LevelTyping = 'global'):
+    """
+    Get a context key based on the specified caching level.
+
+    :param level: The caching level to use. Can be 'global', 'process', or 'thread'.
+    :type level: LevelTyping
+
+    :return: A context key appropriate for the specified level.
+    :rtype: tuple or None
+
+    :raises ValueError: If an invalid cache level is specified.
+
+    .. note::
+        The function returns:
+
+        - None for 'global' level
+        - Process ID for 'process' level
+        - (Process ID, Thread ID) tuple for 'thread' level
+    """
     if level == 'global':
         return None
     elif level == 'process':
@@ -45,22 +63,35 @@ def ts_lru_cache(level: LevelTyping = 'global', **options):
     thread-safety in multithreaded environments. It maintains the same interface
     as the built-in lru_cache, allowing you to specify options like maxsize.
 
+    :param level: The caching level ('global', 'process', or 'thread').
+    :type level: LevelTyping
     :param options: Keyword arguments to be passed to the underlying lru_cache.
     :type options: dict
 
     :return: A thread-safe cached version of the decorated function.
     :rtype: function
 
-    :Example:
-        >>> @ts_lru_cache(maxsize=100)
+    :example:
+        >>> @ts_lru_cache(level='thread', maxsize=100)
         >>> def my_function(x, y):
         ...     # Function implementation
         ...     return x + y
 
     .. note::
+        The decorator provides three levels of caching:
+
+        - global: Single cache shared across all processes and threads
+        - process: Separate cache for each process
+        - thread: Separate cache for each thread
+
+    .. note::
         While this decorator ensures thread-safety, it may introduce some overhead
         due to lock acquisition. Use it when thread-safety is more critical than
         maximum performance in multithreaded scenarios.
+
+    .. note::
+        The decorator preserves the cache_info() and cache_clear() methods
+        from the original lru_cache implementation.
     """
     _ = _get_context_key(level)
 
@@ -82,6 +113,7 @@ def ts_lru_cache(level: LevelTyping = 'global', **options):
             Cached version of the original function.
 
             :param args: Positional arguments to be passed to the original function.
+            :param __context_key: Internal context key for cache separation.
             :param kwargs: Keyword arguments to be passed to the original function.
 
             :return: The result of the original function call.
