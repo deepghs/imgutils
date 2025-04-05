@@ -13,14 +13,49 @@ Usage:
     ...     # Some expensive computation
     ...     return x + y
 """
-
+import os
 import threading
+from collections import defaultdict
 from functools import lru_cache, wraps
+
+from typing import Literal
 
 __all__ = ['ts_lru_cache']
 
+LevelTyping = Literal['global', 'process', 'thread']
 
-def ts_lru_cache(**options):
+
+def _get_context_key(level: LevelTyping = 'global'):
+    """
+    Get a context key based on the specified caching level.
+
+    :param level: The caching level to use. Can be 'global', 'process', or 'thread'.
+    :type level: LevelTyping
+
+    :return: A context key appropriate for the specified level.
+    :rtype: tuple or None
+
+    :raises ValueError: If an invalid cache level is specified.
+
+    .. note::
+        The function returns:
+
+        - None for 'global' level
+        - Process ID for 'process' level
+        - (Process ID, Thread ID) tuple for 'thread' level
+    """
+    if level == 'global':
+        return None
+    elif level == 'process':
+        return os.getpid()
+    elif level == 'thread':
+        return os.getpid(), threading.get_ident()
+    else:
+        raise ValueError(f'Invalid cache level, '
+                         f'\'global\', \'process\' or \'thread\' expected but {level!r} found.')
+
+
+def ts_lru_cache(level: LevelTyping = 'global', **options):
     """
     A thread-safe version of the lru_cache decorator.
 
@@ -28,23 +63,37 @@ def ts_lru_cache(**options):
     thread-safety in multithreaded environments. It maintains the same interface
     as the built-in lru_cache, allowing you to specify options like maxsize.
 
+    :param level: The caching level ('global', 'process', or 'thread').
+    :type level: LevelTyping
     :param options: Keyword arguments to be passed to the underlying lru_cache.
     :type options: dict
 
     :return: A thread-safe cached version of the decorated function.
     :rtype: function
 
-    :Example:
-        >>> @ts_lru_cache(maxsize=100)
+    :example:
+        >>> @ts_lru_cache(level='thread', maxsize=100)
         >>> def my_function(x, y):
         ...     # Function implementation
         ...     return x + y
 
     .. note::
+        The decorator provides three levels of caching:
+
+        - global: Single cache shared across all processes and threads
+        - process: Separate cache for each process
+        - thread: Separate cache for each thread
+
+    .. note::
         While this decorator ensures thread-safety, it may introduce some overhead
         due to lock acquisition. Use it when thread-safety is more critical than
         maximum performance in multithreaded scenarios.
+
+    .. note::
+        The decorator preserves the cache_info() and cache_clear() methods
+        from the original lru_cache implementation.
     """
+    _ = _get_context_key(level)
 
     def _decorator(func):
         """
@@ -56,19 +105,22 @@ def ts_lru_cache(**options):
         :return: The wrapped function with thread-safe caching.
         :rtype: function
         """
+
         @lru_cache(**options)
         @wraps(func)
-        def _cached_func(*args, **kwargs):
+        def _cached_func(*args, __context_key=None, **kwargs):
             """
             Cached version of the original function.
 
             :param args: Positional arguments to be passed to the original function.
+            :param __context_key: Internal context key for cache separation.
             :param kwargs: Keyword arguments to be passed to the original function.
 
             :return: The result of the original function call.
             """
             return func(*args, **kwargs)
 
+        lock_pool = defaultdict(threading.Lock)
         lock = threading.Lock()
 
         @wraps(_cached_func)
@@ -84,8 +136,11 @@ def ts_lru_cache(**options):
 
             :return: The result of the cached function call.
             """
+            context_key = _get_context_key(level=level)
             with lock:
-                return _cached_func(*args, **kwargs)
+                _context_lock = lock_pool[context_key]
+            with _context_lock:
+                return _cached_func(*args, __context_key=context_key, **kwargs)
 
         # Preserve cache_info and cache_clear methods if they exist
         if hasattr(_cached_func, 'cache_info'):

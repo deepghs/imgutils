@@ -13,11 +13,14 @@ The module supports various image input types and allows customization of confid
 
 import ast
 import json
-import math
 import os
+import threading
+from collections import defaultdict
+from contextlib import contextmanager
 from threading import Lock
 from typing import List, Optional, Tuple, Union
 
+import math
 import numpy as np
 import requests
 from PIL import Image
@@ -52,6 +55,27 @@ def _check_gradio_env():
     if gr is None:
         raise EnvironmentError(f'Gradio required for launching webui-based demo.\n'
                                f'Please install it with `pip install dghs-imgutils[demo]`.')
+
+
+_MODEL_LOAD_LOCKS = defaultdict(Lock)
+_G_ML_LOCK = Lock()
+
+
+@contextmanager
+def _model_load_lock():
+    """
+    Context manager for thread-safe model loading operations.
+
+    This context manager ensures that model loading operations are thread-safe by using
+    process-specific locks. It prevents concurrent model loading operations which could
+    lead to race conditions.
+
+    :yields: None
+    """
+    with _G_ML_LOCK:
+        lock = _MODEL_LOAD_LOCKS[os.getpid()]
+    with lock:
+        yield
 
 
 def _v_fix(v):
@@ -493,7 +517,7 @@ class YOLOModel:
         self._model_types = {}
         self._hf_token = hf_token
         self._global_lock = Lock()
-        self._model_lock = Lock()
+        self._model_meta_lock = Lock()
 
     def _get_hf_token(self) -> Optional[str]:
         """
@@ -567,8 +591,9 @@ class YOLOModel:
         :return: Tuple containing the ONNX model, maximum inference size, and labels.
         :rtype: tuple
         """
-        with self._model_lock:
-            if model_name not in self._models:
+        cache_key = os.getpid(), threading.get_ident(), model_name
+        with _model_load_lock():
+            if cache_key not in self._models:
                 self._check_model_name(model_name)
                 model = open_onnx_model(hf_hub_download(
                     repo_id=self.repo_id,
@@ -584,12 +609,12 @@ class YOLOModel:
                     max_infer_size = 640
                 names_map = _safe_eval_names_str(model_metadata.custom_metadata_map['names'])
                 labels = [names_map[i] for i in range(len(names_map))]
-                self._models[model_name] = (model, max_infer_size, labels)
+                self._models[cache_key] = (model, max_infer_size, labels, Lock())
 
-        return self._models[model_name]
+        return self._models[cache_key]
 
     def _get_model_type(self, model_name: str):
-        with self._model_lock:
+        with self._model_meta_lock:
             if model_name not in self._model_types:
                 try:
                     model_type_file = hf_hub_download(
@@ -639,11 +664,12 @@ class YOLOModel:
         >>> print(detections[0])  # First detection
         ((100, 200, 300, 400), 'person', 0.95)
         """
-        model, max_infer_size, labels = self._open_model(model_name)
+        model, max_infer_size, labels, exec_lock = self._open_model(model_name)
         image = load_image(image, mode='RGB')
         new_image, old_size, new_size = _image_preprocess(image, max_infer_size, allow_dynamic=allow_dynamic)
         data = rgb_encode(new_image)[None, ...]
-        output, = model.run(['output0'], {'images': data})
+        with exec_lock:  # make sure for each session, its execution should be linear
+            output, = model.run(['output0'], {'images': data})
         model_type = self._get_model_type(model_name=model_name)
         if model_type == 'yolo':
             return _yolo_postprocess(
@@ -732,7 +758,7 @@ class YOLOModel:
                        iou_threshold: float = 0.7, score_threshold: float = 0.25,
                        allow_dynamic: bool = False) \
                 -> gr.AnnotatedImage:
-            _, _, labels = self._open_model(model_name=model_name)
+            _, _, labels, _ = self._open_model(model_name=model_name)
             _colors = list(map(str, rnd_colors(len(labels))))
             _color_map = dict(zip(labels, _colors))
             return gr.AnnotatedImage(

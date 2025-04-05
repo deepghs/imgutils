@@ -1,9 +1,12 @@
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
+from unittest.mock import patch
 
 import pytest
 
 from imgutils.utils import ts_lru_cache
+from imgutils.utils.cache import _get_context_key
 
 
 @pytest.fixture
@@ -124,3 +127,49 @@ class TestTsLruCache:
 
         assert func(2) == 4  # This should calculate again
         assert call_count == 6
+
+
+@pytest.fixture
+def reset_threading_ident():
+    original_get_ident = threading.get_ident
+    try:
+        yield
+    finally:
+        threading.get_ident = original_get_ident
+
+
+@pytest.fixture
+def mock_os_getpid():
+    with patch('os.getpid', return_value=12345) as mock_getpid:
+        yield mock_getpid
+
+
+@pytest.fixture
+def mock_threading_get_ident():
+    with patch('threading.get_ident', return_value=67890) as mock_get_ident:
+        yield mock_get_ident
+
+
+@pytest.mark.unittest
+class TestGetContextKey:
+    def test_global_level(self):
+        assert _get_context_key('global') is None
+
+    def test_process_level(self, mock_os_getpid):
+        assert _get_context_key('process') == 12345
+        mock_os_getpid.assert_called_once()
+
+    def test_thread_level(self, mock_os_getpid, mock_threading_get_ident):
+        assert _get_context_key('thread') == (12345, 67890)
+        mock_os_getpid.assert_called_once()
+        mock_threading_get_ident.assert_called_once()
+
+    def test_invalid_level(self):
+        with pytest.raises(ValueError) as excinfo:
+            _get_context_key('invalid')
+        assert "Invalid cache level" in str(excinfo.value)
+        assert "'global', 'process' or 'thread' expected but 'invalid' found" in str(excinfo.value)
+
+    def test_default_level(self):
+        # Test that the default level is 'global'
+        assert _get_context_key() is None
