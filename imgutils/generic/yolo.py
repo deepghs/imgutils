@@ -497,6 +497,7 @@ class YOLOModel:
         self._global_lock = Lock()
         self._model_load_locks = defaultdict(Lock)
         self._model_meta_lock = Lock()
+        self._model_exec_locks = defaultdict(Lock)
 
     def _get_hf_token(self) -> Optional[str]:
         """
@@ -588,7 +589,7 @@ class YOLOModel:
                     max_infer_size = 640
                 names_map = _safe_eval_names_str(model_metadata.custom_metadata_map['names'])
                 labels = [names_map[i] for i in range(len(names_map))]
-                self._models[cache_key] = (model, max_infer_size, labels)
+                self._models[cache_key] = (model, max_infer_size, labels, self._model_exec_locks[cache_key])
 
         return self._models[cache_key]
 
@@ -643,11 +644,12 @@ class YOLOModel:
         >>> print(detections[0])  # First detection
         ((100, 200, 300, 400), 'person', 0.95)
         """
-        model, max_infer_size, labels = self._open_model(model_name)
+        model, max_infer_size, labels, exec_lock = self._open_model(model_name)
         image = load_image(image, mode='RGB')
         new_image, old_size, new_size = _image_preprocess(image, max_infer_size, allow_dynamic=allow_dynamic)
         data = rgb_encode(new_image)[None, ...]
-        output, = model.run(['output0'], {'images': data})
+        with exec_lock:  # make sure for each session, its execution should be linear
+            output, = model.run(['output0'], {'images': data})
         model_type = self._get_model_type(model_name=model_name)
         if model_type == 'yolo':
             return _yolo_postprocess(
@@ -736,7 +738,7 @@ class YOLOModel:
                        iou_threshold: float = 0.7, score_threshold: float = 0.25,
                        allow_dynamic: bool = False) \
                 -> gr.AnnotatedImage:
-            _, _, labels = self._open_model(model_name=model_name)
+            _, _, labels, _ = self._open_model(model_name=model_name)
             _colors = list(map(str, rnd_colors(len(labels))))
             _color_map = dict(zip(labels, _colors))
             return gr.AnnotatedImage(
