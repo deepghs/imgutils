@@ -1,3 +1,4 @@
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import patch
@@ -131,8 +132,10 @@ class TestTsLruCache:
 @pytest.fixture
 def reset_threading_ident():
     original_get_ident = threading.get_ident
-    yield
-    threading.get_ident = original_get_ident
+    try:
+        yield
+    finally:
+        threading.get_ident = original_get_ident
 
 
 @pytest.fixture
