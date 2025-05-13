@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.tagging.deepgelbooru &mdash; imgutils 0.16.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=05cd2da0"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.tagging.deepgelbooru</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.tagging.deepgelbooru</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    Tagging utils based on deepgelbooru.</span>
+
+<span class="sd">    Inspired from `LagPixelLOL/deepgelbooru &lt;https://github.com/LagPixelLOL/deepgelbooru&gt;`_</span>
+<span class="sd">    trained by `@LagPixelLOL &lt;https://github.com/LagPixelLOL&gt;`_.</span>
+
+<span class="sd">    ONNX model is hosted on `deepghs/deepgelbooru_onnx &lt;https://huggingface.co/deepghs/deepgelbooru_onnx&gt;`_.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.overlap</span><span class="w"> </span><span class="kn">import</span> <span class="n">drop_overlap_tags</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..preprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pillow_transforms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">ts_lru_cache</span><span class="p">,</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">vreplace</span>
+
+<span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/deepgelbooru_onnx&#39;</span>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_model</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Open and cache the DeepGelbooru ONNX model.</span>
+
+<span class="sd">    :return: The loaded ONNX model session</span>
+<span class="sd">    :rtype: onnxruntime.InferenceSession</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">_REPO_ID</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;model.onnx&#39;</span><span class="p">,</span>
+    <span class="p">))</span>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_preprocessor</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load and cache the image preprocessing configuration.</span>
+
+<span class="sd">    :return: A callable transform pipeline for image preprocessing</span>
+<span class="sd">    :rtype: callable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+            <span class="n">repo_id</span><span class="o">=</span><span class="n">_REPO_ID</span><span class="p">,</span>
+            <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;preprocessor.json&#39;</span><span class="p">,</span>
+    <span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">create_pillow_transforms</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s1">&#39;stages&#39;</span><span class="p">])</span>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_tags</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load and cache the tag definitions from CSV.</span>
+
+<span class="sd">    :return: Dictionary mapping tag IDs to tag information</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df_tags</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">_REPO_ID</span><span class="p">,</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;tags.csv&#39;</span><span class="p">,</span>
+    <span class="p">))</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;tag_id&#39;</span><span class="p">]:</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">df_tags</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">)}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Preprocess an image for model inference.</span>
+
+<span class="sd">    :param image: PIL Image to preprocess</span>
+<span class="sd">    :type image: PIL.Image.Image</span>
+<span class="sd">    :return: Preprocessed image array</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_open_preprocessor</span><span class="p">()(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_deepgelbooru_tags"><a class="viewcode-back" href="../../../api_doc/tagging/deepgelbooru.html#imgutils.tagging.deepgelbooru.get_deepgelbooru_tags">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_deepgelbooru_tags</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span>
+                          <span class="n">general_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">character_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span>
+                          <span class="n">drop_overlap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="s1">&#39;general&#39;</span><span class="p">,</span> <span class="s1">&#39;character&#39;</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract tags from an image using the DeepGelbooru model.</span>
+
+<span class="sd">    :param image: Input image (can be PIL Image, path, or bytes)</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param general_threshold: Confidence threshold for general tags</span>
+<span class="sd">    :type general_threshold: float</span>
+<span class="sd">    :param character_threshold: Confidence threshold for character tags</span>
+<span class="sd">    :type character_threshold: float</span>
+<span class="sd">    :param drop_overlap: Whether to remove overlapping tags</span>
+<span class="sd">    :type drop_overlap: bool</span>
+<span class="sd">    :param fmt: Format of the output, specifying which tag categories to include</span>
+
+<span class="sd">    :return: Dictionary containing predicted tags by category</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The fmt argument can include the following keys:</span>
+
+<span class="sd">        - ``rating``: a dict containing ratings and their confidences</span>
+<span class="sd">        - ``general``: a dict containing general tags and their confidences</span>
+<span class="sd">        - ``character``: a dict containing character tags and their confidences</span>
+<span class="sd">        - ``tag``: a dict containing all tags (including general and character, not including rating) and their confidences</span>
+<span class="sd">        - ``prediction``: a 1-dim prediction result of image</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Here are some images for example</span>
+
+<span class="sd">        .. image:: tagging_demo.plot.py.svg</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging import get_deepgelbooru_tags</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; rating, features, chars = get_deepgelbooru_tags(&#39;skadi.jpg&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;rating:safe&#39;: 0.9986732006072998, &#39;rating:questionable&#39;: 0.0013858973979949951, &#39;rating:explicit&#39;: 4.315376281738281e-05}</span>
+<span class="sd">        &gt;&gt;&gt; features</span>
+<span class="sd">        {&#39;1girl&#39;: 0.9972434639930725, &#39;baseball&#39;: 0.5982598662376404, &#39;baseball_bat&#39;: 0.6429562568664551, &#39;bike_shorts&#39;: 0.36296138167381287, &#39;black_gloves&#39;: 0.8308937549591064, &#39;black_shirt&#39;: 0.7388008832931519, &#39;blue_sky&#39;: 0.6039759516716003, &#39;blush&#39;: 0.30909663438796997, &#39;breasts&#39;: 0.9694308042526245, &#39;cloud&#39;: 0.6422968506813049, &#39;cowboy_shot&#39;: 0.5898381471633911, &#39;crop_top&#39;: 0.8145260810852051, &#39;day&#39;: 0.652222216129303, &#39;dolphin_shorts&#39;: 0.466494083404541, &#39;gloves&#39;: 0.7183809280395508, &#39;hair_between_eyes&#39;: 0.6753682494163513, &#39;holding&#39;: 0.7302790880203247, &#39;holding_baseball_bat&#39;: 0.6649775505065918, &#39;large_breasts&#39;: 0.8446108102798462, &#39;long_hair&#39;: 0.98187655210495, &#39;looking_at_viewer&#39;: 0.8140730857849121, &#39;midriff&#39;: 0.6360533833503723, &#39;navel&#39;: 0.9635934829711914, &#39;no_hat&#39;: 0.33370012044906616, &#39;no_headwear&#39;: 0.44239571690559387, &#39;outdoors&#39;: 0.7891374826431274, &#39;parted_lips&#39;: 0.6471294164657593, &#39;red_eyes&#39;: 0.9958090782165527, &#39;shirt&#39;: 0.8736815452575684, &#39;short_sleeves&#39;: 0.872096061706543, &#39;shorts&#39;: 0.5640895366668701, &#39;silver_hair&#39;: 0.5049663186073303, &#39;sky&#39;: 0.8832778930664062, &#39;solo&#39;: 0.9687467813491821, &#39;sports_bra&#39;: 0.3659853935241699, &#39;sportswear&#39;: 0.9309735298156738, &#39;standing&#39;: 0.49939480423927307, &#39;stomach&#39;: 0.446407288312912, &#39;sweat&#39;: 0.809670090675354, &#39;thighs&#39;: 0.6560589075088501, &#39;very_long_hair&#39;: 0.47956040501594543}</span>
+<span class="sd">        &gt;&gt;&gt; chars</span>
+<span class="sd">        {&#39;skadi_(arknights)&#39;: 0.9832853674888611}</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; rating, features, chars = get_deepgelbooru_tags(&#39;hutao.jpg&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;rating:safe&#39;: 0.9994162321090698, &#39;rating:questionable&#39;: 0.0008397102355957031, &#39;rating:explicit&#39;: 0.00035390257835388184}</span>
+<span class="sd">        &gt;&gt;&gt; features</span>
+<span class="sd">        {&#39;1girl&#39;: 0.9926226139068604, &#39;:p&#39;: 0.899387001991272, &#39;ahoge&#39;: 0.34215790033340454, &#39;backpack&#39;: 0.5701972246170044, &#39;bag&#39;: 0.9512913227081299, &#39;bag_charm&#39;: 0.6664570569992065, &#39;blush&#39;: 0.5614628791809082, &#39;bow&#39;: 0.33615976572036743, &#39;breasts&#39;: 0.5770801305770874, &#39;brown_hair&#39;: 0.987317681312561, &#39;buttons&#39;: 0.37286585569381714, &#39;cardigan&#39;: 0.36409223079681396, &#39;charm_(object)&#39;: 0.7329680919647217, &#39;collared_shirt&#39;: 0.5924292206764221, &#39;cowboy_shot&#39;: 0.4344901144504547, &#39;flower&#39;: 0.7465001344680786, &#39;hair_between_eyes&#39;: 0.5225946307182312, &#39;hair_flower&#39;: 0.6976451873779297, &#39;hair_ornament&#39;: 0.9265321493148804, &#39;hair_ribbon&#39;: 0.34527891874313354, &#39;jacket&#39;: 0.6675043106079102, &#39;long_hair&#39;: 0.9096828699111938, &#39;long_sleeves&#39;: 0.41341525316238403, &#39;looking_at_viewer&#39;: 0.8418735265731812, &#39;miniskirt&#39;: 0.3675632178783417, &#39;nail_polish&#39;: 0.5284417867660522, &#39;open_clothes&#39;: 0.30296844244003296, &#39;outdoors&#39;: 0.48789578676223755, &#39;plaid&#39;: 0.36596980690956116, &#39;plaid_skirt&#39;: 0.7759367227554321, &#39;pleated_skirt&#39;: 0.6535028219223022, &#39;red_eyes&#39;: 0.8975257873535156, &#39;ribbon&#39;: 0.36911237239837646, &#39;school_bag&#39;: 0.4171145558357239, &#39;school_uniform&#39;: 0.3942635953426361, &#39;shirt&#39;: 0.6772940754890442, &#39;skirt&#39;: 0.9397937655448914, &#39;sleeves_past_wrists&#39;: 0.5207280516624451, &#39;smile&#39;: 0.4673041105270386, &#39;solo&#39;: 0.9118321537971497, &#39;tongue&#39;: 0.9967410564422607, &#39;tongue_out&#39;: 0.9970728158950806, &#39;twintails&#39;: 0.8419480323791504, &#39;very_long_hair&#39;: 0.6489560604095459, &#39;white_shirt&#39;: 0.6217572689056396}</span>
+<span class="sd">        &gt;&gt;&gt; chars</span>
+<span class="sd">        {}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">input_</span> <span class="o">=</span> <span class="n">_image_preprocess</span><span class="p">(</span><span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">))</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">_open_model</span><span class="p">()</span>
+    <span class="n">prediction</span><span class="p">,</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;prediction&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">input_</span><span class="p">})</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">d_tags</span> <span class="o">=</span> <span class="n">_open_tags</span><span class="p">()</span>
+    <span class="n">d_general</span><span class="p">,</span> <span class="n">d_characters</span><span class="p">,</span> <span class="n">d_rating</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{},</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">tolist</span><span class="p">()):</span>
+        <span class="n">tag_info</span> <span class="o">=</span> <span class="n">d_tags</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">tag_info</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">category</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="n">general_threshold</span><span class="p">:</span>
+                <span class="n">d_general</span><span class="p">[</span><span class="n">tag_info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="k">elif</span> <span class="n">category</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="n">character_threshold</span><span class="p">:</span>
+                <span class="n">d_characters</span><span class="p">[</span><span class="n">tag_info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="k">elif</span> <span class="n">category</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
+            <span class="n">d_rating</span><span class="p">[</span><span class="n">tag_info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Should not reach this line.&#39;</span>  <span class="c1"># pragma: no cover</span>
+
+    <span class="k">if</span> <span class="n">drop_overlap</span><span class="p">:</span>
+        <span class="n">d_general</span> <span class="o">=</span> <span class="n">drop_overlap_tags</span><span class="p">(</span><span class="n">d_general</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">vreplace</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s1">&#39;general&#39;</span><span class="p">:</span> <span class="n">d_general</span><span class="p">,</span>
+        <span class="s1">&#39;character&#39;</span><span class="p">:</span> <span class="n">d_characters</span><span class="p">,</span>
+        <span class="s1">&#39;rating&#39;</span><span class="p">:</span> <span class="n">d_rating</span><span class="p">,</span>
+        <span class="s1">&#39;tag&#39;</span><span class="p">:</span> <span class="p">{</span><span class="o">**</span><span class="n">d_general</span><span class="p">,</span> <span class="o">**</span><span class="n">d_characters</span><span class="p">},</span>
+        <span class="s1">&#39;prediction&#39;</span><span class="p">:</span> <span class="n">prediction</span><span class="p">,</span>
+    <span class="p">})</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/multilabel
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.12.0/index.html">v0.12.0</a></dd>
+                        <dd><a href="../../../../../v0.13.0/index.html">v0.13.0</a></dd>
+                        <dd><a href="../../../../../v0.14.0/index.html">v0.14.0</a></dd>
+                        <dd><a href="../../../../../v0.14.1/index.html">v0.14.1</a></dd>
+                        <dd><a href="../../../../../v0.15.0/index.html">v0.15.0</a></dd>
+                        <dd><a href="../../../../../v0.16.0/index.html">v0.16.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="deepgelbooru.html">dev/multilabel</a></dd>
+                        <dd><a href="../../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../attachments/index.html">dev/attachments</a></dd>
+                        <dd><a href="../../../../pt/index.html">dev/pt</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
