@@ -1,3 +1,4 @@
+import io
 import json
 import os
 import warnings
@@ -256,6 +257,9 @@ class MultiLabelTIMMModel:
                             gr_cate_label = gr.Label(f'{titleize(self._category_names[category])} Prediction')
                             gr_preds.append(gr_cate_label)
 
+                    with gr.Tab('Text Output'):
+                        gr_text_output = gr.TextArea(label="Output (string)", lines=15)
+
             def _fn_submit(image, _use_tag_thresholds, *thresholds):
                 if _use_tag_thresholds:
                     _ths = None
@@ -272,12 +276,18 @@ class MultiLabelTIMMModel:
                     use_tag_thresholds=_use_tag_thresholds,
                     fmt=fmt,
                 )
-                return res[0] if len(fmt) == 1 else res
+                with io.StringIO() as sf:
+                    for category, res_item in  zip(sorted(set(df_tags['category'].tolist())), res):
+                        print(f'# {self._category_names[category]} (#{category}):', file=sf)
+                        print(', '.join(res_item.keys()), file=sf)
+                        print('', file=sf)
+
+                    return sf.getvalue(), *res
 
             gr_submit.click(
                 fn=_fn_submit,
                 inputs=[gr_input_image, gr_use_tag_thresholds, *gr_thresholds],
-                outputs=[*gr_preds]
+                outputs=[gr_text_output, *gr_preds]
             )
 
     def launch_demo(self, default_thresholds: Union[float, Dict[Any, float]] = None,
