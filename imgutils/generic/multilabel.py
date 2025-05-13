@@ -10,10 +10,10 @@ from hfutils.repository import hf_hub_repo_url
 from huggingface_hub import hf_hub_download
 from huggingface_hub.errors import EntryNotFoundError
 
-from imgutils.data import ImageTyping, load_image
-from imgutils.utils import vreplace, ts_lru_cache
+from ..data import ImageTyping, load_image
 from ..preprocess import create_pillow_transforms
 from ..utils import open_onnx_model
+from ..utils import vreplace, ts_lru_cache
 
 try:
     import gradio as gr
