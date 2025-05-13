@@ -204,12 +204,17 @@ class MultiLabelTIMMModel:
             with gr.Column():
                 with gr.Row():
                     gr_input_image = gr.Image(type='pil', label='Original Image')
-                with gr.Row():
+                with gr.Row(visible=allow_use_tag_thresholds):
                     gr_use_tag_thresholds = gr.Checkbox(
                         value=allow_use_tag_thresholds,
-                        label='Use Tag-Level Thresholds (Category Thresholds Will Be Ignored When Enabled!!!)',
+                        label='Use Tag-Level Thresholds',
                         interactive=allow_use_tag_thresholds,
                         visible=allow_use_tag_thresholds,
+                    )
+                    gr_tag_thresholds_info = gr.HTML(
+                        value="<div style='font-size: 0.8em; color: var(--color-text-secondary); margin-top: 0.3em;'>"
+                              "<b>Note:</b> Category thresholds will be ignored when tag-level thresholds enabled!!!</div>",
+                        visible=allow_use_tag_thresholds
                     )
                 with gr.Row():
                     gr_thresholds = []
