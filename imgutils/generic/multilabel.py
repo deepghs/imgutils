@@ -194,7 +194,8 @@ class MultiLabelTIMMModel:
 
         return vreplace(fmt, values)
 
-    def make_ui(self, default_thresholds: Union[float, Dict[Any, float]] = None):
+    def make_ui(self, default_thresholds: Union[float, Dict[Any, float]] = None,
+                default_use_tag_thresholds: bool = True):
         _check_gradio_env()
         df_tags = self._open_tags()
         default_category_thresholds = self._open_default_category_thresholds()
@@ -206,7 +207,7 @@ class MultiLabelTIMMModel:
                     gr_input_image = gr.Image(type='pil', label='Original Image')
                 with gr.Row(visible=allow_use_tag_thresholds):
                     gr_use_tag_thresholds = gr.Checkbox(
-                        value=allow_use_tag_thresholds,
+                        value=allow_use_tag_thresholds and default_use_tag_thresholds,
                         label='Use Tag-Level Thresholds',
                         interactive=allow_use_tag_thresholds,
                         visible=allow_use_tag_thresholds,
@@ -280,6 +281,7 @@ class MultiLabelTIMMModel:
             )
 
     def launch_demo(self, default_thresholds: Union[float, Dict[Any, float]] = None,
+                    default_use_tag_thresholds: bool = True,
                     server_name: Optional[str] = None, server_port: Optional[int] = None, **kwargs):
         _check_gradio_env()
         with gr.Blocks() as demo:
@@ -291,7 +293,10 @@ class MultiLabelTIMMModel:
                                 f'Powered by `dghs-imgutils`\'s quick demo module.')
 
             with gr.Row():
-                self.make_ui(default_thresholds=default_thresholds)
+                self.make_ui(
+                    default_thresholds=default_thresholds,
+                    default_use_tag_thresholds=default_use_tag_thresholds,
+                )
 
         demo.launch(
             server_name=server_name,
