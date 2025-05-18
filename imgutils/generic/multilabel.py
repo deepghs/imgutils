@@ -23,7 +23,7 @@ except (ImportError, ModuleNotFoundError):
 
 __all__ = [
     'MultiLabelTIMMModel',
-    'multilabel_predict',
+    'multilabel_timm_predict',
 ]
 
 
@@ -152,7 +152,7 @@ class MultiLabelTIMMModel:
                 fmt=FMT_UNSET):
         df_tags = self._open_tags()
         values = self._raw_predict(image, preprocessor=preprocessor)
-        prediction = values.pop('prediction')
+        prediction = values['prediction']
 
         if fmt is FMT_UNSET:
             fmt = tuple(self._category_names[category] for category in sorted(set(df_tags['category'].tolist())))
@@ -213,7 +213,7 @@ class MultiLabelTIMMModel:
                         interactive=allow_use_tag_thresholds,
                         visible=allow_use_tag_thresholds,
                     )
-                    gr_tag_thresholds_info = gr.HTML(
+                    gr.HTML(
                         value="<div style='font-size: 0.8em; color: var(--color-text-secondary); margin-top: 0.3em;'>"
                               "<b>Note:</b> Category thresholds will be ignored when tag-level thresholds enabled!!!</div>",
                         visible=allow_use_tag_thresholds
@@ -277,7 +277,7 @@ class MultiLabelTIMMModel:
                     fmt=fmt,
                 )
                 with io.StringIO() as sf:
-                    for category, res_item in  zip(sorted(set(df_tags['category'].tolist())), res):
+                    for category, res_item in zip(sorted(set(df_tags['category'].tolist())), res):
                         print(f'# {self._category_names[category]} (#{category}):', file=sf)
                         print(', '.join(res_item.keys()), file=sf)
                         print('', file=sf)
@@ -326,10 +326,10 @@ def _open_models_for_repo_id(repo_id: str, category_names: Optional[Tuple[Tuple[
     )
 
 
-def multilabel_predict(image: ImageTyping, repo_id: str, category_names: Dict[Any, str] = None,
-                       preprocessor: Literal['test', 'val'] = 'test',
-                       thresholds: Union[float, Dict[Any, float]] = None, use_tag_thresholds: bool = False,
-                       fmt=FMT_UNSET, hf_token: Optional[str] = None):
+def multilabel_timm_predict(image: ImageTyping, repo_id: str, category_names: Dict[Any, str] = None,
+                            preprocessor: Literal['test', 'val'] = 'test',
+                            thresholds: Union[float, Dict[Any, float]] = None, use_tag_thresholds: bool = False,
+                            fmt=FMT_UNSET, hf_token: Optional[str] = None):
     model = _open_models_for_repo_id(
         repo_id=repo_id,
         category_names=tuple((key, value) for key, value in sorted((category_names or {}).items())),
