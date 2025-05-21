@@ -12,5 +12,6 @@ imgutils.generic
     classify
     enhance
     clip
+    multilabel_timm
     siglip
     yolo
