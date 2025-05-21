@@ -372,6 +372,8 @@
 <span class="sd">            - ``prediction``: a 1-dim prediction result of image</span>
 
 <span class="sd">            You can extract specific category predictions or all tags based on your needs.</span>
+
+<span class="sd">        For more details see documentation of :func:`multilabel_timm_predict`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">df_tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_tags</span><span class="p">()</span>
         <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">preprocessor</span><span class="o">=</span><span class="n">preprocessor</span><span class="p">)</span>
@@ -619,8 +621,62 @@
 <span class="sd">    :return: Formatted prediction results according to the fmt parameter</span>
 <span class="sd">    :rtype: Any</span>
 
+<span class="sd">    Example:</span>
+<span class="sd">        Here are some images for example</span>
+
+<span class="sd">        .. image:: multilabel_demo.plot.py.svg</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.generic import multilabel_timm_predict</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; general, character, rating = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;skadi.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; general</span>
+<span class="sd">        {&#39;1girl&#39;: 0.9963783025741577, &#39;long_hair&#39;: 0.9685494899749756, &#39;solo&#39;: 0.9548443555831909, &#39;navel&#39;: 0.9415484666824341, &#39;breasts&#39;: 0.9369214177131653, &#39;red_eyes&#39;: 0.9019639492034912, &#39;shirt&#39;: 0.873087465763092, &#39;outdoors&#39;: 0.866461992263794, &#39;crop_top&#39;: 0.862577497959137, &#39;midriff&#39;: 0.8544420003890991, &#39;sportswear&#39;: 0.849435567855835, &#39;shorts&#39;: 0.8209151029586792, &#39;short_sleeves&#39;: 0.817188560962677, &#39;holding&#39;: 0.811793327331543, &#39;very_long_hair&#39;: 0.8082301616668701, &#39;gloves&#39;: 0.7840366363525391, &#39;black_gloves&#39;: 0.7765430808067322, &#39;thighs&#39;: 0.7542579770088196, &#39;looking_at_viewer&#39;: 0.7331588268280029, &#39;day&#39;: 0.7203925251960754, &#39;hair_between_eyes&#39;: 0.7121687531471252, &#39;large_breasts&#39;: 0.6990523338317871, &#39;baseball_bat&#39;: 0.6809443831443787, &#39;grey_hair&#39;: 0.6790007948875427, &#39;sky&#39;: 0.6716539263725281, &#39;stomach&#39;: 0.6698249578475952, &#39;sweat&#39;: 0.6454322934150696, &#39;black_shirt&#39;: 0.6270318031311035, &#39;cowboy_shot&#39;: 0.6216483116149902, &#39;blue_sky&#39;: 0.5898874998092651, &#39;black_shorts&#39;: 0.5445142984390259, &#39;holding_baseball_bat&#39;: 0.5013713836669922, &#39;white_hair&#39;: 0.4999670684337616, &#39;blush&#39;: 0.4860053062438965, &#39;cloud&#39;: 0.474183052778244, &#39;standing&#39;: 0.4724341332912445, &#39;thigh_gap&#39;: 0.4330931305885315, &#39;short_shorts&#39;: 0.39793258905410767, &#39;parted_lips&#39;: 0.36694538593292236, &#39;crop_top_overhang&#39;: 0.3321989178657532, &#39;official_alternate_costume&#39;: 0.3157039284706116, &#39;blurry&#39;: 0.24181532859802246, &#39;groin&#39;: 0.21906554698944092, &#39;ass_visible_through_thighs&#39;: 0.2188207507133484, &#39;cropped_shirt&#39;: 0.18700966238975525, &#39;taut_shirt&#39;: 0.08612403273582458, &#39;taut_clothes&#39;: 0.0701744556427002}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;skadi_(arknights)&#39;: 0.9796262979507446}</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;sensitive&#39;: 0.9580697417259216}</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; general, character, rating = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;hutao.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; general</span>
+<span class="sd">        {&#39;1girl&#39;: 0.988956093788147, &#39;twintails&#39;: 0.9650213718414307, &#39;ghost&#39;: 0.940951943397522, &#39;tongue_out&#39;: 0.9330000877380371, &#39;tongue&#39;: 0.9267600774765015, &#39;skirt&#39;: 0.9194451570510864, &#39;symbol-shaped_pupils&#39;: 0.9103127717971802, &#39;brown_hair&#39;: 0.9067947268486023, &#39;long_hair&#39;: 0.8872615098953247, &#39;red_eyes&#39;: 0.8631541728973389, &#39;looking_at_viewer&#39;: 0.8235997557640076, &#39;solo&#39;: 0.8214132785797119, &#39;long_sleeves&#39;: 0.7965610027313232, &#39;bag&#39;: 0.7958617210388184, &#39;jacket&#39;: 0.7932659387588501, &#39;flower-shaped_pupils&#39;: 0.7630170583724976, &#39;shirt&#39;: 0.7500981092453003, &#39;hair_ornament&#39;: 0.738053023815155, &#39;flower&#39;: 0.7321316599845886, &#39;plaid_skirt&#39;: 0.7173646688461304, &#39;white_shirt&#39;: 0.6631225347518921, &#39;pleated_skirt&#39;: 0.6344470977783203, &#39;hair_flower&#39;: 0.6293849945068359, &#39;nail_polish&#39;: 0.6136130094528198, &#39;multicolored_hair&#39;: 0.5703858733177185, &#39;blush&#39;: 0.5195141434669495, &#39;plaid_clothes&#39;: 0.503984808921814, &#39;gradient_hair&#39;: 0.49658203125, &#39;alternate_costume&#39;: 0.4947473704814911, &#39;:p&#39;: 0.493851900100708, &#39;hair_between_eyes&#39;: 0.484821081161499, &#39;smile&#39;: 0.4778161942958832, &#39;black_nails&#39;: 0.4747253358364105, &#39;collared_shirt&#39;: 0.46951043605804443, &#39;outdoors&#39;: 0.46920245885849, &#39;holding&#39;: 0.45227500796318054, &#39;school_uniform&#39;: 0.4197554290294647, &#39;very_long_hair&#39;: 0.41959843039512634, &#39;miniskirt&#39;: 0.3916422426700592, &#39;cowboy_shot&#39;: 0.38207799196243286, &#39;blue_jacket&#39;: 0.3614964485168457, &#39;sleeves_past_wrists&#39;: 0.3611966073513031, &#39;backpack&#39;: 0.32487112283706665, &#39;colored_tips&#39;: 0.314140260219574, &#39;sidelocks&#39;: 0.3062695264816284, &#39;black_jacket&#39;: 0.299169659614563, &#39;standing&#39;: 0.29005059599876404, &#39;charm_(object)&#39;: 0.22183549404144287, &#39;multiple_rings&#39;: 0.2172674536705017, &#39;open_jacket&#39;: 0.2046721875667572, &#39;ring&#39;: 0.18625634908676147, &#39;brown_skirt&#39;: 0.18045437335968018, &#39;contemporary&#39;: 0.13890522718429565}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;hu_tao_(genshin_impact)&#39;: 0.9779937267303467, &#39;boo_tao_(genshin_impact)&#39;: 0.8973554372787476}</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;general&#39;: 0.6215817332267761, &#39;sensitive&#39;: 0.3872501254081726}</span>
+
 <span class="sd">    .. note::</span>
-<span class="sd">        The fmt argument can include the following keys:</span>
+<span class="sd">        For different models, the default format is different. That depends on the categories that model supported.</span>
+
+<span class="sd">        For example, for model `animetimm/mobilenetv3_large_150d.dbv4-full-witha &lt;https://huggingface.co/animetimm/mobilenetv3_large_150d.dbv4-full-witha&gt;`_</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.generic import multilabel_timm_predict</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; general, artist, character, rating = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;skadi.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full-witha&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; general</span>
+<span class="sd">        {&#39;1girl&#39;: 0.9938606023788452, &#39;long_hair&#39;: 0.9691187143325806, &#39;red_eyes&#39;: 0.9463587403297424, &#39;solo&#39;: 0.944723904132843, &#39;navel&#39;: 0.9439248442649841, &#39;breasts&#39;: 0.9335891008377075, &#39;sportswear&#39;: 0.8865424394607544, &#39;shorts&#39;: 0.8601726293563843, &#39;very_long_hair&#39;: 0.8445472717285156, &#39;outdoors&#39;: 0.83197021484375, &#39;midriff&#39;: 0.8274217247962952, &#39;shirt&#39;: 0.8188955783843994, &#39;short_sleeves&#39;: 0.8183804750442505, &#39;crop_top&#39;: 0.8089936971664429, &#39;gloves&#39;: 0.8038264513015747, &#39;black_gloves&#39;: 0.7703496813774109, &#39;thighs&#39;: 0.7689077854156494, &#39;holding&#39;: 0.768336832523346, &#39;looking_at_viewer&#39;: 0.739115834236145, &#39;large_breasts&#39;: 0.7282243967056274, &#39;sky&#39;: 0.6852632761001587, &#39;hair_between_eyes&#39;: 0.6799711585044861, &#39;stomach&#39;: 0.6694454550743103, &#39;baseball_bat&#39;: 0.6693665385246277, &#39;black_shorts&#39;: 0.6493985652923584, &#39;day&#39;: 0.6425715684890747, &#39;cowboy_shot&#39;: 0.6186742186546326, &#39;black_shirt&#39;: 0.5906491279602051, &#39;holding_baseball_bat&#39;: 0.5860112905502319, &#39;sweat&#39;: 0.5825777649879456, &#39;cloud&#39;: 0.5549533367156982, &#39;blue_sky&#39;: 0.5523971915245056, &#39;white_hair&#39;: 0.5324308276176453, &#39;grey_hair&#39;: 0.52657151222229, &#39;short_shorts&#39;: 0.4896492063999176, &#39;standing&#39;: 0.45526784658432007, &#39;parted_lips&#39;: 0.4306206703186035, &#39;blush&#39;: 0.4149143397808075, &#39;thigh_gap&#39;: 0.4124316871166229, &#39;ass_visible_through_thighs&#39;: 0.34030789136886597, &#39;artist_name&#39;: 0.2679593563079834, &#39;groin&#39;: 0.2652612328529358, &#39;blurry&#39;: 0.2548949122428894, &#39;baseball&#39;: 0.24870169162750244, &#39;crop_top_overhang&#39;: 0.2240566909313202, &#39;stretching&#39;: 0.2012709677219391, &#39;cropped_shirt&#39;: 0.19828352332115173, &#39;official_alternate_costume&#39;: 0.1960265338420868, &#39;toned&#39;: 0.13941210508346558, &#39;exercising&#39;: 0.11270403861999512, &#39;lens_flare&#39;: 0.10835999250411987, &#39;taut_clothes&#39;: 0.08783495426177979, &#39;taut_shirt&#39;: 0.08448180556297302, &#39;linea_alba&#39;: 0.06583884358406067}</span>
+<span class="sd">        &gt;&gt;&gt; artist</span>
+<span class="sd">        {}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;skadi_(arknights)&#39;: 0.8951651453971863}</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;sensitive&#39;: 0.9492285847663879}</span>
+
+<span class="sd">        Its default fmt is ``(&#39;general&#39;, &#39;artist&#39;, &#39;character&#39;, &#39;rating&#39;)``.</span>
+
+<span class="sd">        But you can easily get those information you need with a more controllable way with ``fmt``. See the next note.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The ``fmt`` argument can include the following keys:</span>
 
 <span class="sd">        - Category names: dicts containing category-specific tags and their confidences</span>
 <span class="sd">        - ``tag``: a dict containing all tags across categories and their confidences</span>
@@ -630,18 +686,39 @@
 
 <span class="sd">        You can extract specific category predictions or all tags based on your needs.</span>
 
-<span class="sd">        Example:</span>
-
-<span class="sd">        &gt;&gt;&gt; # Get all categories and tags</span>
-<span class="sd">        &gt;&gt;&gt; result = multilabel_timm_predict(&#39;image.jpg&#39;, &#39;username/model-name&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.generic import multilabel_timm_predict</span>
 <span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; # Get only specific categories</span>
-<span class="sd">        &gt;&gt;&gt; result = multilabel_timm_predict(&#39;image.jpg&#39;, &#39;username/model-name&#39;,</span>
-<span class="sd">        ...                                  fmt=(&#39;general&#39;, &#39;character&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; # default usage</span>
+<span class="sd">        &gt;&gt;&gt; general, character, rating = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;skadi.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; general</span>
+<span class="sd">        {&#39;1girl&#39;: 0.9963783025741577, &#39;long_hair&#39;: 0.9685494899749756, &#39;solo&#39;: 0.9548443555831909, &#39;navel&#39;: 0.9415484666824341, &#39;breasts&#39;: 0.9369214177131653, &#39;red_eyes&#39;: 0.9019639492034912, &#39;shirt&#39;: 0.873087465763092, &#39;outdoors&#39;: 0.866461992263794, &#39;crop_top&#39;: 0.862577497959137, &#39;midriff&#39;: 0.8544420003890991, &#39;sportswear&#39;: 0.849435567855835, &#39;shorts&#39;: 0.8209151029586792, &#39;short_sleeves&#39;: 0.817188560962677, &#39;holding&#39;: 0.811793327331543, &#39;very_long_hair&#39;: 0.8082301616668701, &#39;gloves&#39;: 0.7840366363525391, &#39;black_gloves&#39;: 0.7765430808067322, &#39;thighs&#39;: 0.7542579770088196, &#39;looking_at_viewer&#39;: 0.7331588268280029, &#39;day&#39;: 0.7203925251960754, &#39;hair_between_eyes&#39;: 0.7121687531471252, &#39;large_breasts&#39;: 0.6990523338317871, &#39;baseball_bat&#39;: 0.6809443831443787, &#39;grey_hair&#39;: 0.6790007948875427, &#39;sky&#39;: 0.6716539263725281, &#39;stomach&#39;: 0.6698249578475952, &#39;sweat&#39;: 0.6454322934150696, &#39;black_shirt&#39;: 0.6270318031311035, &#39;cowboy_shot&#39;: 0.6216483116149902, &#39;blue_sky&#39;: 0.5898874998092651, &#39;black_shorts&#39;: 0.5445142984390259, &#39;holding_baseball_bat&#39;: 0.5013713836669922, &#39;white_hair&#39;: 0.4999670684337616, &#39;blush&#39;: 0.4860053062438965, &#39;cloud&#39;: 0.474183052778244, &#39;standing&#39;: 0.4724341332912445, &#39;thigh_gap&#39;: 0.4330931305885315, &#39;short_shorts&#39;: 0.39793258905410767, &#39;parted_lips&#39;: 0.36694538593292236, &#39;crop_top_overhang&#39;: 0.3321989178657532, &#39;official_alternate_costume&#39;: 0.3157039284706116, &#39;blurry&#39;: 0.24181532859802246, &#39;groin&#39;: 0.21906554698944092, &#39;ass_visible_through_thighs&#39;: 0.2188207507133484, &#39;cropped_shirt&#39;: 0.18700966238975525, &#39;taut_shirt&#39;: 0.08612403273582458, &#39;taut_clothes&#39;: 0.0701744556427002}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;skadi_(arknights)&#39;: 0.9796262979507446}</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;sensitive&#39;: 0.9580697417259216}</span>
 <span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; # Get just the raw prediction values</span>
-<span class="sd">        &gt;&gt;&gt; prediction = multilabel_timm_predict(&#39;image.jpg&#39;, &#39;username/model-name&#39;,</span>
-<span class="sd">        ...                                     fmt=&#39;prediction&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; # get rating and character only</span>
+<span class="sd">        &gt;&gt;&gt; rating, character = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;skadi.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;,</span>
+<span class="sd">        ...     fmt=(&#39;rating&#39;, &#39;character&#39;),</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;sensitive&#39;: 0.9580697417259216}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;skadi_(arknights)&#39;: 0.9796262979507446}</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # get embeddings only</span>
+<span class="sd">        &gt;&gt;&gt; embedding = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;skadi.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;,</span>
+<span class="sd">        ...     fmt=&#39;embedding&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; embedding.dtype, embedding.shape</span>
+<span class="sd">        (dtype(&#39;float32&#39;), (1280,))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span>
         <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
