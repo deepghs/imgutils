@@ -140,7 +140,7 @@ class MultiLabelTIMMModel:
         elif preprocessor == 'val':
             trans = val_trans
         else:
-            raise ValueError(f'Unknown processor - {preprocessor!r}.')
+            raise ValueError(f'Unknown processor - {preprocessor!r}.')  # pragma: no cover
 
         input_ = trans(image)[None, ...]
         output_names = [output.name for output in model.get_outputs()]
@@ -148,7 +148,7 @@ class MultiLabelTIMMModel:
         return {name: value[0] for name, value in zip(output_names, output_values)}
 
     def predict(self, image: ImageTyping, preprocessor: Literal['test', 'val'] = 'test',
-                thresholds: Union[float, Dict[Any, float]] = None, use_tag_thresholds: bool = False,
+                thresholds: Union[float, Dict[Any, float]] = None, use_tag_thresholds: bool = True,
                 fmt=FMT_UNSET):
         df_tags = self._open_tags()
         values = self._raw_predict(image, preprocessor=preprocessor)
@@ -331,7 +331,7 @@ def _open_models_for_repo_id(repo_id: str, category_names: Optional[Tuple[Tuple[
 
 def multilabel_timm_predict(image: ImageTyping, repo_id: str, category_names: Dict[Any, str] = None,
                             preprocessor: Literal['test', 'val'] = 'test',
-                            thresholds: Union[float, Dict[Any, float]] = None, use_tag_thresholds: bool = False,
+                            thresholds: Union[float, Dict[Any, float]] = None, use_tag_thresholds: bool = True,
                             fmt=FMT_UNSET, hf_token: Optional[str] = None):
     model = _open_models_for_repo_id(
         repo_id=repo_id,
