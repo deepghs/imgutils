@@ -19,7 +19,6 @@ class TestGenericMultilabelTIMM:
         general, character, rating = multilabel_timm_predict(
             get_testfile('nude_girl.png'),
             repo_id='animetimm/mobilenetv3_large_150d.dbv4-full',
-            category_names={0: 'general', 4: 'character', 9: 'rating'},
             fmt=('general', 'character', 'rating'),
         )
         assert general == pytest.approx({
@@ -64,7 +63,6 @@ class TestGenericMultilabelTIMM:
             get_testfile('nude_girl.png'),
             repo_id='animetimm/mobilenetv3_large_150d.dbv4-full',
             thresholds={'general': 0.3},
-            category_names={0: 'general', 4: 'character', 9: 'rating'},
             fmt=('general', 'character', 'rating'),
         )
         assert general == pytest.approx({
@@ -87,7 +85,6 @@ class TestGenericMultilabelTIMM:
             get_testfile('nude_girl.png'),
             repo_id='animetimm/mobilenetv3_large_150d.dbv4-full',
             thresholds={0: 0.3},
-            category_names={0: 'general', 4: 'character', 9: 'rating'},
             fmt=('general', 'character', 'rating'),
         )
         assert general == pytest.approx({
@@ -110,7 +107,6 @@ class TestGenericMultilabelTIMM:
             get_testfile('nude_girl.png'),
             repo_id='animetimm/mobilenetv3_large_150d.dbv4-full',
             thresholds=0.3,
-            category_names={0: 'general', 4: 'character', 9: 'rating'},
             fmt=('general', 'character', 'rating'),
         )
         assert general == pytest.approx({
@@ -133,7 +129,6 @@ class TestGenericMultilabelTIMM:
             get_testfile('nude_girl.png'),
             repo_id='animetimm/mobilenetv3_large_150d.dbv4-full',
             thresholds={0: 0.3},
-            category_names={0: 'general', 4: 'character', 9: 'rating'},
             fmt=('general', 'character', 'rating'),
             use_tag_thresholds=False,
         )
@@ -157,7 +152,6 @@ class TestGenericMultilabelTIMM:
             get_testfile('nude_girl.png'),
             repo_id='animetimm/mobilenetv3_large_150d.dbv4-full',
             thresholds={0: 0.3},
-            category_names={0: 'general', 4: 'character', 9: 'rating'},
             fmt=('general', 'character', 'rating'),
             use_tag_thresholds=False,
             preprocessor='val',
