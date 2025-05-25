@@ -246,7 +246,7 @@
                     <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
                     <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;selected_tags.csv&#39;</span><span class="p">,</span>
                     <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">(),</span>
-                <span class="p">))</span>
+                <span class="p">),</span> <span class="n">keep_default_na</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
                         <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
@@ -297,7 +297,7 @@
                         <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
                         <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
                         <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;thresholds.csv&#39;</span>
-                    <span class="p">))</span>
+                    <span class="p">),</span> <span class="n">keep_default_na</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                 <span class="k">except</span> <span class="p">(</span><span class="n">EntryNotFoundError</span><span class="p">,):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_default_category_thresholds</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="k">else</span><span class="p">:</span>
