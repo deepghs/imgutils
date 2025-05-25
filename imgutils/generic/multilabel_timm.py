@@ -142,7 +142,7 @@ class MultiLabelTIMMModel:
                     repo_type='model',
                     filename='selected_tags.csv',
                     token=self._get_hf_token(),
-                ))
+                ), keep_default_na=False)
 
                 with open(hf_hub_download(
                         repo_id=self.repo_id,
@@ -193,7 +193,7 @@ class MultiLabelTIMMModel:
                         repo_id=self.repo_id,
                         repo_type='model',
                         filename='thresholds.csv'
-                    ))
+                    ), keep_default_na=False)
                 except (EntryNotFoundError,):
                     self._default_category_thresholds = {}
                 else:
