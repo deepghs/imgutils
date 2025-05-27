@@ -2,7 +2,7 @@ hbutils>=0.9.0
 pillow
 numpy<2
 scikit-learn
-huggingface_hub<0.32
+huggingface_hub
 tqdm
 opencv-contrib-python
 pandas
