@@ -31,10 +31,10 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install --upgrade flake8 setuptools wheel twine
+          if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f requirements-build.txt ]; then pip install -r requirements-build.txt; fi
-          if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
-          if [ -f requirements-test.txt ]; then pip install -r requirements-zoo.txt; fi
+          if [ -f requirements-zoo.txt ]; then pip install -r requirements-zoo.txt; fi
           pip install --upgrade build
       - name: Sync Models
         env:
