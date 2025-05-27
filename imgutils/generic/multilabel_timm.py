@@ -264,7 +264,7 @@ class MultiLabelTIMMModel:
             - Category names: dicts containing category-specific tags and their confidences
             - ``tag``: a dict containing all tags across categories and their confidences
             - ``embedding``: a 1-dim embedding of image, recommended for index building after L2 normalization
-            - ``logits``: a 1-dim logits result of image.
+            - ``logits``: a 1-dim logits result of image
             - ``prediction``: a 1-dim prediction result of image
 
             You can extract specific category predictions or all tags based on your needs.
@@ -577,7 +577,7 @@ def multilabel_timm_predict(image: ImageTyping, repo_id: str,
         - Category names: dicts containing category-specific tags and their confidences
         - ``tag``: a dict containing all tags across categories and their confidences
         - ``embedding``: a 1-dim embedding of image, recommended for index building after L2 normalization
-        - ``logits``: a 1-dim logits result of image.
+        - ``logits``: a 1-dim logits result of image
         - ``prediction``: a 1-dim prediction result of image
 
         You can extract specific category predictions or all tags based on your needs.
