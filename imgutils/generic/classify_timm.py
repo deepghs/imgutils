@@ -109,7 +109,8 @@ class ClassifyTIMMModel:
         elif preprocessor == 'val':
             trans = val_trans
         else:
-            raise ValueError(f'Unknown processor - {preprocessor!r}.')
+            raise ValueError(
+                f'Unknown processor, "test" or "val" expected but {preprocessor!r} found.')  # pragma: no cover
 
         input_ = trans(image)[None, ...]
         output_names = [output.name for output in model.get_outputs()]
