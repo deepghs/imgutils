@@ -330,7 +330,8 @@
         <span class="k">elif</span> <span class="n">preprocessor</span> <span class="o">==</span> <span class="s1">&#39;val&#39;</span><span class="p">:</span>
             <span class="n">trans</span> <span class="o">=</span> <span class="n">val_trans</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown processor - </span><span class="si">{</span><span class="n">preprocessor</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Unknown processor, &quot;test&quot; or &quot;val&quot; expected but </span><span class="si">{</span><span class="n">preprocessor</span><span class="si">!r}</span><span class="s1"> found.&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
 
         <span class="n">input_</span> <span class="o">=</span> <span class="n">trans</span><span class="p">(</span><span class="n">image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
         <span class="n">output_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">output</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">get_outputs</span><span class="p">()]</span>
