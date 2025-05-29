@@ -1,0 +1,400 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.generic.classify_timm &mdash; imgutils 0.17.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=741867f9"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.generic.enhance" href="enhance.html" />
+    <link rel="prev" title="imgutils.generic.classify" href="classify.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.generic</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="classify.html">imgutils.generic.classify</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.generic.classify_timm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classifytimmmodel">ClassifyTIMMModel</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.generic.classify_timm.ClassifyTIMMModel"><code class="docutils literal notranslate"><span class="pre">ClassifyTIMMModel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#classify-timm-predict">classify_timm_predict</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.generic.classify_timm.classify_timm_predict"><code class="docutils literal notranslate"><span class="pre">classify_timm_predict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="enhance.html">imgutils.generic.enhance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clip.html">imgutils.generic.clip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multilabel_timm.html">imgutils.generic.multilabel_timm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="siglip.html">imgutils.generic.siglip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolo.html">imgutils.generic.yolo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.generic</a></li>
+      <li class="breadcrumb-item active">imgutils.generic.classify_timm</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/generic/classify_timm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.generic.classify_timm">
+<span id="imgutils-generic-classify-timm"></span><h1>imgutils.generic.classify_timm<a class="headerlink" href="#module-imgutils.generic.classify_timm" title="Permalink to this heading"></a></h1>
+<p>TIMM-based Image Classification Module</p>
+<p>This module provides functionality for using pre-trained TIMM (PyTorch Image Models) models
+for image classification tasks. It includes capabilities for:</p>
+<ul class="simple">
+<li><p>Loading TIMM models from Hugging Face repositories</p></li>
+<li><p>Processing and classifying images</p></li>
+<li><p>Creating interactive web demos with Gradio</p></li>
+<li><p>Retrieving and formatting prediction results</p></li>
+</ul>
+<p>The module is designed to make it easy to use pre-trained image classification models
+with minimal setup, supporting both programmatic use and interactive demos.</p>
+<section id="classifytimmmodel">
+<h2>ClassifyTIMMModel<a class="headerlink" href="#classifytimmmodel" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.generic.classify_timm.ClassifyTIMMModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.generic.classify_timm.</span></span><span class="sig-name descname"><span class="pre">ClassifyTIMMModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify_timm.html#ClassifyTIMMModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify_timm.ClassifyTIMMModel" title="Permalink to this definition"></a></dt>
+<dd><p>A class for handling TIMM-based image classification models.</p>
+<p>This class provides functionality to load models from Hugging Face repositories,
+perform predictions, and create interactive demos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>) – The Hugging Face repository ID for the model</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Optional Hugging Face authentication token</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.generic.classify_timm.ClassifyTIMMModel.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify_timm.html#ClassifyTIMMModel.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify_timm.ClassifyTIMMModel.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize a ClassifyTIMMModel instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>) – The Hugging Face repository ID for the model</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Optional Hugging Face authentication token</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.generic.classify_timm.ClassifyTIMMModel.launch_demo">
+<span class="sig-name descname"><span class="pre">launch_demo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify_timm.html#ClassifyTIMMModel.launch_demo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify_timm.ClassifyTIMMModel.launch_demo" title="Permalink to this definition"></a></dt>
+<dd><p>Launch a standalone Gradio demo for the model.</p>
+<p>This method creates and launches a complete Gradio web application
+for interactive image classification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>server_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Server name for the Gradio app</p></li>
+<li><p><strong>server_port</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Server port for the Gradio app</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to pass to gr.Blocks.launch()</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>EnvironmentError</strong> – If Gradio is not installed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.generic.classify_timm.ClassifyTIMMModel.make_ui">
+<span class="sig-name descname"><span class="pre">make_ui</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify_timm.html#ClassifyTIMMModel.make_ui"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify_timm.ClassifyTIMMModel.make_ui" title="Permalink to this definition"></a></dt>
+<dd><p>Create a Gradio UI component for the model.</p>
+<p>This method builds a user interface for interactive image classification
+that can be embedded in a larger Gradio application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>EnvironmentError</strong> – If Gradio is not installed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.generic.classify_timm.ClassifyTIMMModel.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocessor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'test'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'val'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scores-top5'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify_timm.html#ClassifyTIMMModel.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify_timm.ClassifyTIMMModel.predict" title="Permalink to this definition"></a></dt>
+<dd><p>Predict classification results for an image.</p>
+<p>This method processes the image, runs inference, and formats the results
+according to the specified format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image to classify</p></li>
+<li><p><strong>preprocessor</strong> (<em>Literal</em><em>[</em><em>'test'</em><em>, </em><em>'val'</em><em>]</em>) – Which preprocessor to use (‘test’ or ‘val’)</p></li>
+<li><p><strong>fmt</strong> – Output format specification, e.g., ‘scores-top5’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted prediction results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict or other type depending on fmt</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">fmt</span></code> argument can include the following keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">scores</span></code>: dicts containing all the prediction scores of all the classes, may be a very big dict</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scores-top&lt;k&gt;</span></code>: dict containing top-k classes and their scores, e.g. <code class="docutils literal notranslate"><span class="pre">scores-top5</span></code> means top-5 classes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">embedding</span></code>: a 1-dim embedding of image, recommended for index building after L2 normalization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logits</span></code>: a 1-dim logits result of image</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prediction</span></code>: a 1-dim prediction result of image</p></li>
+</ul>
+<p>You can extract specific category predictions or all tags based on your needs.</p>
+</div>
+<p>For more details see documentation of <a class="reference internal" href="#imgutils.generic.classify_timm.classify_timm_predict" title="imgutils.generic.classify_timm.classify_timm_predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">classify_timm_predict()</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="classify-timm-predict">
+<h2>classify_timm_predict<a class="headerlink" href="#classify-timm-predict" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.generic.classify_timm.classify_timm_predict">
+<span class="sig-prename descclassname"><span class="pre">imgutils.generic.classify_timm.</span></span><span class="sig-name descname"><span class="pre">classify_timm_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocessor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'test'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'val'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scores-top5'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/classify_timm.html#classify_timm_predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.classify_timm.classify_timm_predict" title="Permalink to this definition"></a></dt>
+<dd><p>Perform image classification using a TIMM model from a Hugging Face repository.</p>
+<p>This is a convenience function that handles model loading and prediction in one call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image to classify</p></li>
+<li><p><strong>repo_id</strong> (<em>str</em>) – The Hugging Face repository ID for the model</p></li>
+<li><p><strong>preprocessor</strong> (<em>Literal</em><em>[</em><em>'test'</em><em>, </em><em>'val'</em><em>]</em>) – Which preprocessor to use (‘test’ or ‘val’)</p></li>
+<li><p><strong>fmt</strong> – Output format specification, e.g., ‘scores-top5’</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Optional Hugging Face authentication token</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted prediction results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict or other type depending on fmt</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><p>Here are some images for example</p>
+<img alt="../../_images/classify_timm_demo.plot.py.svg" class="align-center" src="../../_images/classify_timm_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">classify_timm_predict</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classify_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;classify_timm/img1.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/swinv2_base_window8_256.dbv4a-fullxx-cls&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">{&#39;jia_redian_ruzi_ruzi&#39;: 0.9890832304954529, &#39;siya_ho&#39;: 0.005189628805965185, &#39;bai_qi-qsr&#39;: 0.0015026535838842392, &#39;kkuem&#39;: 0.0012714712647721171, &#39;teddy_(khanshin)&#39;: 0.00035598213435150683}</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classify_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;classify_timm/img2.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/swinv2_base_window8_256.dbv4a-fullxx-cls&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">{&#39;monori_rogue&#39;: 0.6921895742416382, &#39;stanley_lau&#39;: 0.2040979117155075, &#39;neoartcore&#39;: 0.03475344926118851, &#39;ayya_sap&#39;: 0.005350438412278891, &#39;goomrrat&#39;: 0.004616163671016693}</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classify_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;classify_timm/img3.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/swinv2_base_window8_256.dbv4a-fullxx-cls&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">{&#39;shexyo&#39;: 0.9998241066932678, &#39;oroborus&#39;: 0.0001537767384434119, &#39;jeneral&#39;: 7.268482477229554e-06, &#39;free_style_(yohan1754)&#39;: 3.4537688406999223e-06, &#39;kakeku&#39;: 2.5340586944366805e-06}</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classify_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;classify_timm/img4.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/swinv2_base_window8_256.dbv4a-fullxx-cls&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">{&#39;z.taiga&#39;: 0.9999995231628418, &#39;tina_(tinafya)&#39;: 1.2290533391023928e-07, &#39;arind_yudha&#39;: 6.17258208990279e-08, &#39;chixiao&#39;: 4.949555076905199e-08, &#39;zerotwenty_(020)&#39;: 4.218352955831506e-08}</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classify_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;classify_timm/img5.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/swinv2_base_window8_256.dbv4a-fullxx-cls&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">{&#39;spam_(spamham4506)&#39;: 0.9999998807907104, &#39;falken_(yutozin)&#39;: 4.501828954062148e-08, &#39;yuki_(asayuki101)&#39;: 3.285677863118508e-08, &#39;danbal&#39;: 5.452678752959628e-09, &#39;buri_(retty9349)&#39;: 3.757136379789472e-09}</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classify_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;classify_timm/img6.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/swinv2_base_window8_256.dbv4a-fullxx-cls&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">{&#39;mashuu_(neko_no_oyashiro)&#39;: 1.0, &#39;minaba_hideo&#39;: 4.543745646401476e-08, &#39;simosi&#39;: 6.499865978781827e-09, &#39;maoh_yueer&#39;: 4.302619149854081e-09, &#39;7nite&#39;: 3.6548184478846224e-09}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">fmt</span></code> argument can include the following keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">scores</span></code>: dicts containing all the prediction scores of all the classes, may be a very big dict</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scores-top&lt;k&gt;</span></code>: dict containing top-k classes and their scores, e.g. <code class="docutils literal notranslate"><span class="pre">scores-top5</span></code> means top-5 classes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">embedding</span></code>: a 1-dim embedding of image, recommended for index building after L2 normalization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logits</span></code>: a 1-dim logits result of image</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prediction</span></code>: a 1-dim prediction result of image</p></li>
+</ul>
+<p>You can extract specific category predictions or all tags based on your needs.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">classify_timm_predict</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classify_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;classify_timm/img1.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/swinv2_base_window8_256.dbv4a-fullxx-cls&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">{&#39;jia_redian_ruzi_ruzi&#39;: 0.9890832304954529, &#39;siya_ho&#39;: 0.005189628805965185, &#39;bai_qi-qsr&#39;: 0.0015026535838842392, &#39;kkuem&#39;: 0.0012714712647721171, &#39;teddy_(khanshin)&#39;: 0.00035598213435150683}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span> <span class="o">=</span> <span class="n">classify_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;classify_timm/img1.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/swinv2_base_window8_256.dbv4a-fullxx-cls&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;embedding&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">embedding</span><span class="o">.</span><span class="n">dtype</span>
+<span class="go">((1024,), dtype(&#39;float32&#39;))</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classify.html" class="btn btn-neutral float-left" title="imgutils.generic.classify" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="enhance.html" class="btn btn-neutral float-right" title="imgutils.generic.enhance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.17.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.12.0/index.html">v0.12.0</a></dd>
+                        <dd><a href="../../../v0.13.0/index.html">v0.13.0</a></dd>
+                        <dd><a href="../../../v0.14.0/index.html">v0.14.0</a></dd>
+                        <dd><a href="../../../v0.14.1/index.html">v0.14.1</a></dd>
+                        <dd><a href="../../../v0.15.0/index.html">v0.15.0</a></dd>
+                        <dd><a href="../../../v0.16.0/index.html">v0.16.0</a></dd>
+                        <dd><a href="classify_timm.html">v0.17.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../HEAD/api_doc/generic/classify_timm.html">HEAD</a></dd>
+                        <dd><a href="../../../dev/attachments/index.html">dev/attachments</a></dd>
+                        <dd><a href="../../../dev/pt/index.html">dev/pt</a></dd>
+                        <dd><a href="../../../main/api_doc/generic/classify_timm.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
