@@ -49,13 +49,16 @@ def detection_visualize(image: ImageTyping, detection: List[Union[BBoxWithScoreA
                         max_short_edge_size: Optional[int] = None, mask_alpha: float = 0.5,
                         fp=None, no_label: bool = False):
     """
-    Visualize object detection results by drawing bounding boxes and labels on an image.
+    Visualize object detection results by drawing bounding boxes, masks, and labels on an image.
+
+    This function takes detection results (bounding boxes and/or masks) and renders them on the input image,
+    with customizable appearance settings. It supports both bounding box and instance segmentation results.
 
     :param image: Input image to visualize detections on. Can be a PIL Image, numpy array, or path to image file.
     :type image: ImageTyping
-    :param detection: List of detection results, each containing ((x0, y0, x1, y1), label, confidence_score).
-        Coordinates should be in pixels, not normalized.
-    :type detection: List[Union[Tuple[Tuple[float, float, float, float], str, float], Tuple[Tuple[float, float, float, float], str, float, np.ndarray]]
+    :param detection: List of detection results, each containing bounding box coordinates, label, confidence score,
+                      and optionally a segmentation mask. The coordinates should be in pixels, not normalized.
+    :type detection: List[Union[BBoxWithScoreAndLabel, MaskWithScoreAndLabel]]
     :param labels: List of predefined labels. If None, labels will be extracted from detection results.
     :type labels: Optional[List[str]]
     :param text_padding: Padding around label text in pixels.
@@ -63,8 +66,10 @@ def detection_visualize(image: ImageTyping, detection: List[Union[BBoxWithScoreA
     :param fontsize: Font size for label text.
     :type fontsize: int
     :param max_short_edge_size: Maximum size of shortest image edge. If specified, image will be resized
-        while maintaining aspect ratio.
+                                while maintaining aspect ratio.
     :type max_short_edge_size: Optional[int]
+    :param mask_alpha: Transparency level for mask visualization (0.0 to 1.0).
+    :type mask_alpha: float
     :param fp: Font properties for matplotlib font. Only used if matplotlib is available.
     :type fp: matplotlib.font_manager.FontProperties or None
     :param no_label: If True, suppresses drawing of labels.
@@ -75,7 +80,9 @@ def detection_visualize(image: ImageTyping, detection: List[Union[BBoxWithScoreA
 
     Examples::
         >>> from imgutils.detect import detect_heads, detection_visualize
+        >>> from imgutils.data import load_image
         >>>
+        >>> # Basic usage
         >>> image = load_image("path/to/image.jpg")
         >>> detections = detect_heads(image)
         >>> visualized = detection_visualize(image, detections)

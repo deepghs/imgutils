@@ -1,3 +1,15 @@
+"""
+YOLO Segmentation Module for Image Processing
+
+This module provides functionality for YOLO-based segmentation models, allowing users to 
+perform instance segmentation on images. It includes classes and functions for loading models 
+from Hugging Face repositories, making predictions, and creating interactive demos.
+
+The module supports both online and offline operations, with thread-safe model loading and 
+execution. It handles various image formats and provides utilities for pre-processing and 
+post-processing segmentation results.
+"""
+
 import json
 import os
 import threading
@@ -67,12 +79,13 @@ def crop_mask(masks, boxes):
     """
     Crop masks to bounding box regions.
 
-    Args:
-        masks (numpy.ndarray): Masks with shape (H, W).
-        boxes (numpy.ndarray): Bounding box coordinates with shape (4, ) in relative point form.
+    :param masks: Masks with shape (H, W).
+    :type masks: numpy.ndarray
+    :param boxes: Bounding box coordinates with shape (4, ) in relative point form.
+    :type boxes: numpy.ndarray
 
-    Returns:
-        (numpy.ndarray): Cropped masks.
+    :return: Cropped masks.
+    :rtype: numpy.ndarray
     """
     h, w = masks.shape
     x1, y1, x2, y2 = np.split(boxes[:, None], 4)  # x1 shape(1,1)
@@ -86,13 +99,15 @@ def scale_masks(masks, shape, padding: Literal['none', 'center', 'left'] = 'none
     """
     Rescale segment masks to target shape.
 
-    Args:
-        masks (numpy.ndarray): Masks with shape (H, W).
-        shape (tuple): Target height and width as (height, width).
-        padding (bool): Whether masks are based on YOLO-style augmented images with padding.
+    :param masks: Masks with shape (H, W).
+    :type masks: numpy.ndarray
+    :param shape: Target height and width as (height, width).
+    :type shape: tuple
+    :param padding: Type of padding applied to masks. Options are 'none', 'center', or 'left'.
+    :type padding: Literal['none', 'center', 'left']
 
-    Returns:
-        (numpy.ndarray): Rescaled masks.
+    :return: Rescaled masks.
+    :rtype: numpy.ndarray
     """
     mh, mw = masks.shape
     if padding != 'none':
@@ -111,6 +126,27 @@ def scale_masks(masks, shape, padding: Literal['none', 'center', 'left'] = 'none
 def _nms_postprocess(output: np.ndarray, protos: np.ndarray, conf_threshold: float, iou_threshold: float,
                      old_size: Tuple[float, float], new_size: Tuple[float, float], labels: List[str]) \
         -> List[Tuple[Tuple[int, int, int, int], str, float, np.ndarray]]:
+    """
+    Perform non-maximum suppression (NMS) post-processing on YOLO segmentation output.
+
+    :param output: Raw output from YOLO model with shape [4+cls+pe, box_cnt].
+    :type output: numpy.ndarray
+    :param protos: Prototype masks from YOLO model.
+    :type protos: numpy.ndarray
+    :param conf_threshold: Confidence threshold for filtering detections.
+    :type conf_threshold: float
+    :param iou_threshold: IoU threshold for NMS.
+    :type iou_threshold: float
+    :param old_size: Original image size (width, height).
+    :type old_size: Tuple[float, float]
+    :param new_size: New image size after preprocessing (width, height).
+    :type new_size: Tuple[float, float]
+    :param labels: List of class labels.
+    :type labels: List[str]
+
+    :return: List of detections, each containing bounding box, class label, confidence score, and mask.
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float, numpy.ndarray]]
+    """
     pe, pheight, pwidth = protos.shape
     assert output.shape[0] == 4 + len(labels) + pe
     # the output should be like [4+cls+pe, box_cnt]
@@ -148,6 +184,27 @@ def _nms_postprocess(output: np.ndarray, protos: np.ndarray, conf_threshold: flo
 def _yolo_seg_postprocess(output: np.ndarray, protos: np.ndarray, conf_threshold: float, iou_threshold: float,
                           old_size: Tuple[float, float], new_size: Tuple[float, float], labels: List[str]) \
         -> List[Tuple[Tuple[int, int, int, int], str, float, np.ndarray]]:
+    """
+    Post-process YOLO segmentation model output.
+
+    :param output: Raw output from YOLO model.
+    :type output: numpy.ndarray
+    :param protos: Prototype masks from YOLO model.
+    :type protos: numpy.ndarray
+    :param conf_threshold: Confidence threshold for filtering detections.
+    :type conf_threshold: float
+    :param iou_threshold: IoU threshold for NMS.
+    :type iou_threshold: float
+    :param old_size: Original image size (width, height).
+    :type old_size: Tuple[float, float]
+    :param new_size: New image size after preprocessing (width, height).
+    :type new_size: Tuple[float, float]
+    :param labels: List of class labels.
+    :type labels: List[str]
+
+    :return: List of detections, each containing bounding box, class label, confidence score, and mask.
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float, numpy.ndarray]]
+    """
     return _nms_postprocess(
         output=output,
         protos=protos,
@@ -160,7 +217,29 @@ def _yolo_seg_postprocess(output: np.ndarray, protos: np.ndarray, conf_threshold
 
 
 class YOLOSegmentationModel:
+    """
+    YOLO-based segmentation model loaded from Hugging Face repositories.
+
+    This class provides functionality for loading YOLO segmentation models from Hugging Face,
+    making predictions, and creating interactive UIs for model demonstration.
+
+    :param repo_id: Hugging Face repository ID containing the YOLO segmentation models.
+    :type repo_id: str
+    :param hf_token: Hugging Face API token for accessing private repositories.
+                    If None, will try to use the HF_TOKEN environment variable.
+    :type hf_token: Optional[str]
+    """
+
     def __init__(self, repo_id: str, hf_token: Optional[str] = None):
+        """
+        Initialize a YOLO segmentation model.
+
+        :param repo_id: Hugging Face repository ID containing the YOLO segmentation models.
+        :type repo_id: str
+        :param hf_token: Hugging Face API token for accessing private repositories.
+                        If None, will try to use the HF_TOKEN environment variable.
+        :type hf_token: Optional[str]
+        """
         self.repo_id = repo_id
         self._model_names = None
         self._models = {}
@@ -264,6 +343,14 @@ class YOLOSegmentationModel:
         return self._models[cache_key]
 
     def _get_model_type(self, model_name: str):
+        """
+        Get the type of the specified model.
+
+        :param model_name: Name of the model to get the type for.
+        :type model_name: str
+        :return: Model type string.
+        :rtype: str
+        """
         with self._model_meta_lock:
             if model_name not in self._model_types:
                 try:
@@ -288,6 +375,36 @@ class YOLOSegmentationModel:
                 conf_threshold: float = 0.25, iou_threshold: float = 0.7,
                 allow_dynamic: bool = False) \
             -> List[Tuple[Tuple[int, int, int, int], str, float, np.ndarray]]:
+        """
+        Perform segmentation prediction on an image.
+
+        :param image: Input image to perform segmentation on.
+        :type image: ImageTyping
+        :param model_name: Name of the model to use for prediction.
+        :type model_name: str
+        :param conf_threshold: Confidence threshold for filtering detections (0.0-1.0).
+        :type conf_threshold: float
+        :param iou_threshold: IoU threshold for non-maximum suppression (0.0-1.0).
+        :type iou_threshold: float
+        :param allow_dynamic: Whether to allow dynamic resizing of the input image.
+        :type allow_dynamic: bool
+
+        :return: List of detections, each containing bounding box, class label, confidence score, and mask.
+        :rtype: List[Tuple[Tuple[int, int, int, int], str, float, numpy.ndarray]]
+
+        :raises ValueError: If the model type is unknown.
+
+        :Example:
+
+        >>> model = YOLOSegmentationModel("username/repo_name")
+        >>> results = model.predict(
+        ...     image="path/to/image.jpg",
+        ...     model_name="yolov8s-seg",
+        ...     conf_threshold=0.3
+        ... )
+        >>> for bbox, label, confidence, mask in results:
+        ...     print(f"Found {label} with confidence {confidence:.2f}")
+        """
         model, max_infer_size, labels, exec_lock = self._open_model(model_name)
         image = load_image(image, mode='RGB')
         new_image, old_size, new_size = _image_preprocess(image, max_infer_size, allow_dynamic=allow_dynamic)
@@ -309,6 +426,12 @@ class YOLOSegmentationModel:
             raise ValueError(f'Unknown object detection model type - {model_type!r}.')  # pragma: no cover
 
     def clear(self):
+        """
+        Clear all cached models and metadata.
+
+        This method resets the model cache, forcing new model loads on subsequent operations.
+        It's useful for freeing memory or when switching between different models.
+        """
         self._model_names = None
         self._models.clear()
         self._model_types.clear()
@@ -335,8 +458,8 @@ class YOLOSegmentationModel:
 
         :Example:
 
-        >>> model = YOLOModel("username/repo_name")
-        >>> model.make_ui(default_model_name="yolov5s")
+        >>> model = YOLOSegmentationModel("username/repo_name")
+        >>> model.make_ui(default_model_name="yolov8s-seg")
         """
         _check_gradio_env()
         model_list = self.model_names
@@ -436,9 +559,10 @@ class YOLOSegmentationModel:
         :raises EnvironmentError: If Gradio is not installed in the environment,
                                   or if in OFFLINE mode and no default_model_name is provided.
 
-        Example:
-            >>> model = YOLOModel("username/repo_name")
-            >>> model.launch_demo(default_model_name="yolov5s", server_name="0.0.0.0", server_port=7860)
+        :Example:
+
+            >>> model = YOLOSegmentationModel("username/repo_name")
+            >>> model.launch_demo(default_model_name="yolov8s-seg", server_name="0.0.0.0", server_port=7860)
         """
         _check_gradio_env()
         with gr.Blocks() as demo:
@@ -465,6 +589,20 @@ class YOLOSegmentationModel:
 
 @ts_lru_cache()
 def _open_models_for_repo_id(repo_id: str, hf_token: Optional[str] = None) -> YOLOSegmentationModel:
+    """
+    Open and cache a YOLOSegmentationModel for a specific repository.
+
+    This function uses thread-safe LRU caching to avoid repeatedly creating model instances
+    for the same repository ID.
+
+    :param repo_id: Hugging Face repository ID.
+    :type repo_id: str
+    :param hf_token: Hugging Face API token.
+    :type hf_token: Optional[str]
+
+    :return: Cached YOLOSegmentationModel instance.
+    :rtype: YOLOSegmentationModel
+    """
     return YOLOSegmentationModel(repo_id, hf_token=hf_token)
 
 
@@ -472,6 +610,40 @@ def yolo_seg_predict(image: ImageTyping, repo_id: str, model_name: str,
                      conf_threshold: float = 0.25, iou_threshold: float = 0.7,
                      hf_token: Optional[str] = None, **kwargs) \
         -> List[Tuple[Tuple[int, int, int, int], str, float, np.ndarray]]:
+    """
+    Perform YOLO segmentation prediction using a model from Hugging Face.
+
+    This is a convenience function that creates a YOLOSegmentationModel instance
+    and performs prediction in one step.
+
+    :param image: Input image to perform segmentation on.
+    :type image: ImageTyping
+    :param repo_id: Hugging Face repository ID containing the model.
+    :type repo_id: str
+    :param model_name: Name of the specific model to use.
+    :type model_name: str
+    :param conf_threshold: Confidence threshold for filtering detections (0.0-1.0).
+    :type conf_threshold: float
+    :param iou_threshold: IoU threshold for non-maximum suppression (0.0-1.0).
+    :type iou_threshold: float
+    :param hf_token: Hugging Face API token for accessing private repositories.
+    :type hf_token: Optional[str]
+    :param kwargs: Additional keyword arguments to pass to the predict method.
+
+    :return: List of detections, each containing bounding box, class label, confidence score, and mask.
+    :rtype: List[Tuple[Tuple[int, int, int, int], str, float, numpy.ndarray]]
+
+    :Example:
+
+    >>> results = yolo_seg_predict(
+    ...     image="path/to/image.jpg",
+    ...     repo_id="username/repo_name",
+    ...     model_name="yolov8s-seg",
+    ...     conf_threshold=0.3
+    ... )
+    >>> for bbox, label, confidence, mask in results:
+    ...     print(f"Found {label} with confidence {confidence:.2f}")
+    """
     return _open_models_for_repo_id(repo_id, hf_token=hf_token).predict(
         image=image,
         model_name=model_name,
