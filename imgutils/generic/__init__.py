@@ -9,3 +9,4 @@ from .enhance import *
 from .multilabel_timm import *
 from .siglip import *
 from .yolo import *
+from .yoloseg import *
