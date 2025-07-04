@@ -20,7 +20,7 @@ from typing import List, Literal, Union
 
 import numpy as np
 
-from .base import BBoxTyping, BBoxWithScoreAndLabel
+from .base import BBoxTyping, BBoxWithScoreAndLabel, MaskWithScoreAndLabel
 
 
 def calculate_iou(box1: BBoxTyping, box2: BBoxTyping) -> float:
@@ -119,15 +119,16 @@ def bboxes_similarity(bboxes1: List[BBoxTyping], bboxes2: List[BBoxTyping],
         raise ValueError(f'Unknown similarity mode for bboxes - {mode!r}.')
 
 
-def detection_similarity(detect1: List[BBoxWithScoreAndLabel], detect2: List[BBoxWithScoreAndLabel],
+def detection_similarity(detect1: List[Union[BBoxWithScoreAndLabel, MaskWithScoreAndLabel]],
+                         detect2: List[Union[BBoxWithScoreAndLabel, MaskWithScoreAndLabel]],
                          mode: Literal['max', 'mean', 'raw'] = 'mean') -> Union[float, List[float]]:
     """
     Calculate the similarity between two lists of detections, considering both bounding boxes and labels.
 
     :param detect1: First list of detections, each containing a bounding box, label, and score.
-    :type detect1: List[BBoxWithScoreAndLabel]
+    :type detect1: List[Union[BBoxWithScoreAndLabel, MaskWithScoreAndLabel]]
     :param detect2: Second list of detections, each containing a bounding box, label, and score.
-    :type detect2: List[BBoxWithScoreAndLabel]
+    :type detect2: List[Union[BBoxWithScoreAndLabel, MaskWithScoreAndLabel]]
     :param mode: The mode for calculating similarity. Options are 'max', 'mean', or 'raw'. Defaults to 'mean'.
     :type mode: Literal['max', 'mean', 'raw']
     :return: The similarity score or list of scores, depending on the mode.
@@ -150,17 +151,85 @@ def detection_similarity(detect1: List[BBoxWithScoreAndLabel], detect2: List[BBo
         >>> print(f"Mean detection similarity: {similarity:.4f}")
         Mean detection similarity: 0.1429
     """
-    labels = sorted({*(l for _, l, _ in detect1), *(l for _, l, _ in detect2)})
+    labels = sorted({*(l for _, l, *_ in detect1), *(l for _, l, *_ in detect2)})
     sims = []
     for current_label in labels:
-        bboxes1 = [bbox for bbox, label, _ in detect1 if label == current_label]
-        bboxes2 = [bbox for bbox, label, _ in detect2 if label == current_label]
+        bboxes1 = [bbox for bbox, label, *_ in detect1 if label == current_label]
+        bboxes2 = [bbox for bbox, label, *_ in detect2 if label == current_label]
+        sims.extend(bboxes_similarity(bboxes1=bboxes1, bboxes2=bboxes2, mode='raw'))
 
-        sims.extend(bboxes_similarity(
-            bboxes1=bboxes1,
-            bboxes2=bboxes2,
-            mode='raw',
-        ))
+    sims = np.array(sims)
+    if mode == 'max':
+        return float(sims.max())
+    elif mode == 'mean':
+        return float(sims.mean()) if sims.shape[0] > 0 else 1.0
+    elif mode == 'raw':
+        return sims.tolist()
+    else:
+        raise ValueError(f'Unknown similarity mode for bboxes - {mode!r}.')
+
+
+def _mask_to_bool_mask(mask: np.ndarray, threshold: float = 0.5) -> np.ndarray:
+    if isinstance(mask, np.ndarray):
+        if np.issubdtype(mask.dtype, np.bool_):
+            return mask
+        elif np.issubdtype(mask.dtype, np.number):
+            return mask >= threshold
+        else:
+            raise TypeError(f'Unknown dtype of the given mask - {mask.dtype!r}.')
+    else:
+        raise TypeError(f'Unknown type of the given mask - {mask!r}.')
+
+
+def calculate_mask_iou(mask1: np.ndarray, mask2: np.ndarray, threshold: float = 0.5) -> float:
+    mask1 = _mask_to_bool_mask(mask1, threshold=threshold)
+    mask2 = _mask_to_bool_mask(mask2, threshold=threshold)
+    iou_value = ((mask1 & mask2).sum() / ((mask1 | mask2).sum() + 1e-6)).item()
+    return iou_value
+
+
+def masks_similarity(masks1: List[np.ndarray], masks2: List[np.ndarray],
+                     mode: Literal['max', 'mean', 'raw'] = 'mean') -> Union[float, List[float]]:
+    m, n = len(masks1), len(masks2)
+
+    if m == 0 and n == 0:
+        if mode == 'raw':
+            return []
+        else:
+            return 1.0
+
+    iou_matrix = np.zeros((m, n))
+    for i in range(m):
+        for j in range(n):
+            iou_matrix[i, j] = calculate_mask_iou(masks1[i], masks2[j])
+
+    # import here for faster launching speed
+    from scipy.optimize import linear_sum_assignment
+    row_ind, col_ind = linear_sum_assignment(-iou_matrix)
+    similarities = iou_matrix[row_ind, col_ind]
+
+    max_len = max(m, n)
+    padded_similarities = np.zeros(max_len)
+    padded_similarities[:len(similarities)] = similarities
+
+    if mode == 'max':
+        return float(np.max(padded_similarities))
+    elif mode == 'mean':
+        return float(np.mean(padded_similarities))
+    elif mode == 'raw':
+        return padded_similarities.tolist()
+    else:
+        raise ValueError(f'Unknown similarity mode for masks - {mode!r}.')
+
+
+def detection_with_mask_similarity(detect1: List[MaskWithScoreAndLabel], detect2: List[MaskWithScoreAndLabel],
+                                   mode: Literal['max', 'mean', 'raw'] = 'mean') -> Union[float, List[float]]:
+    labels = sorted({*(l for _, l, *_ in detect1), *(l for _, l, *_ in detect2)})
+    sims = []
+    for current_label in labels:
+        masks1 = [mask for _, label, _, mask in detect1 if label == current_label]
+        masks2 = [mask for _, label, _, mask in detect2 if label == current_label]
+        sims.extend(masks_similarity(masks1=masks1, masks2=masks2, mode='raw'))
 
     sims = np.array(sims)
     if mode == 'max':
