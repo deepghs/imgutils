@@ -1,0 +1,455 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.generic.multilabel_timm &mdash; imgutils 0.17.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=741867f9"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.generic.siglip" href="siglip.html" />
+    <link rel="prev" title="imgutils.generic.clip" href="clip.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.generic</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="classify.html">imgutils.generic.classify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classify_timm.html">imgutils.generic.classify_timm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enhance.html">imgutils.generic.enhance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clip.html">imgutils.generic.clip</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.generic.multilabel_timm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multilabeltimmmodel">MultiLabelTIMMModel</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.generic.multilabel_timm.MultiLabelTIMMModel"><code class="docutils literal notranslate"><span class="pre">MultiLabelTIMMModel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#multilabel-timm-predict">multilabel_timm_predict</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.generic.multilabel_timm.multilabel_timm_predict"><code class="docutils literal notranslate"><span class="pre">multilabel_timm_predict()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="siglip.html">imgutils.generic.siglip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yolo.html">imgutils.generic.yolo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yoloseg.html">imgutils.generic.yoloseg</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.generic</a></li>
+      <li class="breadcrumb-item active">imgutils.generic.multilabel_timm</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/generic/multilabel_timm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.generic.multilabel_timm">
+<span id="imgutils-generic-multilabel-timm"></span><h1>imgutils.generic.multilabel_timm<a class="headerlink" href="#module-imgutils.generic.multilabel_timm" title="Permalink to this heading"></a></h1>
+<p>Multi-Label TIMM Model Module</p>
+<p>This module provides functionality for working with multi-label image classification models
+trained with TIMM (PyTorch Image Models) and exported to ONNX format. It includes:</p>
+<ol class="arabic simple">
+<li><p>The MultiLabelTIMMModel class for loading and making predictions with models hosted on Hugging Face Hub</p></li>
+<li><p>Functions for batch prediction and demo interface creation</p></li>
+<li><p>Support for custom thresholds at both category and tag levels</p></li>
+<li><p>Flexible output formatting options for different use cases</p></li>
+</ol>
+<p>The models are expected to be stored on Hugging Face Hub with specific files:</p>
+<ul class="simple">
+<li><p>model.onnx: The ONNX model file</p></li>
+<li><p>selected_tags.csv: CSV file containing tag information and categories</p></li>
+<li><p>preprocess.json: JSON configuration for image preprocessing</p></li>
+<li><p>thresholds.csv: Optional CSV file with recommended thresholds</p></li>
+<li><p>categories.json: Category ID and name mapping json file.</p></li>
+</ul>
+<p>This module is designed to work with multi-label classification tasks where images can
+belong to multiple categories and have multiple tags within each category.</p>
+<section id="multilabeltimmmodel">
+<h2>MultiLabelTIMMModel<a class="headerlink" href="#multilabeltimmmodel" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.generic.multilabel_timm.MultiLabelTIMMModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.generic.multilabel_timm.</span></span><span class="sig-name descname"><span class="pre">MultiLabelTIMMModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/multilabel_timm.html#MultiLabelTIMMModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.multilabel_timm.MultiLabelTIMMModel" title="Permalink to this definition"></a></dt>
+<dd><p>A class for working with multi-label image classification models trained with TIMM.</p>
+<p>This class handles loading models from Hugging Face Hub, preprocessing images,
+and making predictions with customizable thresholds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>) – The Hugging Face Hub repository ID containing the model</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Optional Hugging Face authentication token for private repositories</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.generic.multilabel_timm.MultiLabelTIMMModel.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/multilabel_timm.html#MultiLabelTIMMModel.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.multilabel_timm.MultiLabelTIMMModel.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize a MultiLabelTIMMModel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_id</strong> (<em>str</em>) – The Hugging Face Hub repository ID containing the model</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Optional Hugging Face authentication token for private repositories</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.generic.multilabel_timm.MultiLabelTIMMModel.launch_demo">
+<span class="sig-name descname"><span class="pre">launch_demo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_use_tag_thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/multilabel_timm.html#MultiLabelTIMMModel.launch_demo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.multilabel_timm.MultiLabelTIMMModel.launch_demo" title="Permalink to this definition"></a></dt>
+<dd><p>Launch a Gradio demo for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>default_thresholds</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>Dict</em><em>[</em><em>Any</em><em>, </em><em>float</em><em>]</em><em>]</em>) – Default threshold values to use in the demo</p></li>
+<li><p><strong>default_use_tag_thresholds</strong> (<em>bool</em>) – Whether to use tag-level thresholds by default</p></li>
+<li><p><strong>server_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Server name for the Gradio app</p></li>
+<li><p><strong>server_port</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Server port for the Gradio app</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to gr.launch()</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>EnvironmentError</strong> – If Gradio is not installed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.generic.multilabel_timm.MultiLabelTIMMModel.make_ui">
+<span class="sig-name descname"><span class="pre">make_ui</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_use_tag_thresholds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/multilabel_timm.html#MultiLabelTIMMModel.make_ui"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.multilabel_timm.MultiLabelTIMMModel.make_ui" title="Permalink to this definition"></a></dt>
+<dd><p>Create a Gradio UI for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>default_thresholds</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>Dict</em><em>[</em><em>Any</em><em>, </em><em>float</em><em>]</em><em>]</em>) – Default threshold values to use in the UI</p></li>
+<li><p><strong>default_use_tag_thresholds</strong> (<em>bool</em>) – Whether to use tag-level thresholds by default</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>EnvironmentError</strong> – If Gradio is not installed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.generic.multilabel_timm.MultiLabelTIMMModel.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~os.PathLike</span> <span class="pre">|</span> <span class="pre">bytes</span> <span class="pre">|</span> <span class="pre">bytearray</span> <span class="pre">|</span> <span class="pre">~typing.BinaryIO</span> <span class="pre">|</span> <span class="pre">~PIL.Image.Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocessor:</span> <span class="pre">~typing.Literal['test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'val']</span> <span class="pre">=</span> <span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~typing.Dict[~typing.Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">float]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tag_thresholds:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt=&lt;object</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/multilabel_timm.html#MultiLabelTIMMModel.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.multilabel_timm.MultiLabelTIMMModel.predict" title="Permalink to this definition"></a></dt>
+<dd><p>Make a prediction and format the results.</p>
+<p>This method processes an image through the model and applies thresholds to determine
+which tags to include in the results. The output format can be customized using the fmt parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image</p></li>
+<li><p><strong>preprocessor</strong> (<em>Literal</em><em>[</em><em>'test'</em><em>, </em><em>'val'</em><em>]</em>) – Which preprocessor to use (‘test’ or ‘val’)</p></li>
+<li><p><strong>thresholds</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>Dict</em><em>[</em><em>Any</em><em>, </em><em>float</em><em>]</em><em>]</em>) – Threshold values for tag confidence. Can be a single float applied to all categories
+or a dictionary mapping category IDs or names to threshold values</p></li>
+<li><p><strong>use_tag_thresholds</strong> (<em>bool</em>) – Whether to use tag-level thresholds if available</p></li>
+<li><p><strong>fmt</strong> (<em>Any</em>) – Output format specification. Can be a tuple of category names to include,
+or FMT_UNSET to use all categories</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted prediction results according to the fmt parameter</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The fmt argument can include the following keys:</p>
+<ul class="simple">
+<li><p>Category names: dicts containing category-specific tags and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code>: a dict containing all tags across categories and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">embedding</span></code>: a 1-dim embedding of image, recommended for index building after L2 normalization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logits</span></code>: a 1-dim logits result of image</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prediction</span></code>: a 1-dim prediction result of image</p></li>
+</ul>
+<p>You can extract specific category predictions or all tags based on your needs.</p>
+</div>
+<p>For more details see documentation of <a class="reference internal" href="#imgutils.generic.multilabel_timm.multilabel_timm_predict" title="imgutils.generic.multilabel_timm.multilabel_timm_predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">multilabel_timm_predict()</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="multilabel-timm-predict">
+<h2>multilabel_timm_predict<a class="headerlink" href="#multilabel-timm-predict" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.generic.multilabel_timm.multilabel_timm_predict">
+<span class="sig-prename descclassname"><span class="pre">imgutils.generic.multilabel_timm.</span></span><span class="sig-name descname"><span class="pre">multilabel_timm_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~os.PathLike</span> <span class="pre">|</span> <span class="pre">bytes</span> <span class="pre">|</span> <span class="pre">bytearray</span> <span class="pre">|</span> <span class="pre">~typing.BinaryIO</span> <span class="pre">|</span> <span class="pre">~PIL.Image.Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_id:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocessor:</span> <span class="pre">~typing.Literal['test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'val']</span> <span class="pre">=</span> <span class="pre">'test'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">~typing.Dict[~typing.Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">float]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tag_thresholds:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_token:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/generic/multilabel_timm.html#multilabel_timm_predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.generic.multilabel_timm.multilabel_timm_predict" title="Permalink to this definition"></a></dt>
+<dd><p>Make predictions using a multi-label TIMM model.</p>
+<p>This function provides a convenient interface for making predictions with models
+hosted on Hugging Face Hub without directly instantiating a MultiLabelTIMMModel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image</p></li>
+<li><p><strong>repo_id</strong> (<em>str</em>) – The Hugging Face Hub repository ID containing the model</p></li>
+<li><p><strong>preprocessor</strong> (<em>Literal</em><em>[</em><em>'test'</em><em>, </em><em>'val'</em><em>]</em>) – Which preprocessor to use (‘test’ or ‘val’)</p></li>
+<li><p><strong>thresholds</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>Dict</em><em>[</em><em>Any</em><em>, </em><em>float</em><em>]</em><em>]</em>) – Threshold values for tag confidence. Can be a single float applied to all categories
+or a dictionary mapping category IDs or names to threshold values</p></li>
+<li><p><strong>use_tag_thresholds</strong> (<em>bool</em>) – Whether to use tag-level thresholds if available</p></li>
+<li><p><strong>fmt</strong> (<em>Any</em>) – Output format specification. Can be a tuple of category names to include,
+or FMT_UNSET to use all categories</p></li>
+<li><p><strong>hf_token</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Optional Hugging Face authentication token for private repositories</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted prediction results according to the fmt parameter</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><p>Here are some images for example</p>
+<img alt="../../_images/multilabel_demo.plot.py.svg" class="align-center" src="../../_images/multilabel_demo.plot.py.svg" /><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">multilabel_timm_predict</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">general</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">rating</span> <span class="o">=</span> <span class="n">multilabel_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">general</span>
+<span class="go">{&#39;1girl&#39;: 0.9963783025741577, &#39;long_hair&#39;: 0.9685494899749756, &#39;solo&#39;: 0.9548443555831909, &#39;navel&#39;: 0.9415484666824341, &#39;breasts&#39;: 0.9369214177131653, &#39;red_eyes&#39;: 0.9019639492034912, &#39;shirt&#39;: 0.873087465763092, &#39;outdoors&#39;: 0.866461992263794, &#39;crop_top&#39;: 0.862577497959137, &#39;midriff&#39;: 0.8544420003890991, &#39;sportswear&#39;: 0.849435567855835, &#39;shorts&#39;: 0.8209151029586792, &#39;short_sleeves&#39;: 0.817188560962677, &#39;holding&#39;: 0.811793327331543, &#39;very_long_hair&#39;: 0.8082301616668701, &#39;gloves&#39;: 0.7840366363525391, &#39;black_gloves&#39;: 0.7765430808067322, &#39;thighs&#39;: 0.7542579770088196, &#39;looking_at_viewer&#39;: 0.7331588268280029, &#39;day&#39;: 0.7203925251960754, &#39;hair_between_eyes&#39;: 0.7121687531471252, &#39;large_breasts&#39;: 0.6990523338317871, &#39;baseball_bat&#39;: 0.6809443831443787, &#39;grey_hair&#39;: 0.6790007948875427, &#39;sky&#39;: 0.6716539263725281, &#39;stomach&#39;: 0.6698249578475952, &#39;sweat&#39;: 0.6454322934150696, &#39;black_shirt&#39;: 0.6270318031311035, &#39;cowboy_shot&#39;: 0.6216483116149902, &#39;blue_sky&#39;: 0.5898874998092651, &#39;black_shorts&#39;: 0.5445142984390259, &#39;holding_baseball_bat&#39;: 0.5013713836669922, &#39;white_hair&#39;: 0.4999670684337616, &#39;blush&#39;: 0.4860053062438965, &#39;cloud&#39;: 0.474183052778244, &#39;standing&#39;: 0.4724341332912445, &#39;thigh_gap&#39;: 0.4330931305885315, &#39;short_shorts&#39;: 0.39793258905410767, &#39;parted_lips&#39;: 0.36694538593292236, &#39;crop_top_overhang&#39;: 0.3321989178657532, &#39;official_alternate_costume&#39;: 0.3157039284706116, &#39;blurry&#39;: 0.24181532859802246, &#39;groin&#39;: 0.21906554698944092, &#39;ass_visible_through_thighs&#39;: 0.2188207507133484, &#39;cropped_shirt&#39;: 0.18700966238975525, &#39;taut_shirt&#39;: 0.08612403273582458, &#39;taut_clothes&#39;: 0.0701744556427002}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">character</span>
+<span class="go">{&#39;skadi_(arknights)&#39;: 0.9796262979507446}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span>
+<span class="go">{&#39;sensitive&#39;: 0.9580697417259216}</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">general</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">rating</span> <span class="o">=</span> <span class="n">multilabel_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;hutao.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">general</span>
+<span class="go">{&#39;1girl&#39;: 0.988956093788147, &#39;twintails&#39;: 0.9650213718414307, &#39;ghost&#39;: 0.940951943397522, &#39;tongue_out&#39;: 0.9330000877380371, &#39;tongue&#39;: 0.9267600774765015, &#39;skirt&#39;: 0.9194451570510864, &#39;symbol-shaped_pupils&#39;: 0.9103127717971802, &#39;brown_hair&#39;: 0.9067947268486023, &#39;long_hair&#39;: 0.8872615098953247, &#39;red_eyes&#39;: 0.8631541728973389, &#39;looking_at_viewer&#39;: 0.8235997557640076, &#39;solo&#39;: 0.8214132785797119, &#39;long_sleeves&#39;: 0.7965610027313232, &#39;bag&#39;: 0.7958617210388184, &#39;jacket&#39;: 0.7932659387588501, &#39;flower-shaped_pupils&#39;: 0.7630170583724976, &#39;shirt&#39;: 0.7500981092453003, &#39;hair_ornament&#39;: 0.738053023815155, &#39;flower&#39;: 0.7321316599845886, &#39;plaid_skirt&#39;: 0.7173646688461304, &#39;white_shirt&#39;: 0.6631225347518921, &#39;pleated_skirt&#39;: 0.6344470977783203, &#39;hair_flower&#39;: 0.6293849945068359, &#39;nail_polish&#39;: 0.6136130094528198, &#39;multicolored_hair&#39;: 0.5703858733177185, &#39;blush&#39;: 0.5195141434669495, &#39;plaid_clothes&#39;: 0.503984808921814, &#39;gradient_hair&#39;: 0.49658203125, &#39;alternate_costume&#39;: 0.4947473704814911, &#39;:p&#39;: 0.493851900100708, &#39;hair_between_eyes&#39;: 0.484821081161499, &#39;smile&#39;: 0.4778161942958832, &#39;black_nails&#39;: 0.4747253358364105, &#39;collared_shirt&#39;: 0.46951043605804443, &#39;outdoors&#39;: 0.46920245885849, &#39;holding&#39;: 0.45227500796318054, &#39;school_uniform&#39;: 0.4197554290294647, &#39;very_long_hair&#39;: 0.41959843039512634, &#39;miniskirt&#39;: 0.3916422426700592, &#39;cowboy_shot&#39;: 0.38207799196243286, &#39;blue_jacket&#39;: 0.3614964485168457, &#39;sleeves_past_wrists&#39;: 0.3611966073513031, &#39;backpack&#39;: 0.32487112283706665, &#39;colored_tips&#39;: 0.314140260219574, &#39;sidelocks&#39;: 0.3062695264816284, &#39;black_jacket&#39;: 0.299169659614563, &#39;standing&#39;: 0.29005059599876404, &#39;charm_(object)&#39;: 0.22183549404144287, &#39;multiple_rings&#39;: 0.2172674536705017, &#39;open_jacket&#39;: 0.2046721875667572, &#39;ring&#39;: 0.18625634908676147, &#39;brown_skirt&#39;: 0.18045437335968018, &#39;contemporary&#39;: 0.13890522718429565}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">character</span>
+<span class="go">{&#39;hu_tao_(genshin_impact)&#39;: 0.9779937267303467, &#39;boo_tao_(genshin_impact)&#39;: 0.8973554372787476}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span>
+<span class="go">{&#39;general&#39;: 0.6215817332267761, &#39;sensitive&#39;: 0.3872501254081726}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For different models, the default format is different. That depends on the categories that model supported.</p>
+<p>For example, for model <a class="reference external" href="https://huggingface.co/animetimm/mobilenetv3_large_150d.dbv4-full-witha">animetimm/mobilenetv3_large_150d.dbv4-full-witha</a></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">multilabel_timm_predict</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">general</span><span class="p">,</span> <span class="n">artist</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">rating</span> <span class="o">=</span> <span class="n">multilabel_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/mobilenetv3_large_150d.dbv4-full-witha&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">general</span>
+<span class="go">{&#39;1girl&#39;: 0.9938606023788452, &#39;long_hair&#39;: 0.9691187143325806, &#39;red_eyes&#39;: 0.9463587403297424, &#39;solo&#39;: 0.944723904132843, &#39;navel&#39;: 0.9439248442649841, &#39;breasts&#39;: 0.9335891008377075, &#39;sportswear&#39;: 0.8865424394607544, &#39;shorts&#39;: 0.8601726293563843, &#39;very_long_hair&#39;: 0.8445472717285156, &#39;outdoors&#39;: 0.83197021484375, &#39;midriff&#39;: 0.8274217247962952, &#39;shirt&#39;: 0.8188955783843994, &#39;short_sleeves&#39;: 0.8183804750442505, &#39;crop_top&#39;: 0.8089936971664429, &#39;gloves&#39;: 0.8038264513015747, &#39;black_gloves&#39;: 0.7703496813774109, &#39;thighs&#39;: 0.7689077854156494, &#39;holding&#39;: 0.768336832523346, &#39;looking_at_viewer&#39;: 0.739115834236145, &#39;large_breasts&#39;: 0.7282243967056274, &#39;sky&#39;: 0.6852632761001587, &#39;hair_between_eyes&#39;: 0.6799711585044861, &#39;stomach&#39;: 0.6694454550743103, &#39;baseball_bat&#39;: 0.6693665385246277, &#39;black_shorts&#39;: 0.6493985652923584, &#39;day&#39;: 0.6425715684890747, &#39;cowboy_shot&#39;: 0.6186742186546326, &#39;black_shirt&#39;: 0.5906491279602051, &#39;holding_baseball_bat&#39;: 0.5860112905502319, &#39;sweat&#39;: 0.5825777649879456, &#39;cloud&#39;: 0.5549533367156982, &#39;blue_sky&#39;: 0.5523971915245056, &#39;white_hair&#39;: 0.5324308276176453, &#39;grey_hair&#39;: 0.52657151222229, &#39;short_shorts&#39;: 0.4896492063999176, &#39;standing&#39;: 0.45526784658432007, &#39;parted_lips&#39;: 0.4306206703186035, &#39;blush&#39;: 0.4149143397808075, &#39;thigh_gap&#39;: 0.4124316871166229, &#39;ass_visible_through_thighs&#39;: 0.34030789136886597, &#39;artist_name&#39;: 0.2679593563079834, &#39;groin&#39;: 0.2652612328529358, &#39;blurry&#39;: 0.2548949122428894, &#39;baseball&#39;: 0.24870169162750244, &#39;crop_top_overhang&#39;: 0.2240566909313202, &#39;stretching&#39;: 0.2012709677219391, &#39;cropped_shirt&#39;: 0.19828352332115173, &#39;official_alternate_costume&#39;: 0.1960265338420868, &#39;toned&#39;: 0.13941210508346558, &#39;exercising&#39;: 0.11270403861999512, &#39;lens_flare&#39;: 0.10835999250411987, &#39;taut_clothes&#39;: 0.08783495426177979, &#39;taut_shirt&#39;: 0.08448180556297302, &#39;linea_alba&#39;: 0.06583884358406067}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">artist</span>
+<span class="go">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">character</span>
+<span class="go">{&#39;skadi_(arknights)&#39;: 0.8951651453971863}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span>
+<span class="go">{&#39;sensitive&#39;: 0.9492285847663879}</span>
+</pre></div>
+</div>
+<p>Its default fmt is <code class="docutils literal notranslate"><span class="pre">('general',</span> <span class="pre">'artist',</span> <span class="pre">'character',</span> <span class="pre">'rating')</span></code>.</p>
+<p>But you can easily get those information you need with a more controllable way with <code class="docutils literal notranslate"><span class="pre">fmt</span></code>. See the next note.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">fmt</span></code> argument can include the following keys:</p>
+<ul class="simple">
+<li><p>Category names: dicts containing category-specific tags and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code>: a dict containing all tags across categories and their confidences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">embedding</span></code>: a 1-dim embedding of image, recommended for index building after L2 normalization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logits</span></code>: a 1-dim logits result of image</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prediction</span></code>: a 1-dim prediction result of image</p></li>
+</ul>
+<p>You can extract specific category predictions or all tags based on your needs.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">multilabel_timm_predict</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># default usage</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">general</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">rating</span> <span class="o">=</span> <span class="n">multilabel_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">general</span>
+<span class="go">{&#39;1girl&#39;: 0.9963783025741577, &#39;long_hair&#39;: 0.9685494899749756, &#39;solo&#39;: 0.9548443555831909, &#39;navel&#39;: 0.9415484666824341, &#39;breasts&#39;: 0.9369214177131653, &#39;red_eyes&#39;: 0.9019639492034912, &#39;shirt&#39;: 0.873087465763092, &#39;outdoors&#39;: 0.866461992263794, &#39;crop_top&#39;: 0.862577497959137, &#39;midriff&#39;: 0.8544420003890991, &#39;sportswear&#39;: 0.849435567855835, &#39;shorts&#39;: 0.8209151029586792, &#39;short_sleeves&#39;: 0.817188560962677, &#39;holding&#39;: 0.811793327331543, &#39;very_long_hair&#39;: 0.8082301616668701, &#39;gloves&#39;: 0.7840366363525391, &#39;black_gloves&#39;: 0.7765430808067322, &#39;thighs&#39;: 0.7542579770088196, &#39;looking_at_viewer&#39;: 0.7331588268280029, &#39;day&#39;: 0.7203925251960754, &#39;hair_between_eyes&#39;: 0.7121687531471252, &#39;large_breasts&#39;: 0.6990523338317871, &#39;baseball_bat&#39;: 0.6809443831443787, &#39;grey_hair&#39;: 0.6790007948875427, &#39;sky&#39;: 0.6716539263725281, &#39;stomach&#39;: 0.6698249578475952, &#39;sweat&#39;: 0.6454322934150696, &#39;black_shirt&#39;: 0.6270318031311035, &#39;cowboy_shot&#39;: 0.6216483116149902, &#39;blue_sky&#39;: 0.5898874998092651, &#39;black_shorts&#39;: 0.5445142984390259, &#39;holding_baseball_bat&#39;: 0.5013713836669922, &#39;white_hair&#39;: 0.4999670684337616, &#39;blush&#39;: 0.4860053062438965, &#39;cloud&#39;: 0.474183052778244, &#39;standing&#39;: 0.4724341332912445, &#39;thigh_gap&#39;: 0.4330931305885315, &#39;short_shorts&#39;: 0.39793258905410767, &#39;parted_lips&#39;: 0.36694538593292236, &#39;crop_top_overhang&#39;: 0.3321989178657532, &#39;official_alternate_costume&#39;: 0.3157039284706116, &#39;blurry&#39;: 0.24181532859802246, &#39;groin&#39;: 0.21906554698944092, &#39;ass_visible_through_thighs&#39;: 0.2188207507133484, &#39;cropped_shirt&#39;: 0.18700966238975525, &#39;taut_shirt&#39;: 0.08612403273582458, &#39;taut_clothes&#39;: 0.0701744556427002}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">character</span>
+<span class="go">{&#39;skadi_(arknights)&#39;: 0.9796262979507446}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span>
+<span class="go">{&#39;sensitive&#39;: 0.9580697417259216}</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># get rating and character only</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span><span class="p">,</span> <span class="n">character</span> <span class="o">=</span> <span class="n">multilabel_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">fmt</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="s1">&#39;character&#39;</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rating</span>
+<span class="go">{&#39;sensitive&#39;: 0.9580697417259216}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">character</span>
+<span class="go">{&#39;skadi_(arknights)&#39;: 0.9796262979507446}</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># get embeddings only</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span> <span class="o">=</span> <span class="n">multilabel_timm_predict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">repo_id</span><span class="o">=</span><span class="s1">&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;embedding&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">embedding</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(dtype(&#39;float32&#39;), (1280,))</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="clip.html" class="btn btn-neutral float-left" title="imgutils.generic.clip" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="siglip.html" class="btn btn-neutral float-right" title="imgutils.generic.siglip" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/yoloseg
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.14.0/index.html">v0.14.0</a></dd>
+                        <dd><a href="../../../../v0.14.1/index.html">v0.14.1</a></dd>
+                        <dd><a href="../../../../v0.15.0/index.html">v0.15.0</a></dd>
+                        <dd><a href="../../../../v0.16.0/index.html">v0.16.0</a></dd>
+                        <dd><a href="../../../../v0.17.0/api_doc/generic/multilabel_timm.html">v0.17.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="multilabel_timm.html">dev/yoloseg</a></dd>
+                        <dd><a href="../../../../HEAD/api_doc/generic/multilabel_timm.html">HEAD</a></dd>
+                        <dd><a href="../../../attachments/index.html">dev/attachments</a></dd>
+                        <dd><a href="../../../pt/index.html">dev/pt</a></dd>
+                        <dd><a href="../../../../main/api_doc/generic/multilabel_timm.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

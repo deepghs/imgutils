@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.validate.nsfw &mdash; imgutils 0.17.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=741867f9"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.validate.portrait" href="portrait.html" />
+    <link rel="prev" title="imgutils.validate.monochrome" href="monochrome.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.validate</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aicheck.html">imgutils.validate.aicheck</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bangumi_char.html">imgutils.validate.bangumi_char</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classify.html">imgutils.validate.classify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">imgutils.validate.color</a></li>
+<li class="toctree-l2"><a class="reference internal" href="completeness.html">imgutils.validate.completeness</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dbrating.html">imgutils.validate.dbrating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="furry.html">imgutils.validate.furry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monochrome.html">imgutils.validate.monochrome</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.validate.nsfw</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#nsfw-pred-score">nsfw_pred_score</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.validate.nsfw.nsfw_pred_score"><code class="docutils literal notranslate"><span class="pre">nsfw_pred_score()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#nsfw-pred">nsfw_pred</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.validate.nsfw.nsfw_pred"><code class="docutils literal notranslate"><span class="pre">nsfw_pred()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="portrait.html">imgutils.validate.portrait</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rating.html">imgutils.validate.rating</a></li>
+<li class="toctree-l2"><a class="reference internal" href="real.html">imgutils.validate.real</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safe.html">imgutils.validate.safe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style_age.html">imgutils.validate.style_age</a></li>
+<li class="toctree-l2"><a class="reference internal" href="teen.html">imgutils.validate.teen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="truncate.html">imgutils.validate.truncate</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.validate</a></li>
+      <li class="breadcrumb-item active">imgutils.validate.nsfw</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/validate/nsfw.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.validate.nsfw">
+<span id="imgutils-validate-nsfw"></span><h1>imgutils.validate.nsfw<a class="headerlink" href="#module-imgutils.validate.nsfw" title="Permalink to this heading"></a></h1>
+<dl>
+<dt>Overview:</dt><dd><p>Tool for determining the NSFW (Not Safe for Work) type of a given image, which includes
+five categories: <code class="docutils literal notranslate"><span class="pre">drawings</span></code>, <code class="docutils literal notranslate"><span class="pre">hentai</span></code>, <code class="docutils literal notranslate"><span class="pre">neutral</span></code>, <code class="docutils literal notranslate"><span class="pre">porn</span></code>, and <code class="docutils literal notranslate"><span class="pre">sexy</span></code>.
+It is based on <a class="reference external" href="https://github.com/infinitered/nsfwjs">infinitered/nsfwjs</a>,
+a high-performance model originally in tfjs format, which has been converted to onnx format
+for deployment, making it suitable for mobile applications.</p>
+<details class="summary-the-following-are-sample-images-for-testing-warning-nsfw">
+<summary>The following are sample images for testing. (WARNING: NSFW!!!)</summary><img alt="../../_images/nsfw.plot.py.svg" class="align-center" src="../../_images/nsfw.plot.py.svg" /></details><p>This is an overall benchmark of all the  validation models:</p>
+<img alt="../../_images/nsfw_benchmark.plot.py.svg" class="align-center" src="../../_images/nsfw_benchmark.plot.py.svg" /></dd>
+</dl>
+<section id="nsfw-pred-score">
+<h2>nsfw_pred_score<a class="headerlink" href="#nsfw-pred-score" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.validate.nsfw.nsfw_pred_score">
+<span class="sig-prename descclassname"><span class="pre">imgutils.validate.nsfw.</span></span><span class="sig-name descname"><span class="pre">nsfw_pred_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'nsfwjs'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/validate/nsfw.html#nsfw_pred_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.validate.nsfw.nsfw_pred_score" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the NSFW prediction scores for the input image.</p>
+<p>The function returns a mapping of NSFW category labels to their corresponding prediction scores.
+The scores represent the predicted probability for each NSFW category.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The image to compute prediction scores for.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – The name of the NSFW model to use. (default: <code class="docutils literal notranslate"><span class="pre">nsfwjs</span></code>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The NSFW prediction scores as a mapping of labels to scores.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mapping[str, float]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.validate</span><span class="w"> </span><span class="kn">import</span> <span class="n">nsfw_pred_score</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/drawings/1.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.9970946311950684, &#39;hentai&#39;: 0.00198739324696362, &#39;neutral&#39;: 0.000894528697244823, &#39;porn&#39;: 1.4315058251668233e-05, &#39;sexy&#39;: 9.099447197513655e-06}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/drawings/2.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.9282580614089966, &#39;hentai&#39;: 0.061733175069093704, &#39;neutral&#39;: 0.008979619480669498, &#39;porn&#39;: 0.0007789491210132837, &#39;sexy&#39;: 0.0002501663693692535}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/drawings/3.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.7945129871368408, &#39;hentai&#39;: 0.2044062316417694, &#39;neutral&#39;: 0.0005603990866802633, &#39;porn&#39;: 0.0004847997915931046, &#39;sexy&#39;: 3.564094367902726e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/drawings/4.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.7977773547172546, &#39;hentai&#39;: 0.01352313905954361, &#39;neutral&#39;: 0.18791256844997406, &#39;porn&#39;: 0.0004888656549155712, &#39;sexy&#39;: 0.00029804420773871243}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/hentai/5.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.04498734697699547, &#39;hentai&#39;: 0.9509441256523132, &#39;neutral&#39;: 2.4087972633424215e-05, &#39;porn&#39;: 0.003999904729425907, &#39;sexy&#39;: 4.4542059185914695e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/hentai/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.002892113756388426, &#39;hentai&#39;: 0.982390284538269, &#39;neutral&#39;: 6.02520776737947e-06, &#39;porn&#39;: 0.014633022248744965, &#39;sexy&#39;: 7.858086610212922e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/hentai/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.002532319398596883, &#39;hentai&#39;: 0.9887337684631348, &#39;neutral&#39;: 6.231979568838142e-06, &#39;porn&#39;: 0.008699454367160797, &#39;sexy&#39;: 2.8187158022774383e-05}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/hentai/8.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.03564726561307907, &#39;hentai&#39;: 0.954788088798523, &#39;neutral&#39;: 7.343036850215867e-05, &#39;porn&#39;: 0.009289607405662537, &#39;sexy&#39;: 0.00020158555707894266}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/neutral/9.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.006372362840920687, &#39;hentai&#39;: 0.006019102409482002, &#39;neutral&#39;: 0.9694945812225342, &#39;porn&#39;: 0.015214097686111927, &#39;sexy&#39;: 0.002899901708588004}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/neutral/10.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.0004039364866912365, &#39;hentai&#39;: 0.00012730166781693697, &#39;neutral&#39;: 0.987038791179657, &#39;porn&#39;: 0.007135333959013224, &#39;sexy&#39;: 0.005294707603752613}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/neutral/11.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.06964848190546036, &#39;hentai&#39;: 0.0014777459437027574, &#39;neutral&#39;: 0.9276643395423889, &#39;porn&#39;: 0.0003031621454283595, &#39;sexy&#39;: 0.0009063396137207747}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/neutral/12.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.00028707628371194005, &#39;hentai&#39;: 0.00010888021643040702, &#39;neutral&#39;: 0.9992460012435913, &#39;porn&#39;: 0.00015473493840545416, &#39;sexy&#39;: 0.0002033217460848391}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/porn/13.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 4.563037691696081e-06, &#39;hentai&#39;: 0.008058490231633186, &#39;neutral&#39;: 0.00044566826545633376, &#39;porn&#39;: 0.937960684299469, &#39;sexy&#39;: 0.05353058874607086}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/porn/14.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 3.364063445587817e-07, &#39;hentai&#39;: 0.00562260951846838, &#39;neutral&#39;: 0.00012077406427124515, &#39;porn&#39;: 0.9897090792655945, &#39;sexy&#39;: 0.004547217860817909}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/porn/15.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 8.564737981942017e-06, &#39;hentai&#39;: 0.016690678894519806, &#39;neutral&#39;: 0.001258736359886825, &#39;porn&#39;: 0.9766013622283936, &#39;sexy&#39;: 0.005440687295049429}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/porn/16.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 1.4481674952548929e-05, &#39;hentai&#39;: 0.01861923187971115, &#39;neutral&#39;: 0.0008914825739338994, &#39;porn&#39;: 0.9674761295318604, &#39;sexy&#39;: 0.012998746708035469}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/sexy/17.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 6.691116141155362e-05, &#39;hentai&#39;: 0.0007601747056469321, &#39;neutral&#39;: 0.0005019629606977105, &#39;porn&#39;: 0.039504989981651306, &#39;sexy&#39;: 0.9591660499572754}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/sexy/18.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.0001652583305258304, &#39;hentai&#39;: 0.0002614929690025747, &#39;neutral&#39;: 0.020374108105897903, &#39;porn&#39;: 0.029394468292593956, &#39;sexy&#39;: 0.9498046040534973}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/sexy/19.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.00016299057460855693, &#39;hentai&#39;: 0.004782819654792547, &#39;neutral&#39;: 0.002861740067601204, &#39;porn&#39;: 0.12280157208442688, &#39;sexy&#39;: 0.8693908452987671}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred_score</span><span class="p">(</span><span class="s1">&#39;nsfw/sexy/20.jpg&#39;</span><span class="p">)</span>
+<span class="go">{&#39;drawings&#39;: 0.0001731760276015848, &#39;hentai&#39;: 6.304211274255067e-05, &#39;neutral&#39;: 0.03286275267601013, &#39;porn&#39;: 0.010648751631379128, &#39;sexy&#39;: 0.9562522172927856}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="nsfw-pred">
+<h2>nsfw_pred<a class="headerlink" href="#nsfw-pred" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.validate.nsfw.nsfw_pred">
+<span class="sig-prename descclassname"><span class="pre">imgutils.validate.nsfw.</span></span><span class="sig-name descname"><span class="pre">nsfw_pred</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'nsfwjs'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/validate/nsfw.html#nsfw_pred"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.validate.nsfw.nsfw_pred" title="Permalink to this definition"></a></dt>
+<dd><p>Performs NSFW prediction on the input image.</p>
+<p>The function returns the predicted NSFW category label and its corresponding prediction score.
+The label represents the category with the highest predicted probability.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The image to perform NSFW prediction on.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – The name of the NSFW model to use. (default: <code class="docutils literal notranslate"><span class="pre">nsfwjs</span></code>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The predicted NSFW category label and its prediction score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[str, float]</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.validate</span><span class="w"> </span><span class="kn">import</span> <span class="n">nsfw_pred</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/drawings/1.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;drawings&#39;, 0.9970946311950684)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/drawings/2.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;drawings&#39;, 0.9282580614089966)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/drawings/3.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;drawings&#39;, 0.7945129871368408)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/drawings/4.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;drawings&#39;, 0.7977773547172546)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/hentai/5.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;hentai&#39;, 0.9509441256523132)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/hentai/6.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;hentai&#39;, 0.982390284538269)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/hentai/7.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;hentai&#39;, 0.9887337684631348)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/hentai/8.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;hentai&#39;, 0.954788088798523)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/neutral/9.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;neutral&#39;, 0.9694945812225342)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/neutral/10.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;neutral&#39;, 0.987038791179657)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/neutral/11.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;neutral&#39;, 0.9276643395423889)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/neutral/12.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;neutral&#39;, 0.9992460012435913)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/porn/13.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;porn&#39;, 0.937960684299469)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/porn/14.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;porn&#39;, 0.9897090792655945)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/porn/15.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;porn&#39;, 0.9766013622283936)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/porn/16.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;porn&#39;, 0.9674761295318604)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/sexy/17.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;sexy&#39;, 0.9591660499572754)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/sexy/18.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;sexy&#39;, 0.9498046040534973)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/sexy/19.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;sexy&#39;, 0.8693908452987671)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nsfw_pred</span><span class="p">(</span><span class="s1">&#39;nsfw/sexy/20.jpg&#39;</span><span class="p">)</span>
+<span class="go">(&#39;sexy&#39;, 0.9562522172927856)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="monochrome.html" class="btn btn-neutral float-left" title="imgutils.validate.monochrome" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="portrait.html" class="btn btn-neutral float-right" title="imgutils.validate.portrait" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/yoloseg
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.14.0/api_doc/validate/nsfw.html">v0.14.0</a></dd>
+                        <dd><a href="../../../../v0.14.1/api_doc/validate/nsfw.html">v0.14.1</a></dd>
+                        <dd><a href="../../../../v0.15.0/api_doc/validate/nsfw.html">v0.15.0</a></dd>
+                        <dd><a href="../../../../v0.16.0/api_doc/validate/nsfw.html">v0.16.0</a></dd>
+                        <dd><a href="../../../../v0.17.0/api_doc/validate/nsfw.html">v0.17.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="nsfw.html">dev/yoloseg</a></dd>
+                        <dd><a href="../../../../HEAD/api_doc/validate/nsfw.html">HEAD</a></dd>
+                        <dd><a href="../../../attachments/api_doc/validate/nsfw.html">dev/attachments</a></dd>
+                        <dd><a href="../../../pt/api_doc/validate/nsfw.html">dev/pt</a></dd>
+                        <dd><a href="../../../../main/api_doc/validate/nsfw.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
