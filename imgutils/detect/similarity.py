@@ -11,6 +11,9 @@ Key components:
 - calculate_iou: Computes IoU between two bounding boxes
 - bboxes_similarity: Calculates similarities between two lists of bounding boxes
 - detection_similarity: Compares two lists of detections, considering both bounding boxes and labels
+- calculate_mask_iou: Computes IoU between two masks
+- masks_similarity: Calculates similarities between two lists of masks
+- detection_with_mask_similarity: Compares two lists of detections (with masks), considering both bounding masks and labels
 
 This module is particularly useful for tasks involving object detection, 
 image segmentation, and evaluation of detection algorithms.
@@ -170,6 +173,30 @@ def detection_similarity(detect1: List[Union[BBoxWithScoreAndLabel, MaskWithScor
 
 
 def _mask_to_bool_mask(mask: np.ndarray, threshold: float = 0.5) -> np.ndarray:
+    """
+    Convert a mask array to a boolean mask.
+
+    :param mask: The input mask array.
+    :type mask: np.ndarray
+    :param threshold: The threshold value for converting numeric masks to boolean. Defaults to 0.5.
+    :type threshold: float
+    :return: A boolean mask.
+    :rtype: np.ndarray
+    :raises TypeError: If the mask is not a numpy array or has an unsupported dtype.
+
+    This function converts different types of mask arrays to boolean arrays:
+
+    - If the mask is already a boolean array, it is returned as is.
+    - If the mask is a numeric array, values >= threshold are set to True, others to False.
+
+    Example::
+        >>> import numpy as np
+        >>> mask = np.array([[0.2, 0.7], [0.8, 0.3]])
+        >>> bool_mask = _mask_to_bool_mask(mask)
+        >>> print(bool_mask)
+        [[False  True]
+         [ True False]]
+    """
     if isinstance(mask, np.ndarray):
         if np.issubdtype(mask.dtype, np.bool_):
             return mask
@@ -182,6 +209,29 @@ def _mask_to_bool_mask(mask: np.ndarray, threshold: float = 0.5) -> np.ndarray:
 
 
 def calculate_mask_iou(mask1: np.ndarray, mask2: np.ndarray, threshold: float = 0.5) -> float:
+    """
+    Calculate the Intersection over Union (IoU) between two masks.
+
+    :param mask1: The first mask.
+    :type mask1: np.ndarray
+    :param mask2: The second mask.
+    :type mask2: np.ndarray
+    :param threshold: The threshold value for converting masks to boolean. Defaults to 0.5.
+    :type threshold: float
+    :return: The IoU value between the two masks.
+    :rtype: float
+
+    This function computes the IoU between two masks, which is defined as the area of intersection
+    divided by the area of union. The masks are first converted to boolean arrays using the specified threshold.
+
+    Example::
+        >>> import numpy as np
+        >>> mask1 = np.array([[1, 1], [1, 0]])
+        >>> mask2 = np.array([[0, 1], [1, 1]])
+        >>> iou = calculate_mask_iou(mask1, mask2)
+        >>> print(f"IoU: {iou:.4f}")
+        IoU: 0.5000
+    """
     mask1 = _mask_to_bool_mask(mask1, threshold=threshold)
     mask2 = _mask_to_bool_mask(mask2, threshold=threshold)
     iou_value = ((mask1 & mask2).sum() / ((mask1 | mask2).sum() + 1e-6)).item()
@@ -190,6 +240,36 @@ def calculate_mask_iou(mask1: np.ndarray, mask2: np.ndarray, threshold: float = 
 
 def masks_similarity(masks1: List[np.ndarray], masks2: List[np.ndarray],
                      mode: Literal['max', 'mean', 'raw'] = 'mean') -> Union[float, List[float]]:
+    """
+    Calculate the similarity between two lists of masks.
+
+    :param masks1: First list of masks.
+    :type masks1: List[np.ndarray]
+    :param masks2: Second list of masks.
+    :type masks2: List[np.ndarray]
+    :param mode: The mode for calculating similarity. Options are 'max', 'mean', or 'raw'. Defaults to 'mean'.
+    :type mode: Literal['max', 'mean', 'raw']
+    :return: The similarity score or list of scores, depending on the mode.
+    :rtype: Union[float, List[float]]
+    :raises ValueError: If an unknown mode is specified.
+
+    This function computes the similarity between two lists of masks using the Hungarian algorithm
+    to find the optimal assignment. It then returns the similarity based on the specified mode:
+
+    - ``max``: Returns the maximum IoU among all matched pairs.
+    - ``mean``: Returns the average IoU of all matched pairs.
+    - ``raw``: Returns a list of IoU values for all matched pairs.
+
+    If both lists are empty, the function returns 1.0 for 'max' and 'mean' modes, and an empty list for 'raw' mode.
+
+    Example::
+        >>> import numpy as np
+        >>> masks1 = [np.array([[1, 1], [1, 0]]), np.array([[0, 0], [1, 1]])]
+        >>> masks2 = [np.array([[0, 1], [1, 1]]), np.array([[1, 0], [0, 0]])]
+        >>> similarity = masks_similarity(masks1, masks2, mode='mean')
+        >>> print(f"Mean similarity: {similarity:.4f}")
+        Mean similarity: 0.5000
+    """
     m, n = len(masks1), len(masks2)
 
     if m == 0 and n == 0:
@@ -224,6 +304,39 @@ def masks_similarity(masks1: List[np.ndarray], masks2: List[np.ndarray],
 
 def detection_with_mask_similarity(detect1: List[MaskWithScoreAndLabel], detect2: List[MaskWithScoreAndLabel],
                                    mode: Literal['max', 'mean', 'raw'] = 'mean') -> Union[float, List[float]]:
+    """
+    Calculate the similarity between two lists of mask detections, considering both masks and labels.
+
+    :param detect1: First list of mask detections, each containing a label, score, and mask.
+    :type detect1: List[MaskWithScoreAndLabel]
+    :param detect2: Second list of mask detections, each containing a label, score, and mask.
+    :type detect2: List[MaskWithScoreAndLabel]
+    :param mode: The mode for calculating similarity. Options are 'max', 'mean', or 'raw'. Defaults to 'mean'.
+    :type mode: Literal['max', 'mean', 'raw']
+    :return: The similarity score or list of scores, depending on the mode.
+    :rtype: Union[float, List[float]]
+    :raises ValueError: If an unknown mode is specified.
+
+    This function compares two lists of mask detections by:
+
+    1. Grouping detections by their labels.
+    2. For each label, calculating the similarity between the corresponding masks.
+    3. Aggregating the similarities based on the specified mode.
+
+    The function processes detections label by label and combines their similarities.
+    It's particularly useful for evaluating instance segmentation results against ground truth.
+
+    Example::
+        >>> import numpy as np
+        >>> # Example with simplified MaskWithScoreAndLabel format (_, label, score, mask)
+        >>> detect1 = [(None, 'car', 0.9, np.array([[1, 1], [1, 0]])),
+        ...            (None, 'person', 0.8, np.array([[0, 0], [1, 1]]))]
+        >>> detect2 = [(None, 'car', 0.85, np.array([[0, 1], [1, 1]])),
+        ...            (None, 'person', 0.75, np.array([[1, 0], [0, 0]]))]
+        >>> similarity = detection_with_mask_similarity(detect1, detect2, mode='mean')
+        >>> print(f"Mean detection similarity: {similarity:.4f}")
+        Mean detection similarity: 0.2500
+    """
     labels = sorted({*(l for _, l, *_ in detect1), *(l for _, l, *_ in detect2)})
     sims = []
     for current_label in labels:
