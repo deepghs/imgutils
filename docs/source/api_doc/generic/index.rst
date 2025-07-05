@@ -16,3 +16,4 @@ imgutils.generic
     multilabel_timm
     siglip
     yolo
+    yoloseg

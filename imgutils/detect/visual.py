@@ -10,12 +10,14 @@ Overview:
     See :func:`imgutils.detect.head.detect_heads` and :func:`imgutils.detect.person.detect_person` for examples.
 """
 import math
-from typing import List, Tuple, Optional
+from typing import List, Optional, Union
 
-from PIL import ImageFont, ImageDraw
+import numpy as np
+from PIL import ImageFont, ImageDraw, Image
 from hbutils.color import rnd_colors, Color
 
-from imgutils.data import ImageTyping, load_image
+from .base import BBoxWithScoreAndLabel, MaskWithScoreAndLabel
+from ..data import ImageTyping, load_image
 
 
 def _try_get_font_from_matplotlib(fp=None, fontsize: int = 12):
@@ -42,17 +44,21 @@ def _try_get_font_from_matplotlib(fp=None, fontsize: int = 12):
         return ImageFont.truetype(font, fontsize)
 
 
-def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, float, float, float], str, float]],
+def detection_visualize(image: ImageTyping, detection: List[Union[BBoxWithScoreAndLabel, MaskWithScoreAndLabel]],
                         labels: Optional[List[str]] = None, text_padding: int = 6, fontsize: int = 12,
-                        max_short_edge_size: Optional[int] = None, fp=None, no_label: bool = False):
+                        max_short_edge_size: Optional[int] = None, mask_alpha: float = 0.5,
+                        fp=None, no_label: bool = False):
     """
-    Visualize object detection results by drawing bounding boxes and labels on an image.
+    Visualize object detection results by drawing bounding boxes, masks, and labels on an image.
+
+    This function takes detection results (bounding boxes and/or masks) and renders them on the input image,
+    with customizable appearance settings. It supports both bounding box and instance segmentation results.
 
     :param image: Input image to visualize detections on. Can be a PIL Image, numpy array, or path to image file.
     :type image: ImageTyping
-    :param detection: List of detection results, each containing ((x0, y0, x1, y1), label, confidence_score).
-        Coordinates should be in pixels, not normalized.
-    :type detection: List[Tuple[Tuple[float, float, float, float], str, float]]
+    :param detection: List of detection results, each containing bounding box coordinates, label, confidence score,
+                      and optionally a segmentation mask. The coordinates should be in pixels, not normalized.
+    :type detection: List[Union[BBoxWithScoreAndLabel, MaskWithScoreAndLabel]]
     :param labels: List of predefined labels. If None, labels will be extracted from detection results.
     :type labels: Optional[List[str]]
     :param text_padding: Padding around label text in pixels.
@@ -60,8 +66,10 @@ def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, f
     :param fontsize: Font size for label text.
     :type fontsize: int
     :param max_short_edge_size: Maximum size of shortest image edge. If specified, image will be resized
-        while maintaining aspect ratio.
+                                while maintaining aspect ratio.
     :type max_short_edge_size: Optional[int]
+    :param mask_alpha: Transparency level for mask visualization (0.0 to 1.0).
+    :type mask_alpha: float
     :param fp: Font properties for matplotlib font. Only used if matplotlib is available.
     :type fp: matplotlib.font_manager.FontProperties or None
     :param no_label: If True, suppresses drawing of labels.
@@ -72,7 +80,9 @@ def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, f
 
     Examples::
         >>> from imgutils.detect import detect_heads, detection_visualize
+        >>> from imgutils.data import load_image
         >>>
+        >>> # Basic usage
         >>> image = load_image("path/to/image.jpg")
         >>> detections = detect_heads(image)
         >>> visualized = detection_visualize(image, detections)
@@ -95,14 +105,35 @@ def detection_visualize(image: ImageTyping, detection: List[Tuple[Tuple[float, f
     draw = ImageDraw.Draw(visual_image, mode='RGBA')
     font = _try_get_font_from_matplotlib(fp, fontsize) or ImageFont.load_default()
 
-    labels = sorted(labels or {label for _, label, _ in detection})
+    labels = sorted(labels or {label for _, label, *_ in detection})
     _colors = list(map(str, rnd_colors(len(labels))))
     _color_map = dict(zip(labels, _colors))
-    for _, ((x0, y0, x1, y1), label, score) in sorted(enumerate(detection), key=lambda x: (x[1][2], x[0])):
+    for _, detect_item in sorted(enumerate(detection), key=lambda x: (x[1][2], x[0])):
+        if len(detect_item) == 3:
+            (x0, y0, x1, y1), label, score = detect_item
+            mask = None
+        else:
+            (x0, y0, x1, y1), label, score, mask = detect_item
         x0, y0 = int(x0 * new_width / original_width), int(y0 * new_height / original_height)
         x1, y1 = int(x1 * new_width / original_width), int(y1 * new_height / original_height)
         box_color = _color_map[label]
         draw.rectangle((x0, y0, x1, y1), outline=box_color, width=2)
+
+        if mask is not None:
+            if mask.shape[0] != new_height or mask.shape[1] != new_width:
+                mask_pil = Image.fromarray((mask * 255).astype(np.uint8))
+                mask_pil = mask_pil.resize((new_width, new_height), Image.BILINEAR)
+                mask = np.array(mask_pil) / 255.0
+
+            color = Color(box_color)
+            overlay = np.zeros((new_height, new_width, 4), dtype=np.uint8)
+            overlay[..., 0] = int(color.rgb.red * 255)
+            overlay[..., 1] = int(color.rgb.green * 255)
+            overlay[..., 2] = int(color.rgb.blue * 255)
+            overlay[..., 3] = (mask * mask_alpha * 255).astype(np.uint8)
+
+            overlay_pil = Image.fromarray(overlay)
+            visual_image.paste(overlay_pil, (0, 0), overlay_pil)
 
         if not no_label:
             label_text = f'{label}: {score * 100:.2f}%'
