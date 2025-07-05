@@ -82,6 +82,18 @@
 <li class="toctree-l4"><a class="reference internal" href="#imgutils.detect.similarity.detection_similarity"><code class="docutils literal notranslate"><span class="pre">detection_similarity()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#calculate-mask-iou">calculate_mask_iou</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.detect.similarity.calculate_mask_iou"><code class="docutils literal notranslate"><span class="pre">calculate_mask_iou()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#masks-similarity">masks_similarity</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.detect.similarity.masks_similarity"><code class="docutils literal notranslate"><span class="pre">masks_similarity()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#detection-with-mask-similarity">detection_with_mask_similarity</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.detect.similarity.detection_with_mask_similarity"><code class="docutils literal notranslate"><span class="pre">detection_with_mask_similarity()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="text.html">imgutils.detect.text</a></li>
@@ -145,6 +157,9 @@ offers different modes for aggregating similarity scores.</p>
 <li><p>calculate_iou: Computes IoU between two bounding boxes</p></li>
 <li><p>bboxes_similarity: Calculates similarities between two lists of bounding boxes</p></li>
 <li><p>detection_similarity: Compares two lists of detections, considering both bounding boxes and labels</p></li>
+<li><p>calculate_mask_iou: Computes IoU between two masks</p></li>
+<li><p>masks_similarity: Calculates similarities between two lists of masks</p></li>
+<li><p>detection_with_mask_similarity: Compares two lists of detections (with masks), considering both bounding masks and labels</p></li>
 </ul>
 <p>This module is particularly useful for tasks involving object detection, 
 image segmentation, and evaluation of detection algorithms.</p>
@@ -231,13 +246,13 @@ to find the optimal assignment. It then returns the similarity based on the spec
 <h2>detection_similarity<a class="headerlink" href="#detection-similarity" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="imgutils.detect.similarity.detection_similarity">
-<span class="sig-prename descclassname"><span class="pre">imgutils.detect.similarity.</span></span><span class="sig-name descname"><span class="pre">detection_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detect1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detect2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'max'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mean'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'raw'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/detect/similarity.html#detection_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.detect.similarity.detection_similarity" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">imgutils.detect.similarity.</span></span><span class="sig-name descname"><span class="pre">detection_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detect1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detect2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'max'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mean'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'raw'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/detect/similarity.html#detection_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.detect.similarity.detection_similarity" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the similarity between two lists of detections, considering both bounding boxes and labels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>detect1</strong> (<em>List</em><em>[</em><em>BBoxWithScoreAndLabel</em><em>]</em>) – First list of detections, each containing a bounding box, label, and score.</p></li>
-<li><p><strong>detect2</strong> (<em>List</em><em>[</em><em>BBoxWithScoreAndLabel</em><em>]</em>) – Second list of detections, each containing a bounding box, label, and score.</p></li>
+<li><p><strong>detect1</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>BBoxWithScoreAndLabel</em><em>, </em><em>MaskWithScoreAndLabel</em><em>]</em><em>]</em>) – First list of detections, each containing a bounding box, label, and score.</p></li>
+<li><p><strong>detect2</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>BBoxWithScoreAndLabel</em><em>, </em><em>MaskWithScoreAndLabel</em><em>]</em><em>]</em>) – Second list of detections, each containing a bounding box, label, and score.</p></li>
 <li><p><strong>mode</strong> (<em>Literal</em><em>[</em><em>'max'</em><em>, </em><em>'mean'</em><em>, </em><em>'raw'</em><em>]</em>) – The mode for calculating similarity. Options are ‘max’, ‘mean’, or ‘raw’. Defaults to ‘mean’.</p></li>
 </ul>
 </dd>
@@ -265,6 +280,138 @@ It’s particularly useful for evaluating object detection results against groun
 <span class="gp">&gt;&gt;&gt; </span><span class="n">similarity</span> <span class="o">=</span> <span class="n">detection_similarity</span><span class="p">(</span><span class="n">detect1</span><span class="p">,</span> <span class="n">detect2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean detection similarity: </span><span class="si">{</span><span class="n">similarity</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="go">Mean detection similarity: 0.1429</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="calculate-mask-iou">
+<h2>calculate_mask_iou<a class="headerlink" href="#calculate-mask-iou" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.detect.similarity.calculate_mask_iou">
+<span class="sig-prename descclassname"><span class="pre">imgutils.detect.similarity.</span></span><span class="sig-name descname"><span class="pre">calculate_mask_iou</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/imgutils/detect/similarity.html#calculate_mask_iou"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.detect.similarity.calculate_mask_iou" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the Intersection over Union (IoU) between two masks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mask1</strong> (<em>np.ndarray</em>) – The first mask.</p></li>
+<li><p><strong>mask2</strong> (<em>np.ndarray</em>) – The second mask.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – The threshold value for converting masks to boolean. Defaults to 0.5.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The IoU value between the two masks.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p>This function computes the IoU between two masks, which is defined as the area of intersection
+divided by the area of union. The masks are first converted to boolean arrays using the specified threshold.</p>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iou</span> <span class="o">=</span> <span class="n">calculate_mask_iou</span><span class="p">(</span><span class="n">mask1</span><span class="p">,</span> <span class="n">mask2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;IoU: </span><span class="si">{</span><span class="n">iou</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">IoU: 0.5000</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="masks-similarity">
+<h2>masks_similarity<a class="headerlink" href="#masks-similarity" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.detect.similarity.masks_similarity">
+<span class="sig-prename descclassname"><span class="pre">imgutils.detect.similarity.</span></span><span class="sig-name descname"><span class="pre">masks_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masks1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masks2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'max'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mean'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'raw'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/detect/similarity.html#masks_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.detect.similarity.masks_similarity" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the similarity between two lists of masks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>masks1</strong> (<em>List</em><em>[</em><em>np.ndarray</em><em>]</em>) – First list of masks.</p></li>
+<li><p><strong>masks2</strong> (<em>List</em><em>[</em><em>np.ndarray</em><em>]</em>) – Second list of masks.</p></li>
+<li><p><strong>mode</strong> (<em>Literal</em><em>[</em><em>'max'</em><em>, </em><em>'mean'</em><em>, </em><em>'raw'</em><em>]</em>) – The mode for calculating similarity. Options are ‘max’, ‘mean’, or ‘raw’. Defaults to ‘mean’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The similarity score or list of scores, depending on the mode.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[float, List[float]]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an unknown mode is specified.</p>
+</dd>
+</dl>
+<p>This function computes the similarity between two lists of masks using the Hungarian algorithm
+to find the optimal assignment. It then returns the similarity based on the specified mode:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">max</span></code>: Returns the maximum IoU among all matched pairs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mean</span></code>: Returns the average IoU of all matched pairs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">raw</span></code>: Returns a list of IoU values for all matched pairs.</p></li>
+</ul>
+<p>If both lists are empty, the function returns 1.0 for ‘max’ and ‘mean’ modes, and an empty list for ‘raw’ mode.</p>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">masks1</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">masks2</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">similarity</span> <span class="o">=</span> <span class="n">masks_similarity</span><span class="p">(</span><span class="n">masks1</span><span class="p">,</span> <span class="n">masks2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean similarity: </span><span class="si">{</span><span class="n">similarity</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Mean similarity: 0.5000</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="detection-with-mask-similarity">
+<h2>detection_with_mask_similarity<a class="headerlink" href="#detection-with-mask-similarity" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.detect.similarity.detection_with_mask_similarity">
+<span class="sig-prename descclassname"><span class="pre">imgutils.detect.similarity.</span></span><span class="sig-name descname"><span class="pre">detection_with_mask_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detect1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detect2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'max'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mean'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'raw'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/imgutils/detect/similarity.html#detection_with_mask_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.detect.similarity.detection_with_mask_similarity" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the similarity between two lists of mask detections, considering both masks and labels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>detect1</strong> (<em>List</em><em>[</em><em>MaskWithScoreAndLabel</em><em>]</em>) – First list of mask detections, each containing a label, score, and mask.</p></li>
+<li><p><strong>detect2</strong> (<em>List</em><em>[</em><em>MaskWithScoreAndLabel</em><em>]</em>) – Second list of mask detections, each containing a label, score, and mask.</p></li>
+<li><p><strong>mode</strong> (<em>Literal</em><em>[</em><em>'max'</em><em>, </em><em>'mean'</em><em>, </em><em>'raw'</em><em>]</em>) – The mode for calculating similarity. Options are ‘max’, ‘mean’, or ‘raw’. Defaults to ‘mean’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The similarity score or list of scores, depending on the mode.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[float, List[float]]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an unknown mode is specified.</p>
+</dd>
+</dl>
+<p>This function compares two lists of mask detections by:</p>
+<ol class="arabic simple">
+<li><p>Grouping detections by their labels.</p></li>
+<li><p>For each label, calculating the similarity between the corresponding masks.</p></li>
+<li><p>Aggregating the similarities based on the specified mode.</p></li>
+</ol>
+<p>The function processes detections label by label and combines their similarities.
+It’s particularly useful for evaluating instance segmentation results against ground truth.</p>
+<dl>
+<dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example with simplified MaskWithScoreAndLabel format (_, label, score, mask)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">detect1</span> <span class="o">=</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;car&#39;</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])),</span>
+<span class="gp">... </span>           <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">detect2</span> <span class="o">=</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;car&#39;</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])),</span>
+<span class="gp">... </span>           <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]))]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">similarity</span> <span class="o">=</span> <span class="n">detection_with_mask_similarity</span><span class="p">(</span><span class="n">detect1</span><span class="p">,</span> <span class="n">detect2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean detection similarity: </span><span class="si">{</span><span class="n">similarity</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Mean detection similarity: 0.2500</span>
 </pre></div>
 </div>
 </dd>
@@ -317,11 +464,10 @@ It’s particularly useful for evaluating object detection results against groun
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../dev/yoloseg/api_doc/detect/similarity.html">dev/yoloseg</a></dd>
+                        <dd><a href="similarity.html">main</a></dd>
                         <dd><a href="../../../HEAD/api_doc/detect/similarity.html">HEAD</a></dd>
                         <dd><a href="../../../dev/attachments/api_doc/detect/similarity.html">dev/attachments</a></dd>
                         <dd><a href="../../../dev/pt/api_doc/detect/similarity.html">dev/pt</a></dd>
-                        <dd><a href="similarity.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

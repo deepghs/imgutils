@@ -114,12 +114,14 @@
 <span class="sd">    See :func:`imgutils.detect.head.detect_heads` and :func:`imgutils.detect.person.detect_person` for examples.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageFont</span><span class="p">,</span> <span class="n">ImageDraw</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageFont</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">Image</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">hbutils.color</span><span class="w"> </span><span class="kn">import</span> <span class="n">rnd_colors</span><span class="p">,</span> <span class="n">Color</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BBoxWithScoreAndLabel</span><span class="p">,</span> <span class="n">MaskWithScoreAndLabel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_try_get_font_from_matplotlib</span><span class="p">(</span><span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">):</span>
@@ -146,17 +148,21 @@
         <span class="k">return</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="detection_visualize"><a class="viewcode-back" href="../../../api_doc/detect/visual.html#imgutils.detect.visual.detection_visualize">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">detection_visualize</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">detection</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+<div class="viewcode-block" id="detection_visualize"><a class="viewcode-back" href="../../../api_doc/detect/visual.html#imgutils.detect.visual.detection_visualize">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">detection_visualize</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">detection</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">BBoxWithScoreAndLabel</span><span class="p">,</span> <span class="n">MaskWithScoreAndLabel</span><span class="p">]],</span>
                         <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">text_padding</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
-                        <span class="n">max_short_edge_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+                        <span class="n">max_short_edge_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">mask_alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+                        <span class="n">fp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Visualize object detection results by drawing bounding boxes and labels on an image.</span>
+<span class="sd">    Visualize object detection results by drawing bounding boxes, masks, and labels on an image.</span>
+
+<span class="sd">    This function takes detection results (bounding boxes and/or masks) and renders them on the input image,</span>
+<span class="sd">    with customizable appearance settings. It supports both bounding box and instance segmentation results.</span>
 
 <span class="sd">    :param image: Input image to visualize detections on. Can be a PIL Image, numpy array, or path to image file.</span>
 <span class="sd">    :type image: ImageTyping</span>
-<span class="sd">    :param detection: List of detection results, each containing ((x0, y0, x1, y1), label, confidence_score).</span>
-<span class="sd">        Coordinates should be in pixels, not normalized.</span>
-<span class="sd">    :type detection: List[Tuple[Tuple[float, float, float, float], str, float]]</span>
+<span class="sd">    :param detection: List of detection results, each containing bounding box coordinates, label, confidence score,</span>
+<span class="sd">                      and optionally a segmentation mask. The coordinates should be in pixels, not normalized.</span>
+<span class="sd">    :type detection: List[Union[BBoxWithScoreAndLabel, MaskWithScoreAndLabel]]</span>
 <span class="sd">    :param labels: List of predefined labels. If None, labels will be extracted from detection results.</span>
 <span class="sd">    :type labels: Optional[List[str]]</span>
 <span class="sd">    :param text_padding: Padding around label text in pixels.</span>
@@ -164,8 +170,10 @@
 <span class="sd">    :param fontsize: Font size for label text.</span>
 <span class="sd">    :type fontsize: int</span>
 <span class="sd">    :param max_short_edge_size: Maximum size of shortest image edge. If specified, image will be resized</span>
-<span class="sd">        while maintaining aspect ratio.</span>
+<span class="sd">                                while maintaining aspect ratio.</span>
 <span class="sd">    :type max_short_edge_size: Optional[int]</span>
+<span class="sd">    :param mask_alpha: Transparency level for mask visualization (0.0 to 1.0).</span>
+<span class="sd">    :type mask_alpha: float</span>
 <span class="sd">    :param fp: Font properties for matplotlib font. Only used if matplotlib is available.</span>
 <span class="sd">    :type fp: matplotlib.font_manager.FontProperties or None</span>
 <span class="sd">    :param no_label: If True, suppresses drawing of labels.</span>
@@ -176,7 +184,9 @@
 
 <span class="sd">    Examples::</span>
 <span class="sd">        &gt;&gt;&gt; from imgutils.detect import detect_heads, detection_visualize</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.data import load_image</span>
 <span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Basic usage</span>
 <span class="sd">        &gt;&gt;&gt; image = load_image(&quot;path/to/image.jpg&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; detections = detect_heads(image)</span>
 <span class="sd">        &gt;&gt;&gt; visualized = detection_visualize(image, detections)</span>
@@ -199,14 +209,35 @@
     <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">visual_image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGBA&#39;</span><span class="p">)</span>
     <span class="n">font</span> <span class="o">=</span> <span class="n">_try_get_font_from_matplotlib</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">)</span> <span class="ow">or</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">load_default</span><span class="p">()</span>
 
-    <span class="n">labels</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">labels</span> <span class="ow">or</span> <span class="p">{</span><span class="n">label</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">detection</span><span class="p">})</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">labels</span> <span class="ow">or</span> <span class="p">{</span><span class="n">label</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="ow">in</span> <span class="n">detection</span><span class="p">})</span>
     <span class="n">_colors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">rnd_colors</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))))</span>
     <span class="n">_color_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">_colors</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">label</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">detection</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">detect_item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">detection</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">detect_item</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">label</span><span class="p">,</span> <span class="n">score</span> <span class="o">=</span> <span class="n">detect_item</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">label</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">detect_item</span>
         <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x0</span> <span class="o">*</span> <span class="n">new_width</span> <span class="o">/</span> <span class="n">original_width</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y0</span> <span class="o">*</span> <span class="n">new_height</span> <span class="o">/</span> <span class="n">original_height</span><span class="p">)</span>
         <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">new_width</span> <span class="o">/</span> <span class="n">original_width</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y1</span> <span class="o">*</span> <span class="n">new_height</span> <span class="o">/</span> <span class="n">original_height</span><span class="p">)</span>
         <span class="n">box_color</span> <span class="o">=</span> <span class="n">_color_map</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
         <span class="n">draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="n">outline</span><span class="o">=</span><span class="n">box_color</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">new_height</span> <span class="ow">or</span> <span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">new_width</span><span class="p">:</span>
+                <span class="n">mask_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">((</span><span class="n">mask</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>
+                <span class="n">mask_pil</span> <span class="o">=</span> <span class="n">mask_pil</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">new_width</span><span class="p">,</span> <span class="n">new_height</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mask_pil</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+
+            <span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="p">(</span><span class="n">box_color</span><span class="p">)</span>
+            <span class="n">overlay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">new_height</span><span class="p">,</span> <span class="n">new_width</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+            <span class="n">overlay</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">color</span><span class="o">.</span><span class="n">rgb</span><span class="o">.</span><span class="n">red</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span>
+            <span class="n">overlay</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">color</span><span class="o">.</span><span class="n">rgb</span><span class="o">.</span><span class="n">green</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span>
+            <span class="n">overlay</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">color</span><span class="o">.</span><span class="n">rgb</span><span class="o">.</span><span class="n">blue</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span>
+            <span class="n">overlay</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mask</span> <span class="o">*</span> <span class="n">mask_alpha</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+            <span class="n">overlay_pil</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">overlay</span><span class="p">)</span>
+            <span class="n">visual_image</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">overlay_pil</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">overlay_pil</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">no_label</span><span class="p">:</span>
             <span class="n">label_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">score</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">%&#39;</span>
@@ -264,11 +295,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../../../../dev/yoloseg/index.html">dev/yoloseg</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
                         <dd><a href="visual.html">HEAD</a></dd>
                         <dd><a href="../../../../dev/attachments/index.html">dev/attachments</a></dd>
                         <dd><a href="../../../../dev/pt/index.html">dev/pt</a></dd>
-                        <dd><a href="../../../../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>

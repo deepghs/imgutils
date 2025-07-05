@@ -149,6 +149,8 @@
 </li>
         <li><a href="api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.__init__">(imgutils.generic.yolo.YOLOModel method)</a>
 </li>
+        <li><a href="api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.YOLOSegmentationModel.__init__">(imgutils.generic.yoloseg.YOLOSegmentationModel method)</a>
+</li>
         <li><a href="api_doc/metadata/lsb.html#imgutils.metadata.lsb.ImageLsbDataExtractor.__init__">(imgutils.metadata.lsb.ImageLsbDataExtractor method)</a>
 </li>
         <li><a href="api_doc/metadata/lsb.html#imgutils.metadata.lsb.LSBExtractor.__init__">(imgutils.metadata.lsb.LSBExtractor method)</a>
@@ -260,6 +262,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/detect/similarity.html#imgutils.detect.similarity.calculate_iou">calculate_iou() (in module imgutils.detect.similarity)</a>
 </li>
+      <li><a href="api_doc/detect/similarity.html#imgutils.detect.similarity.calculate_mask_iou">calculate_mask_iou() (in module imgutils.detect.similarity)</a>
+</li>
       <li><a href="api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_batch_differences">ccip_batch_differences() (in module imgutils.metrics.ccip)</a>
 </li>
       <li><a href="api_doc/metrics/ccip.html#imgutils.metrics.ccip.ccip_batch_extract_features">ccip_batch_extract_features() (in module imgutils.metrics.ccip)</a>
@@ -332,6 +336,8 @@
         <li><a href="api_doc/generic/siglip.html#imgutils.generic.siglip.SigLIPModel.clear">(imgutils.generic.siglip.SigLIPModel method)</a>
 </li>
         <li><a href="api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.clear">(imgutils.generic.yolo.YOLOModel method)</a>
+</li>
+        <li><a href="api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.YOLOSegmentationModel.clear">(imgutils.generic.yoloseg.YOLOSegmentationModel method)</a>
 </li>
       </ul></li>
       <li><a href="api_doc/generic/clip.html#imgutils.generic.clip.clip_image_encode">clip_image_encode() (in module imgutils.generic.clip)</a>
@@ -419,6 +425,8 @@
       <li><a href="api_doc/detect/similarity.html#imgutils.detect.similarity.detection_similarity">detection_similarity() (in module imgutils.detect.similarity)</a>
 </li>
       <li><a href="api_doc/detect/visual.html#imgutils.detect.visual.detection_visualize">detection_visualize() (in module imgutils.detect.visual)</a>
+</li>
+      <li><a href="api_doc/detect/similarity.html#imgutils.detect.similarity.detection_with_mask_similarity">detection_with_mask_similarity() (in module imgutils.detect.similarity)</a>
 </li>
       <li><a href="api_doc/data/url.html#imgutils.data.url.download_image_from_url">download_image_from_url() (in module imgutils.data.url)</a>
 </li>
@@ -817,6 +825,13 @@
 </li>
       </ul></li>
       <li>
+    imgutils.generic.yoloseg
+
+      <ul>
+        <li><a href="api_doc/generic/yoloseg.html#module-imgutils.generic.yoloseg">module</a>
+</li>
+      </ul></li>
+      <li>
     imgutils.metadata
 
       <ul>
@@ -942,6 +957,8 @@
         <li><a href="api_doc/pose/dwpose.html#module-imgutils.pose.dwpose">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     imgutils.pose.format
 
@@ -949,8 +966,6 @@
         <li><a href="api_doc/pose/format.html#module-imgutils.pose.format">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     imgutils.pose.visual
 
@@ -1369,6 +1384,8 @@
 </li>
         <li><a href="api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.launch_demo">(imgutils.generic.yolo.YOLOModel method)</a>
 </li>
+        <li><a href="api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.YOLOSegmentationModel.launch_demo">(imgutils.generic.yoloseg.YOLOSegmentationModel method)</a>
+</li>
       </ul></li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_ANKLE">LEFT_ANKLE (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
@@ -1386,10 +1403,10 @@
 </li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_HEEL">LEFT_HEEL (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
-      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_HIP">LEFT_HIP (imgutils.pose.format.OpenPose18 attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_HIP">LEFT_HIP (imgutils.pose.format.OpenPose18 attribute)</a>
+</li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_KNEE">LEFT_KNEE (imgutils.pose.format.OpenPose18 attribute)</a>
 </li>
       <li><a href="api_doc/pose/format.html#imgutils.pose.format.OpenPose18.LEFT_SHOULDER">LEFT_SHOULDER (imgutils.pose.format.OpenPose18 attribute)</a>
@@ -1441,7 +1458,13 @@
 </li>
         <li><a href="api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.make_ui">(imgutils.generic.yolo.YOLOModel method)</a>
 </li>
+        <li><a href="api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.YOLOSegmentationModel.make_ui">(imgutils.generic.yoloseg.YOLOSegmentationModel method)</a>
+</li>
       </ul></li>
+      <li><a href="api_doc/detect/similarity.html#imgutils.detect.similarity.masks_similarity">masks_similarity() (in module imgutils.detect.similarity)</a>
+</li>
+      <li><a href="api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.YOLOSegmentationModel.model_names">model_names (imgutils.generic.yoloseg.YOLOSegmentationModel property)</a>
+</li>
       <li>
     module
 
@@ -1521,6 +1544,8 @@
         <li><a href="api_doc/generic/siglip.html#module-imgutils.generic.siglip">imgutils.generic.siglip</a>
 </li>
         <li><a href="api_doc/generic/yolo.html#module-imgutils.generic.yolo">imgutils.generic.yolo</a>
+</li>
+        <li><a href="api_doc/generic/yoloseg.html#module-imgutils.generic.yoloseg">imgutils.generic.yoloseg</a>
 </li>
         <li><a href="api_doc/metadata/index.html#module-imgutils.metadata">imgutils.metadata</a>
 </li>
@@ -1772,6 +1797,8 @@
 </li>
         <li><a href="api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel.predict">(imgutils.generic.yolo.YOLOModel method)</a>
 </li>
+        <li><a href="api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.YOLOSegmentationModel.predict">(imgutils.generic.yoloseg.YOLOSegmentationModel method)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1973,9 +2000,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/generic/yolo.html#imgutils.generic.yolo.yolo_predict">yolo_predict() (in module imgutils.generic.yolo)</a>
 </li>
+      <li><a href="api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.yolo_seg_predict">yolo_seg_predict() (in module imgutils.generic.yoloseg)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_doc/generic/yolo.html#imgutils.generic.yolo.YOLOModel">YOLOModel (class in imgutils.generic.yolo)</a>
+</li>
+      <li><a href="api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.YOLOSegmentationModel">YOLOSegmentationModel (class in imgutils.generic.yoloseg)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -2020,11 +2051,10 @@
                 </dl>
                 <dl>
                     <dt>Branches</dt>
-                        <dd><a href="../dev/yoloseg/index.html">dev/yoloseg</a></dd>
+                        <dd><a href="../main/index.html">main</a></dd>
                         <dd><a href="genindex.html">HEAD</a></dd>
                         <dd><a href="../dev/attachments/index.html">dev/attachments</a></dd>
                         <dd><a href="../dev/pt/index.html">dev/pt</a></dd>
-                        <dd><a href="../main/index.html">main</a></dd>
                 </dl>
         </div>
     </div><script>
