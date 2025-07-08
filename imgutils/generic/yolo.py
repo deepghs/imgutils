@@ -770,6 +770,8 @@ class YOLOModel:
         :type default_conf_threshold: Optional[float]
         :param default_iou_threshold: Default IoU threshold for the UI. Default is 0.7.
         :type default_iou_threshold: float
+        :param apply_default_threshold: Enable score threshold auto-switch or not. Default is True.
+        :type apply_default_threshold: bool
 
         :raises ImportError: If Gradio is not installed in the environment.
         :raises EnvironmentError: If in OFFLINE mode and no default_model_name is provided.
@@ -920,6 +922,8 @@ class YOLOModel:
         :type default_conf_threshold: Optional[float]
         :param default_iou_threshold: Default IoU threshold for the demo. Default is 0.7.
         :type default_iou_threshold: float
+        :param apply_default_threshold: Enable score threshold auto-switch or not. Default is True.
+        :type apply_default_threshold: bool
         :param server_name: The name of the server to run the demo on. Default is None.
         :type server_name: Optional[str]
         :param server_port: The port to run the demo on. Default is None.
