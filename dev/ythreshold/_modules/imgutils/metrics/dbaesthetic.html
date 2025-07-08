@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.metrics.dbaesthetic &mdash; imgutils 0.18.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=c20bc87d"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.metrics.dbaesthetic</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.metrics.dbaesthetic</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    A tool for assessing the aesthetic quality of anime images using a pre-trained model,</span>
+<span class="sd">    based on danbooru dataset and metadata analysis result of</span>
+<span class="sd">    `HakuBooru &lt;https://github.com/KohakuBlueleaf/HakuBooru&gt;`_ by</span>
+<span class="sd">    `KohakuBlueleaf &lt;https://github.com/KohakuBlueleaf&gt;`_.</span>
+
+<span class="sd">    .. image:: dbaesthetic_full.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">    This is an overall benchmark of all the operations in aesthetic models:</span>
+
+<span class="sd">    .. image:: dbaesthetic_benchmark.plot.py.svg</span>
+<span class="sd">        :align: center</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageTyping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..generic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassifyModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">vreplace</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;anime_dbaesthetic&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">_DEFAULT_MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;swinv2pv3_v0_448_ls0.2_x&#39;</span>
+<span class="n">_REPO_ID</span> <span class="o">=</span> <span class="s1">&#39;deepghs/anime_aesthetic&#39;</span>
+<span class="n">_LABELS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;worst&quot;</span><span class="p">,</span> <span class="s2">&quot;low&quot;</span><span class="p">,</span> <span class="s2">&quot;normal&quot;</span><span class="p">,</span> <span class="s2">&quot;good&quot;</span><span class="p">,</span> <span class="s2">&quot;great&quot;</span><span class="p">,</span> <span class="s2">&quot;best&quot;</span><span class="p">,</span> <span class="s2">&quot;masterpiece&quot;</span><span class="p">]</span>
+<span class="n">_DEFAULT_LABEL_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;masterpiece&#39;</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span>
+    <span class="s1">&#39;best&#39;</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span>
+    <span class="s1">&#39;great&#39;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>
+    <span class="s1">&#39;good&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s1">&#39;normal&#39;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+    <span class="s1">&#39;low&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="s1">&#39;worst&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AestheticModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A model for assessing the aesthetic quality of anime images.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes an AestheticModel instance.</span>
+
+<span class="sd">        :param repo_id: The repository ID of the aesthetic assessment model.</span>
+<span class="sd">        :type repo_id: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span> <span class="o">=</span> <span class="n">repo_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">ClassifyModel</span><span class="p">(</span><span class="n">repo_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached_samples</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_aesthetic_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the aesthetic score and confidence for an anime image.</span>
+
+<span class="sd">        :param image: The input anime image.</span>
+<span class="sd">        :type image: ImageTyping</span>
+<span class="sd">        :param model_name: The name of the aesthetic assessment model to use.</span>
+<span class="sd">        :type model_name: str</span>
+<span class="sd">        :return: A tuple containing the aesthetic score and confidence.</span>
+<span class="sd">        :rtype: Tuple[float, Dict[str, float]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="o">.</span><span class="n">predict_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">_LABELS</span><span class="p">)),</span> <span class="n">scores</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_xy_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves cached samples for aesthetic assessment.</span>
+
+<span class="sd">        :param model_name: The name of the aesthetic assessment model.</span>
+<span class="sd">        :type model_name: str</span>
+<span class="sd">        :return: Cached samples for aesthetic assessment.</span>
+<span class="sd">        :rtype: Tuple[Tuple[np.ndarray, float, float], Tuple[np.ndarray, float, float]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_samples</span><span class="p">:</span>
+            <span class="n">stacked</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+                <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/samples.npz&#39;</span><span class="p">,</span>
+            <span class="p">))[</span><span class="s1">&#39;arr_0&#39;</span><span class="p">]</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">stacked</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stacked</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cached_samples</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached_samples</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">score_to_percentile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts an aesthetic score to a percentile rank.</span>
+
+<span class="sd">        :param score: The aesthetic score.</span>
+<span class="sd">        :type score: float</span>
+<span class="sd">        :param model_name: The name of the aesthetic assessment model to use.</span>
+<span class="sd">        :type model_name: str</span>
+<span class="sd">        :return: The percentile rank corresponding to the given score.</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">),</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_xy_samples</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="n">x_min</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="n">x_max</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x0</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">y</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">((</span><span class="n">score</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">+</span> <span class="n">y0</span><span class="p">,</span> <span class="n">a_min</span><span class="o">=</span><span class="n">y_min</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="n">y_max</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">y</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">percentile_to_label</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">percentile</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">mapping</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts a percentile rank to an aesthetic label.</span>
+
+<span class="sd">        :param percentile: The percentile rank.</span>
+<span class="sd">        :type percentile: float</span>
+<span class="sd">        :param mapping: A dictionary mapping labels to percentile thresholds.</span>
+<span class="sd">        :type mapping: Optional[Dict[str, float]]</span>
+<span class="sd">        :return: The aesthetic label corresponding to the given percentile rank.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="n">mapping</span> <span class="ow">or</span> <span class="n">_DEFAULT_LABEL_MAPPING</span>
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">threshold</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+            <span class="k">if</span> <span class="n">percentile</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">label</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No label for unknown percentile </span><span class="si">{</span><span class="n">percentile</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_aesthetic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;percentile&#39;</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Analyzes the aesthetic quality of an anime image and returns the results in the specified format.</span>
+
+<span class="sd">        :param image: The input anime image.</span>
+<span class="sd">        :type image: ImageTyping</span>
+<span class="sd">        :param model_name: The name of the aesthetic assessment model to use.</span>
+<span class="sd">        :type model_name: str</span>
+<span class="sd">        :param fmt: The format of the output.</span>
+<span class="sd">        :type fmt: Tuple[str, ...]</span>
+<span class="sd">        :return: A dictionary containing the aesthetic assessment results.</span>
+<span class="sd">        :rtype: Dict[str, float]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">score</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_aesthetic_score</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+        <span class="n">percentile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score_to_percentile</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">percentile_to_label</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vreplace</span><span class="p">(</span>
+            <span class="n">v</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
+            <span class="n">mapping</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">label</span><span class="p">,</span>
+                <span class="s1">&#39;percentile&#39;</span><span class="p">:</span> <span class="n">percentile</span><span class="p">,</span>
+                <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="n">score</span><span class="p">,</span>
+                <span class="s1">&#39;confidence&#39;</span><span class="p">:</span> <span class="n">confidence</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clears the internal state of the AestheticModel instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cached_samples</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+
+<span class="n">_MODEL</span> <span class="o">=</span> <span class="n">AestheticModel</span><span class="p">(</span><span class="n">_REPO_ID</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="anime_dbaesthetic"><a class="viewcode-back" href="../../../api_doc/metrics/dbaesthetic.html#imgutils.metrics.dbaesthetic.anime_dbaesthetic">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">anime_dbaesthetic</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_MODEL_NAME</span><span class="p">,</span>
+                      <span class="n">fmt</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;percentile&#39;</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyzes the aesthetic quality of an anime image using a pre-trained model.</span>
+
+<span class="sd">    :param image: The input anime image.</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param model_name: The name of the aesthetic assessment model to use. Default is _DEFAULT_MODEL_NAME.</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :param fmt: The format of the output. Default is (&#39;label&#39;, &#39;percentile&#39;).</span>
+<span class="sd">    :type fmt: Tuple[str, ...]</span>
+<span class="sd">    :return: A dictionary containing the aesthetic assessment results.</span>
+<span class="sd">    :rtype: Dict[str, float]</span>
+
+<span class="sd">    Examples::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.metrics import anime_dbaesthetic</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;masterpiece.jpg&#39;)</span>
+<span class="sd">        (&#39;masterpiece&#39;, 0.9831666690063624)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;best.jpg&#39;)</span>
+<span class="sd">        (&#39;best&#39;, 0.8810615667538594)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;great.jpg&#39;)</span>
+<span class="sd">        (&#39;great&#39;, 0.8225559148288356)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;good.jpg&#39;)</span>
+<span class="sd">        (&#39;good&#39;, 0.591020403706702)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;normal.jpg&#39;)</span>
+<span class="sd">        (&#39;normal&#39;, 0.2888798940585766)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;low.jpg&#39;)</span>
+<span class="sd">        (&#39;low&#39;, 0.243279223969715)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;worst.jpg&#39;)</span>
+<span class="sd">        (&#39;worst&#39;, 0.005268185993767627)</span>
+
+<span class="sd">        * Custom format</span>
+
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;masterpiece.jpg&#39;, fmt=(&#39;label&#39;, &#39;percentile&#39;, &#39;score&#39;))</span>
+<span class="sd">        (&#39;masterpiece&#39;, 0.9831666690063624, 5.275707557797432)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;best.jpg&#39;, fmt=(&#39;label&#39;, &#39;percentile&#39;, &#39;score&#39;))</span>
+<span class="sd">        (&#39;best&#39;, 0.8810615667538594, 4.7977807857096195)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;great.jpg&#39;, fmt=(&#39;label&#39;, &#39;percentile&#39;, &#39;score&#39;))</span>
+<span class="sd">        (&#39;great&#39;, 0.8225559148288356, 4.56098810210824)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;good.jpg&#39;, fmt=(&#39;label&#39;, &#39;percentile&#39;, &#39;score&#39;))</span>
+<span class="sd">        (&#39;good&#39;, 0.591020403706702, 3.670568235218525)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;normal.jpg&#39;, fmt=(&#39;label&#39;, &#39;percentile&#39;, &#39;score&#39;))</span>
+<span class="sd">        (&#39;normal&#39;, 0.2888798940585766, 2.1677918508648872)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;low.jpg&#39;, fmt=(&#39;label&#39;, &#39;percentile&#39;, &#39;score&#39;))</span>
+<span class="sd">        (&#39;low&#39;, 0.243279223969715, 1.9305131509900093)</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;worst.jpg&#39;, fmt=(&#39;label&#39;, &#39;percentile&#39;, &#39;score&#39;))</span>
+<span class="sd">        (&#39;worst&#39;, 0.005268185993767627, 0.6085879728198051)</span>
+
+<span class="sd">        * Get confidence</span>
+
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;masterpiece.jpg&#39;, fmt=&#39;confidence&#39;)</span>
+<span class="sd">        {&#39;masterpiece&#39;: 0.6834832429885864, &#39;best&#39;: 0.16141420602798462, &#39;great&#39;: 0.05435194447636604, &#39;good&#39;: 0.025083942338824272, &#39;normal&#39;: 0.024000568315386772, &#39;low&#39;: 0.027076328173279762, &#39;worst&#39;: 0.024589713662862778}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;best.jpg&#39;, fmt=&#39;confidence&#39;)</span>
+<span class="sd">        {&#39;masterpiece&#39;: 0.3757021427154541, &#39;best&#39;: 0.3451208472251892, &#39;great&#39;: 0.1511985808610916, &#39;good&#39;: 0.04740551486611366, &#39;normal&#39;: 0.02172713913023472, &#39;low&#39;: 0.027498546987771988, &#39;worst&#39;: 0.03134724497795105}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;great.jpg&#39;, fmt=&#39;confidence&#39;)</span>
+<span class="sd">        {&#39;masterpiece&#39;: 0.39281174540519714, &#39;best&#39;: 0.22457796335220337, &#39;great&#39;: 0.15563568472862244, &#39;good&#39;: 0.10796019434928894, &#39;normal&#39;: 0.047730278223752975, &#39;low&#39;: 0.0393439345061779, &#39;worst&#39;: 0.031940147280693054}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;good.jpg&#39;, fmt=&#39;confidence&#39;)</span>
+<span class="sd">        {&#39;masterpiece&#39;: 0.13832266628742218, &#39;best&#39;: 0.20687267184257507, &#39;great&#39;: 0.2509062886238098, &#39;good&#39;: 0.1644320785999298, &#39;normal&#39;: 0.11332042515277863, &#39;low&#39;: 0.08270663768053055, &#39;worst&#39;: 0.043439216911792755}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;normal.jpg&#39;, fmt=&#39;confidence&#39;)</span>
+<span class="sd">        {&#39;masterpiece&#39;: 0.033693961799144745, &#39;best&#39;: 0.03375888615846634, &#39;great&#39;: 0.050045162439346313, &#39;good&#39;: 0.16734018921852112, &#39;normal&#39;: 0.4311050772666931, &#39;low&#39;: 0.23242227733135223, &#39;worst&#39;: 0.05163438618183136}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;low.jpg&#39;, fmt=&#39;confidence&#39;)</span>
+<span class="sd">        {&#39;masterpiece&#39;: 0.012833272106945515, &#39;best&#39;: 0.01619996316730976, &#39;great&#39;: 0.03074900433421135, &#39;good&#39;: 0.1396280825138092, &#39;normal&#39;: 0.5038207173347473, &#39;low&#39;: 0.22299200296401978, &#39;worst&#39;: 0.07377689331769943}</span>
+<span class="sd">        &gt;&gt;&gt; anime_dbaesthetic(&#39;worst.jpg&#39;, fmt=&#39;confidence&#39;)</span>
+<span class="sd">        {&#39;masterpiece&#39;: 0.02854202501475811, &#39;best&#39;: 0.026677291840314865, &#39;great&#39;: 0.02838410809636116, &#39;good&#39;: 0.026617199182510376, &#39;normal&#39;: 0.02508518099784851, &#39;low&#39;: 0.06039097160100937, &#39;worst&#39;: 0.8043031692504883}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_MODEL</span><span class="o">.</span><span class="n">get_aesthetic</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/ythreshold
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../v0.14.0/index.html">v0.14.0</a></dd>
+                        <dd><a href="../../../../../v0.14.1/index.html">v0.14.1</a></dd>
+                        <dd><a href="../../../../../v0.15.0/index.html">v0.15.0</a></dd>
+                        <dd><a href="../../../../../v0.16.0/index.html">v0.16.0</a></dd>
+                        <dd><a href="../../../../../v0.17.0/index.html">v0.17.0</a></dd>
+                        <dd><a href="../../../../../v0.18.0/index.html">v0.18.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="dbaesthetic.html">dev/ythreshold</a></dd>
+                        <dd><a href="../../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../attachments/index.html">dev/attachments</a></dd>
+                        <dd><a href="../../../../pt/index.html">dev/pt</a></dd>
+                        <dd><a href="../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

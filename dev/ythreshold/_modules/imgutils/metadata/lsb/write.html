@@ -1,0 +1,472 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.metadata.lsb.write &mdash; imgutils 0.18.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=c20bc87d"></script>
+      <script src="../../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.metadata.lsb.write</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.metadata.lsb.write</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functionality for injecting metadata and error correction codes into PNG images.</span>
+
+<span class="sd">It includes classes and functions for:</span>
+
+<span class="sd">- Bit shuffling and error correction encoding</span>
+<span class="sd">- LSB (Least Significant Bit) injection of data into image pixels</span>
+<span class="sd">- Serializing PNG metadata</span>
+<span class="sd">- Injecting encoded data and metadata into PNG images</span>
+
+<span class="sd">The module uses techniques like BCH error correction, bit manipulation, and LSB steganography</span>
+<span class="sd">to embed data robustly into image files.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="c1"># BCH error correction</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">bchlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL.PngImagePlugin</span><span class="w"> </span><span class="kn">import</span> <span class="n">PngInfo</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">...data</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_image</span><span class="p">,</span> <span class="n">ImageTyping</span>
+
+<span class="n">correctable_bits</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">block_length</span> <span class="o">=</span> <span class="mi">2019</span>
+<span class="n">code_block_len</span> <span class="o">=</span> <span class="mi">1920</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">bit_shuffle</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shuffle the bits of input data into a specific pattern based on image dimensions.</span>
+
+<span class="sd">    This function reorganizes the input data bits into a 2D pattern that matches the image dimensions.</span>
+<span class="sd">    It&#39;s used to spread the data across the image for more robust embedding.</span>
+
+<span class="sd">    :param data_bytes: Input data bytes to be shuffled</span>
+<span class="sd">    :type data_bytes: bytes</span>
+<span class="sd">    :param w: Width of the image</span>
+<span class="sd">    :type w: int</span>
+<span class="sd">    :param h: Height of the image</span>
+<span class="sd">    :type h: int</span>
+<span class="sd">    :return: Tuple containing shuffled data, dimension, rest tile size, and rest dimension</span>
+<span class="sd">    :rtype: tuple(bytearray, int, int, int)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="n">bit_fac</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">bits</span> <span class="o">=</span> <span class="n">bits</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">bit_fac</span><span class="p">))</span>
+    <span class="n">flat_tile_len</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">h</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span> <span class="o">//</span> <span class="n">code_block_len</span>
+    <span class="n">tile_w</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="k">if</span> <span class="n">flat_tile_len</span> <span class="o">//</span> <span class="n">tile_w</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="n">tile_w</span> <span class="o">=</span> <span class="mi">64</span>
+    <span class="n">tile_h</span> <span class="o">=</span> <span class="n">flat_tile_len</span> <span class="o">//</span> <span class="n">tile_w</span>
+    <span class="n">h_cutoff</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span> <span class="o">//</span> <span class="n">tile_h</span><span class="p">)</span> <span class="o">*</span> <span class="n">tile_h</span>
+    <span class="n">tile_hr</span> <span class="o">=</span> <span class="n">h</span> <span class="o">-</span> <span class="n">h_cutoff</span>
+    <span class="n">easy_tiles</span> <span class="o">=</span> <span class="n">bits</span><span class="p">[:</span><span class="n">h_cutoff</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">h_cutoff</span> <span class="o">//</span> <span class="n">tile_h</span><span class="p">,</span> <span class="n">tile_h</span><span class="p">,</span> <span class="n">w</span> <span class="o">//</span> <span class="n">tile_w</span><span class="p">,</span> <span class="n">tile_w</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">bit_fac</span><span class="p">)</span>
+    <span class="n">easy_tiles</span> <span class="o">=</span> <span class="n">easy_tiles</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">easy_tiles</span> <span class="o">=</span> <span class="n">easy_tiles</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">tile_h</span> <span class="o">*</span> <span class="n">tile_w</span><span class="p">)</span>
+    <span class="n">easy_tiles</span> <span class="o">=</span> <span class="n">easy_tiles</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">rest_tiles</span> <span class="o">=</span> <span class="n">bits</span><span class="p">[</span><span class="n">h_cutoff</span><span class="p">:]</span>
+    <span class="n">rest_tiles</span> <span class="o">=</span> <span class="n">rest_tiles</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tile_hr</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">w</span> <span class="o">//</span> <span class="n">tile_w</span><span class="p">,</span> <span class="n">tile_w</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">bit_fac</span><span class="p">)</span>
+    <span class="n">rest_tiles</span> <span class="o">=</span> <span class="n">rest_tiles</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">rest_tiles</span> <span class="o">=</span> <span class="n">rest_tiles</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">tile_hr</span> <span class="o">*</span> <span class="n">tile_w</span><span class="p">)</span>
+    <span class="n">rest_tiles</span> <span class="o">=</span> <span class="n">rest_tiles</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">rest_dim</span> <span class="o">=</span> <span class="n">rest_tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">rest_tiles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">rest_tiles</span><span class="p">,</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">easy_tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">rest_tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])),</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span>
+                        <span class="n">constant_values</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">bits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">easy_tiles</span><span class="p">,</span> <span class="n">rest_tiles</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="n">bits</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">bits</span> <span class="o">=</span> <span class="n">bits</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
+    <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">bits</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()),</span> <span class="n">dim</span><span class="p">,</span> <span class="n">rest_tiles</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rest_dim</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">split_byte_ranges</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Split the input data bytes into chunks after shuffling.</span>
+
+<span class="sd">    This function first shuffles the input data using the bit_shuffle function,</span>
+<span class="sd">    then splits it into chunks of size n.</span>
+
+<span class="sd">    :param data_bytes: Input data bytes</span>
+<span class="sd">    :type data_bytes: bytes</span>
+<span class="sd">    :param n: Size of each chunk</span>
+<span class="sd">    :type n: int</span>
+<span class="sd">    :param w: Width of the image</span>
+<span class="sd">    :type w: int</span>
+<span class="sd">    :param h: Height of the image</span>
+<span class="sd">    :type h: int</span>
+<span class="sd">    :return: Tuple containing list of chunks, dimension, rest size, and rest dimension</span>
+<span class="sd">    :rtype: tuple(list, int, int, int)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># noinspection PyUnresolvedReferences</span>
+    <span class="n">data_bytes</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">rest_size</span><span class="p">,</span> <span class="n">rest_dim</span> <span class="o">=</span> <span class="n">bit_shuffle</span><span class="p">(</span><span class="n">data_bytes</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">),</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">chunks</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">rest_size</span><span class="p">,</span> <span class="n">rest_dim</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">pad</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pad the input data bytes to a fixed length of 2019 bytes.</span>
+
+<span class="sd">    This function ensures that all data chunks have a consistent length for error correction encoding.</span>
+
+<span class="sd">    :param data_bytes: Input data bytes</span>
+<span class="sd">    :type data_bytes: bytes</span>
+<span class="sd">    :return: Padded data bytes</span>
+<span class="sd">    :rtype: bytearray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">data_bytes</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2019</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">)))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fec_encode</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform Forward Error Correction (FEC) encoding on the input data.</span>
+
+<span class="sd">    This function applies BCH error correction encoding to the input data after splitting and padding.</span>
+<span class="sd">    It enhances the robustness of the embedded data against corruption.</span>
+
+<span class="sd">    :param data_bytes: Input data bytes</span>
+<span class="sd">    :type data_bytes: bytes</span>
+<span class="sd">    :param w: Width of the image</span>
+<span class="sd">    :type w: int</span>
+<span class="sd">    :param h: Height of the image</span>
+<span class="sd">    :type h: int</span>
+<span class="sd">    :return: FEC encoded data</span>
+<span class="sd">    :rtype: bytes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># noinspection PyArgumentList</span>
+    <span class="n">encoder</span> <span class="o">=</span> <span class="n">bchlib</span><span class="o">.</span><span class="n">BCH</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">prim_poly</span><span class="o">=</span><span class="mi">17475</span><span class="p">)</span>
+    <span class="n">chunks</span> <span class="o">=</span> <span class="p">[</span><span class="nb">bytearray</span><span class="p">(</span><span class="n">encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">pad</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">split_byte_ranges</span><span class="p">(</span><span class="n">data_bytes</span><span class="p">,</span> <span class="mi">2019</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LSBInjector</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for injecting data into the least significant bits of image pixels.</span>
+
+<span class="sd">    This class provides methods to prepare data for injection and embed it into an image&#39;s</span>
+<span class="sd">    least significant bits, which is a form of steganography.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the LSBInjector with image data.</span>
+
+<span class="sd">        :param data: Image data</span>
+<span class="sd">        :type data: numpy.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">put_32bit_integer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">integer_value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a 32-bit integer to the buffer.</span>
+
+<span class="sd">        :param integer_value: Integer to be added</span>
+<span class="sd">        :type integer_value: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">integer_value</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">put_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bytes_list</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add bytes to the buffer.</span>
+
+<span class="sd">        :param bytes_list: Bytes to be added</span>
+<span class="sd">        :type bytes_list: bytes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">bytes_list</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">put_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a string to the buffer (encoded as UTF-8).</span>
+
+<span class="sd">        :param string: String to be added</span>
+<span class="sd">        :type string: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">put_bytes</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">finalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finalize the injection process by embedding the buffer data into the image&#39;s least significant bits.</span>
+
+<span class="sd">        This method actually performs the LSB injection, modifying the image data to include the prepared buffer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="n">buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unpackbits</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
+        <span class="n">data</span><span class="p">[:]</span> <span class="o">=</span> <span class="mh">0xff</span>
+        <span class="n">buf_len</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">data</span><span class="p">[:</span><span class="n">buf_len</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xfe</span>
+        <span class="n">data</span><span class="p">[:</span><span class="n">buf_len</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bitwise_or</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">buf_len</span><span class="p">],</span> <span class="n">buffer</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+
+
+<div class="viewcode-block" id="serialize_pnginfo"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.serialize_pnginfo">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">serialize_pnginfo</span><span class="p">(</span><span class="n">metadata</span><span class="p">:</span> <span class="n">PngInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serialize PNG metadata into a compressed byte string.</span>
+
+<span class="sd">    This function extracts metadata from a PngInfo object, converts it to JSON,</span>
+<span class="sd">    and then compresses it using gzip.</span>
+
+<span class="sd">    :param metadata: PNG metadata</span>
+<span class="sd">    :type metadata: PngInfo</span>
+<span class="sd">    :return: Compressed serialized metadata</span>
+<span class="sd">    :rtype: bytes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;latin-1&quot;</span> <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;tEXt&quot;</span> <span class="k">else</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;tEXt&quot;</span> <span class="k">else</span> <span class="s2">&quot;</span><span class="se">\x00\x00\x00\x00\x00</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">chunks</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;tEXt&quot;</span> <span class="ow">or</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s2">&quot;iTXt&quot;</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+    <span class="n">data_encoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">gzip</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">data_encoded</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="serialize_json"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.serialize_json">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">serialize_json</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serialize any JSON-serializable metadata into a compressed byte string.</span>
+
+<span class="sd">    This function converts the input metadata to JSON and then compresses it using gzip.</span>
+
+<span class="sd">    :param metadata: Metadata to be serialized</span>
+<span class="sd">    :type metadata: Any</span>
+<span class="sd">    :return: Compressed serialized metadata</span>
+<span class="sd">    :rtype: bytes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_encoded</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">gzip</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">data_encoded</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="inject_data"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.inject_data">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">inject_data</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Inject data into an image using LSB steganography and error correction.</span>
+
+<span class="sd">    This function embeds the given data into the least significant bits of the image pixels,</span>
+<span class="sd">    along with error correction information for robustness.</span>
+
+<span class="sd">    :param image: Input image</span>
+<span class="sd">    :type image: Image.Image</span>
+<span class="sd">    :param data: Data to be injected</span>
+<span class="sd">    :type data: Union[bytes, bytearray]</span>
+<span class="sd">    :return: Image with injected data</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># noinspection PyTypeChecker</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">))</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGBA&#39;</span><span class="p">)</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span>
+    <span class="c1"># noinspection PyTypeChecker</span>
+    <span class="n">pixels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">injector</span> <span class="o">=</span> <span class="n">LSBInjector</span><span class="p">(</span><span class="n">pixels</span><span class="p">)</span>
+    <span class="n">injector</span><span class="o">.</span><span class="n">put_string</span><span class="p">(</span><span class="s2">&quot;stealth_pngcomp&quot;</span><span class="p">)</span>
+    <span class="n">injector</span><span class="o">.</span><span class="n">put_32bit_integer</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">injector</span><span class="o">.</span><span class="n">put_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">fec_data</span> <span class="o">=</span> <span class="n">fec_encode</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="n">rgb</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()),</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="n">injector</span><span class="o">.</span><span class="n">put_32bit_integer</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fec_data</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">injector</span><span class="o">.</span><span class="n">put_bytes</span><span class="p">(</span><span class="n">fec_data</span><span class="p">)</span>
+    <span class="n">injector</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">injector</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="write_lsb_raw_bytes"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.write_lsb_raw_bytes">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">write_lsb_raw_bytes</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write raw bytes into an image using LSB steganography.</span>
+
+<span class="sd">    This function is a wrapper around inject_data that handles image loading.</span>
+
+<span class="sd">    :param image: Input image or path to image</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param data: Raw data to be written</span>
+<span class="sd">    :type data: Union[bytes, bytearray]</span>
+<span class="sd">    :return: Image with injected data</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">inject_data</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="write_lsb_metadata"><a class="viewcode-back" href="../../../../api_doc/metadata/lsb.html#imgutils.metadata.lsb.write_lsb_metadata">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">write_lsb_metadata</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write metadata into an image using LSB steganography.</span>
+
+<span class="sd">    This function handles different types of metadata, serializing them appropriately</span>
+<span class="sd">    before injection into the image.</span>
+
+<span class="sd">    :param image: Input image or path to image</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param data: Metadata to be written (can be raw bytes, PngInfo, or JSON-serializable data)</span>
+<span class="sd">    :type data: Any</span>
+<span class="sd">    :return: Image with injected metadata</span>
+<span class="sd">    :rtype: Image.Image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">)):</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">PngInfo</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">serialize_pnginfo</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">serialize_json</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">write_lsb_raw_bytes</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: dev/ythreshold
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../../../v0.14.0/index.html">v0.14.0</a></dd>
+                        <dd><a href="../../../../../../v0.14.1/index.html">v0.14.1</a></dd>
+                        <dd><a href="../../../../../../v0.15.0/index.html">v0.15.0</a></dd>
+                        <dd><a href="../../../../../../v0.16.0/index.html">v0.16.0</a></dd>
+                        <dd><a href="../../../../../../v0.17.0/index.html">v0.17.0</a></dd>
+                        <dd><a href="../../../../../../v0.18.0/index.html">v0.18.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="write.html">dev/ythreshold</a></dd>
+                        <dd><a href="../../../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../../attachments/index.html">dev/attachments</a></dd>
+                        <dd><a href="../../../../../pt/index.html">dev/pt</a></dd>
+                        <dd><a href="../../../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
