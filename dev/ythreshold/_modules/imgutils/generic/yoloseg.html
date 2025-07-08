@@ -117,6 +117,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lock</span>
@@ -348,6 +349,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_models</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_thresholds</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="o">=</span> <span class="n">hf_token</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_global_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_meta_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span></div>
@@ -475,8 +477,39 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_default_thresholds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the default confidence threshold for the specified model.</span>
+
+<span class="sd">        This method attempts to download and read the threshold.json file from the repository</span>
+<span class="sd">        to determine the recommended confidence threshold for the model. If the file is not found,</span>
+<span class="sd">        it returns None.</span>
+
+<span class="sd">        :param model_name: Name of the model to get the default threshold for.</span>
+<span class="sd">        :type model_name: str</span>
+<span class="sd">        :return: The default confidence threshold, or None if not specified.</span>
+<span class="sd">        :rtype: Optional[float]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_meta_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_thresholds</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+                            <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                            <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                            <span class="n">filename</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">/threshold.json&#39;</span><span class="p">,</span>
+                            <span class="n">revision</span><span class="o">=</span><span class="s1">&#39;main&#39;</span><span class="p">,</span>
+                            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">()</span>
+                    <span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="n">default_threshold</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s1">&#39;threshold&#39;</span><span class="p">]</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">EntryNotFoundError</span><span class="p">,):</span>
+                    <span class="n">default_threshold</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_model_thresholds</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">default_threshold</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_thresholds</span><span class="p">[</span><span class="n">model_name</span><span class="p">]</span>
+
 <div class="viewcode-block" id="YOLOSegmentationModel.predict"><a class="viewcode-back" href="../../../api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.YOLOSegmentationModel.predict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                <span class="n">conf_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
                 <span class="n">allow_dynamic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> \
             <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -486,8 +519,10 @@
 <span class="sd">        :type image: ImageTyping</span>
 <span class="sd">        :param model_name: Name of the model to use for prediction.</span>
 <span class="sd">        :type model_name: str</span>
-<span class="sd">        :param conf_threshold: Confidence threshold for filtering detections (0.0-1.0).</span>
-<span class="sd">        :type conf_threshold: float</span>
+<span class="sd">        :param conf_threshold: Confidence threshold for filtering detections.</span>
+<span class="sd">                           Use recommended threshold when not assigned,</span>
+<span class="sd">                           use 0.25 when no recommended threshold or in OFFLINE mode.</span>
+<span class="sd">        :type conf_threshold: Optional[float]</span>
 <span class="sd">        :param iou_threshold: IoU threshold for non-maximum suppression (0.0-1.0).</span>
 <span class="sd">        :type iou_threshold: float</span>
 <span class="sd">        :param allow_dynamic: Whether to allow dynamic resizing of the input image.</span>
@@ -509,6 +544,12 @@
 <span class="sd">        &gt;&gt;&gt; for bbox, label, confidence, mask in results:</span>
 <span class="sd">        ...     print(f&quot;Found {label} with confidence {confidence:.2f}&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">conf_threshold</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># try to use default recommended threshold provided by model trainer</span>
+            <span class="n">conf_threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_default_thresholds</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">conf_threshold</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">conf_threshold</span> <span class="o">=</span> <span class="mf">0.25</span>  <span class="c1"># default threshold from YOLO official implement</span>
+
         <span class="n">model</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">exec_lock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
         <span class="n">new_image</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">new_size</span> <span class="o">=</span> <span class="n">_image_preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">max_infer_size</span><span class="p">,</span> <span class="n">allow_dynamic</span><span class="o">=</span><span class="n">allow_dynamic</span><span class="p">)</span>
@@ -538,10 +579,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_names</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_models</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_types</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_thresholds</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="YOLOSegmentationModel.make_ui"><a class="viewcode-back" href="../../../api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.YOLOSegmentationModel.make_ui">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">make_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                <span class="n">default_conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">default_iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">):</span>
+                <span class="n">default_conf_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                <span class="n">apply_default_threshold</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a Gradio-based user interface for object detection.</span>
 
@@ -552,10 +595,14 @@
 <span class="sd">        :param default_model_name: The name of the default model to use.</span>
 <span class="sd">                                   If None, the most recently updated model is selected.</span>
 <span class="sd">        :type default_model_name: Optional[str]</span>
-<span class="sd">        :param default_conf_threshold: Default confidence threshold for the UI. Default is 0.25.</span>
-<span class="sd">        :type default_conf_threshold: float</span>
+<span class="sd">        :param default_conf_threshold: Default confidence threshold for the demo.</span>
+<span class="sd">                                       Use recommended threshold when not assigned,</span>
+<span class="sd">                                       use 0.25 when no recommended threshold or in OFFLINE mode.</span>
+<span class="sd">        :type default_conf_threshold: Optional[float]</span>
 <span class="sd">        :param default_iou_threshold: Default IoU threshold for the UI. Default is 0.7.</span>
 <span class="sd">        :type default_iou_threshold: float</span>
+<span class="sd">        :param apply_default_threshold: Enable score threshold auto-switch or not. Default is True.</span>
+<span class="sd">        :type apply_default_threshold: bool</span>
 
 <span class="sd">        :raises ImportError: If Gradio is not installed in the environment.</span>
 <span class="sd">        :raises EnvironmentError: If in OFFLINE mode and no default_model_name is provided.</span>
@@ -570,6 +617,9 @@
         <span class="k">if</span> <span class="n">model_list</span> <span class="ow">is</span> <span class="n">_OFFLINE</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">default_model_name</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s1">&#39;You are in OFFLINE mode, &#39;</span>
                                    <span class="s1">&#39;you must assign a default model name to make this ui usable.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">model_list</span> <span class="ow">is</span> <span class="n">_OFFLINE</span> <span class="ow">and</span> <span class="n">default_conf_threshold</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;You are in OFFLINE model, auto confidence threshold disabled, &#39;</span>
+                          <span class="s1">&#39;will use 0.25 instead for non-local models.&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">default_model_name</span><span class="p">:</span>
             <span class="n">hf_client</span> <span class="o">=</span> <span class="n">get_hf_client</span><span class="p">(</span><span class="n">hf_token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">())</span>
@@ -608,6 +658,19 @@
             <span class="p">)</span>
 
         <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">_get_default_thresholds</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_default_thresholds</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">model_list</span> <span class="ow">is</span> <span class="n">_OFFLINE</span><span class="p">:</span>
+                        <span class="n">gr</span><span class="o">.</span><span class="n">Warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No local default threshold found for model </span><span class="si">{</span><span class="n">model_name</span><span class="si">!r}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                   <span class="sa">f</span><span class="s1">&#39;Offline mode has been enabled.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                   <span class="sa">f</span><span class="s1">&#39;Will use default threshold 0.25 instead.&#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">gr</span><span class="o">.</span><span class="n">Warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No default threshold found for model </span><span class="si">{</span><span class="n">model_name</span><span class="si">!r}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                   <span class="sa">f</span><span class="s1">&#39;Will use default threshold 0.25 instead.&#39;</span><span class="p">)</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="mf">0.25</span>
+                <span class="k">return</span> <span class="n">v</span>
+
             <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
                 <span class="n">gr_input_image</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;pil&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Image&#39;</span><span class="p">)</span>
                 <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
@@ -617,14 +680,47 @@
                         <span class="n">gr_model</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">([</span><span class="n">default_model_name</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span>
                                                <span class="n">interactive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                     <span class="n">gr_allow_dynamic</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Checkbox</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Allow Dynamic Size&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">default_conf_threshold</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">gr_auto_apply_threshold</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Checkbox</span><span class="p">(</span>
+                            <span class="n">value</span><span class="o">=</span><span class="n">apply_default_threshold</span><span class="p">,</span>
+                            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Auto Use Default Score Threshold When Model Changed&#39;</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">gr_auto_apply_threshold</span> <span class="o">=</span> <span class="kc">None</span>
+
                 <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
                     <span class="n">gr_iou_threshold</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">default_iou_threshold</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;IOU Threshold&#39;</span><span class="p">)</span>
-                    <span class="n">gr_score_threshold</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">default_conf_threshold</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Score Threshold&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">default_conf_threshold</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">gr_score_threshold</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">default_conf_threshold</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Score Threshold&#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">gr_score_threshold</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">_get_default_thresholds</span><span class="p">(</span><span class="n">default_model_name</span><span class="p">),</span>
+                                                       <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Score Threshold&#39;</span><span class="p">)</span>
 
                 <span class="n">gr_submit</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;Submit&#39;</span><span class="p">,</span> <span class="n">variant</span><span class="o">=</span><span class="s1">&#39;primary&#39;</span><span class="p">)</span>
 
             <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
                 <span class="n">gr_output_image</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">AnnotatedImage</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Labeled&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">gr_auto_apply_threshold</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">_gr_model_change</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">need_apply</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">need_apply</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                            <span class="n">value</span><span class="o">=</span><span class="n">_get_default_thresholds</span><span class="p">(</span><span class="n">model_name</span><span class="p">),</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+                <span class="n">gr_model</span><span class="o">.</span><span class="n">change</span><span class="p">(</span>
+                    <span class="n">_gr_model_change</span><span class="p">,</span>
+                    <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">gr_model</span><span class="p">,</span> <span class="n">gr_auto_apply_threshold</span><span class="p">],</span>
+                    <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">gr_score_threshold</span><span class="p">],</span>
+                <span class="p">)</span>
+
+                <span class="n">gr_auto_apply_threshold</span><span class="o">.</span><span class="n">change</span><span class="p">(</span>
+                    <span class="n">_gr_model_change</span><span class="p">,</span>
+                    <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">gr_model</span><span class="p">,</span> <span class="n">gr_auto_apply_threshold</span><span class="p">],</span>
+                    <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">gr_score_threshold</span><span class="p">],</span>
+                <span class="p">)</span>
 
             <span class="n">gr_submit</span><span class="o">.</span><span class="n">click</span><span class="p">(</span>
                 <span class="n">_gr_detect</span><span class="p">,</span>
@@ -639,7 +735,8 @@
             <span class="p">)</span></div>
 
 <div class="viewcode-block" id="YOLOSegmentationModel.launch_demo"><a class="viewcode-back" href="../../../api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.YOLOSegmentationModel.launch_demo">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">launch_demo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="n">default_conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">default_iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                    <span class="n">default_conf_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">default_iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                    <span class="n">apply_default_threshold</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                     <span class="n">server_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">server_port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Launch a Gradio demo for object detection.</span>
@@ -650,10 +747,14 @@
 <span class="sd">        :param default_model_name: The name of the default model to use.</span>
 <span class="sd">                                   If None, the most recently updated model is selected.</span>
 <span class="sd">        :type default_model_name: Optional[str]</span>
-<span class="sd">        :param default_conf_threshold: Default confidence threshold for the demo. Default is 0.25.</span>
-<span class="sd">        :type default_conf_threshold: float</span>
+<span class="sd">        :param default_conf_threshold: Default confidence threshold for the demo.</span>
+<span class="sd">                                       Use recommended threshold when not assigned,</span>
+<span class="sd">                                       use 0.25 when no recommended threshold or in OFFLINE mode.</span>
+<span class="sd">        :type default_conf_threshold: Optional[float]</span>
 <span class="sd">        :param default_iou_threshold: Default IoU threshold for the demo. Default is 0.7.</span>
 <span class="sd">        :type default_iou_threshold: float</span>
+<span class="sd">        :param apply_default_threshold: Enable score threshold auto-switch or not. Default is True.</span>
+<span class="sd">        :type apply_default_threshold: bool</span>
 <span class="sd">        :param server_name: The name of the server to run the demo on. Default is None.</span>
 <span class="sd">        :type server_name: Optional[str]</span>
 <span class="sd">        :param server_port: The port to run the demo on. Default is None.</span>
@@ -682,6 +783,7 @@
                     <span class="n">default_model_name</span><span class="o">=</span><span class="n">default_model_name</span><span class="p">,</span>
                     <span class="n">default_conf_threshold</span><span class="o">=</span><span class="n">default_conf_threshold</span><span class="p">,</span>
                     <span class="n">default_iou_threshold</span><span class="o">=</span><span class="n">default_iou_threshold</span><span class="p">,</span>
+                    <span class="n">apply_default_threshold</span><span class="o">=</span><span class="n">apply_default_threshold</span><span class="p">,</span>
                 <span class="p">)</span>
 
         <span class="n">demo</span><span class="o">.</span><span class="n">launch</span><span class="p">(</span>
@@ -711,7 +813,7 @@
 
 
 <div class="viewcode-block" id="yolo_seg_predict"><a class="viewcode-back" href="../../../api_doc/generic/yoloseg.html#imgutils.generic.yoloseg.yolo_seg_predict">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">yolo_seg_predict</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                     <span class="n">conf_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                     <span class="n">conf_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
                      <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> \
         <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -726,8 +828,10 @@
 <span class="sd">    :type repo_id: str</span>
 <span class="sd">    :param model_name: Name of the specific model to use.</span>
 <span class="sd">    :type model_name: str</span>
-<span class="sd">    :param conf_threshold: Confidence threshold for filtering detections (0.0-1.0).</span>
-<span class="sd">    :type conf_threshold: float</span>
+<span class="sd">    :param conf_threshold: Confidence threshold for filtering detections.</span>
+<span class="sd">                           Use recommended threshold when not assigned,</span>
+<span class="sd">                           use 0.25 when no recommended threshold or in OFFLINE mode.</span>
+<span class="sd">    :type conf_threshold: Optional[float]</span>
 <span class="sd">    :param iou_threshold: IoU threshold for non-maximum suppression (0.0-1.0).</span>
 <span class="sd">    :type iou_threshold: float</span>
 <span class="sd">    :param hf_token: Hugging Face API token for accessing private repositories.</span>
