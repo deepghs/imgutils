@@ -1,0 +1,791 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.generic.multilabel_timm &mdash; imgutils 0.18.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=66734c64"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.generic.multilabel_timm</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.generic.multilabel_timm</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Multi-Label TIMM Model Module</span>
+
+<span class="sd">This module provides functionality for working with multi-label image classification models</span>
+<span class="sd">trained with TIMM (PyTorch Image Models) and exported to ONNX format. It includes:</span>
+
+<span class="sd">1. The MultiLabelTIMMModel class for loading and making predictions with models hosted on Hugging Face Hub</span>
+<span class="sd">2. Functions for batch prediction and demo interface creation</span>
+<span class="sd">3. Support for custom thresholds at both category and tag levels</span>
+<span class="sd">4. Flexible output formatting options for different use cases</span>
+
+<span class="sd">The models are expected to be stored on Hugging Face Hub with specific files:</span>
+
+<span class="sd">- model.onnx: The ONNX model file</span>
+<span class="sd">- selected_tags.csv: CSV file containing tag information and categories</span>
+<span class="sd">- preprocess.json: JSON configuration for image preprocessing</span>
+<span class="sd">- thresholds.csv: Optional CSV file with recommended thresholds</span>
+<span class="sd">- categories.json: Category ID and name mapping json file.</span>
+
+<span class="sd">This module is designed to work with multi-label classification tasks where images can</span>
+<span class="sd">belong to multiple categories and have multiple tags within each category.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lock</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hbutils.string</span><span class="w"> </span><span class="kn">import</span> <span class="n">titleize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hfutils.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_repo_url</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">EntryNotFoundError</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..preprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pillow_transforms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_onnx_model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">vreplace</span><span class="p">,</span> <span class="n">ts_lru_cache</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">gradio</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gr</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
+    <span class="n">gr</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;MultiLabelTIMMModel&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;multilabel_timm_predict&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_gradio_env</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Verify that Gradio library is properly installed and available.</span>
+
+<span class="sd">    This function checks if the Gradio package is accessible for creating</span>
+<span class="sd">    web-based demos. If Gradio is not found, it provides instructions for installation.</span>
+
+<span class="sd">    :raises EnvironmentError: If Gradio package is not installed in the environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">gr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gradio required for launching webui-based demo.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                               <span class="sa">f</span><span class="s1">&#39;Please install it with `pip install dghs-imgutils[demo]`.&#39;</span><span class="p">)</span>
+
+
+<span class="n">FMT_UNSET</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="MultiLabelTIMMModel"><a class="viewcode-back" href="../../../api_doc/generic/multilabel_timm.html#imgutils.generic.multilabel_timm.MultiLabelTIMMModel">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">MultiLabelTIMMModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for working with multi-label image classification models trained with TIMM.</span>
+
+<span class="sd">    This class handles loading models from Hugging Face Hub, preprocessing images,</span>
+<span class="sd">    and making predictions with customizable thresholds.</span>
+
+<span class="sd">    :param repo_id: The Hugging Face Hub repository ID containing the model</span>
+<span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token for private repositories</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MultiLabelTIMMModel.__init__"><a class="viewcode-back" href="../../../api_doc/generic/multilabel_timm.html#imgutils.generic.multilabel_timm.MultiLabelTIMMModel.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a MultiLabelTIMMModel.</span>
+
+<span class="sd">        :param repo_id: The Hugging Face Hub repository ID containing the model</span>
+<span class="sd">        :type repo_id: str</span>
+<span class="sd">        :param hf_token: Optional Hugging Face authentication token for private repositories</span>
+<span class="sd">        :type hf_token: Optional[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span> <span class="o">=</span> <span class="n">repo_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_df_tags</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_category_thresholds</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="o">=</span> <span class="n">hf_token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name_to_categories</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_hf_token</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the Hugging Face authentication token.</span>
+
+<span class="sd">        Checks both instance variable and environment for token presence.</span>
+
+<span class="sd">        :return: Authentication token if available</span>
+<span class="sd">        :rtype: Optional[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hf_token</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HF_TOKEN&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_open_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the ONNX model from Hugging Face Hub.</span>
+
+<span class="sd">        :return: The loaded ONNX model</span>
+<span class="sd">        :rtype: object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+                    <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                    <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;model.onnx&#39;</span><span class="p">,</span>
+                    <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">(),</span>
+                <span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_open_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load tag information from the Hugging Face Hub.</span>
+
+<span class="sd">        :return: DataFrame containing tag information</span>
+<span class="sd">        :rtype: pandas.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_df_tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_df_tags</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+                    <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                    <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;selected_tags.csv&#39;</span><span class="p">,</span>
+                    <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">(),</span>
+                <span class="p">),</span> <span class="n">keep_default_na</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+                        <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;categories.json&#39;</span><span class="p">,</span>
+                        <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_hf_token</span><span class="p">(),</span>
+                <span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">d_category_names</span> <span class="o">=</span> <span class="p">{</span><span class="n">cate_item</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]:</span> <span class="n">cate_item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">cate_item</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)}</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_name_to_categories</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">])):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_name_to_categories</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]]</span> <span class="o">=</span> <span class="n">category</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_df_tags</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_open_preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load preprocessing configuration from the Hugging Face Hub.</span>
+
+<span class="sd">        :return: A tuple of validation and test preprocessing transforms</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+                        <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;preprocess.json&#39;</span>
+                <span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">data_</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                    <span class="n">test_trans</span> <span class="o">=</span> <span class="n">create_pillow_transforms</span><span class="p">(</span><span class="n">data_</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">])</span>
+                    <span class="n">val_trans</span> <span class="o">=</span> <span class="n">create_pillow_transforms</span><span class="p">(</span><span class="n">data_</span><span class="p">[</span><span class="s1">&#39;val&#39;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span> <span class="o">=</span> <span class="n">val_trans</span><span class="p">,</span> <span class="n">test_trans</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_open_default_category_thresholds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load default category thresholds from the Hugging Face Hub.</span>
+
+<span class="sd">        :return: Dictionary mapping category IDs to threshold values</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_category_thresholds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">df_category_thresholds</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+                        <span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span>
+                        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;thresholds.csv&#39;</span>
+                    <span class="p">),</span> <span class="n">keep_default_na</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">EntryNotFoundError</span><span class="p">,):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_default_category_thresholds</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_default_category_thresholds</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">df_category_thresholds</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_category_thresholds</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_default_category_thresholds</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;threshold&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_category_thresholds</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_raw_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;test&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a raw prediction with the model.</span>
+
+<span class="sd">        :param image: The input image</span>
+<span class="sd">        :type image: ImageTyping</span>
+<span class="sd">        :param preprocessor: Which preprocessor to use (&#39;test&#39; or &#39;val&#39;)</span>
+<span class="sd">        :type preprocessor: Literal[&#39;test&#39;, &#39;val&#39;]</span>
+
+<span class="sd">        :return: Dictionary of model outputs</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :raises ValueError: If an unknown preprocessor is specified</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_model</span><span class="p">()</span>
+
+        <span class="n">val_trans</span><span class="p">,</span> <span class="n">test_trans</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_preprocess</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">preprocessor</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
+            <span class="n">trans</span> <span class="o">=</span> <span class="n">test_trans</span>
+        <span class="k">elif</span> <span class="n">preprocessor</span> <span class="o">==</span> <span class="s1">&#39;val&#39;</span><span class="p">:</span>
+            <span class="n">trans</span> <span class="o">=</span> <span class="n">val_trans</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Unknown processor, &quot;test&quot; or &quot;val&quot; expected but </span><span class="si">{</span><span class="n">preprocessor</span><span class="si">!r}</span><span class="s1"> found.&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+        <span class="n">input_</span> <span class="o">=</span> <span class="n">trans</span><span class="p">(</span><span class="n">image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+        <span class="n">output_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">output</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">get_outputs</span><span class="p">()]</span>
+        <span class="n">output_values</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">output_names</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">input_</span><span class="p">})</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">output_names</span><span class="p">,</span> <span class="n">output_values</span><span class="p">)}</span>
+
+<div class="viewcode-block" id="MultiLabelTIMMModel.predict"><a class="viewcode-back" href="../../../api_doc/generic/multilabel_timm.html#imgutils.generic.multilabel_timm.MultiLabelTIMMModel.predict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">preprocessor</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span>
+                <span class="n">thresholds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_tag_thresholds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="n">fmt</span><span class="o">=</span><span class="n">FMT_UNSET</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a prediction and format the results.</span>
+
+<span class="sd">        This method processes an image through the model and applies thresholds to determine</span>
+<span class="sd">        which tags to include in the results. The output format can be customized using the fmt parameter.</span>
+
+<span class="sd">        :param image: The input image</span>
+<span class="sd">        :type image: ImageTyping</span>
+<span class="sd">        :param preprocessor: Which preprocessor to use (&#39;test&#39; or &#39;val&#39;)</span>
+<span class="sd">        :type preprocessor: Literal[&#39;test&#39;, &#39;val&#39;]</span>
+<span class="sd">        :param thresholds: Threshold values for tag confidence. Can be a single float applied to all categories</span>
+<span class="sd">                          or a dictionary mapping category IDs or names to threshold values</span>
+<span class="sd">        :type thresholds: Union[float, Dict[Any, float]]</span>
+<span class="sd">        :param use_tag_thresholds: Whether to use tag-level thresholds if available</span>
+<span class="sd">        :type use_tag_thresholds: bool</span>
+<span class="sd">        :param fmt: Output format specification. Can be a tuple of category names to include,</span>
+<span class="sd">                   or FMT_UNSET to use all categories</span>
+<span class="sd">        :type fmt: Any</span>
+
+<span class="sd">        :return: Formatted prediction results according to the fmt parameter</span>
+<span class="sd">        :rtype: Any</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The fmt argument can include the following keys:</span>
+
+<span class="sd">            - Category names: dicts containing category-specific tags and their confidences</span>
+<span class="sd">            - ``tag``: a dict containing all tags across categories and their confidences</span>
+<span class="sd">            - ``embedding``: a 1-dim embedding of image, recommended for index building after L2 normalization</span>
+<span class="sd">            - ``logits``: a 1-dim logits result of image</span>
+<span class="sd">            - ``prediction``: a 1-dim prediction result of image</span>
+
+<span class="sd">            You can extract specific category predictions or all tags based on your needs.</span>
+
+<span class="sd">        For more details see documentation of :func:`multilabel_timm_predict`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df_tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_tags</span><span class="p">()</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">preprocessor</span><span class="o">=</span><span class="n">preprocessor</span><span class="p">)</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s1">&#39;prediction&#39;</span><span class="p">]</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="n">FMT_UNSET</span><span class="p">:</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())))</span>
+
+        <span class="n">default_category_thresholds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_default_category_thresholds</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;best_threshold&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_df_tags</span><span class="p">:</span>
+            <span class="n">default_tag_thresholds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_df_tags</span><span class="p">[</span><span class="s1">&#39;best_threshold&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">default_tag_thresholds</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())):</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">category</span>
+            <span class="n">tag_names</span> <span class="o">=</span> <span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">][</span><span class="n">mask</span><span class="p">]</span>
+            <span class="n">category_pred</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">thresholds</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> \
+                    <span class="p">(</span><span class="n">category</span> <span class="ow">in</span> <span class="n">thresholds</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">:</span>
+                    <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">:</span>
+                    <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Should not reach this line&#39;</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">elif</span> <span class="n">use_tag_thresholds</span> <span class="ow">and</span> <span class="n">default_tag_thresholds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">default_tag_thresholds</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">use_tag_thresholds</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Tag thresholds not supported in model </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">default_category_thresholds</span><span class="p">:</span>
+                    <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">default_category_thresholds</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">category_threshold</span> <span class="o">=</span> <span class="mf">0.4</span>
+
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">category_pred</span> <span class="o">&gt;=</span> <span class="n">category_threshold</span>
+            <span class="n">tag_names</span> <span class="o">=</span> <span class="n">tag_names</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">category_pred</span> <span class="o">=</span> <span class="n">category_pred</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">cate_tags</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tag_names</span><span class="p">,</span> <span class="n">category_pred</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+            <span class="n">values</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cate_tags</span>
+            <span class="n">tags</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cate_tags</span><span class="p">)</span>
+
+        <span class="n">values</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tags</span>
+        <span class="k">return</span> <span class="n">vreplace</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MultiLabelTIMMModel.make_ui"><a class="viewcode-back" href="../../../api_doc/generic/multilabel_timm.html#imgutils.generic.multilabel_timm.MultiLabelTIMMModel.make_ui">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">make_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_thresholds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">default_use_tag_thresholds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a Gradio UI for the model.</span>
+
+<span class="sd">        :param default_thresholds: Default threshold values to use in the UI</span>
+<span class="sd">        :type default_thresholds: Union[float, Dict[Any, float]]</span>
+<span class="sd">        :param default_use_tag_thresholds: Whether to use tag-level thresholds by default</span>
+<span class="sd">        :type default_use_tag_thresholds: bool</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :raises EnvironmentError: If Gradio is not installed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_check_gradio_env</span><span class="p">()</span>
+        <span class="n">df_tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_tags</span><span class="p">()</span>
+        <span class="n">default_category_thresholds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_default_category_thresholds</span><span class="p">()</span>
+        <span class="n">allow_use_tag_thresholds</span> <span class="o">=</span> <span class="s1">&#39;best_threshold&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_df_tags</span>
+
+        <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
+                <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                    <span class="n">gr_input_image</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;pil&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Image&#39;</span><span class="p">)</span>
+                <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="n">allow_use_tag_thresholds</span><span class="p">):</span>
+                    <span class="n">gr_use_tag_thresholds</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Checkbox</span><span class="p">(</span>
+                        <span class="n">value</span><span class="o">=</span><span class="n">allow_use_tag_thresholds</span> <span class="ow">and</span> <span class="n">default_use_tag_thresholds</span><span class="p">,</span>
+                        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Use Tag-Level Thresholds&#39;</span><span class="p">,</span>
+                        <span class="n">interactive</span><span class="o">=</span><span class="n">allow_use_tag_thresholds</span><span class="p">,</span>
+                        <span class="n">visible</span><span class="o">=</span><span class="n">allow_use_tag_thresholds</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">HTML</span><span class="p">(</span>
+                        <span class="n">value</span><span class="o">=</span><span class="s2">&quot;&lt;div style=&#39;font-size: 0.8em; color: var(--color-text-secondary); margin-top: 0.3em;&#39;&gt;&quot;</span>
+                              <span class="s2">&quot;&lt;b&gt;Note:&lt;/b&gt; Category thresholds will be ignored when tag-level thresholds enabled!!!&lt;/div&gt;&quot;</span><span class="p">,</span>
+                        <span class="n">visible</span><span class="o">=</span><span class="n">allow_use_tag_thresholds</span>
+                    <span class="p">)</span>
+                <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                    <span class="n">gr_thresholds</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())):</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">default_thresholds</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+                            <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">default_thresholds</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">default_thresholds</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> \
+                                <span class="p">(</span><span class="n">category</span> <span class="ow">in</span> <span class="n">default_thresholds</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span>
+                                    <span class="n">category</span><span class="p">]</span> <span class="ow">in</span> <span class="n">default_thresholds</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">default_thresholds</span><span class="p">:</span>
+                                <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">default_thresholds</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+                            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="ow">in</span> <span class="n">default_thresholds</span><span class="p">:</span>
+                                <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">default_thresholds</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]]</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Should not reach this line&#39;</span>  <span class="c1"># pragma: no cover</span>
+                        <span class="k">elif</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">default_category_thresholds</span><span class="p">:</span>
+                            <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">default_category_thresholds</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">category_threshold</span> <span class="o">=</span> <span class="mf">0.4</span>
+
+                        <span class="n">gr_cate_threshold</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span>
+                            <span class="n">minimum</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                            <span class="n">maximum</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                            <span class="n">value</span><span class="o">=</span><span class="n">category_threshold</span><span class="p">,</span>
+                            <span class="n">step</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+                            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Threshold for </span><span class="si">{</span><span class="n">titleize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">])</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="n">gr_thresholds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gr_cate_threshold</span><span class="p">)</span>
+
+                <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                    <span class="n">gr_submit</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;Submit&#39;</span><span class="p">,</span> <span class="n">variant</span><span class="o">=</span><span class="s1">&#39;primary&#39;</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
+                <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Tabs</span><span class="p">():</span>
+                    <span class="n">gr_preds</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())):</span>
+                        <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Tab</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">titleize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">])</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">):</span>
+                            <span class="n">gr_cate_label</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">titleize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">])</span><span class="si">}</span><span class="s1"> Prediction&#39;</span><span class="p">)</span>
+                            <span class="n">gr_preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gr_cate_label</span><span class="p">)</span>
+
+                    <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Tab</span><span class="p">(</span><span class="s1">&#39;Text Output&#39;</span><span class="p">):</span>
+                        <span class="n">gr_text_output</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">TextArea</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Output (string)&quot;</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">_fn_submit</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">_use_tag_thresholds</span><span class="p">,</span> <span class="o">*</span><span class="n">thresholds</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">_use_tag_thresholds</span><span class="p">:</span>
+                    <span class="n">_ths</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">_ths</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="n">category</span><span class="p">:</span> <span class="n">cate_ths</span>
+                        <span class="k">for</span> <span class="n">category</span><span class="p">,</span> <span class="n">cate_ths</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())),</span> <span class="n">thresholds</span><span class="p">)</span>
+                    <span class="p">}</span>
+
+                <span class="n">fmt</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())))</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+                    <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
+                    <span class="n">thresholds</span><span class="o">=</span><span class="n">_ths</span><span class="p">,</span>
+                    <span class="n">use_tag_thresholds</span><span class="o">=</span><span class="n">_use_tag_thresholds</span><span class="p">,</span>
+                    <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span> <span class="k">as</span> <span class="n">sf</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">category</span><span class="p">,</span> <span class="n">res_item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())),</span> <span class="n">res</span><span class="p">):</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;# </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="si">}</span><span class="s1"> (#</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sf</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">res_item</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">file</span><span class="o">=</span><span class="n">sf</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sf</span><span class="p">)</span>
+
+                    <span class="k">return</span> <span class="n">sf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">(),</span> <span class="o">*</span><span class="n">res</span>
+
+            <span class="n">gr_submit</span><span class="o">.</span><span class="n">click</span><span class="p">(</span>
+                <span class="n">fn</span><span class="o">=</span><span class="n">_fn_submit</span><span class="p">,</span>
+                <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">gr_input_image</span><span class="p">,</span> <span class="n">gr_use_tag_thresholds</span><span class="p">,</span> <span class="o">*</span><span class="n">gr_thresholds</span><span class="p">],</span>
+                <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">gr_text_output</span><span class="p">,</span> <span class="o">*</span><span class="n">gr_preds</span><span class="p">]</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="MultiLabelTIMMModel.launch_demo"><a class="viewcode-back" href="../../../api_doc/generic/multilabel_timm.html#imgutils.generic.multilabel_timm.MultiLabelTIMMModel.launch_demo">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">launch_demo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_thresholds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">default_use_tag_thresholds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="n">server_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">server_port</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Launch a Gradio demo for the model.</span>
+
+<span class="sd">        :param default_thresholds: Default threshold values to use in the demo</span>
+<span class="sd">        :type default_thresholds: Union[float, Dict[Any, float]]</span>
+<span class="sd">        :param default_use_tag_thresholds: Whether to use tag-level thresholds by default</span>
+<span class="sd">        :type default_use_tag_thresholds: bool</span>
+<span class="sd">        :param server_name: Server name for the Gradio app</span>
+<span class="sd">        :type server_name: Optional[str]</span>
+<span class="sd">        :param server_port: Server port for the Gradio app</span>
+<span class="sd">        :type server_port: Optional[int]</span>
+<span class="sd">        :param kwargs: Additional keyword arguments to pass to gr.launch()</span>
+<span class="sd">        :type kwargs: Any</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :raises EnvironmentError: If Gradio is not installed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_check_gradio_env</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Blocks</span><span class="p">()</span> <span class="k">as</span> <span class="n">demo</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
+                    <span class="n">repo_url</span> <span class="o">=</span> <span class="n">hf_hub_repo_url</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="p">,</span> <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">HTML</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;h2 style=&quot;text-align: center;&quot;&gt;Tagger Demo For </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">}</span><span class="s1">&lt;/h2&gt;&#39;</span><span class="p">)</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;This is the quick demo for tagger model [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">repo_id</span><span class="si">}</span><span class="s1">](</span><span class="si">{</span><span class="n">repo_url</span><span class="si">}</span><span class="s1">). &#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;Powered by `dghs-imgutils`</span><span class="se">\&#39;</span><span class="s1">s quick demo module.&#39;</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">make_ui</span><span class="p">(</span>
+                    <span class="n">default_thresholds</span><span class="o">=</span><span class="n">default_thresholds</span><span class="p">,</span>
+                    <span class="n">default_use_tag_thresholds</span><span class="o">=</span><span class="n">default_use_tag_thresholds</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">demo</span><span class="o">.</span><span class="n">launch</span><span class="p">(</span>
+            <span class="n">server_name</span><span class="o">=</span><span class="n">server_name</span><span class="p">,</span>
+            <span class="n">server_port</span><span class="o">=</span><span class="n">server_port</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_models_for_repo_id</span><span class="p">(</span><span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> \
+        <span class="o">-&gt;</span> <span class="n">MultiLabelTIMMModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Open and cache a MultiLabelTIMMModel for a given repository ID.</span>
+
+<span class="sd">    :param repo_id: The Hugging Face Hub repository ID</span>
+<span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
+
+<span class="sd">    :return: A cached MultiLabelTIMMModel instance</span>
+<span class="sd">    :rtype: MultiLabelTIMMModel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">MultiLabelTIMMModel</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+        <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="multilabel_timm_predict"><a class="viewcode-back" href="../../../api_doc/generic/multilabel_timm.html#imgutils.generic.multilabel_timm.multilabel_timm_predict">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">multilabel_timm_predict</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">repo_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                            <span class="n">preprocessor</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span>
+                            <span class="n">thresholds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use_tag_thresholds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                            <span class="n">fmt</span><span class="o">=</span><span class="n">FMT_UNSET</span><span class="p">,</span> <span class="n">hf_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make predictions using a multi-label TIMM model.</span>
+
+<span class="sd">    This function provides a convenient interface for making predictions with models</span>
+<span class="sd">    hosted on Hugging Face Hub without directly instantiating a MultiLabelTIMMModel.</span>
+
+<span class="sd">    :param image: The input image</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param repo_id: The Hugging Face Hub repository ID containing the model</span>
+<span class="sd">    :type repo_id: str</span>
+<span class="sd">    :param preprocessor: Which preprocessor to use (&#39;test&#39; or &#39;val&#39;)</span>
+<span class="sd">    :type preprocessor: Literal[&#39;test&#39;, &#39;val&#39;]</span>
+<span class="sd">    :param thresholds: Threshold values for tag confidence. Can be a single float applied to all categories</span>
+<span class="sd">                      or a dictionary mapping category IDs or names to threshold values</span>
+<span class="sd">    :type thresholds: Union[float, Dict[Any, float]]</span>
+<span class="sd">    :param use_tag_thresholds: Whether to use tag-level thresholds if available</span>
+<span class="sd">    :type use_tag_thresholds: bool</span>
+<span class="sd">    :param fmt: Output format specification. Can be a tuple of category names to include,</span>
+<span class="sd">               or FMT_UNSET to use all categories</span>
+<span class="sd">    :type fmt: Any</span>
+<span class="sd">    :param hf_token: Optional Hugging Face authentication token for private repositories</span>
+<span class="sd">    :type hf_token: Optional[str]</span>
+
+<span class="sd">    :return: Formatted prediction results according to the fmt parameter</span>
+<span class="sd">    :rtype: Any</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Here are some images for example</span>
+
+<span class="sd">        .. image:: multilabel_demo.plot.py.svg</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.generic import multilabel_timm_predict</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; general, character, rating = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;skadi.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; general</span>
+<span class="sd">        {&#39;1girl&#39;: 0.9963783025741577, &#39;long_hair&#39;: 0.9685494899749756, &#39;solo&#39;: 0.9548443555831909, &#39;navel&#39;: 0.9415484666824341, &#39;breasts&#39;: 0.9369214177131653, &#39;red_eyes&#39;: 0.9019639492034912, &#39;shirt&#39;: 0.873087465763092, &#39;outdoors&#39;: 0.866461992263794, &#39;crop_top&#39;: 0.862577497959137, &#39;midriff&#39;: 0.8544420003890991, &#39;sportswear&#39;: 0.849435567855835, &#39;shorts&#39;: 0.8209151029586792, &#39;short_sleeves&#39;: 0.817188560962677, &#39;holding&#39;: 0.811793327331543, &#39;very_long_hair&#39;: 0.8082301616668701, &#39;gloves&#39;: 0.7840366363525391, &#39;black_gloves&#39;: 0.7765430808067322, &#39;thighs&#39;: 0.7542579770088196, &#39;looking_at_viewer&#39;: 0.7331588268280029, &#39;day&#39;: 0.7203925251960754, &#39;hair_between_eyes&#39;: 0.7121687531471252, &#39;large_breasts&#39;: 0.6990523338317871, &#39;baseball_bat&#39;: 0.6809443831443787, &#39;grey_hair&#39;: 0.6790007948875427, &#39;sky&#39;: 0.6716539263725281, &#39;stomach&#39;: 0.6698249578475952, &#39;sweat&#39;: 0.6454322934150696, &#39;black_shirt&#39;: 0.6270318031311035, &#39;cowboy_shot&#39;: 0.6216483116149902, &#39;blue_sky&#39;: 0.5898874998092651, &#39;black_shorts&#39;: 0.5445142984390259, &#39;holding_baseball_bat&#39;: 0.5013713836669922, &#39;white_hair&#39;: 0.4999670684337616, &#39;blush&#39;: 0.4860053062438965, &#39;cloud&#39;: 0.474183052778244, &#39;standing&#39;: 0.4724341332912445, &#39;thigh_gap&#39;: 0.4330931305885315, &#39;short_shorts&#39;: 0.39793258905410767, &#39;parted_lips&#39;: 0.36694538593292236, &#39;crop_top_overhang&#39;: 0.3321989178657532, &#39;official_alternate_costume&#39;: 0.3157039284706116, &#39;blurry&#39;: 0.24181532859802246, &#39;groin&#39;: 0.21906554698944092, &#39;ass_visible_through_thighs&#39;: 0.2188207507133484, &#39;cropped_shirt&#39;: 0.18700966238975525, &#39;taut_shirt&#39;: 0.08612403273582458, &#39;taut_clothes&#39;: 0.0701744556427002}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;skadi_(arknights)&#39;: 0.9796262979507446}</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;sensitive&#39;: 0.9580697417259216}</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; general, character, rating = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;hutao.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; general</span>
+<span class="sd">        {&#39;1girl&#39;: 0.988956093788147, &#39;twintails&#39;: 0.9650213718414307, &#39;ghost&#39;: 0.940951943397522, &#39;tongue_out&#39;: 0.9330000877380371, &#39;tongue&#39;: 0.9267600774765015, &#39;skirt&#39;: 0.9194451570510864, &#39;symbol-shaped_pupils&#39;: 0.9103127717971802, &#39;brown_hair&#39;: 0.9067947268486023, &#39;long_hair&#39;: 0.8872615098953247, &#39;red_eyes&#39;: 0.8631541728973389, &#39;looking_at_viewer&#39;: 0.8235997557640076, &#39;solo&#39;: 0.8214132785797119, &#39;long_sleeves&#39;: 0.7965610027313232, &#39;bag&#39;: 0.7958617210388184, &#39;jacket&#39;: 0.7932659387588501, &#39;flower-shaped_pupils&#39;: 0.7630170583724976, &#39;shirt&#39;: 0.7500981092453003, &#39;hair_ornament&#39;: 0.738053023815155, &#39;flower&#39;: 0.7321316599845886, &#39;plaid_skirt&#39;: 0.7173646688461304, &#39;white_shirt&#39;: 0.6631225347518921, &#39;pleated_skirt&#39;: 0.6344470977783203, &#39;hair_flower&#39;: 0.6293849945068359, &#39;nail_polish&#39;: 0.6136130094528198, &#39;multicolored_hair&#39;: 0.5703858733177185, &#39;blush&#39;: 0.5195141434669495, &#39;plaid_clothes&#39;: 0.503984808921814, &#39;gradient_hair&#39;: 0.49658203125, &#39;alternate_costume&#39;: 0.4947473704814911, &#39;:p&#39;: 0.493851900100708, &#39;hair_between_eyes&#39;: 0.484821081161499, &#39;smile&#39;: 0.4778161942958832, &#39;black_nails&#39;: 0.4747253358364105, &#39;collared_shirt&#39;: 0.46951043605804443, &#39;outdoors&#39;: 0.46920245885849, &#39;holding&#39;: 0.45227500796318054, &#39;school_uniform&#39;: 0.4197554290294647, &#39;very_long_hair&#39;: 0.41959843039512634, &#39;miniskirt&#39;: 0.3916422426700592, &#39;cowboy_shot&#39;: 0.38207799196243286, &#39;blue_jacket&#39;: 0.3614964485168457, &#39;sleeves_past_wrists&#39;: 0.3611966073513031, &#39;backpack&#39;: 0.32487112283706665, &#39;colored_tips&#39;: 0.314140260219574, &#39;sidelocks&#39;: 0.3062695264816284, &#39;black_jacket&#39;: 0.299169659614563, &#39;standing&#39;: 0.29005059599876404, &#39;charm_(object)&#39;: 0.22183549404144287, &#39;multiple_rings&#39;: 0.2172674536705017, &#39;open_jacket&#39;: 0.2046721875667572, &#39;ring&#39;: 0.18625634908676147, &#39;brown_skirt&#39;: 0.18045437335968018, &#39;contemporary&#39;: 0.13890522718429565}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;hu_tao_(genshin_impact)&#39;: 0.9779937267303467, &#39;boo_tao_(genshin_impact)&#39;: 0.8973554372787476}</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;general&#39;: 0.6215817332267761, &#39;sensitive&#39;: 0.3872501254081726}</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        For different models, the default format is different. That depends on the categories that model supported.</span>
+
+<span class="sd">        For example, for model `animetimm/mobilenetv3_large_150d.dbv4-full-witha &lt;https://huggingface.co/animetimm/mobilenetv3_large_150d.dbv4-full-witha&gt;`_</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.generic import multilabel_timm_predict</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; general, artist, character, rating = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;skadi.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full-witha&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; general</span>
+<span class="sd">        {&#39;1girl&#39;: 0.9938606023788452, &#39;long_hair&#39;: 0.9691187143325806, &#39;red_eyes&#39;: 0.9463587403297424, &#39;solo&#39;: 0.944723904132843, &#39;navel&#39;: 0.9439248442649841, &#39;breasts&#39;: 0.9335891008377075, &#39;sportswear&#39;: 0.8865424394607544, &#39;shorts&#39;: 0.8601726293563843, &#39;very_long_hair&#39;: 0.8445472717285156, &#39;outdoors&#39;: 0.83197021484375, &#39;midriff&#39;: 0.8274217247962952, &#39;shirt&#39;: 0.8188955783843994, &#39;short_sleeves&#39;: 0.8183804750442505, &#39;crop_top&#39;: 0.8089936971664429, &#39;gloves&#39;: 0.8038264513015747, &#39;black_gloves&#39;: 0.7703496813774109, &#39;thighs&#39;: 0.7689077854156494, &#39;holding&#39;: 0.768336832523346, &#39;looking_at_viewer&#39;: 0.739115834236145, &#39;large_breasts&#39;: 0.7282243967056274, &#39;sky&#39;: 0.6852632761001587, &#39;hair_between_eyes&#39;: 0.6799711585044861, &#39;stomach&#39;: 0.6694454550743103, &#39;baseball_bat&#39;: 0.6693665385246277, &#39;black_shorts&#39;: 0.6493985652923584, &#39;day&#39;: 0.6425715684890747, &#39;cowboy_shot&#39;: 0.6186742186546326, &#39;black_shirt&#39;: 0.5906491279602051, &#39;holding_baseball_bat&#39;: 0.5860112905502319, &#39;sweat&#39;: 0.5825777649879456, &#39;cloud&#39;: 0.5549533367156982, &#39;blue_sky&#39;: 0.5523971915245056, &#39;white_hair&#39;: 0.5324308276176453, &#39;grey_hair&#39;: 0.52657151222229, &#39;short_shorts&#39;: 0.4896492063999176, &#39;standing&#39;: 0.45526784658432007, &#39;parted_lips&#39;: 0.4306206703186035, &#39;blush&#39;: 0.4149143397808075, &#39;thigh_gap&#39;: 0.4124316871166229, &#39;ass_visible_through_thighs&#39;: 0.34030789136886597, &#39;artist_name&#39;: 0.2679593563079834, &#39;groin&#39;: 0.2652612328529358, &#39;blurry&#39;: 0.2548949122428894, &#39;baseball&#39;: 0.24870169162750244, &#39;crop_top_overhang&#39;: 0.2240566909313202, &#39;stretching&#39;: 0.2012709677219391, &#39;cropped_shirt&#39;: 0.19828352332115173, &#39;official_alternate_costume&#39;: 0.1960265338420868, &#39;toned&#39;: 0.13941210508346558, &#39;exercising&#39;: 0.11270403861999512, &#39;lens_flare&#39;: 0.10835999250411987, &#39;taut_clothes&#39;: 0.08783495426177979, &#39;taut_shirt&#39;: 0.08448180556297302, &#39;linea_alba&#39;: 0.06583884358406067}</span>
+<span class="sd">        &gt;&gt;&gt; artist</span>
+<span class="sd">        {}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;skadi_(arknights)&#39;: 0.8951651453971863}</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;sensitive&#39;: 0.9492285847663879}</span>
+
+<span class="sd">        Its default fmt is ``(&#39;general&#39;, &#39;artist&#39;, &#39;character&#39;, &#39;rating&#39;)``.</span>
+
+<span class="sd">        But you can easily get those information you need with a more controllable way with ``fmt``. See the next note.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The ``fmt`` argument can include the following keys:</span>
+
+<span class="sd">        - Category names: dicts containing category-specific tags and their confidences</span>
+<span class="sd">        - ``tag``: a dict containing all tags across categories and their confidences</span>
+<span class="sd">        - ``embedding``: a 1-dim embedding of image, recommended for index building after L2 normalization</span>
+<span class="sd">        - ``logits``: a 1-dim logits result of image</span>
+<span class="sd">        - ``prediction``: a 1-dim prediction result of image</span>
+
+<span class="sd">        You can extract specific category predictions or all tags based on your needs.</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.generic import multilabel_timm_predict</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # default usage</span>
+<span class="sd">        &gt;&gt;&gt; general, character, rating = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;skadi.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; general</span>
+<span class="sd">        {&#39;1girl&#39;: 0.9963783025741577, &#39;long_hair&#39;: 0.9685494899749756, &#39;solo&#39;: 0.9548443555831909, &#39;navel&#39;: 0.9415484666824341, &#39;breasts&#39;: 0.9369214177131653, &#39;red_eyes&#39;: 0.9019639492034912, &#39;shirt&#39;: 0.873087465763092, &#39;outdoors&#39;: 0.866461992263794, &#39;crop_top&#39;: 0.862577497959137, &#39;midriff&#39;: 0.8544420003890991, &#39;sportswear&#39;: 0.849435567855835, &#39;shorts&#39;: 0.8209151029586792, &#39;short_sleeves&#39;: 0.817188560962677, &#39;holding&#39;: 0.811793327331543, &#39;very_long_hair&#39;: 0.8082301616668701, &#39;gloves&#39;: 0.7840366363525391, &#39;black_gloves&#39;: 0.7765430808067322, &#39;thighs&#39;: 0.7542579770088196, &#39;looking_at_viewer&#39;: 0.7331588268280029, &#39;day&#39;: 0.7203925251960754, &#39;hair_between_eyes&#39;: 0.7121687531471252, &#39;large_breasts&#39;: 0.6990523338317871, &#39;baseball_bat&#39;: 0.6809443831443787, &#39;grey_hair&#39;: 0.6790007948875427, &#39;sky&#39;: 0.6716539263725281, &#39;stomach&#39;: 0.6698249578475952, &#39;sweat&#39;: 0.6454322934150696, &#39;black_shirt&#39;: 0.6270318031311035, &#39;cowboy_shot&#39;: 0.6216483116149902, &#39;blue_sky&#39;: 0.5898874998092651, &#39;black_shorts&#39;: 0.5445142984390259, &#39;holding_baseball_bat&#39;: 0.5013713836669922, &#39;white_hair&#39;: 0.4999670684337616, &#39;blush&#39;: 0.4860053062438965, &#39;cloud&#39;: 0.474183052778244, &#39;standing&#39;: 0.4724341332912445, &#39;thigh_gap&#39;: 0.4330931305885315, &#39;short_shorts&#39;: 0.39793258905410767, &#39;parted_lips&#39;: 0.36694538593292236, &#39;crop_top_overhang&#39;: 0.3321989178657532, &#39;official_alternate_costume&#39;: 0.3157039284706116, &#39;blurry&#39;: 0.24181532859802246, &#39;groin&#39;: 0.21906554698944092, &#39;ass_visible_through_thighs&#39;: 0.2188207507133484, &#39;cropped_shirt&#39;: 0.18700966238975525, &#39;taut_shirt&#39;: 0.08612403273582458, &#39;taut_clothes&#39;: 0.0701744556427002}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;skadi_(arknights)&#39;: 0.9796262979507446}</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;sensitive&#39;: 0.9580697417259216}</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # get rating and character only</span>
+<span class="sd">        &gt;&gt;&gt; rating, character = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;skadi.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;,</span>
+<span class="sd">        ...     fmt=(&#39;rating&#39;, &#39;character&#39;),</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; rating</span>
+<span class="sd">        {&#39;sensitive&#39;: 0.9580697417259216}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;skadi_(arknights)&#39;: 0.9796262979507446}</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # get embeddings only</span>
+<span class="sd">        &gt;&gt;&gt; embedding = multilabel_timm_predict(</span>
+<span class="sd">        ...     &#39;skadi.jpg&#39;,</span>
+<span class="sd">        ...     repo_id=&#39;animetimm/mobilenetv3_large_150d.dbv4-full&#39;,</span>
+<span class="sd">        ...     fmt=&#39;embedding&#39;,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; embedding.dtype, embedding.shape</span>
+<span class="sd">        (dtype(&#39;float32&#39;), (1280,))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">_open_models_for_repo_id</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">repo_id</span><span class="p">,</span>
+        <span class="n">hf_token</span><span class="o">=</span><span class="n">hf_token</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+        <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
+        <span class="n">preprocessor</span><span class="o">=</span><span class="n">preprocessor</span><span class="p">,</span>
+        <span class="n">thresholds</span><span class="o">=</span><span class="n">thresholds</span><span class="p">,</span>
+        <span class="n">use_tag_thresholds</span><span class="o">=</span><span class="n">use_tag_thresholds</span><span class="p">,</span>
+        <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.18.1
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.14.0/index.html">v0.14.0</a></dd>
+                        <dd><a href="../../../../v0.14.1/index.html">v0.14.1</a></dd>
+                        <dd><a href="../../../../v0.15.0/index.html">v0.15.0</a></dd>
+                        <dd><a href="../../../../v0.16.0/index.html">v0.16.0</a></dd>
+                        <dd><a href="../../../../v0.17.0/index.html">v0.17.0</a></dd>
+                        <dd><a href="../../../../v0.18.0/index.html">v0.18.0</a></dd>
+                        <dd><a href="multilabel_timm.html">v0.18.1</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../dev/attachments/index.html">dev/attachments</a></dd>
+                        <dd><a href="../../../../dev/pt/index.html">dev/pt</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
