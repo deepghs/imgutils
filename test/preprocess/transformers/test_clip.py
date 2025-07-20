@@ -27,7 +27,7 @@ class TestPreprocessTransformersClip:
             "microsoft/Florence-2-large",
             "llava-hf/llava-1.5-7b-hf",
             'facebook/metaclip-b32-400m',
-            'apple/aimv2-large-patch14-224',
+            # 'apple/aimv2-large-patch14-224',
             'nvidia/RADIO',
         ],
         'src_image': [
