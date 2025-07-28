@@ -2,6 +2,8 @@
 
 [![PyPI](https://img.shields.io/pypi/v/dghs-imgutils)](https://pypi.org/project/dghs-imgutils/)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/dghs-imgutils)
+![PyPI - Implementation](https://img.shields.io/pypi/implementation/dghs-imgutils)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/dghs-imgutils)
 ![Loc](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/narugo1992/8bfaa96eaa25cc9dac54debbf22d363d/raw/loc.json)
 ![Comments](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/narugo1992/8bfaa96eaa25cc9dac54debbf22d363d/raw/comments.json)
 
