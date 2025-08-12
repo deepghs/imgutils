@@ -7,7 +7,8 @@ Overview:
     project on Hugging Face.
 
 """
-from typing import List, Tuple
+from collections import defaultdict
+from typing import List, Tuple, Any, Optional, Mapping, Dict, Union
 
 import numpy as np
 import onnxruntime
@@ -19,7 +20,8 @@ from huggingface_hub import hf_hub_download
 from .format import remove_underline
 from .overlap import drop_overlap_tags
 from ..data import load_image, ImageTyping
-from ..utils import open_onnx_model, vreplace, sigmoid, ts_lru_cache
+from ..generic.attachment import open_attachment, Attachment
+from ..utils import open_onnx_model, vreplace, sigmoid, ts_lru_cache, vnames
 
 SWIN_MODEL_REPO = "SmilingWolf/wd-v1-4-swinv2-tagger-v2"
 CONV_MODEL_REPO = "SmilingWolf/wd-v1-4-convnext-tagger-v2"
@@ -188,7 +190,8 @@ def _postprocess_embedding(
         character_mcut_enabled: bool = False,
         no_underline: bool = False,
         drop_overlap: bool = False,
-        fmt=('rating', 'general', 'character'),
+        fmt: Any = ('rating', 'general', 'character'),
+        attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]] = None,
 ):
     """
     Post-process the embedding and prediction results.
@@ -211,9 +214,36 @@ def _postprocess_embedding(
     :type no_underline: bool
     :param drop_overlap: Whether to drop overlapping tags.
     :type drop_overlap: bool
-    :param fmt: The format of the output.
-    :return: The post-processed results.
+    :param fmt: Output format specification defining which components to include
+    :type fmt: Any
+    :param attachments: Additional model attachments for extended tagging capabilities
+    :type attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]]
+
+    :return: Processed tagging results in the specified format
+    :rtype: Any
+    :raises ValueError: If attachment configuration is invalid or incompatible
     """
+    attachments = dict(attachments or {})
+    d_attachments: Dict[str, Tuple[Attachment, dict]] = {}
+    for attach_name, attach_tpl in attachments.items():
+        if '/' in attach_name:
+            raise ValueError(f'Invalid attachment register name, no \'/\' required - {attach_name!r}.')
+
+        if len(attach_tpl) == 2:
+            (attach_repo_id, attach_model_name), attach_kwargs = attach_tpl, {}
+        elif len(attach_tpl) == 3:
+            attach_repo_id, attach_model_name, attach_kwargs = attach_tpl
+        else:
+            raise ValueError(f'Invalid attachment tuple for {attach_name!r}, '
+                             f'2 or 3 elements expected but {attach_tpl!r} found.')
+        attachment = open_attachment(repo_id=attach_repo_id, model_name=attach_model_name)
+        expected_encoder_model = f'wdtagger:{MODEL_NAMES[model_name]}'
+        if attachment.encoder_model != expected_encoder_model:
+            raise ValueError(f'Attachment encoder model not match, '
+                             f'{expected_encoder_model!r} expected but {attachment.encoder_model!r} found '
+                             f'for {attach_name!r}.')
+        d_attachments[attach_name] = (attachment, attach_kwargs)
+
     assert len(pred.shape) == len(embedding.shape) == 1, \
         f'Both pred and embeddings shapes should be 1-dim, ' \
         f'but pred: {pred.shape!r}, embedding: {embedding.shape!r} actually found.'
@@ -239,17 +269,27 @@ def _postprocess_embedding(
 
     character_res = {x: v.item() for x, v in character_names if v > character_threshold}
 
-    return vreplace(
-        fmt,
-        {
-            'rating': rating,
-            'general': general_res,
-            'character': character_res,
-            'tag': {**general_res, **character_res},
-            'embedding': embedding.astype(np.float32),
-            'prediction': pred.astype(np.float32),
-        }
-    )
+    mapping_values = {
+        'rating': rating,
+        'general': general_res,
+        'character': character_res,
+        'tag': {**general_res, **character_res},
+        'embedding': embedding.astype(np.float32),
+        'prediction': pred.astype(np.float32),
+    }
+
+    d_attach_infers = defaultdict(list)
+    for vname in vnames(fmt):
+        if '/' in vname and vname.split('/', maxsplit=1)[0] in d_attachments:
+            attach_name, attach_fmt_name = vname.split('/', maxsplit=1)
+            d_attach_infers[attach_name].append(attach_fmt_name)
+    for attach_name, attach_infer_names in d_attach_infers.items():
+        attachment, attach_kwargs = d_attachments[attach_name]
+        attach_infer_values = attachment.predict(embedding=embedding, fmt=attach_infer_names, **attach_kwargs)
+        attach_mapping_names = [f'{attach_name}/{name}' for name in attach_infer_names]
+        mapping_values.update(dict(zip(attach_mapping_names, attach_infer_values)))
+
+    return vreplace(fmt, mapping_values)
 
 
 def get_wd14_tags(
@@ -261,7 +301,8 @@ def get_wd14_tags(
         character_mcut_enabled: bool = False,
         no_underline: bool = False,
         drop_overlap: bool = False,
-        fmt=('rating', 'general', 'character'),
+        fmt: Any = ('rating', 'general', 'character'),
+        attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]] = None,
 ):
     """
     Get tags for an image using WD14 taggers.
@@ -287,7 +328,13 @@ def get_wd14_tags(
     :type drop_overlap: bool
     :param fmt: Return format, default is ``('rating', 'general', 'character')``.
         ``embedding`` is also supported for feature extraction.
+    :type fmt: Any
+    :param attachments: Additional model attachments for extended tagging capabilities
+    :type attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]]
+
     :return: Prediction result based on the provided fmt.
+    :rtype: Any
+    :raises ValueError: If attachment configuration is invalid or incompatible
 
     .. note::
         The fmt argument can include the following keys:
@@ -309,6 +356,44 @@ def get_wd14_tags(
 
         This embedding is valuable for constructing indices that enable rapid querying of images based on
         visual features within large-scale datasets.
+
+    .. note::
+        The attachment system allows integration of additional tagging models to extend the base WD14 tagger's capabilities.
+        Attachments are specified using a dictionary with the following format:
+
+        .. code-block:: python
+
+            attachments = {
+                'name': ('repo_id', 'model_name'),  # Basic format
+                'name': ('repo_id', 'model_name', {'threshold': 0.35})  # With additional parameters when predicting
+            }
+
+        The ``fmt`` argument can include attachment results using the format 'name/key', where:
+
+        - ``name``: The name specified in the attachments dictionary
+        - ``key``: The specific output type requested from the attachment
+
+        For example:
+
+        >>> from imgutils.tagging import get_wd14_tags
+        >>>
+        >>> # Using an attachment for additional style tagging
+        >>> results = get_wd14_tags(
+        ...     'image.jpg',
+        ...     attachments={'monochrome': ('deepghs/eattach_monochrome_experiments', 'mlp_layer1_seed1')},
+        ...     fmt=('general', 'monochrome/scores')
+        ... )
+        >>>
+        >>> # Results will include both base tags and attachment outputs
+        >>> print(results)
+        (
+            {'1girl': 0.99, ...},
+            {'monochrome': 0.999, 'normal': 0.001},
+        )
+
+        Multiple attachments can be used simultaneously, and each attachment can provide multiple output types
+        through its fmt specification. Ensure that attachment models are compatible with the base WD14 model's
+        embedding format.
 
     Example:
         Here are some images for example
@@ -356,6 +441,7 @@ def get_wd14_tags(
         no_underline=no_underline,
         drop_overlap=drop_overlap,
         fmt=fmt,
+        attachments=attachments,
     )
 
 
@@ -371,7 +457,8 @@ def convert_wd14_emb_to_prediction(
         character_mcut_enabled: bool = False,
         no_underline: bool = False,
         drop_overlap: bool = False,
-        fmt=('rating', 'general', 'character'),
+        fmt: Any = ('rating', 'general', 'character'),
+        attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]] = None,
         denormalize: bool = False,
         denormalizer_name: str = _DEFAULT_DENORMALIZER_NAME,
 ):
@@ -397,12 +484,16 @@ def convert_wd14_emb_to_prediction(
     :param drop_overlap: Remove overlapping tags to reduce redundancy
     :type drop_overlap: bool
     :param fmt: Specify return format structure for predictions, default is ``('rating', 'general', 'character')``.
-    :type fmt: tuple
+    :type fmt: Any
+    :param attachments: Additional model attachments for extended tagging capabilities
+    :type attachments: Optional[Mapping[str, Union[Tuple[str, str], Tuple[str, str, dict]]]]
     :param denormalize: Whether to denormalize the embedding before prediction
     :type denormalize: bool
     :param denormalizer_name: Name of the denormalizer to use if denormalization is enabled
     :type denormalizer_name: str
     :return: For single embeddings: prediction result based on fmt. For batches: list of prediction results.
+    :rtype: Any
+    :raises ValueError: If attachment configuration is invalid or incompatible
 
     .. note::
         Only the embeddings not get normalized can be converted to understandable prediction result.
@@ -452,6 +543,7 @@ def convert_wd14_emb_to_prediction(
             no_underline=no_underline,
             drop_overlap=drop_overlap,
             fmt=fmt,
+            attachments=attachments,
         )
     else:
         return [
@@ -466,6 +558,7 @@ def convert_wd14_emb_to_prediction(
                 no_underline=no_underline,
                 drop_overlap=drop_overlap,
                 fmt=fmt,
+                attachments=attachments,
             )
             for pred_item, emb_item in zip(pred, emb)
         ]
