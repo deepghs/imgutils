@@ -75,7 +75,7 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False):
         df_th.to_csv(os.path.join(upload_dir, 'thresholds.csv'), index=False)
 
         dummy_image = load_image(get_testfile('6125785.jpg'), mode='RGB', force_background='white')
-        dummy_input = handler.transform(dummy_image).unsqueeze(0)
+        dummy_input = handler.transform(dummy_image).unsqueeze(0).to(handler.device)
         wrapped_model, (conv_features, _) = get_model(handler.model, dummy_input)
         onnx_filename = os.path.join(upload_dir, 'model.onnx')
         with TemporaryDirectory() as td:
