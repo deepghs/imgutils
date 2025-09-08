@@ -91,7 +91,7 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False):
         with open(new_meta_file, 'w') as f:
             json.dump(meta_info, f, indent=4, sort_keys=True, ensure_ascii=False)
 
-        wrapped_model, (conv_features, _) = get_model(handler.model, dummy_input)
+        wrapped_model, (conv_features, _, _) = get_model(handler.model, dummy_input)
         conv_features = conv_features.detach().cpu()
         onnx_filename = os.path.join(upload_dir, 'model.onnx')
         with TemporaryDirectory() as td:
@@ -102,11 +102,12 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False):
                 dummy_input,
                 temp_model_onnx,
                 input_names=['input'],
-                output_names=['embedding', 'output'],
+                output_names=['embedding', 'logits', 'prediction'],
                 dynamic_axes={
                     'input': {0: 'batch_size'},
                     'embedding': {0: 'batch_size'},
-                    'output': {0: 'batch_size'},
+                    'logits': {0: 'batch_size'},
+                    'prediction': {0: 'batch_size'},
                 },
                 opset_version=14,
                 do_constant_folding=True,

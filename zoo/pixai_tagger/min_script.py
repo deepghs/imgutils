@@ -22,10 +22,11 @@ class TaggingHead(torch.nn.Module):
         self.input_dim = input_dim
         self.num_classes = num_classes
         self.head = torch.nn.Sequential(torch.nn.Linear(input_dim, num_classes))
+        self.sigmoid = torch.nn.Sigmoid()
 
     def forward(self, x):
         logits = self.head(x)
-        probs = torch.nn.functional.sigmoid(logits)
+        probs = self.sigmoid(logits)
         return probs
 
 
