@@ -9,6 +9,7 @@ import torch
 from ditk import logging
 from hbutils.system import TemporaryDirectory
 from hfutils.operate import get_hf_client, upload_directory_as_directory
+from hfutils.repository import hf_hub_repo_url
 
 from imgutils.data import load_image
 from imgutils.preprocess import parse_torchvision_transforms
@@ -119,7 +120,35 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False):
             logging.info(f'Similarity of the embeddings is {emb_sims:.5f}.')
             assert emb_sims >= 0.98, f'Similarity of the embeddings is {emb_sims:.5f}, ONNX validation failed.'
 
-        os.system(f'tree {upload_dir!r}')
+        with open(os.path.join(upload_dir, 'README.md'), 'w') as f:
+            print('---', file=f)
+            print('pipeline_tag: image-classification', file=f)
+            print('base_model:', file=f)
+            print(f'- {src_repo}', file=f)
+            print('language:', file=f)
+            print('- en', file=f)
+            print('tags:', file=f)
+            print('- image', file=f)
+            print('- dghs-imgutils', file=f)
+            print('library_name: dghs-imgutils', file=f)
+            print('license: mit', file=f)
+            print('---', file=f)
+            print('', file=f)
+
+            print(f'PixAI-Tagger ONNX Version for {src_repo}', file=f)
+            print(f'', file=f)
+
+            print(f'This is the ONNX-exported version of PixAI\'s tagger '
+                  f'[{src_repo}]({hf_hub_repo_url(repo_id=src_repo, repo_type="model")}).', file=f)
+            print(f'', file=f)
+
+            print(f'# How To Use', file=f)
+            print(f'', file=f)
+            print(f'```shell', file=f)
+            print(f'pip install -U dghs-imgutils', file=f)
+            print(f'```', file=f)
+            print(f'', file=f)
+
         upload_directory_as_directory(
             repo_id=dst_repo,
             repo_type='model',
