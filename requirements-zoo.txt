@@ -28,3 +28,4 @@ git+https://github.com/deepghs/waifuc.git@main#egg=waifuc
 pyquery
 httpx
 onnxslim==0.1.32
+calflops
