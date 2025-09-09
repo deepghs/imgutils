@@ -296,13 +296,14 @@ def get_pixai_tags(image: ImageTyping, model_name: str = 'v0.9',
         tags.update(cate_tags)
 
     values['tag'] = tags
-    ip_mapping, ip_counts = {}, defaultdict(lambda: 0)
+    ips_mapping, ips_counts = {}, defaultdict(lambda: 0)
     if 'ips' in df_tags.columns:
         for tag, _ in tags.items():
-            if tag in d_ips[tag]:
-                ip_mapping[tag] = d_ips[tag]
+            if tag in d_ips:
+                ips_mapping[tag] = d_ips[tag]
                 for ip_name in d_ips[tag]:
-                    ip_counts[ip_name] += 1
-    values['ips_mapping'] = ip_mapping
-    values['ips'] = [x for x, _ in sorted(ip_counts.items(), key=lambda x: (-x[1], x[0]))]
+                    ips_counts[ip_name] += 1
+    values['ips_mapping'] = ips_mapping
+    values['ips_count'] = dict(ips_counts)
+    values['ips'] = [x for x, _ in sorted(ips_counts.items(), key=lambda x: (-x[1], x[0]))]
     return vreplace(fmt, values)
