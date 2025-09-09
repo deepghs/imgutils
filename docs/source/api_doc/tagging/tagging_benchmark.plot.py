@@ -1,3 +1,4 @@
+import os
 import random
 
 from hfutils.cache import delete_cache
@@ -9,7 +10,8 @@ from imgutils.tagging import get_deepdanbooru_tags, get_wd14_tags, get_mldanboor
 
 class CleanModelStorageBenchmark(BaseBenchmark):
     def after_unload(self):
-        delete_cache()
+        if os.environ.get('CI'):
+            delete_cache()
 
 
 class DeepdanbooruBenchmark(CleanModelStorageBenchmark):
