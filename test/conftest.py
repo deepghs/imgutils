@@ -22,5 +22,8 @@ def text_aligner():
 
 @pytest.fixture(autouse=True, scope='module')
 def clean_hf_cache():
-    if os.environ.get('CI'):
-        delete_cache()
+    try:
+        yield
+    finally:
+        if os.environ.get('CI'):
+            delete_cache()
