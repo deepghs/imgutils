@@ -175,7 +175,7 @@ be customized to return specific categories or all tags together.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image to analyze (file path, PIL Image, numpy array, etc.)</p></li>
-<li><p><strong>model_name</strong> (<em>str</em>) – Name or path of the PixAI tagger model to use</p></li>
+<li><p><strong>model_name</strong> (<em>str</em>) – Name or repository ID of the PixAI tagger model to use</p></li>
 <li><p><strong>thresholds</strong> (<em>Union</em><em>[</em><em>float</em><em>, </em><em>Dict</em><em>[</em><em>Any</em><em>, </em><em>float</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Confidence threshold values. Can be a single float applied to all
 categories, or a dictionary mapping category IDs/names to specific thresholds</p></li>
 <li><p><strong>fmt</strong> (<em>Any</em>) – Output format specification. If FMT_UNSET, returns all available categories.
@@ -210,6 +210,16 @@ on detected characters</p></li>
 </ul>
 <p>Default category thresholds are used if not specified. These vary by model and category
 but typically range from 0.35 to 0.5.</p>
+<p>You can extract embedding of the given image with the following code</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.tagging</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_pixai_tags</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span> <span class="o">=</span> <span class="n">get_pixai_tags</span><span class="p">(</span><span class="s1">&#39;skadi.jpg&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;embedding&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">embedding</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(1024, )</span>
+</pre></div>
+</div>
+<p>This embedding is valuable for constructing indices that enable rapid querying of images based on
+visual features within large-scale datasets.</p>
 </div>
 <dl>
 <dt>Example::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.tagging.pixai</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_pixai_tags</span>

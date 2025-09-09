@@ -324,7 +324,7 @@
 
 <span class="sd">    :param image: The input image to analyze (file path, PIL Image, numpy array, etc.)</span>
 <span class="sd">    :type image: ImageTyping</span>
-<span class="sd">    :param model_name: Name or path of the PixAI tagger model to use</span>
+<span class="sd">    :param model_name: Name or repository ID of the PixAI tagger model to use</span>
 <span class="sd">    :type model_name: str</span>
 <span class="sd">    :param thresholds: Confidence threshold values. Can be a single float applied to all</span>
 <span class="sd">                      categories, or a dictionary mapping category IDs/names to specific thresholds</span>
@@ -356,6 +356,17 @@
 
 <span class="sd">        Default category thresholds are used if not specified. These vary by model and category</span>
 <span class="sd">        but typically range from 0.35 to 0.5.</span>
+
+<span class="sd">        You can extract embedding of the given image with the following code</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging import get_pixai_tags</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; embedding = get_pixai_tags(&#39;skadi.jpg&#39;, fmt=&#39;embedding&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; embedding.shape</span>
+<span class="sd">        (1024, )</span>
+
+<span class="sd">        This embedding is valuable for constructing indices that enable rapid querying of images based on</span>
+<span class="sd">        visual features within large-scale datasets.</span>
 
 <span class="sd">    Example::</span>
 <span class="sd">        &gt;&gt;&gt; from imgutils.tagging.pixai import get_pixai_tags</span>
@@ -426,16 +437,16 @@
         <span class="n">tags</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cate_tags</span><span class="p">)</span>
 
     <span class="n">values</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tags</span>
-    <span class="n">ips_mapping</span><span class="p">,</span> <span class="n">ips_counts</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">if</span> <span class="s1">&#39;ips&#39;</span> <span class="ow">in</span> <span class="n">df_tags</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">ips_mapping</span><span class="p">,</span> <span class="n">ips_counts</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tags</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">d_ips</span><span class="p">:</span>
                 <span class="n">ips_mapping</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_ips</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">ip_name</span> <span class="ow">in</span> <span class="n">d_ips</span><span class="p">[</span><span class="n">tag</span><span class="p">]:</span>
                     <span class="n">ips_counts</span><span class="p">[</span><span class="n">ip_name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">values</span><span class="p">[</span><span class="s1">&#39;ips_mapping&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ips_mapping</span>
-    <span class="n">values</span><span class="p">[</span><span class="s1">&#39;ips_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ips_counts</span><span class="p">)</span>
-    <span class="n">values</span><span class="p">[</span><span class="s1">&#39;ips&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ips_counts</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))]</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">&#39;ips_mapping&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ips_mapping</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">&#39;ips_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ips_counts</span><span class="p">)</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">&#39;ips&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ips_counts</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))]</span>
     <span class="k">return</span> <span class="n">vreplace</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
 </pre></div>
 
