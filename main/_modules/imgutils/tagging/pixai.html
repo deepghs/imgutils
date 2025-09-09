@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.tagging.pixai &mdash; imgutils 0.19.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=b3de8224"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.tagging.pixai</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.tagging.pixai</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Overview:</span>
+<span class="sd">    This module provides utilities for image tagging using PixAI taggers, which are specialized models</span>
+<span class="sd">    for analyzing anime-style images and extracting relevant tags. The module supports loading ONNX</span>
+<span class="sd">    models from Hugging Face Hub and processing images to generate categorized tags with confidence scores.</span>
+
+<span class="sd">    The models are originally developed by the PixAI team and available at </span>
+<span class="sd">    `pixai-labs &lt;https://huggingface.co/pixai-labs&gt;`_ on Hugging Face. This module uses ONNX-converted</span>
+<span class="sd">    versions of these models for efficient inference, available at </span>
+<span class="sd">    `deepghs &lt;https://huggingface.co/deepghs&gt;`_ repositories.</span>
+
+<span class="sd">    In addition to standard tagging, the models can identify anime character IP (Intellectual Property)</span>
+<span class="sd">    associations. For example, if a character like &quot;misaka_mikoto&quot; is detected, the system can map</span>
+<span class="sd">    this to the &quot;toaru_kagaku_no_railgun&quot; (A Certain Scientific Railgun) IP. All IP names follow</span>
+<span class="sd">    Danbooru-style tag conventions for consistency with existing anime tagging systems.</span>
+
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging.pixai import get_pixai_tags</span>
+<span class="sd">        &gt;&gt;&gt; # Get tags with default thresholds</span>
+<span class="sd">        &gt;&gt;&gt; result = get_pixai_tags(&#39;path/to/anime_image.jpg&#39;, model_name=&#39;v0.9&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; general_tags, character_tags = result</span>
+<span class="sd">        &gt;&gt;&gt; print(&quot;General tags:&quot;, general_tags)</span>
+<span class="sd">        &gt;&gt;&gt; print(&quot;Character tags:&quot;, character_tags)</span>
+
+<span class="sd">        &gt;&gt;&gt; # Get all tags in a single dictionary</span>
+<span class="sd">        &gt;&gt;&gt; all_tags = get_pixai_tags(&#39;path/to/image.jpg&#39;, fmt=&#39;tag&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(&quot;All tags:&quot;, all_tags)</span>
+
+<span class="sd">        &gt;&gt;&gt; # Get IP information for detected characters</span>
+<span class="sd">        &gt;&gt;&gt; ips = get_pixai_tags(&#39;path/to/image.jpg&#39;, fmt=&#39;ips&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(&quot;Detected IPs:&quot;, ips)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hbutils.design</span><span class="w"> </span><span class="kn">import</span> <span class="n">SingletonMark</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub</span><span class="w"> </span><span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">huggingface_hub.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">EntryNotFoundError</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">load_image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.preprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pillow_transforms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_onnx_model</span><span class="p">,</span> <span class="n">ts_lru_cache</span><span class="p">,</span> <span class="n">vreplace</span>
+
+<span class="n">FMT_UNSET</span> <span class="o">=</span> <span class="n">SingletonMark</span><span class="p">(</span><span class="s1">&#39;FMT_UNSET&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_repo_id</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the repository ID for the specified model name.</span>
+
+<span class="sd">    :param model_name: Name of the model (e.g., &#39;v0.9&#39;) or full repository path</span>
+<span class="sd">    :type model_name: str</span>
+
+<span class="sd">    :return: Full repository ID for Hugging Face Hub</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; _get_repo_id(&#39;v0.9&#39;)</span>
+<span class="sd">        &#39;deepghs/pixai-tagger-v0.9-onnx&#39;</span>
+<span class="sd">        &gt;&gt;&gt; _get_repo_id(&#39;custom/model-repo&#39;)</span>
+<span class="sd">        &#39;custom/model-repo&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">model_name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">model_name</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;deepghs/pixai-tagger-</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s1">-onnx&#39;</span>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_onnx_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load the ONNX model from Hugging Face Hub with caching.</span>
+
+<span class="sd">    This function downloads and loads the ONNX model file for the specified PixAI tagger.</span>
+<span class="sd">    Results are cached to avoid repeated downloads and model loading.</span>
+
+<span class="sd">    :param model_name: Name of the model to load</span>
+<span class="sd">    :type model_name: str</span>
+
+<span class="sd">    :return: The loaded ONNX model session</span>
+<span class="sd">    :rtype: onnxruntime.InferenceSession</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">open_onnx_model</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">_get_repo_id</span><span class="p">(</span><span class="n">model_name</span><span class="p">),</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;model.onnx&#39;</span><span class="p">,</span>
+    <span class="p">))</span>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_tags</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load the tag metadata from Hugging Face Hub with caching.</span>
+
+<span class="sd">    This function downloads and loads the CSV file containing tag names, categories,</span>
+<span class="sd">    and IP (Intellectual Property) associations for the specified model. The DataFrame</span>
+<span class="sd">    contains columns for tag names, categories, and other metadata including character</span>
+<span class="sd">    IP mappings when available.</span>
+
+<span class="sd">    :param model_name: Name of the model</span>
+<span class="sd">    :type model_name: str</span>
+
+<span class="sd">    :return: Tuple containing (DataFrame with tag information, dictionary mapping character tags to their IPs)</span>
+<span class="sd">    :rtype: Tuple[pd.DataFrame, Dict[str, List[str]]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df_tags</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+        <span class="n">repo_id</span><span class="o">=</span><span class="n">_get_repo_id</span><span class="p">(</span><span class="n">model_name</span><span class="p">),</span>
+        <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;selected_tags.csv&#39;</span><span class="p">,</span>
+    <span class="p">))</span>
+    <span class="n">d_ips</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="s1">&#39;ips&#39;</span> <span class="ow">in</span> <span class="n">df_tags</span><span class="p">:</span>
+        <span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;ips&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;ips&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">ips</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;ips&#39;</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">ips</span><span class="p">:</span>
+                <span class="n">d_ips</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ips</span>
+    <span class="k">return</span> <span class="n">df_tags</span><span class="p">,</span> <span class="n">d_ips</span>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_preprocess</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load the preprocessing pipeline configuration from Hugging Face Hub with caching.</span>
+
+<span class="sd">    This function downloads the preprocessing configuration and creates a PIL transforms</span>
+<span class="sd">    pipeline for image preprocessing before model inference.</span>
+
+<span class="sd">    :param model_name: Name of the model</span>
+<span class="sd">    :type model_name: str</span>
+
+<span class="sd">    :return: Preprocessing transform pipeline</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+            <span class="n">repo_id</span><span class="o">=</span><span class="n">_get_repo_id</span><span class="p">(</span><span class="n">model_name</span><span class="p">),</span>
+            <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;preprocess.json&#39;</span>
+    <span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data_</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">create_pillow_transforms</span><span class="p">(</span><span class="n">data_</span><span class="p">[</span><span class="s1">&#39;stages&#39;</span><span class="p">])</span>
+
+
+<span class="nd">@ts_lru_cache</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_open_default_category_thresholds</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load default category thresholds and names from the Hugging Face Hub with caching.</span>
+
+<span class="sd">    This function attempts to load predefined threshold values for each category from</span>
+<span class="sd">    a CSV file. If the file doesn&#39;t exist, empty dictionaries are returned.</span>
+
+<span class="sd">    :param model_name: Name of the model</span>
+<span class="sd">    :type model_name: str</span>
+
+<span class="sd">    :return: Tuple containing (category_thresholds, category_names) dictionaries</span>
+<span class="sd">    :rtype: tuple[Dict[int, float], Dict[int, str]]</span>
+
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; thresholds, names = _open_default_category_thresholds(&#39;v0.9&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(thresholds)  # {0: 0.35, 1: 0.4, ...}</span>
+<span class="sd">        &gt;&gt;&gt; print(names)      # {0: &#39;general&#39;, 1: &#39;character&#39;, ...}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_default_category_thresholds</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">_category_names</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">df_category_thresholds</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">hf_hub_download</span><span class="p">(</span>
+            <span class="n">repo_id</span><span class="o">=</span><span class="n">_get_repo_id</span><span class="p">(</span><span class="n">model_name</span><span class="p">),</span>
+            <span class="n">repo_type</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+            <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;thresholds.csv&#39;</span>
+        <span class="p">),</span> <span class="n">keep_default_na</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">EntryNotFoundError</span><span class="p">,):</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">df_category_thresholds</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_default_category_thresholds</span><span class="p">:</span>
+                <span class="n">_default_category_thresholds</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;threshold&#39;</span><span class="p">]</span>
+            <span class="n">_category_names</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">_default_category_thresholds</span><span class="p">,</span> <span class="n">_category_names</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_raw_predict</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make a raw prediction with the PixAI tagger model.</span>
+
+<span class="sd">    This function preprocesses the input image and runs inference using the specified</span>
+<span class="sd">    ONNX model. It returns the raw model outputs without any post-processing or</span>
+<span class="sd">    threshold application.</span>
+
+<span class="sd">    :param image: The input image to analyze</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param model_name: Name of the model to use for prediction</span>
+<span class="sd">    :type model_name: str</span>
+
+<span class="sd">    :return: Dictionary containing raw model outputs with keys like &#39;prediction&#39;, &#39;embedding&#39;, &#39;logits&#39;</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; raw_output = _raw_predict(&#39;anime_image.jpg&#39;, &#39;v0.9&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(raw_output.keys())  # dict_keys([&#39;prediction&#39;, &#39;embedding&#39;, &#39;logits&#39;])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">force_background</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">_open_onnx_model</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="n">trans</span> <span class="o">=</span> <span class="n">_open_preprocess</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="n">input_</span> <span class="o">=</span> <span class="n">trans</span><span class="p">(</span><span class="n">image</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">output_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">output</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">get_outputs</span><span class="p">()]</span>
+    <span class="n">output_values</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">output_names</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;input&#39;</span><span class="p">:</span> <span class="n">input_</span><span class="p">})</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">output_names</span><span class="p">,</span> <span class="n">output_values</span><span class="p">)}</span>
+
+
+<div class="viewcode-block" id="get_pixai_tags"><a class="viewcode-back" href="../../../api_doc/tagging/pixai.html#imgutils.tagging.pixai.get_pixai_tags">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_pixai_tags</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageTyping</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;v0.9&#39;</span><span class="p">,</span>
+                   <span class="n">thresholds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">FMT_UNSET</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract tags from an image using PixAI tagger models.</span>
+
+<span class="sd">    This function processes an image through a PixAI tagger model and applies confidence</span>
+<span class="sd">    thresholds to determine which tags to include in the results. The output format can</span>
+<span class="sd">    be customized to return specific categories or all tags together.</span>
+
+<span class="sd">    :param image: The input image to analyze (file path, PIL Image, numpy array, etc.)</span>
+<span class="sd">    :type image: ImageTyping</span>
+<span class="sd">    :param model_name: Name or repository ID of the PixAI tagger model to use</span>
+<span class="sd">    :type model_name: str</span>
+<span class="sd">    :param thresholds: Confidence threshold values. Can be a single float applied to all</span>
+<span class="sd">                      categories, or a dictionary mapping category IDs/names to specific thresholds</span>
+<span class="sd">    :type thresholds: Union[float, Dict[Any, float]], optional</span>
+<span class="sd">    :param fmt: Output format specification. If FMT_UNSET, returns all available categories.</span>
+<span class="sd">               Can be a tuple of category names to include in output</span>
+<span class="sd">    :type fmt: Any</span>
+
+<span class="sd">    :return: Formatted prediction results. Default returns tuple of (general_tags, character_tags, ...)</span>
+<span class="sd">            based on available categories. Can return custom format based on fmt parameter</span>
+<span class="sd">    :rtype: Any</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The fmt parameter can include the following keys:</span>
+
+<span class="sd">        - Category names (e.g., &#39;general&#39;, &#39;character&#39;): dictionaries containing category-specific</span>
+<span class="sd">          tags and their confidence scores</span>
+<span class="sd">        - ``tag``: a dictionary containing all tags across categories and their confidences</span>
+<span class="sd">        - ``embedding``: a 1-dimensional embedding vector of the image, recommended for similarity</span>
+<span class="sd">          search after L2 normalization</span>
+<span class="sd">        - ``logits``: raw 1-dimensional logits output from the model</span>
+<span class="sd">        - ``prediction``: 1-dimensional prediction probabilities from the model</span>
+<span class="sd">        - ``ips_mapping``: a dictionary mapping detected character tags to their associated</span>
+<span class="sd">          IP (Intellectual Property) names in Danbooru-style format</span>
+<span class="sd">        - ``ips_count``: a dictionary containing IP names and their occurrence counts based</span>
+<span class="sd">          on detected characters</span>
+<span class="sd">        - ``ips``: a list of IP names sorted by occurrence count (descending) and name</span>
+<span class="sd">          (ascending), representing the most likely anime/game series in the image</span>
+
+<span class="sd">        Default category thresholds are used if not specified. These vary by model and category</span>
+<span class="sd">        but typically range from 0.35 to 0.5.</span>
+
+<span class="sd">        You can extract embedding of the given image with the following code</span>
+
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging import get_pixai_tags</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; embedding = get_pixai_tags(&#39;skadi.jpg&#39;, fmt=&#39;embedding&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; embedding.shape</span>
+<span class="sd">        (1024, )</span>
+
+<span class="sd">        This embedding is valuable for constructing indices that enable rapid querying of images based on</span>
+<span class="sd">        visual features within large-scale datasets.</span>
+
+<span class="sd">    Example::</span>
+<span class="sd">        &gt;&gt;&gt; from imgutils.tagging.pixai import get_pixai_tags</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Get tags with default format (all categories)</span>
+<span class="sd">        &gt;&gt;&gt; general_tags, character_tags = get_pixai_tags(&#39;anime_image.jpg&#39;, model_name=&#39;v0.9&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(&quot;General tags:&quot;, general_tags)</span>
+<span class="sd">        &gt;&gt;&gt; print(&quot;Character tags:&quot;, character_tags)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Get all tags in a single dictionary</span>
+<span class="sd">        &gt;&gt;&gt; all_tags = get_pixai_tags(&#39;image.jpg&#39;, fmt=&#39;tag&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(&quot;All tags:&quot;, all_tags)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Use custom thresholds</span>
+<span class="sd">        &gt;&gt;&gt; result = get_pixai_tags(&#39;image.jpg&#39;, thresholds={&#39;general&#39;: 0.3, &#39;character&#39;: 0.5})</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Get embedding for similarity search</span>
+<span class="sd">        &gt;&gt;&gt; embedding = get_pixai_tags(&#39;image.jpg&#39;, fmt=&#39;embedding&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; # Normalize for cosine similarity</span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; normalized_embedding = embedding / np.linalg.norm(embedding)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Get IP information for character identification</span>
+<span class="sd">        &gt;&gt;&gt; ips_mapping = get_pixai_tags(&#39;image.jpg&#39;, fmt=&#39;ips_mapping&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(&quot;Character to IP mapping:&quot;, ips_mapping)</span>
+<span class="sd">        &gt;&gt;&gt; # Example output: {&#39;misaka_mikoto&#39;: [&#39;toaru_kagaku_no_railgun&#39;], &#39;hu_tao_(genshin_impact)&#39;: [&#39;genshin_impact&#39;]}</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; # Get most likely anime/game series</span>
+<span class="sd">        &gt;&gt;&gt; top_ips = get_pixai_tags(&#39;image.jpg&#39;, fmt=&#39;ips&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(&quot;Most likely series:&quot;, top_ips)</span>
+<span class="sd">        &gt;&gt;&gt; # Example output: [&#39;genshin_impact&#39;, &#39;toaru_kagaku_no_railgun&#39;]</span>
+
+<span class="sd">        Here are some images for example</span>
+
+<span class="sd">        .. image:: tagging_demo.plot.py.svg</span>
+<span class="sd">           :align: center</span>
+
+<span class="sd">        &gt;&gt;&gt; general, character = get_pixai_tags(&#39;skadi.jpg&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; general</span>
+<span class="sd">        {&#39;patreon_username&#39;: 0.9988852739334106, &#39;baseball_bat&#39;: 0.9977256059646606, &#39;holding_baseball_bat&#39;: 0.9858889579772949, &#39;navel&#39;: 0.9830228090286255, &#39;crop_top&#39;: 0.9666315317153931, &#39;sportswear&#39;: 0.9664723873138428, &#39;1girl&#39;: 0.9572311639785767, &#39;long_hair&#39;: 0.9550737738609314, &#39;outdoors&#39;: 0.9501817226409912, &#39;solo&#39;: 0.9466996788978577, &#39;day&#39;: 0.9394471049308777, &#39;breasts&#39;: 0.938787579536438, &#39;web_address&#39;: 0.9387772679328918, &#39;stomach&#39;: 0.935083270072937, &#39;red_eyes&#39;: 0.9326196908950806, &#39;shorts&#39;: 0.9305683374404907, &#39;motion_blur&#39;: 0.9278550148010254, &#39;playing_sports&#39;: 0.9263769388198853, &#39;blue_sky&#39;: 0.9213213920593262, &#39;midriff&#39;: 0.9191423654556274, &#39;large_breasts&#39;: 0.9174768924713135, &#39;artist_name&#39;: 0.9089528322219849, &#39;sky&#39;: 0.9054281711578369, &#39;baseball&#39;: 0.904181957244873, &#39;gloves&#39;: 0.9033604860305786, &#39;thighs&#39;: 0.893738865852356, &#39;black_shorts&#39;: 0.8926981687545776, &#39;volleyball&#39;: 0.8198539614677429, &#39;very_long_hair&#39;: 0.7967187166213989, &#39;short_shorts&#39;: 0.7873305082321167, &#39;black_gloves&#39;: 0.7765249013900757, &#39;white_hair&#39;: 0.770541787147522, &#39;baseball_mitt&#39;: 0.7684446573257446, &#39;thigh_gap&#39;: 0.73811936378479, &#39;sweat&#39;: 0.7263807654380798, &#39;cowboy_shot&#39;: 0.7235408425331116, &#39;short_sleeves&#39;: 0.7062878012657166, &#39;parted_lips&#39;: 0.7025120258331299, &#39;patreon_logo&#39;: 0.6970672607421875, &#39;cloud&#39;: 0.6967148780822754, &#39;looking_at_viewer&#39;: 0.6898926496505737, &#39;holding&#39;: 0.6879030466079712, &#39;swinging&#39;: 0.6736525893211365, &#39;ass_visible_through_thighs&#39;: 0.6636734008789062, &#39;elbow_pads&#39;: 0.6630151867866516, &#39;shirt&#39;: 0.6250661611557007, &#39;hair_between_eyes&#39;: 0.6075361967086792, &#39;standing&#39;: 0.5285079479217529, &#39;black_shirt&#39;: 0.5173394680023193, &#39;linea_alba&#39;: 0.513701319694519, &#39;baseball_uniform&#39;: 0.48175835609436035, &#39;crop_top_overhang&#39;: 0.4682246744632721, &#39;ball&#39;: 0.43616628646850586, &#39;blurry&#39;: 0.4201475977897644, &#39;baseball_stadium&#39;: 0.41493287682533264, &#39;grey_hair&#39;: 0.39384859800338745, &#39;watermark&#39;: 0.3919041156768799, &#39;black_sports_bra&#39;: 0.3877854645252228, &#39;fanbox_username&#39;: 0.3790855407714844, &#39;narrow_waist&#39;: 0.36392998695373535}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;skadi_(arknights)&#39;: 0.8926791548728943}</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; general, character = get_pixai_tags(&#39;hutao.jpg&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; general</span>
+<span class="sd">        {&#39;bag&#39;: 0.9833353757858276, &#39;backpack&#39;: 0.9766197204589844, &#39;flower-shaped_pupils&#39;: 0.962916910648346, &#39;tongue_out&#39;: 0.960152804851532, &#39;tongue&#39;: 0.9526823163032532, &#39;ghost&#39;: 0.9514724016189575, &#39;plaid_skirt&#39;: 0.9499615430831909, &#39;1girl&#39;: 0.9378864765167236, &#39;skirt&#39;: 0.9353114366531372, &#39;bag_charm&#39;: 0.9314961433410645, &#39;symbol-shaped_pupils&#39;: 0.9252510070800781, &#39;charm_(object)&#39;: 0.9249529242515564, &#39;twintails&#39;: 0.9239017367362976, &#39;flower&#39;: 0.9175764322280884, &#39;outdoors&#39;: 0.9175151586532593, &#39;hair_ornament&#39;: 0.9161680936813354, &#39;plaid_clothes&#39;: 0.9144806861877441, &#39;long_hair&#39;: 0.8768749833106995, &#39;pleated_skirt&#39;: 0.8597153425216675, &#39;school_uniform&#39;: 0.8573414087295532, &#39;looking_at_viewer&#39;: 0.8392735719680786, &#39;:p&#39;: 0.8193913698196411, &#39;hair_between_eyes&#39;: 0.8070638179779053, &#39;hair_flower&#39;: 0.8054562211036682, &#39;nail_polish&#39;: 0.8011300563812256, &#39;building&#39;: 0.7961824536323547, &#39;jacket&#39;: 0.7647742629051208, &#39;brown_hair&#39;: 0.7541910409927368, &#39;solo&#39;: 0.7539198398590088, &#39;long_sleeves&#39;: 0.7471930980682373, &#39;ahoge&#39;: 0.7171378135681152, &#39;hair_ribbon&#39;: 0.6994943618774414, &#39;red_eyes&#39;: 0.6819245219230652, &#39;bowtie&#39;: 0.6639955043792725, &#39;sidelocks&#39;: 0.6275356411933899, &#39;bush&#39;: 0.6164096593856812, &#39;gate&#39;: 0.612525224685669, &#39;smile&#39;: 0.6077383160591125, &#39;shirt&#39;: 0.6042965650558472, &#39;contemporary&#39;: 0.5968752503395081, &#39;brick_floor&#39;: 0.5933602452278137, &#39;cardigan&#39;: 0.5810519456863403, &#39;gradient_hair&#39;: 0.5570307970046997, &#39;diagonal-striped_bowtie&#39;: 0.5565160512924194, &#39;alternate_costume&#39;: 0.5535630583763123, &#39;school_bag&#39;: 0.5535626411437988, &#39;black_hair&#39;: 0.5434530973434448, &#39;ribbon&#39;: 0.5332301259040833, &#39;hairclip&#39;: 0.523446261882782, &#39;day&#39;: 0.5164296627044678, &#39;street&#39;: 0.49987316131591797, &#39;bow&#39;: 0.4941294193267822, &#39;plum_blossoms&#39;: 0.4940766990184784, &#39;collared_shirt&#39;: 0.49013280868530273, &#39;standing&#39;: 0.4820355772972107, &#39;blue_cardigan&#39;: 0.47836002707481384, &#39;cowboy_shot&#39;: 0.4782080054283142, &#39;pocket&#39;: 0.477585107088089, &#39;pavement&#39;: 0.4712265729904175, &#39;multicolored_hair&#39;: 0.4610708951950073, &#39;blue_jacket&#39;: 0.45271334052085876, &#39;blush&#39;: 0.45005902647972107, &#39;sleeves_past_wrists&#39;: 0.440649151802063, &#39;black_nails&#39;: 0.4402858316898346, &#39;black_bag&#39;: 0.4206739366054535, &#39;miniskirt&#39;: 0.4187837243080139, &#39;red_bow&#39;: 0.414681613445282, &#39;very_long_hair&#39;: 0.4129619002342224, &#39;diagonal-striped_clothes&#39;: 0.4112803339958191, &#39;blazer&#39;: 0.40750616788864136, &#39;striped_bowtie&#39;: 0.40123170614242554, &#39;sunlight&#39;: 0.4008329212665558, &#39;grey_skirt&#39;: 0.3930213749408722, &#39;road&#39;: 0.3819067180156708, &#39;black_ribbon&#39;: 0.3776353895664215, &#39;thighs&#39;: 0.3722286820411682, &#39;hug&#39;: 0.37215015292167664, &#39;brick_wall&#39;: 0.3717171549797058, &#39;white_shirt&#39;: 0.3694952428340912, &#39;open_clothes&#39;: 0.36442798376083374, &#39;open_jacket&#39;: 0.3525886535644531, &#39;:d&#39;: 0.3343055844306946, &#39;multicolored_nails&#39;: 0.32190075516700745, &#39;red_bowtie&#39;: 0.3157669007778168, &#39;star-shaped_pupils&#39;: 0.309164822101593, &#39;open_mouth&#39;: 0.30890953540802, &#39;beads&#39;: 0.3084579110145569, &#39;stone_stairs&#39;: 0.30559882521629333, &#39;randoseru&#39;: 0.30517613887786865}</span>
+<span class="sd">        &gt;&gt;&gt; character</span>
+<span class="sd">        {&#39;hu_tao_(genshin_impact)&#39;: 0.9997367858886719, &#39;boo_tao_(genshin_impact)&#39;: 0.999537467956543}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df_tags</span><span class="p">,</span> <span class="n">d_ips</span> <span class="o">=</span> <span class="n">_open_tags</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">_raw_predict</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="s1">&#39;prediction&#39;</span><span class="p">]</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">default_category_thresholds</span><span class="p">,</span> <span class="n">category_names</span> <span class="o">=</span> <span class="n">_open_default_category_thresholds</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="n">FMT_UNSET</span><span class="p">:</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())))</span>
+
+    <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">category</span>
+        <span class="n">tag_names</span> <span class="o">=</span> <span class="n">df_tags</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">][</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">category_pred</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">thresholds</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> \
+                <span class="p">(</span><span class="n">category</span> <span class="ow">in</span> <span class="n">thresholds</span> <span class="ow">or</span> <span class="n">category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">:</span>
+                <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">:</span>
+                <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Should not reach this line&#39;</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">default_category_thresholds</span><span class="p">:</span>
+                <span class="n">category_threshold</span> <span class="o">=</span> <span class="n">default_category_thresholds</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">category_threshold</span> <span class="o">=</span> <span class="mf">0.4</span>
+
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">category_pred</span> <span class="o">&gt;=</span> <span class="n">category_threshold</span>
+        <span class="n">tag_names</span> <span class="o">=</span> <span class="n">tag_names</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">category_pred</span> <span class="o">=</span> <span class="n">category_pred</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">cate_tags</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tag_names</span><span class="p">,</span> <span class="n">category_pred</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+        <span class="n">values</span><span class="p">[</span><span class="n">category_names</span><span class="p">[</span><span class="n">category</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cate_tags</span>
+        <span class="n">tags</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cate_tags</span><span class="p">)</span>
+
+    <span class="n">values</span><span class="p">[</span><span class="s1">&#39;tag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tags</span>
+    <span class="k">if</span> <span class="s1">&#39;ips&#39;</span> <span class="ow">in</span> <span class="n">df_tags</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">ips_mapping</span><span class="p">,</span> <span class="n">ips_counts</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">tags</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">d_ips</span><span class="p">:</span>
+                <span class="n">ips_mapping</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_ips</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">ip_name</span> <span class="ow">in</span> <span class="n">d_ips</span><span class="p">[</span><span class="n">tag</span><span class="p">]:</span>
+                    <span class="n">ips_counts</span><span class="p">[</span><span class="n">ip_name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">&#39;ips_mapping&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ips_mapping</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">&#39;ips_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ips_counts</span><span class="p">)</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">&#39;ips&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ips_counts</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))]</span>
+    <span class="k">return</span> <span class="n">vreplace</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: main
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.14.0/index.html">v0.14.0</a></dd>
+                        <dd><a href="../../../../v0.14.1/index.html">v0.14.1</a></dd>
+                        <dd><a href="../../../../v0.15.0/index.html">v0.15.0</a></dd>
+                        <dd><a href="../../../../v0.16.0/index.html">v0.16.0</a></dd>
+                        <dd><a href="../../../../v0.17.0/index.html">v0.17.0</a></dd>
+                        <dd><a href="../../../../v0.18.0/index.html">v0.18.0</a></dd>
+                        <dd><a href="../../../../v0.18.1/index.html">v0.18.1</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="pixai.html">main</a></dd>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../dev/attachments/index.html">dev/attachments</a></dd>
+                        <dd><a href="../../../../dev/pt/index.html">dev/pt</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
