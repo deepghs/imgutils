@@ -189,9 +189,22 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False, show_current_r
                       f'{len(df_tags[df_tags["category"] == category])}', file=f)
             print(f'', file=f)
 
-            print(f'## How to Use', file=f)
+            print(f'## Thresholds', file=f)
+            print(f'', file=f)
+            ths = []
+            for item in df_th.to_dict('records'):
+                ths.append({
+                    'Category': item['category'],
+                    'Name': item['name'],
+                    'Count': len(df_tags[df_tags['category'] == item['category']]),
+                    'Threshold': item['threshold'],
+                })
+            df_th_shown = pd.DataFrame(ths)
+            print(df_th_shown.to_markdown(index=False), file=f)
             print(f'', file=f)
 
+            print(f'## How to Use', file=f)
+            print(f'', file=f)
             imgutils_version = str(vpip('dghs-imgutils')._actual_version)
             sample_input = dummy_image
             if min(sample_input.width, sample_input.height) > 640:
