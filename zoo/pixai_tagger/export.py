@@ -60,7 +60,7 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False):
                     exts.append([])
             else:
                 exts.append([])
-        df_tags['ips'] = exts
+        df_tags['ips'] = list(map(json.dumps, exts))
         logging.info(f'Tags:\n{df_tags}')
         df_tags.to_csv(os.path.join(upload_dir, 'selected_tags.csv'), index=False)
 
