@@ -12,6 +12,7 @@ imgutils.tagging
     mldanbooru
     wd14
     camie
+    pixai
     deepdanbooru
     deepgelbooru
     format
