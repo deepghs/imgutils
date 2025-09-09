@@ -34,7 +34,7 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False):
     meta_info['repo_id'] = src_repo
     with TemporaryDirectory() as upload_dir:
         preprocessor = handler.transform
-        preprocessor_file = os.path.join(upload_dir, 'preprocessor.json')
+        preprocessor_file = os.path.join(upload_dir, 'preprocess.json')
         logging.info(f'Dumping preprocessor:\n{preprocessor}\nto file {preprocessor_file!r}.')
         with open(preprocessor_file, 'w') as f:
             json.dump({
@@ -217,7 +217,8 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False):
             repo_type='model',
             local_directory=upload_dir,
             path_in_repo='.',
-            message=f'Upload ONNX export of model {src_repo!r}'
+            message=f'Upload ONNX export of model {src_repo!r}',
+            clear=True,
         )
 
     # print(df_tags)
