@@ -220,7 +220,7 @@ def get_pixai_tags(image: ImageTyping, model_name: str = 'v0.9',
 
     :param image: The input image to analyze (file path, PIL Image, numpy array, etc.)
     :type image: ImageTyping
-    :param model_name: Name or path of the PixAI tagger model to use
+    :param model_name: Name or repository ID of the PixAI tagger model to use
     :type model_name: str
     :param thresholds: Confidence threshold values. Can be a single float applied to all
                       categories, or a dictionary mapping category IDs/names to specific thresholds
@@ -252,6 +252,17 @@ def get_pixai_tags(image: ImageTyping, model_name: str = 'v0.9',
 
         Default category thresholds are used if not specified. These vary by model and category
         but typically range from 0.35 to 0.5.
+
+        You can extract embedding of the given image with the following code
+
+        >>> from imgutils.tagging import get_pixai_tags
+        >>>
+        >>> embedding = get_pixai_tags('skadi.jpg', fmt='embedding')
+        >>> embedding.shape
+        (1024, )
+
+        This embedding is valuable for constructing indices that enable rapid querying of images based on
+        visual features within large-scale datasets.
 
     Example::
         >>> from imgutils.tagging.pixai import get_pixai_tags
@@ -322,14 +333,14 @@ def get_pixai_tags(image: ImageTyping, model_name: str = 'v0.9',
         tags.update(cate_tags)
 
     values['tag'] = tags
-    ips_mapping, ips_counts = {}, defaultdict(lambda: 0)
     if 'ips' in df_tags.columns:
+        ips_mapping, ips_counts = {}, defaultdict(lambda: 0)
         for tag, _ in tags.items():
             if tag in d_ips:
                 ips_mapping[tag] = d_ips[tag]
                 for ip_name in d_ips[tag]:
                     ips_counts[ip_name] += 1
-    values['ips_mapping'] = ips_mapping
-    values['ips_count'] = dict(ips_counts)
-    values['ips'] = [x for x, _ in sorted(ips_counts.items(), key=lambda x: (-x[1], x[0]))]
+        values['ips_mapping'] = ips_mapping
+        values['ips_count'] = dict(ips_counts)
+        values['ips'] = [x for x, _ in sorted(ips_counts.items(), key=lambda x: (-x[1], x[0]))]
     return vreplace(fmt, values)
