@@ -1,6 +1,8 @@
+from unittest import skipUnless
 from unittest.mock import patch
 
 import pytest
+from hbutils.testing import vpip
 from huggingface_hub import configure_http_backend
 from huggingface_hub.utils import reset_sessions
 
@@ -52,6 +54,7 @@ class TestGenericYOLO:
         ) == []
 
     @patch("huggingface_hub.constants.HF_HUB_OFFLINE", True)
+    @skipUnless(vpip('huggingface_hub') < '0.34', 'Has problem on huggingface 0.34+')
     def test_detect_faces_with_offline_mode(self, clean_session):
         configure_http_backend()
         detection = yolo_predict(
