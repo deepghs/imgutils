@@ -9,6 +9,11 @@ Overview:
     versions of these models for efficient inference, available at 
     `deepghs <https://huggingface.co/deepghs>`_ repositories.
 
+    In addition to standard tagging, the models can identify anime character IP (Intellectual Property)
+    associations. For example, if a character like "misaka_mikoto" is detected, the system can map
+    this to the "toaru_kagaku_no_railgun" (A Certain Scientific Railgun) IP. All IP names follow
+    Danbooru-style tag conventions for consistency with existing anime tagging systems.
+
     Example::
         >>> from imgutils.tagging.pixai import get_pixai_tags
         >>> # Get tags with default thresholds
@@ -20,6 +25,10 @@ Overview:
         >>> # Get all tags in a single dictionary
         >>> all_tags = get_pixai_tags('path/to/image.jpg', fmt='tag')
         >>> print("All tags:", all_tags)
+
+        >>> # Get IP information for detected characters
+        >>> ips = get_pixai_tags('path/to/image.jpg', fmt='ips')
+        >>> print("Detected IPs:", ips)
 """
 
 import json
@@ -86,15 +95,16 @@ def _open_tags(model_name: str) -> Tuple[pd.DataFrame, Dict[str, List[str]]]:
     """
     Load the tag metadata from Hugging Face Hub with caching.
 
-    This function downloads and loads the CSV file containing tag names and categories
-    for the specified model. The DataFrame contains columns for tag names, categories,
-    and other metadata.
+    This function downloads and loads the CSV file containing tag names, categories,
+    and IP (Intellectual Property) associations for the specified model. The DataFrame
+    contains columns for tag names, categories, and other metadata including character
+    IP mappings when available.
 
     :param model_name: Name of the model
     :type model_name: str
 
-    :return: DataFrame containing tag information with columns like 'name', 'category'
-    :rtype: pd.DataFrame
+    :return: Tuple containing (DataFrame with tag information, dictionary mapping character tags to their IPs)
+    :rtype: Tuple[pd.DataFrame, Dict[str, List[str]]]
     """
     df_tags = pd.read_csv(hf_hub_download(
         repo_id=_get_repo_id(model_name),
@@ -212,7 +222,7 @@ def get_pixai_tags(image: ImageTyping, model_name: str = 'v0.9',
     :type image: ImageTyping
     :param model_name: Name or path of the PixAI tagger model to use
     :type model_name: str
-    :param thresholds: Confidence threshold values. Can be a single float applied to all 
+    :param thresholds: Confidence threshold values. Can be a single float applied to all
                       categories, or a dictionary mapping category IDs/names to specific thresholds
     :type thresholds: Union[float, Dict[Any, float]], optional
     :param fmt: Output format specification. If FMT_UNSET, returns all available categories.
@@ -226,37 +236,53 @@ def get_pixai_tags(image: ImageTyping, model_name: str = 'v0.9',
     .. note::
         The fmt parameter can include the following keys:
 
-        - Category names (e.g., 'general', 'character'): dictionaries containing category-specific 
+        - Category names (e.g., 'general', 'character'): dictionaries containing category-specific
           tags and their confidence scores
         - ``tag``: a dictionary containing all tags across categories and their confidences
-        - ``embedding``: a 1-dimensional embedding vector of the image, recommended for similarity 
+        - ``embedding``: a 1-dimensional embedding vector of the image, recommended for similarity
           search after L2 normalization
         - ``logits``: raw 1-dimensional logits output from the model
         - ``prediction``: 1-dimensional prediction probabilities from the model
+        - ``ips_mapping``: a dictionary mapping detected character tags to their associated
+          IP (Intellectual Property) names in Danbooru-style format
+        - ``ips_count``: a dictionary containing IP names and their occurrence counts based
+          on detected characters
+        - ``ips``: a list of IP names sorted by occurrence count (descending) and name
+          (ascending), representing the most likely anime/game series in the image
 
         Default category thresholds are used if not specified. These vary by model and category
         but typically range from 0.35 to 0.5.
 
     Example::
         >>> from imgutils.tagging.pixai import get_pixai_tags
-        >>> 
+        >>>
         >>> # Get tags with default format (all categories)
         >>> general_tags, character_tags = get_pixai_tags('anime_image.jpg', model_name='v0.9')
         >>> print("General tags:", general_tags)
         >>> print("Character tags:", character_tags)
-        >>> 
+        >>>
         >>> # Get all tags in a single dictionary
         >>> all_tags = get_pixai_tags('image.jpg', fmt='tag')
         >>> print("All tags:", all_tags)
-        >>> 
+        >>>
         >>> # Use custom thresholds
         >>> result = get_pixai_tags('image.jpg', thresholds={'general': 0.3, 'character': 0.5})
-        >>> 
+        >>>
         >>> # Get embedding for similarity search
         >>> embedding = get_pixai_tags('image.jpg', fmt='embedding')
         >>> # Normalize for cosine similarity
         >>> import numpy as np
         >>> normalized_embedding = embedding / np.linalg.norm(embedding)
+        >>>
+        >>> # Get IP information for character identification
+        >>> ips_mapping = get_pixai_tags('image.jpg', fmt='ips_mapping')
+        >>> print("Character to IP mapping:", ips_mapping)
+        >>> # Example output: {'misaka_mikoto': ['toaru_kagaku_no_railgun'], 'hu_tao_(genshin_impact)': ['genshin_impact']}
+        >>>
+        >>> # Get most likely anime/game series
+        >>> top_ips = get_pixai_tags('image.jpg', fmt='ips')
+        >>> print("Most likely series:", top_ips)
+        >>> # Example output: ['genshin_impact', 'toaru_kagaku_no_railgun']
     """
     df_tags, d_ips = _open_tags(model_name=model_name)
     values = _raw_predict(image, model_name=model_name)
