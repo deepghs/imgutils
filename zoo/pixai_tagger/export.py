@@ -68,6 +68,10 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False):
             0: 'general',
             4: 'character',
         }
+        d_category_thresholds = {
+            0: handler.default_general_threshold,
+            4: handler.default_character_threshold,
+        }
         with open(os.path.join(upload_dir, 'categories.json'), 'w') as f:
             json.dump([
                 {
@@ -76,8 +80,11 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False):
                 } for cate_id, cate_name in sorted(d_category_names.items())
             ], f, sort_keys=True, ensure_ascii=False, indent=4)
         df_th = pd.DataFrame([
-            {'category': 0, 'name': 'general', 'threshold': handler.default_general_threshold},
-            {'category': 4, 'name': 'character', 'threshold': handler.default_character_threshold},
+            {
+                "category": cate_id,
+                "name": cate_name,
+                'threshold': d_category_thresholds[cate_id]
+            } for cate_id, cate_name in sorted(d_category_names.items())
         ])
         df_th.to_csv(os.path.join(upload_dir, 'thresholds.csv'), index=False)
 
