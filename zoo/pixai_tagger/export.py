@@ -95,10 +95,6 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False):
         meta_info['flops'] = flops
         meta_info['params'] = params
         meta_info['macs'] = macs
-        new_meta_file = os.path.join(upload_dir, 'meta.json')
-        logging.info(f'Saving metadata to {new_meta_file!r} ...')
-        with open(new_meta_file, 'w') as f:
-            json.dump(meta_info, f, indent=4, sort_keys=True, ensure_ascii=False)
 
         wrapped_model, (conv_features, conv_logits, conv_preds) = get_model(handler.model, dummy_input)
         conv_features = conv_features.detach().cpu()
@@ -106,6 +102,11 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False):
         conv_preds = conv_preds.detach().cpu()
         meta_info['num_features'] = conv_features.shape[-1]
         meta_info['num_classes'] = conv_preds.shape[-1]
+        new_meta_file = os.path.join(upload_dir, 'meta.json')
+        logging.info(f'Saving metadata to {new_meta_file!r} ...')
+        with open(new_meta_file, 'w') as f:
+            json.dump(meta_info, f, indent=4, sort_keys=True, ensure_ascii=False)
+
         onnx_filename = os.path.join(upload_dir, 'model.onnx')
         with TemporaryDirectory() as td:
             temp_model_onnx = os.path.join(td, 'model.onnx')
