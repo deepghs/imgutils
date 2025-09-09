@@ -67,6 +67,7 @@ jobs:
           ENV_PROD: 'true'
           PLANTUML_HOST: http://localhost:18080
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          CI: 'true'
         run: |
           plantumlcli -c
           make docs
@@ -145,6 +146,7 @@ jobs:
           ENV_PROD: 'true'
           PLANTUML_HOST: http://localhost:18080
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          CI: 'true'
         run: |
           git fetch --all --tags
           git branch -av

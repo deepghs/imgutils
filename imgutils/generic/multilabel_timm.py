@@ -29,6 +29,7 @@ from threading import Lock
 from typing import Optional, Literal, Dict, Any, Union
 
 import pandas as pd
+from hbutils.design import SingletonMark
 from hbutils.string import titleize
 from hfutils.repository import hf_hub_repo_url
 from huggingface_hub import hf_hub_download
@@ -64,7 +65,7 @@ def _check_gradio_env():
                                f'Please install it with `pip install dghs-imgutils[demo]`.')
 
 
-FMT_UNSET = object()
+FMT_UNSET = SingletonMark('FMT_UNSET')
 
 
 class MultiLabelTIMMModel:

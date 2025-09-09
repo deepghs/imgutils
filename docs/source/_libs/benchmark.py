@@ -34,6 +34,9 @@ class BaseBenchmark:
     def unload(self):
         raise NotImplementedError
 
+    def after_unload(self):
+        pass
+
     def run(self):
         raise NotImplementedError
 
@@ -60,6 +63,7 @@ class BaseBenchmark:
 
         self.unload()
         _record('<unload>')
+        self.after_unload()
 
         mems = np.array([mem for _, mem, _ in logs])
         mems -= mems[0]
