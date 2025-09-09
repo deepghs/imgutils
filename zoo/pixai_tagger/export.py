@@ -229,6 +229,11 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False, show_current_r
             print(f'```', file=f)
             print(f'', file=f)
 
+            print(f'You can use function `get_pixai_tags` to tag your image. '
+                  f'For more details of this function, see [documentation of imgutils.tagging.pixai]'
+                  f'(https://dghs-imgutils.deepghs.org/main/api_doc/tagging/pixai.html).', file=f)
+            print(f'', file=f)
+
             matching = re.fullmatch(r'^deepghs/pixai-tagger-(?P<version>[\s\S]+)-onnx$', dst_repo)
             model_name = matching.group('version') if matching else dst_repo
             print(f'```python', file=f)
