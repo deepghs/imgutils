@@ -1,0 +1,548 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.operate.censor_ &mdash; imgutils 0.19.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3de8224"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="imgutils.operate.imgcensor" href="imgcensor.html" />
+    <link rel="prev" title="imgutils.operate.align" href="align.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">imgutils.operate</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="align.html">imgutils.operate.align</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">imgutils.operate.censor_</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#censor-areas">censor_areas</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.operate.censor_.censor_areas"><code class="docutils literal notranslate"><span class="pre">censor_areas()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#censor-nsfw">censor_nsfw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.operate.censor_.censor_nsfw"><code class="docutils literal notranslate"><span class="pre">censor_nsfw()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#basecensor">BaseCensor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.operate.censor_.BaseCensor"><code class="docutils literal notranslate"><span class="pre">BaseCensor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#colorcensor">ColorCensor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.operate.censor_.ColorCensor"><code class="docutils literal notranslate"><span class="pre">ColorCensor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#blurcensor">BlurCensor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.operate.censor_.BlurCensor"><code class="docutils literal notranslate"><span class="pre">BlurCensor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pixelatecensor">PixelateCensor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.operate.censor_.PixelateCensor"><code class="docutils literal notranslate"><span class="pre">PixelateCensor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#register-censor-method">register_censor_method</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#imgutils.operate.censor_.register_censor_method"><code class="docutils literal notranslate"><span class="pre">register_censor_method()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="imgcensor.html">imgutils.operate.imgcensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="squeeze.html">imgutils.operate.squeeze</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">imgutils.operate</a></li>
+      <li class="breadcrumb-item active">imgutils.operate.censor_</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api_doc/operate/censor.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <section id="module-imgutils.operate.censor_">
+<span id="imgutils-operate-censor"></span><h1>imgutils.operate.censor_<a class="headerlink" href="#module-imgutils.operate.censor_" title="Permalink to this heading"></a></h1>
+<dl class="simple">
+<dt>Overview:</dt><dd><p>A tool for obscuring specified regions on an image.</p>
+</dd>
+</dl>
+<section id="censor-areas">
+<h2>censor_areas<a class="headerlink" href="#censor-areas" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.operate.censor_.censor_areas">
+<span class="sig-prename descclassname"><span class="pre">imgutils.operate.censor_.</span></span><span class="sig-name descname"><span class="pre">censor_areas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">areas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#censor_areas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.censor_.censor_areas" title="Permalink to this definition"></a></dt>
+<dd><p>Applies censoring to specific areas of an image using the registered censor method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image to be censored.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – The name of the registered censor method to be used.</p></li>
+<li><p><strong>areas</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em>) – A list of tuples representing the rectangular areas to be censored
+in the format <code class="docutils literal notranslate"><span class="pre">(x0,</span> <span class="pre">y0,</span> <span class="pre">x1,</span> <span class="pre">y1)</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to be passed to the censor method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the censored areas.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.operate</span><span class="w"> </span><span class="kn">import</span> <span class="n">censor_areas</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;genshin_post.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">areas</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># areas to censor</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">967</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">1084</span><span class="p">,</span> <span class="mi">261</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">246</span><span class="p">,</span> <span class="mi">208</span><span class="p">,</span> <span class="mi">331</span><span class="p">,</span> <span class="mi">287</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">662</span><span class="p">,</span> <span class="mi">466</span><span class="p">,</span> <span class="mi">705</span><span class="p">,</span> <span class="mi">514</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">479</span><span class="p">,</span> <span class="mi">283</span><span class="p">,</span> <span class="mi">523</span><span class="p">,</span> <span class="mi">326</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with black color</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_black</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with pixelate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pixelate</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;pixelate&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with emoji</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emoji</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;emoji&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result:</p>
+<img alt="../../_images/censor_areas.plot.py.svg" class="align-center" src="../../_images/censor_areas.plot.py.svg" /></dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="censor-nsfw">
+<h2>censor_nsfw<a class="headerlink" href="#censor-nsfw" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.operate.censor_.censor_nsfw">
+<span class="sig-prename descclassname"><span class="pre">imgutils.operate.censor_.</span></span><span class="sig-name descname"><span class="pre">censor_nsfw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BinaryIO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nipple_f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pussy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'v1.0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iou_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#censor_nsfw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.censor_.censor_nsfw" title="Permalink to this definition"></a></dt>
+<dd><p>Applies censoring to sensitive areas in NSFW images based on object detection.</p>
+<p>The censor area selected by this function is provided by the <a class="reference internal" href="../detect/censor.html#imgutils.detect.censor.detect_censors" title="imgutils.detect.censor.detect_censors"><code class="xref py py-func docutils literal notranslate"><span class="pre">imgutils.detect.censor.detect_censors()</span></code></a> function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ImageTyping</em>) – The input image to be censored.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – The name of the registered censor method to be used.</p></li>
+<li><p><strong>nipple_f</strong> (<em>bool</em>) – Whether to censor female nipples. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>penis</strong> (<em>bool</em>) – Whether to censor penises. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>pussy</strong> (<em>bool</em>) – Whether to censor vaginas. Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>level</strong> (<em>str</em>) – The scale for NSFW object detection model.
+Options are <code class="docutils literal notranslate"><span class="pre">s</span></code> (small), <code class="docutils literal notranslate"><span class="pre">n</span></code> (nano, faster than <code class="docutils literal notranslate"><span class="pre">s</span></code>). Default is <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p></li>
+<li><p><strong>version</strong> (<em>str</em>) – The version of the NSFW object detection model. Default is <code class="docutils literal notranslate"><span class="pre">v1.0</span></code>.</p></li>
+<li><p><strong>model_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Optional custom model name. If not provided, it will be constructed
+from the version and level.</p></li>
+<li><p><strong>conf_threshold</strong> (<em>float</em>) – The confidence threshold for object detection. Default is <code class="docutils literal notranslate"><span class="pre">0.3</span></code>.</p></li>
+<li><p><strong>iou_threshold</strong> (<em>float</em>) – The IoU (Intersection over Union) threshold for non-maximum suppression. Default is <code class="docutils literal notranslate"><span class="pre">0.7</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments to be passed to the censor method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the sensitive areas censored.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.operate</span><span class="w"> </span><span class="kn">import</span> <span class="n">censor_nsfw</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;nude_girl.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with black color</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_black</span> <span class="o">=</span> <span class="n">censor_nsfw</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">nipple_f</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with pixelate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pixelate</span> <span class="o">=</span> <span class="n">censor_nsfw</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;pixelate&#39;</span><span class="p">,</span> <span class="n">nipple_f</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># censor with emoji</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emoji</span> <span class="o">=</span> <span class="n">censor_nsfw</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="s1">&#39;emoji&#39;</span><span class="p">,</span> <span class="n">nipple_f</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<details class="summary-this-is-the-result-warning-nsfw">
+<summary>This is the result (Warning: NSFW!!!)</summary><img alt="../../_images/censor_nsfw.plot.py.svg" class="align-center" src="../../_images/censor_nsfw.plot.py.svg" /></details></dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="basecensor">
+<h2>BaseCensor<a class="headerlink" href="#basecensor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.operate.censor_.BaseCensor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.operate.censor_.</span></span><span class="sig-name descname"><span class="pre">BaseCensor</span></span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#BaseCensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.censor_.BaseCensor" title="Permalink to this definition"></a></dt>
+<dd><p>The Censor base class serves as the foundation for creating custom censor methods by inheriting
+from this class and registering them using the <a class="reference internal" href="#imgutils.operate.censor_.register_censor_method" title="imgutils.operate.censor_.register_censor_method"><code class="xref py py-func docutils literal notranslate"><span class="pre">register_censor_method()</span></code></a> function.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.operate.censor_.BaseCensor.censor_area">
+<span class="sig-name descname"><span class="pre">censor_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#BaseCensor.censor_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.censor_.BaseCensor.censor_area" title="Permalink to this definition"></a></dt>
+<dd><p>Applies censoring to a specific area within the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>Image.Image</em>) – An instance of PIL Image representing the input image.</p></li>
+<li><p><strong>area</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em>) – A tuple representing the rectangular area to be censored
+in the format <code class="docutils literal notranslate"><span class="pre">(left,</span> <span class="pre">upper,</span> <span class="pre">right,</span> <span class="pre">lower)</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for customization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the censored area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="colorcensor">
+<h2>ColorCensor<a class="headerlink" href="#colorcensor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.operate.censor_.ColorCensor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.operate.censor_.</span></span><span class="sig-name descname"><span class="pre">ColorCensor</span></span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#ColorCensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.censor_.ColorCensor" title="Permalink to this definition"></a></dt>
+<dd><p>A class that performs color censoring by filling a specific area of an image with a solid color.</p>
+<p>Inherits from <a class="reference internal" href="#imgutils.operate.censor_.BaseCensor" title="imgutils.operate.censor_.BaseCensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCensor</span></code></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.operate.censor_.ColorCensor.censor_area">
+<span class="sig-name descname"><span class="pre">censor_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#ColorCensor.censor_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.censor_.ColorCensor.censor_area" title="Permalink to this definition"></a></dt>
+<dd><p>Fills a specific area within the image with a solid color for censoring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>Image.Image</em>) – An instance of PIL Image representing the input image.</p></li>
+<li><p><strong>area</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em>) – A tuple representing the rectangular area to be censored
+in the format <code class="docutils literal notranslate"><span class="pre">(left,</span> <span class="pre">upper,</span> <span class="pre">right,</span> <span class="pre">lower)</span></code>.</p></li>
+<li><p><strong>color</strong> (<em>str</em>) – The color used to fill the censor area. Default is <code class="docutils literal notranslate"><span class="pre">black</span></code>.
+Can be any valid color name or RGB value.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for customization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the censored area filled with the specified color.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.operate</span><span class="w"> </span><span class="kn">import</span> <span class="n">censor_areas</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;genshin_post.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">areas</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># areas to censor</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">967</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">1084</span><span class="p">,</span> <span class="mi">261</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">246</span><span class="p">,</span> <span class="mi">208</span><span class="p">,</span> <span class="mi">331</span><span class="p">,</span> <span class="mi">287</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">662</span><span class="p">,</span> <span class="mi">466</span><span class="p">,</span> <span class="mi">705</span><span class="p">,</span> <span class="mi">514</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">479</span><span class="p">,</span> <span class="mi">283</span><span class="p">,</span> <span class="mi">523</span><span class="p">,</span> <span class="mi">326</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># default</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_default</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># green</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_green</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># #ffff00</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">color_ffff00</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#ffff00&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result:</p>
+<img alt="../../_images/censor_color.plot.py.svg" class="align-center" src="../../_images/censor_color.plot.py.svg" /></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="blurcensor">
+<h2>BlurCensor<a class="headerlink" href="#blurcensor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.operate.censor_.BlurCensor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.operate.censor_.</span></span><span class="sig-name descname"><span class="pre">BlurCensor</span></span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#BlurCensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.censor_.BlurCensor" title="Permalink to this definition"></a></dt>
+<dd><p>A class that performs blurring censoring on a specific area of an image.</p>
+<p>Inherits from <a class="reference internal" href="#imgutils.operate.censor_.BaseCensor" title="imgutils.operate.censor_.BaseCensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCensor</span></code></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.operate.censor_.BlurCensor.censor_area">
+<span class="sig-name descname"><span class="pre">censor_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#BlurCensor.censor_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.censor_.BlurCensor.censor_area" title="Permalink to this definition"></a></dt>
+<dd><p>Applies blurring censoring to a specific area within the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>Image.Image</em>) – An instance of PIL Image representing the input image.</p></li>
+<li><p><strong>area</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em>) – A tuple representing the rectangular area to be censored
+in the format <code class="docutils literal notranslate"><span class="pre">(left,</span> <span class="pre">upper,</span> <span class="pre">right,</span> <span class="pre">lower)</span></code>.</p></li>
+<li><p><strong>radius</strong> (<em>int</em>) – The radius of the blurring effect. Default is <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for customization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the blurred area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.operate</span><span class="w"> </span><span class="kn">import</span> <span class="n">censor_areas</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;genshin_post.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">areas</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># areas to censor</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">967</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">1084</span><span class="p">,</span> <span class="mi">261</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">246</span><span class="p">,</span> <span class="mi">208</span><span class="p">,</span> <span class="mi">331</span><span class="p">,</span> <span class="mi">287</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">662</span><span class="p">,</span> <span class="mi">466</span><span class="p">,</span> <span class="mi">705</span><span class="p">,</span> <span class="mi">514</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">479</span><span class="p">,</span> <span class="mi">283</span><span class="p">,</span> <span class="mi">523</span><span class="p">,</span> <span class="mi">326</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># default</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blur_4</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;blur&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># radius=8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blur_8</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;blur&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># radius=12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blur_12</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;blur&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result:</p>
+<img alt="../../_images/censor_blur.plot.py.svg" class="align-center" src="../../_images/censor_blur.plot.py.svg" /></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="pixelatecensor">
+<h2>PixelateCensor<a class="headerlink" href="#pixelatecensor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imgutils.operate.censor_.PixelateCensor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imgutils.operate.censor_.</span></span><span class="sig-name descname"><span class="pre">PixelateCensor</span></span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#PixelateCensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.censor_.PixelateCensor" title="Permalink to this definition"></a></dt>
+<dd><p>A class that performs pixelization censoring on a specific area of an image.</p>
+<p>Inherits from <a class="reference internal" href="#imgutils.operate.censor_.BaseCensor" title="imgutils.operate.censor_.BaseCensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCensor</span></code></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imgutils.operate.censor_.PixelateCensor.censor_area">
+<span class="sig-name descname"><span class="pre">censor_area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#PixelateCensor.censor_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.censor_.PixelateCensor.censor_area" title="Permalink to this definition"></a></dt>
+<dd><p>Applies pixelization censoring to a specific area within the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>Image.Image</em>) – An instance of PIL Image representing the input image.</p></li>
+<li><p><strong>area</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em>) – A tuple representing the rectangular area to be censored
+in the format <code class="docutils literal notranslate"><span class="pre">(left,</span> <span class="pre">upper,</span> <span class="pre">right,</span> <span class="pre">lower)</span></code>.</p></li>
+<li><p><strong>radius</strong> (<em>int</em>) – The radius of the pixelation effect. Default is <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for customization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of PIL Image with the pixelated area.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image.Image</p>
+</dd>
+</dl>
+<dl>
+<dt>Examples::</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">imgutils.operate</span><span class="w"> </span><span class="kn">import</span> <span class="n">censor_areas</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">origin</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;genshin_post.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">areas</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># areas to censor</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">967</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">1084</span><span class="p">,</span> <span class="mi">261</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">246</span><span class="p">,</span> <span class="mi">208</span><span class="p">,</span> <span class="mi">331</span><span class="p">,</span> <span class="mi">287</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">662</span><span class="p">,</span> <span class="mi">466</span><span class="p">,</span> <span class="mi">705</span><span class="p">,</span> <span class="mi">514</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">(</span><span class="mi">479</span><span class="p">,</span> <span class="mi">283</span><span class="p">,</span> <span class="mi">523</span><span class="p">,</span> <span class="mi">326</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># default</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pixelate_4</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;pixelate&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># radius=8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pixelate_8</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;pixelate&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># radius=12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pixelate_12</span> <span class="o">=</span> <span class="n">censor_areas</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;pixelate&#39;</span><span class="p">,</span> <span class="n">areas</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result:</p>
+<img alt="../../_images/censor_pixelate.plot.py.svg" class="align-center" src="../../_images/censor_pixelate.plot.py.svg" /></dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="register-censor-method">
+<h2>register_censor_method<a class="headerlink" href="#register-censor-method" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="imgutils.operate.censor_.register_censor_method">
+<span class="sig-prename descclassname"><span class="pre">imgutils.operate.censor_.</span></span><span class="sig-name descname"><span class="pre">register_censor_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#imgutils.operate.censor_.BaseCensor" title="imgutils.operate.censor_.BaseCensor"><span class="pre">BaseCensor</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/imgutils/operate/censor_.html#register_censor_method"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imgutils.operate.censor_.register_censor_method" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Overview:</dt><dd><p>Registers a censor method for subsequent censoring tasks.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the censor method.</p></li>
+<li><p><strong>cls</strong> (<em>Type</em><em>[</em><a class="reference internal" href="#imgutils.operate.censor_.BaseCensor" title="imgutils.operate.censor_.BaseCensor"><em>BaseCensor</em></a><em>]</em>) – The class representing the censor method. It should be a subclass of BaseCensor.</p></li>
+<li><p><strong>args</strong> – Positional arguments to be passed when initializing the censor method.</p></li>
+<li><p><strong>kwargs</strong> – Keyword arguments to be passed when initializing the censor method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the censor method name already exists.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="align.html" class="btn btn-neutral float-left" title="imgutils.operate.align" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="imgcensor.html" class="btn btn-neutral float-right" title="imgutils.operate.imgcensor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.19.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../v0.14.0/api_doc/operate/censor.html">v0.14.0</a></dd>
+                        <dd><a href="../../../v0.14.1/api_doc/operate/censor.html">v0.14.1</a></dd>
+                        <dd><a href="../../../v0.15.0/api_doc/operate/censor.html">v0.15.0</a></dd>
+                        <dd><a href="../../../v0.16.0/api_doc/operate/censor.html">v0.16.0</a></dd>
+                        <dd><a href="../../../v0.17.0/api_doc/operate/censor.html">v0.17.0</a></dd>
+                        <dd><a href="../../../v0.18.0/api_doc/operate/censor.html">v0.18.0</a></dd>
+                        <dd><a href="../../../v0.18.1/api_doc/operate/censor.html">v0.18.1</a></dd>
+                        <dd><a href="censor.html">v0.19.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../HEAD/api_doc/operate/censor.html">HEAD</a></dd>
+                        <dd><a href="../../../dev/attachments/api_doc/operate/censor.html">dev/attachments</a></dd>
+                        <dd><a href="../../../dev/pt/api_doc/operate/censor.html">dev/pt</a></dd>
+                        <dd><a href="../../../main/api_doc/operate/censor.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

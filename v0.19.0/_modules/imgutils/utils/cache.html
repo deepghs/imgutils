@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imgutils.utils.cache &mdash; imgutils 0.19.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=c9d0a6ec" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=b3de8224"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            imgutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/installation/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/quick_start/index.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../information/environment.result.html">Run Environment Information</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/config/index.html">imgutils.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ascii/index.html">imgutils.ascii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/data/index.html">imgutils.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/detect/index.html">imgutils.detect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/edge/index.html">imgutils.edge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/generic/index.html">imgutils.generic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metadata/index.html">imgutils.metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/metrics/index.html">imgutils.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/ocr/index.html">imgutils.ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/operate/index.html">imgutils.operate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/pose/index.html">imgutils.pose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/preprocess/index.html">imgutils.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/resource/index.html">imgutils.resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/restore/index.html">imgutils.restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/sd/index.html">imgutils.sd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/segment/index.html">imgutils.segment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/tagging/index.html">imgutils.tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/upscale/index.html">imgutils.upscale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/utils/index.html">imgutils.utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api_doc/validate/index.html">imgutils.validate</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">imgutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">imgutils.utils.cache</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+    
+    
+  <h1>Source code for imgutils.utils.cache</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides a thread-safe version of Python&#39;s built-in lru_cache decorator.</span>
+
+<span class="sd">The main component of this module is the ts_lru_cache decorator, which wraps the standard</span>
+<span class="sd">lru_cache with thread-safe functionality. This is particularly useful in multi-threaded</span>
+<span class="sd">environments where cache access needs to be synchronized to prevent race conditions.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    &gt;&gt;&gt; from imgutils.utils import ts_lru_cache</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; @ts_lru_cache(maxsize=100)</span>
+<span class="sd">    &gt;&gt;&gt; def expensive_function(x, y):</span>
+<span class="sd">    ...     # Some expensive computation</span>
+<span class="sd">    ...     return x + y</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span><span class="p">,</span> <span class="n">wraps</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ts_lru_cache&#39;</span><span class="p">]</span>
+
+<span class="n">LevelTyping</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;global&#39;</span><span class="p">,</span> <span class="s1">&#39;process&#39;</span><span class="p">,</span> <span class="s1">&#39;thread&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_context_key</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="n">LevelTyping</span> <span class="o">=</span> <span class="s1">&#39;global&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a context key based on the specified caching level.</span>
+
+<span class="sd">    :param level: The caching level to use. Can be &#39;global&#39;, &#39;process&#39;, or &#39;thread&#39;.</span>
+<span class="sd">    :type level: LevelTyping</span>
+
+<span class="sd">    :return: A context key appropriate for the specified level.</span>
+<span class="sd">    :rtype: tuple or None</span>
+
+<span class="sd">    :raises ValueError: If an invalid cache level is specified.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The function returns:</span>
+
+<span class="sd">        - None for &#39;global&#39; level</span>
+<span class="sd">        - Process ID for &#39;process&#39; level</span>
+<span class="sd">        - (Process ID, Thread ID) tuple for &#39;thread&#39; level</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s1">&#39;global&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s1">&#39;process&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s1">&#39;thread&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">(),</span> <span class="n">threading</span><span class="o">.</span><span class="n">get_ident</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid cache level, &#39;</span>
+                         <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">global</span><span class="se">\&#39;</span><span class="s1">, </span><span class="se">\&#39;</span><span class="s1">process</span><span class="se">\&#39;</span><span class="s1"> or </span><span class="se">\&#39;</span><span class="s1">thread</span><span class="se">\&#39;</span><span class="s1"> expected but </span><span class="si">{</span><span class="n">level</span><span class="si">!r}</span><span class="s1"> found.&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ts_lru_cache"><a class="viewcode-back" href="../../../api_doc/utils/cache.html#imgutils.utils.cache.ts_lru_cache">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ts_lru_cache</span><span class="p">(</span><span class="n">level</span><span class="p">:</span> <span class="n">LevelTyping</span> <span class="o">=</span> <span class="s1">&#39;global&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A thread-safe version of the lru_cache decorator.</span>
+
+<span class="sd">    This decorator wraps the standard lru_cache with a threading lock to ensure</span>
+<span class="sd">    thread-safety in multithreaded environments. It maintains the same interface</span>
+<span class="sd">    as the built-in lru_cache, allowing you to specify options like maxsize.</span>
+
+<span class="sd">    :param level: The caching level (&#39;global&#39;, &#39;process&#39;, or &#39;thread&#39;).</span>
+<span class="sd">    :type level: LevelTyping</span>
+<span class="sd">    :param options: Keyword arguments to be passed to the underlying lru_cache.</span>
+<span class="sd">    :type options: dict</span>
+
+<span class="sd">    :return: A thread-safe cached version of the decorated function.</span>
+<span class="sd">    :rtype: function</span>
+
+<span class="sd">    :example:</span>
+<span class="sd">        &gt;&gt;&gt; @ts_lru_cache(level=&#39;thread&#39;, maxsize=100)</span>
+<span class="sd">        &gt;&gt;&gt; def my_function(x, y):</span>
+<span class="sd">        ...     # Function implementation</span>
+<span class="sd">        ...     return x + y</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The decorator provides three levels of caching:</span>
+
+<span class="sd">        - global: Single cache shared across all processes and threads</span>
+<span class="sd">        - process: Separate cache for each process</span>
+<span class="sd">        - thread: Separate cache for each thread</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        While this decorator ensures thread-safety, it may introduce some overhead</span>
+<span class="sd">        due to lock acquisition. Use it when thread-safety is more critical than</span>
+<span class="sd">        maximum performance in multithreaded scenarios.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The decorator preserves the cache_info() and cache_clear() methods</span>
+<span class="sd">        from the original lru_cache implementation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">_get_context_key</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inner decorator function that wraps the original function.</span>
+
+<span class="sd">        :param func: The function to be decorated.</span>
+<span class="sd">        :type func: function</span>
+
+<span class="sd">        :return: The wrapped function with thread-safe caching.</span>
+<span class="sd">        :rtype: function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nd">@lru_cache</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_cached_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">__context_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Cached version of the original function.</span>
+
+<span class="sd">            :param args: Positional arguments to be passed to the original function.</span>
+<span class="sd">            :param __context_key: Internal context key for cache separation.</span>
+<span class="sd">            :param kwargs: Keyword arguments to be passed to the original function.</span>
+
+<span class="sd">            :return: The result of the original function call.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">lock_pool</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">)</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">_cached_func</span><span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_new_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Thread-safe wrapper around the cached function.</span>
+
+<span class="sd">            This function acquires a lock before calling the cached function,</span>
+<span class="sd">            ensuring thread-safety.</span>
+
+<span class="sd">            :param args: Positional arguments to be passed to the cached function.</span>
+<span class="sd">            :param kwargs: Keyword arguments to be passed to the cached function.</span>
+
+<span class="sd">            :return: The result of the cached function call.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">context_key</span> <span class="o">=</span> <span class="n">_get_context_key</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
+                <span class="n">_context_lock</span> <span class="o">=</span> <span class="n">lock_pool</span><span class="p">[</span><span class="n">context_key</span><span class="p">]</span>
+            <span class="k">with</span> <span class="n">_context_lock</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">_cached_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">__context_key</span><span class="o">=</span><span class="n">context_key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Preserve cache_info and cache_clear methods if they exist</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_cached_func</span><span class="p">,</span> <span class="s1">&#39;cache_info&#39;</span><span class="p">):</span>
+            <span class="n">_new_func</span><span class="o">.</span><span class="n">cache_info</span> <span class="o">=</span> <span class="n">_cached_func</span><span class="o">.</span><span class="n">cache_info</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_cached_func</span><span class="p">,</span> <span class="s1">&#39;cache_clear&#39;</span><span class="p">):</span>
+            <span class="n">_new_func</span><span class="o">.</span><span class="n">cache_clear</span> <span class="o">=</span> <span class="n">_cached_func</span><span class="o">.</span><span class="n">cache_clear</span>
+
+        <span class="k">return</span> <span class="n">_new_func</span>
+
+    <span class="k">return</span> <span class="n">_decorator</span></div>
+</pre></div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, narugo1992, 7eu7d7.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+    <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: v0.19.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+        <div class="rst-other-versions">
+                <dl>
+                    <dt>Tags</dt>
+                        <dd><a href="../../../../v0.14.0/index.html">v0.14.0</a></dd>
+                        <dd><a href="../../../../v0.14.1/index.html">v0.14.1</a></dd>
+                        <dd><a href="../../../../v0.15.0/index.html">v0.15.0</a></dd>
+                        <dd><a href="../../../../v0.16.0/index.html">v0.16.0</a></dd>
+                        <dd><a href="../../../../v0.17.0/index.html">v0.17.0</a></dd>
+                        <dd><a href="../../../../v0.18.0/index.html">v0.18.0</a></dd>
+                        <dd><a href="../../../../v0.18.1/index.html">v0.18.1</a></dd>
+                        <dd><a href="cache.html">v0.19.0</a></dd>
+                </dl>
+                <dl>
+                    <dt>Branches</dt>
+                        <dd><a href="../../../../HEAD/index.html">HEAD</a></dd>
+                        <dd><a href="../../../../dev/attachments/index.html">dev/attachments</a></dd>
+                        <dd><a href="../../../../dev/pt/index.html">dev/pt</a></dd>
+                        <dd><a href="../../../../main/index.html">main</a></dd>
+                </dl>
+        </div>
+    </div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
