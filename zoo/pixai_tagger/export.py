@@ -164,7 +164,7 @@ def sync(src_repo: str, dst_repo: str, no_optimize: bool = False, show_current_r
             print('- image', file=f)
             print('- dghs-imgutils', file=f)
             print('library_name: dghs-imgutils', file=f)
-            print('license: mit', file=f)
+            print('license: apache-2.0', file=f)
             print('---', file=f)
             print('', file=f)
 
