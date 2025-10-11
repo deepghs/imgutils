@@ -20,7 +20,7 @@ def text_aligner():
     return TextAligner().multiple_lines()
 
 
-@pytest.fixture(autouse=True, scope='module')
+@pytest.fixture(autouse=True, scope='class')
 def clean_hf_cache():
     try:
         yield
