@@ -93,7 +93,9 @@ class PixelateCensor(BaseCensor):
         x0, y0, x1, y1 = area
         width, height = x1 - x0, y1 - y0
         censor_area = image.crop((x0, y0, x1, y1))
-        censor_area = censor_area.resize((width // radius, height // radius)).resize((width, height), Image.NEAREST)
+        target_w = max(1, width // radius)
+        target_h = max(1, height // radius)
+        censor_area = censor_area.resize((target_w, target_h)).resize((width, height), Image.NEAREST)
         image.paste(censor_area, (x0, y0, x1, y1))
         return image
 
