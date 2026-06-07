@@ -465,13 +465,13 @@ def _safe_eval_names_str(names_str):
     result = {}
     # noinspection PyUnresolvedReferences
     for key, value in zip(node.body.keys, node.body.values):
-        if isinstance(key, (ast.Str, ast.Num)):
+        if isinstance(key, (ast.Constant)) and isinstance(key.value, int):
             key = ast.literal_eval(key)
         else:
             raise RuntimeError(f"Invalid key type: {key!r}, this should be a bug, "
                                f"please open an issue to dghs-imgutils.")  # pragma: no cover
 
-        if isinstance(value, (ast.Str, ast.Num)):
+        if isinstance(value, (ast.Constant)) and isinstance(value.value, str):
             value = ast.literal_eval(value)
         else:
             raise RuntimeError(f"Invalid value type: {value!r}, this should be a bug, "
